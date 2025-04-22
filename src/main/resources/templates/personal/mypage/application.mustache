@@ -1,0 +1,119 @@
+{{> layout/personal-header}}
+
+            <!-- 본문 -->
+            <div class="main container mt-5">
+                <div class="content-wrapper">
+                    <div class="myJumpitWrapper">
+                        <div class="myJumpit">
+                            <h5>마이점핏</h5>
+                            <div class="menuItems">
+                                <a href="#" class="menuItem">입사지원 현황</a>
+                                <a href="#" class="menuItem">스크랩 포지션</a>
+                                <hr class="menuDivider">
+                                <a href="#" class="menuItem">계정 정보 설정</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="myStatus">
+                        <div class="myStatusInner">
+                            <div class="myStatusTitle">마이 점핏</div>
+                            <div class="statusBoxes">
+                                <div class="statusBox">
+                                    <h6>지원완료</h6>
+                                    <span class="statusCount">0</span>
+                                </div>
+                                <div class="statusBox">
+                                    <h6>최종합격</h6>
+                                    <span class="statusCount">0</span>
+                                </div>
+                                <div class="statusBox">
+                                    <h6>불합격</h6>
+                                    <span class="statusCount">0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 지원현황 목록 -->
+                        <div class="applyContainer">
+                            <h5 class="applyTitle">지원완료 총 0건</h5>
+                            <div class="applyList">
+
+                                <!-- 반복 가능한 applyItem -->
+                                <div class="applyItem">
+                                    <div class="card mb-3">
+                                        <a href="/"
+                                            class="card-body text-start rounded border-0 text-decoration-none bg-white">
+                                            <h6 class="card-title mb-2">그린블록체인</h6>
+                                            <h5 class="card-title mb-2">시니어 백엔드 개발</h5>
+                                            <small>2025.04.18 10:05 지원</small>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="applyItem">
+                                    <div class="card mb-3">
+                                        <a href="/"
+                                            class="card-body text-start rounded border-0 text-decoration-none bg-white">
+                                            <h6 class="card-title mb-2">그린블록체인</h6>
+                                            <h5 class="card-title mb-2">시니어 백엔드 개발</h5>
+                                            <small>2025.04.18 10:05 지원</small>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="applyItem">
+                                    <div class="card mb-3">
+                                        <a href="/"
+                                            class="card-body text-start rounded border-0 text-decoration-none bg-white">
+                                            <h6 class="card-title mb-2">그린블록체인</h6>
+                                            <h5 class="card-title mb-2">시니어 백엔드 개발</h5>
+                                            <small>2025.04.18 10:05 지원</small>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="applyItem">
+                                    <div class="card mb-3">
+                                        <a href="/"
+                                            class="card-body text-start rounded border-0 text-decoration-none bg-white">
+                                            <h6 class="card-title mb-2">그린블록체인</h6>
+                                            <h5 class="card-title mb-2">시니어 백엔드 개발</h5>
+                                            <small>2025.04.18 10:05 지원</small>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="applyItem">
+                                    <div class="card mb-3">
+                                        <a href="/"
+                                            class="card-body text-start rounded border-0 text-decoration-none bg-white">
+                                            <h6 class="card-title mb-2">그린블록체인</h6>
+                                            <h5 class="card-title mb-2">시니어 백엔드 개발</h5>
+                                            <small>2025.04.18 10:05 지원</small>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="applyItem">
+                                    <div class="card mb-3">
+                                        <a href="/"
+                                            class="card-body text-start rounded border-0 text-decoration-none bg-white">
+                                            <h6 class="card-title mb-2">그린블록체인</h6>
+                                            <h5 class="card-title mb-2">시니어 백엔드 개발</h5>
+                                            <small>2025.04.18 10:05 지원</small>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const toggleSwitches = document.querySelectorAll('.toggleSwitch');
+
+                    toggleSwitches.forEach(toggleSwitch => {
+                        toggleSwitch.addEventListener('click', function () {
+                            this.classList.toggle('active');
+                        });
+                    });
+                });
+            </script>
+            <!-- 본문 끝 -->
+
+{{> layout/footer}}

@@ -1,0 +1,7 @@
+.left-panel {
+    width: 250px;
+}
+
+.right-panel {
+    flex: 1;
+}

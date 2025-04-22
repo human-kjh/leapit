@@ -1,0 +1,316 @@
+.myJumpitWrapper {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    width: 20%;
+}
+
+.myJumpit {
+    width: 100%;
+    padding: 10px;
+}
+
+.myJumpit h5 {
+    font-weight: bold;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    width: fit-content;
+}
+
+.menuItems {
+    width: fit-content;
+}
+
+.menuItem {
+    display: block;
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 8px;
+    width: fit-content;
+}
+
+.menuItem:hover {
+    color: #333;
+}
+
+.menuDivider {
+    border: none;
+    border-top: 1px solid #666;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.myStatus {
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: none;
+}
+
+.myStatusTitle {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.myStatus p {
+    font-size: 14px;
+    color: #666;
+}
+
+.statusBoxes {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.statusBox {
+    position: relative;
+    padding: 10px;
+    margin-top: 10px;
+    width: 22%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.statusText {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.statusCountContainer {
+    margin-top: 10px;
+}
+
+.statusCount {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.statusBox::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #ccc;
+    height: 80%;
+}
+
+.statusBox:last-child::after {
+    content: none;
+}
+
+/* 이력서 목록 스타일 */
+.resumeList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    margin-top: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.resumeItem {
+    position: relative;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 150px;
+}
+
+.resumeItem h6 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.resumeItem p {
+    font-size: 14px;
+    color: #666;
+}
+
+.resumeItem .date {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 12px;
+    color: #888;
+}
+
+/* 각 이력서 항목에 공개/비공개 토글 스위치 추가 */
+.toggleContainer {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    /* 날짜 반대편 구석에 위치 */
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    /* 크기 작게 설정 */
+}
+
+.toggleContainer label {
+    font-size: 12px;
+    margin-right: 5px;
+    /* 작은 크기에 맞게 조정 */
+}
+
+.toggleSwitch {
+    position: relative;
+    width: 30px;
+    /* 크기 작게 */
+    height: 16px;
+    /* 크기 작게 */
+    background-color: #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.toggleSwitch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: left 0.3s ease;
+}
+
+/* 부트스트랩 primary와 색상 동일 */
+.toggleSwitch.active {
+    background-color: rgb(13, 110, 253);
+}
+
+.toggleSwitch.active::after {
+    left: 16px;
+}
+
+.resumeTitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Bootstrapdropdown 스타일 조정 (선택 사항) */
+.dropdown-menu {
+    font-size: 14px;
+}
+
+.dropdown-item {
+    padding: 0.25rem 1rem;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .header {
+        padding: 10px 20px;
+    }
+
+    .headerContent {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .headerLeft {
+        align-items: center;
+    }
+
+    .navLeft {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navLeft a {
+        margin: 5px 0;
+    }
+
+    .headerRight {
+        margin-top: 10px;
+    }
+
+    .myJumpitWrapper {
+        width: 100%;
+    }
+
+    .myJumpit {
+        margin-top: 20px;
+    }
+
+    .myStatus {
+        width: 100%;
+    }
+
+    .statusBoxes {
+        flex-direction: column;
+    }
+
+    .statusBox {
+        width: 100%;
+    }
+
+    .statusBox::after {
+        content: none;
+    }
+
+    .resumeList {
+        margin-left: 0;
+    }
+
+    .resumeItem {
+        height: auto;
+    }
+}
+
+.content-wrapper {
+    max-width: 1100px;
+    margin: 30px auto 0;
+    padding: 30px 50px;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+/* 변경된 스타일 */
+.resumeList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* 3개씩 표시 */
+    gap: 20px;
+    padding: 20px;
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+    .resumeList {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        /* 모바일에서는 1개씩 표시 */
+    }
+}
+
+.myStatusInner {
+    border: 1px solid #ccc;
+    /* 회색 테두리 */
+    border-radius: 10px;
+    /* 둥근 모서리 */
+    background-color: transparent;
+    /* 배경색 없음 */
+    padding: 20px;
+    margin-bottom: 40px;
+}

@@ -1,0 +1,218 @@
+{{> layout/company-header}}
+
+      <!-- 본문 -->
+      <div class="main container mt-5">
+        <div class="container">
+          <div class="bg-white p-5 rounded shadow">
+            <h2 class="mb-4 fw-bold">채용 포지션 등록</h2>
+            <form class="row g-4">
+              <div class="col-md-6">
+                <div>직무 <span class="text-danger">*</span></div>
+                <select class="form-select">
+                  <option selected disabled>선택하세요</option>
+                  <option>프론트엔드</option>
+                  <option>백엔드</option>
+                  <option>AI 엔지니어</option>
+                </select>
+              </div>
+              <!-- 기술 스택 -->
+              <div class="mb-3">
+                <label class="form-label">기술 스택 <span class="text-danger">*</span></label>
+                <div class="dropdown">
+                  <button class="form-select text-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    선택하세요
+                  </button>
+                  <ul class="dropdown-menu p-3" style="min-width: 250px">
+                    <li>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="React" id="tech1" />
+                        <label class="form-check-label" for="tech1">React</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="JavaScript" id="tech2" />
+                        <label class="form-check-label" for="tech2">JavaScript</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="Vue" id="tech3" />
+                        <label class="form-check-label" for="tech3">Vue</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="TypeScript" id="tech4" />
+                        <label class="form-check-label" for="tech4">TypeScript</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="Node.js" id="tech5" />
+                        <label class="form-check-label" for="tech5">Node.js</label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="form-text">
+                  원하는 기술 스택을 모두 선택하세요
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div>포지션 제목 <span class="text-danger">*</span></div>
+                <textarea class="form-control" rows="3" placeholder="서비스나 제품의 핵심이 되는 컴포넌트를 함께 만들며..."></textarea>
+              </div>
+
+              <div class="row align-items-end mt-3">
+                <div class="col-md-6">
+                  <div>포지션 마감일 <span class="text-danger">*</span></div>
+                  <input type="date" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label">연차 (최소)</label>
+                  <!--수정된 부분 : 최소 연차 input 에서 select로 변경-->
+                  <select class="form-select">
+                    <option selected disabled>선택하세요</option>
+                    <option>신입</option>
+                    <option>1년차</option>
+                    <option>2년차</option>
+                    <option>3년차</option>
+                    <option>4년차</option>
+                    <option>5년차</option>
+                    <option>6년차</option>
+                    <option>7년차</option>
+                    <option>8년차</option>
+                    <option>9년차</option>
+                    <option>10년 이상</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">연차 (최대)</label>
+                  <!--수정된 부분 : 최대 연차 input 에서 select로 변경-->
+                  <select class="form-select">
+                    <option selected disabled>선택하세요</option>
+                    <option>신입</option>
+                    <option>1년차</option>
+                    <option>2년차</option>
+                    <option>3년차</option>
+                    <option>4년차</option>
+                    <option>5년차</option>
+                    <option>6년차</option>
+                    <option>7년차</option>
+                    <option>8년차</option>
+                    <option>9년차</option>
+                    <option>10년 이상</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row g-3 align-items-end mt-3" style="max-width: 720px">
+                <!--수정된 부분 : 근무지 입력 input란에서 시/군/구 선택 박스로 변경-->
+                <div class="col-md-3">
+                  <div>시/도 <span class="text-danger">*</span></div>
+                  <select class="form-select">
+                    <option selected disabled>선택하세요</option>
+                    <option>서울특별시</option>
+                    <option>부산광역시</option>
+                    <option>대구광역시</option>
+                    <option>인천광역시</option>
+                    <option>광주광역시</option>
+                    <option>대전광역시</option>
+                    <option>울산광역시</option>
+                    <option>세종특별자치시</option>
+                    <option>경기도</option>
+                    <option>강원특별자치도</option>
+                    <option>충청북도</option>
+                    <option>충청남도</option>
+                    <option>전라북도</option>
+                    <option>전라남도</option>
+                    <option>경상북도</option>
+                    <option>경상남도</option>
+                    <option>제주특별자치도</option>
+                  </select>
+                </div>
+
+                <div class="col-md-3">
+                  <div>시/군/구 <span class="text-danger">*</span></div>
+                  <select class="form-select">
+                    <option selected disabled>선택하세요</option>
+                    <option>서울특별시</option>
+                    <option>부산광역시</option>
+                    <option>대구광역시</option>
+                    <option>인천광역시</option>
+                    <option>광주광역시</option>
+                    <option>대전광역시</option>
+                    <option>울산광역시</option>
+                    <option>세종특별자치시</option>
+                    <option>경기도</option>
+                    <option>강원특별자치도</option>
+                    <option>충청북도</option>
+                    <option>충청남도</option>
+                    <option>전라북도</option>
+                    <option>전라남도</option>
+                    <option>경상북도</option>
+                    <option>경상남도</option>
+                    <option>제주특별자치도</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <div>상세주소 <span class="text-danger">*</span></div>
+                  <input class="form-control" placeholder="상세주소입력" />
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div>서비스 소개</div>
+                <textarea class="form-control" placeholder="서비스에 대한 간략한 소개"></textarea>
+              </div>
+
+              <div class="col-12">
+                <div>담당 업무 <span class="text-danger">*</span></div>
+                <textarea class="form-control" placeholder="예: 프론트엔드 UI 개발"></textarea>
+              </div>
+              <div class="col-12">
+                <div>자격요건 <span class="text-danger">*</span></div>
+                <textarea class="form-control" placeholder="예: React 경험 2년 이상"></textarea>
+              </div>
+              <div class="col-12">
+                <div>학력 제한 <span class="text-danger">*</span></div>
+                <select class="form-select">
+                  <option selected>전체</option>
+                  <option>중학교</option>
+                  <option>고등학교</option>
+                  <option>전문학사</option>
+                  <option>학사</option>
+                  <option>석사</option>
+                  <option>박사</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <div>우대 사항 <span class="text-danger">*</span></div>
+                <textarea class="form-control" placeholder="예: 오픈소스 기여 경험"></textarea>
+              </div>
+
+              <div class="col-12">
+                <div>복지 및 혜택 <span class="text-danger">*</span></div>
+                <textarea class="form-control" placeholder="예: 점심 제공, 자율 출퇴근 등"></textarea>
+              </div>
+
+              <div class="col-12">
+                <div>기타</div>
+                <textarea class="form-control" placeholder="채용절차/지원방법 등"></textarea>
+              </div>
+
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary w-100">
+                  등록하기
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- 본문 끝 -->
+
+{{> layout/footer}}

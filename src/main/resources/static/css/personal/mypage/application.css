@@ -1,0 +1,143 @@
+.myJumpitWrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 20%;
+}
+
+.myJumpit h5 {
+    font-weight: bold;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.menuItem {
+    display: block;
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.menuItem:hover {
+    color: #333;
+}
+
+.menuDivider {
+    border-top: 1px solid #666;
+    margin: 10px 0;
+}
+
+.myStatus {
+    padding: 20px;
+    width: 100%;
+}
+
+.myStatusTitle {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.statusBoxes {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.statusBox {
+    position: relative;
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.statusBox::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 10%;
+    bottom: 10%;
+    width: 1px;
+    background-color: #ccc;
+}
+
+.statusBox:last-child::after {
+    content: none;
+}
+
+.statusCount {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.content-wrapper {
+    max-width: 1100px;
+    margin: 30px auto 0;
+    padding: 30px 50px;
+    display: flex;
+    gap: 30px;
+}
+
+.resumeList {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.myStatusInner {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+    .header {
+        padding: 10px 20px;
+    }
+
+    .headerContent {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navLeft {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navLeft a {
+        margin: 5px 0;
+    }
+
+    .headerRight {
+        margin-top: 10px;
+    }
+
+    .myJumpitWrapper,
+    .myStatus {
+        width: 100%;
+    }
+
+    .statusBoxes {
+        flex-direction: column;
+    }
+
+    .statusBox {
+        width: 100%;
+    }
+
+    .statusBox::after {
+        content: none;
+    }
+
+    .resumeList {
+        grid-template-columns: 1fr;
+    }
+}

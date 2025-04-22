@@ -1,0 +1,17 @@
+@import url("common.css");
+
+@import url("login.css");
+
+@import url("personal/mypage/bookmark.css");
+@import url("personal/mypage/application.css");
+@import url("personal/resume/detail.css");
+@import url("personal/resume/list.css");
+@import url("personal/resume/save-form.css");
+@import url("personal/resume/update-form.css");
+@import url("personal/user/join-form.css");
+@import url("personal/user/update-form.css");
+
+@import url("company/applicant/detail.css");
+@import url("company/applicant/list.css");
+@import url("company/user/join-form.css");
+@import url("company/user/update-form.css");

@@ -1,0 +1,233 @@
+.myJumpitWrapper {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    width: 20%;
+}
+
+.myJumpit {
+    width: 100%;
+    padding: 10px;
+}
+
+.myJumpit h5 {
+    font-weight: bold;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    width: fit-content;
+}
+
+.menuItems {
+    width: fit-content;
+}
+
+.menuItem {
+    display: block;
+    color: #666;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 8px;
+    width: fit-content;
+}
+
+.menuItem:hover {
+    color: #333;
+}
+
+.menuDivider {
+    border: none;
+    border-top: 1px solid #666;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.myStatus {
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: none;
+}
+
+.myStatusTitle {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.myStatus p {
+    font-size: 14px;
+    color: #666;
+}
+
+.statusBoxes {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.statusBox {
+    position: relative;
+    padding: 10px;
+    margin-top: 10px;
+    width: 22%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.statusText {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.statusCountContainer {
+    margin-top: 10px;
+}
+
+.statusCount {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.statusBox::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: #ccc;
+    height: 80%;
+}
+
+.statusBox:last-child::after {
+    content: none;
+}
+
+.scrapedJobList {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3개씩 한 줄에 */
+    gap: 20px;
+    padding: 20px;
+    margin-top: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.scrapedJobItem {
+    position: relative;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 150px;
+}
+
+.scrapedJobItem h6 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.scrapedJobItem p {
+    font-size: 14px;
+    color: #666;
+}
+
+.scrapedJobItem .date {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 12px;
+    color: #888;
+}
+
+.scrapButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #888;
+    z-index: 1;
+}
+
+.scrapButton.active {
+    color: rgb(13, 110, 253);
+}
+
+.scrapButton i {
+    display: inline-block;
+}
+
+.scrapTitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .myJumpitWrapper {
+        width: 100%;
+    }
+
+    .myJumpit {
+        margin-top: 20px;
+    }
+
+    .myStatus {
+        width: 100%;
+    }
+
+    .statusBoxes {
+        flex-direction: column;
+    }
+
+    .statusBox {
+        width: 100%;
+    }
+
+    .statusBox::after {
+        content: none;
+    }
+
+    .scrapedPositionContainer {
+        padding: 20px;
+    }
+
+    .scrapedJobList {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .scrapedJobItem {
+        height: auto;
+    }
+}
+
+.content-wrapper {
+    max-width: 1100px;
+    margin: 30px auto 0;
+    padding: 30px 50px;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.myStatusInner {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: transparent;
+    padding: 20px;
+    margin-bottom: 40px;
+}
