@@ -20,6 +20,16 @@ public class UserController {
     private final UserService userService;
     private final HttpSession session;
 
+
+    @GetMapping("/company/user/update-form")
+    public String companyUpdateForm() {
+        return "company/user/update-form";
+    }
+
+    @GetMapping("/personal/user/update-form")
+    public String personalUpdateForm() {
+        return "personal/user/update-form";
+    }
     @GetMapping("/login-form")
     public String loginForm() {
         return "login-form";

@@ -8,4 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CompanyInfoRepository {
     private final EntityManager em;
+
+    public void save(CompanyInfo companyInfo) {
+        em.persist(companyInfo);
+    }
 }

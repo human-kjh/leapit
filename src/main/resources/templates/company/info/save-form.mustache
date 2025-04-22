@@ -1,78 +1,129 @@
 {{> layout/company-header}}
 
-      <!-- 본문 -->
-      <div class="main container mt-5">
-        <div class="container" style="max-width: 720px">
-          <!-- 제목 -->
-          <h1 class="text-center fw-bold mb-4 fs-3">기업 정보 등록</h1>
+<!-- 본문 -->
+<div class="main container mt-5">
+    <div class="container" style="max-width: 720px">
+        <!-- 제목 -->
+        <h1 class="text-center fw-bold mb-4 fs-3">기업 정보 등록</h1>
 
-          <!-- 기업 정보 -->
-          <section class="mb-5">
-            <h2 class="fs-6 fw-semibold mb-3">기업 정보</h2>
-            <div class="border p-4 rounded d-flex gap-4">
-              <!-- 회사 이미지 등록 -->
-              <div class="text-center">
-                <img id="logoPreview" src="https://cdn-icons-png.flaticon.com/512/5968/5968525.png" alt="회사 로고"
-                  class="img-thumbnail mb-2" style="width: 64px; height: 64px; object-fit: cover" />
-                <input type="file" id="logoUpload" class="d-none" accept="image/*" />
-                <button type="button" id="uploadBtn" class="btn btn-outline-primary btn-sm">
-                  이미지 등록
-                </button>
-              </div>
+        <!-- 기업 정보 -->
+        <form action="/s/company/info/save" method="post" enctype="multipart/form-data">
+            <section class="mb-5">
+                <h2 class="fs-6 fw-semibold mb-3">기업 정보</h2>
+                <div class="border p-4 rounded d-flex gap-4">
+                    <!-- 회사 이미지 등록 -->
+                    <div class="text-center">
+                        <img id="logoPreview" src="https://cdn-icons-png.flaticon.com/512/5968/5968525.png"
+                             alt="회사 로고"
+                             class="img-thumbnail mb-2" style="width: 64px; height: 64px; object-fit: cover"/>
+                        <input type="file" id="logoUpload" class="d-none" accept="image/*" name="logoImageFile">
+                        <button type="button" id="uploadBtn" class="btn btn-outline-primary btn-sm">
+                            이미지 등록
+                        </button>
+                    </div>
 
-              <!-- 정보 입력 -->
-              <div class="flex-grow-1">
-                <div class="mb-3">
-                  <label class="form-label">회사명</label>
-                  <input type="text" class="form-control" placeholder="회사명을 입력하세요" />
+                    <!-- 정보 입력 -->
+                    <div class="flex-grow-1">
+                        <div class="mb-3">
+                            <label class="form-label">회사명</label>
+                            <input type="text" class="form-control" placeholder="회사명을 입력하세요" name="companyName">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">설립일</label>
+                            <input type="date" class="form-control" name="establishmentDate">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">대표주소</label>
+                            <input type="text" class="form-control" placeholder="주소 입력" name="address">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">주요 서비스</label>
+                            <input type="text" class="form-control" placeholder="예: 마이클(Mycle)" name="mainService">
+                        </div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                  <label class="form-label">설립일</label>
-                  <input type="date" class="form-control" />
+            </section>
+
+            <!-- 회사 소개 -->
+            <section class="mb-5">
+                <h2 class="fs-6 fw-semibold mb-3">회사 소개</h2>
+                <textarea class="form-control" rows="6" placeholder="회사 소개 내용을 입력하세요..." name="introduction"></textarea>
+            </section>
+
+            <!-- 이미지 업로드 -->
+            <section class="mb-5">
+                <div class="border p-4 rounded">
+                    <div id="companyImagePreview" class="d-flex flex-wrap gap-2 justify-content-center mb-3"></div>
+                    <input type="file" id="companyImageUpload" class="d-none" accept="image/*" multiple
+                           name="imageFile">
+                    <div class="text-center">
+                        <button type="button" id="companyImageBtn" class="btn btn-outline-primary btn-sm">
+                            이미지 업로드
+                        </button>
+                    </div>
                 </div>
-                <div class="mb-3">
-                  <label class="form-label">대표주소</label>
-                  <input type="text" class="form-control" placeholder="주소 입력" />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">주요 서비스</label>
-                  <input type="text" class="form-control" placeholder="예: 마이클(Mycle)" />
-                </div>
-              </div>
+            </section>
+
+            <!-- 복지 및 혜택 -->
+            <section class="mb-5">
+                <h2 class="fs-6 fw-semibold mb-3">복지 및 혜택</h2>
+                <textarea class="form-control" rows="8" placeholder="복지 및 혜택 내용을 입력하세요..." name="benefit"></textarea>
+            </section>
+
+            <!-- 등록 버튼 -->
+            <div class="text-center mb-5">
+                <button type="submit" class="btn btn-primary w-100">등록하기</button>
             </div>
-          </section>
+        </form>
+    </div>
+</div>
+<!-- 본문 끝 -->
 
-          <!-- 회사 소개 -->
-          <section class="mb-5">
-            <h2 class="fs-6 fw-semibold mb-3">회사 소개</h2>
-            <textarea class="form-control" rows="6" placeholder="회사 소개 내용을 입력하세요..."></textarea>
-          </section>
+<script>
+    document.getElementById("uploadBtn").addEventListener("click", function () {
+        document.getElementById("logoUpload").click();
+    });
 
-          <!-- 이미지 업로드 -->
-          <section class="mb-5">
-            <div class="border p-4 rounded">
-              <div id="companyImagePreview" class="d-flex flex-wrap gap-2 justify-content-center mb-3"></div>
-              <input type="file" id="companyImageUpload" class="d-none" accept="image/*" multiple />
-              <div class="text-center">
-                <button type="button" id="companyImageBtn" class="btn btn-outline-primary btn-sm">
-                  이미지 업로드
-                </button>
-              </div>
-            </div>
-          </section>
+    document.getElementById("logoUpload").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("logoPreview").src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 
-          <!-- 복지 및 혜택 -->
-          <section class="mb-5">
-            <h2 class="fs-6 fw-semibold mb-3">복지 및 혜택</h2>
-            <textarea class="form-control" rows="8" placeholder="복지 및 혜택 내용을 입력하세요..."></textarea>
-          </section>
+    // 버튼 클릭 시 input[type=file] 클릭
+    document.getElementById("companyImageBtn").addEventListener("click", function () {
+        document.getElementById("companyImageUpload").click();
+    });
 
-          <!-- 등록 버튼 -->
-          <div class="text-center mb-5">
-            <button class="btn btn-primary w-100">등록하기</button>
-          </div>
-        </div>
-      </div>
-      <!-- 본문 끝 -->
+    // 파일 선택 시 미리보기 출력
+    document.getElementById("companyImageUpload").addEventListener("change", function (event) {
+        const files = event.target.files;
+        const previewContainer = document.getElementById("companyImagePreview");
+
+        previewContainer.innerHTML = ""; // 기존 미리보기 초기화
+
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                img.style.width = "200px";
+                img.style.height = "200px";
+                img.style.objectFit = "cover";
+                img.className = "img-thumbnail";
+                previewContainer.appendChild(img);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    });
+
+</script>
 
 {{> layout/footer}}
