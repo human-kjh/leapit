@@ -1,5 +1,4 @@
 package com.example.leapit._core.util;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

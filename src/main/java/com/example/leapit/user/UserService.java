@@ -12,6 +12,19 @@ import java.util.Map;
 public class UserService {
     private final UserRepository userRepository;
 
+    public User login(UserRequest.LoginDTO loginDTO) {
+
+        User user = userRepository.findByUsernameAndRole(loginDTO.getUsername(), loginDTO.getRole());
+
+        if (user == null) {
+            throw new RuntimeException("유저네임 혹은 비밀번호가 틀렸습니다");
+        }
+
+        if (!user.getPassword().equals(loginDTO.getPassword())) {
+            throw new RuntimeException("유저네임 혹은 비밀번호가 틀렸습니다");
+        }return user;
+    }
+
     @Transactional
     public void join(UserRequest.PersonalJoinDTO personalJoinDTO) {
         userRepository.save(personalJoinDTO.toEntity());

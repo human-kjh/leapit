@@ -1,8 +1,12 @@
 package com.example.leapit.user;
 
 import com.example.leapit._core.util.Resp;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +18,41 @@ import java.util.Map;
 @Controller
 public class UserController {
     private final UserService userService;
+    private final HttpSession session;
+
+    @GetMapping("/login-form")
+    public String loginForm() {
+        return "login-form";
+    }
+
+    @PostMapping("/login")
+    public String login(UserRequest.LoginDTO loginDTO, HttpServletResponse response) {
+
+        User sessionUser = userService.login(loginDTO);
+        session.setAttribute("sessionUser", sessionUser);
+
+        if (loginDTO.getRememberMe() == null) {
+            Cookie cookie = new Cookie("username", null);
+            cookie.setMaxAge(0); // 즉시 만료
+            response.addCookie(cookie);
+        } else {
+            Cookie cookie = new Cookie("username", loginDTO.getUsername());
+            cookie.setMaxAge(60 * 60 * 24 * 7);
+            response.addCookie(cookie);
+        }
+        if (loginDTO.getRole().equals("personal")) {
+            return "redirect:/";
+        }else {
+            return "redirect:/company/main";
+        }
+    }
+
+
+    @GetMapping("/company/main")
+    public String companyMain() {
+        return "company/main";
+    }
+
 
     @GetMapping("/api/check-username-available/{username}")
     public @ResponseBody Resp<?> checkUsernameAvailable(@PathVariable("username") String username) {
@@ -46,8 +85,4 @@ public class UserController {
         return "redirect:/login-form";
     }
 
-    @GetMapping("/login-form")
-    public String loginForm() {
-        return "login-form";
-    }
 }
