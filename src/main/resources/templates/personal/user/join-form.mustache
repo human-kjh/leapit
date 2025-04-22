@@ -13,23 +13,25 @@
                     <div class="verticalLine"></div>
 
                     <!-- 오른쪽 입력 폼 -->
+
                     <div class="signupForm">
+                        <form action="/personal/user/join" method="post" onsubmit="return valid()">
                         <h3 class="mb-4 fw-bold fs-3 text-dark">개인 회원 가입</h3>
 
                         <!-- 이름 입력 -->
                         <div class="mb-3">
-                            <label for="userName" class="form-label">이름</label>
-                            <input type="text" class="form-control" id="userName" placeholder="이름을 입력해주세요.">
+                            <label for="name" class="form-label">이름</label>
+                            <input type="text" class="form-control" id="name" placeholder="이름을 입력해주세요." value="김아아" name="name">
                         </div>
 
                         <!-- 아이디 입력 -->
                         <div class="mb-3">
-                            <label for="userId" class="form-label">아이디</label>
+                            <label for="username" class="form-label">아이디</label>
                             <div class="emailRow">
-                                <input type="text" class="form-control" id="userId"
-                                    placeholder="4~20자 / 영문, 숫자, 특수문자 *_ 사용가능">
-                                <button class="btn btn-outline-primary vertical-text"
-                                    onclick="verifyEmail()">중복확인</button>
+                                <input type="text" class="form-control" id="username"
+                                    placeholder="4~20자 / 영문, 숫자, 특수문자 *_ 사용가능" name="username" value="hahamik">
+                                <button type="button" class="btn btn-outline-primary vertical-text"
+                                    onclick="checkUsernameAvailable(event)">중복확인</button>
                             </div>
                         </div>
 
@@ -37,33 +39,103 @@
                         <div class="mb-3">
                             <label for="password" class="form-label">비밀번호</label>
                             <input type="password" class="form-control" id="password"
-                                placeholder="8~16자 / 영문 대소문자, 숫자, 특수문자 조합">
+                                placeholder="8~16자 / 영문 대소문자, 숫자, 특수문자 조합" name="password" value="1234">
                         </div>
 
                         <!-- 이메일 입력 -->
                         <div class="mb-3">
                             <label for="email" class="form-label">이메일</label>
-                            <input type="email" class="form-control" id="email" placeholder="email@saramin.co.kr">
+                            <input type="email" class="form-control" id="email" placeholder="email@saramin.co.kr" name="email" value="haha@nate.com">
                             <div class="form-text">취업에 관련된 정보를 받을 때 필요해요.</div>
                         </div>
 
                         <!-- 생년월일 입력 -->
                         <div class="mb-3">
                             <label for="birthdate" class="form-label">생년월일</label>
-                            <input type="date" class="form-control" id="birthdate">
+                            <input type="date" class="form-control" id="birthDate" name="birthDate" value="1995-01-01">
                         </div>
 
                         <!-- 전화번호 입력 -->
                         <div class="mb-3">
-                            <label for="phoneNumber" class="form-label">전화번호</label>
-                            <input type="tel" class="form-control" id="phoneNumber" placeholder="010-1234-5678">
+                            <label for="contactNumber" class="form-label">전화번호</label>
+                            <input type="tel" class="form-control" id="contactNumber" name="contactNumber" placeholder="010-1234-5678" value="010-1111-1111">
                         </div>
 
                         <!-- 회원가입 버튼 -->
-                        <button class="btn btn-primary btnSignup" onclick="submitSignup()">회원가입 완료</button>
+                        <button type="submit" class="btn btn-primary btnSignup">회원가입 완료</button>
+                        </form>
                     </div>
+
                 </div>
             </div>
             <!-- 본문 끝 -->
+<script>
+    let isUsernameAvailable = false;
 
+    // 1. 아이디 비밀번호 유효성
+    function validateUsername(username) {
+        let usernameRegex = /^[a-zA-Z0-9*_]{4,20}$/;
+        return usernameRegex.test(username);
+    }
+
+    function validatePassword(password) {
+        let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=\-{}\[\]:;"'<>,.?/]).{8,16}$/;
+        return passwordRegex.test(password);
+    }
+
+    function validateForm() {
+        const username = document.querySelector("#username").value.trim();
+        const password = document.querySelector("#password").value;
+
+        if (!validateUsername(username)) {
+            alert("아이디는 4~20자, 영문/숫자/*/_만 사용할 수 있습니다.");
+            return false;
+        }
+
+        if (!validatePassword(password)) {
+            alert("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
+            return false;
+        }
+
+        return true;
+    }
+
+    // 2. 유저네임 변경 감지
+    let usernameDom = document.querySelector("#username");
+    usernameDom.addEventListener("keyup", () => {
+        isUsernameAvailable = false
+    });
+
+    // 3. 유저네임 중복 체크
+    async function checkUsernameAvailable(event) {
+        event.preventDefault();
+        let username = document.querySelector("#username").value;
+        let response = await fetch("/api/check-username-available/" + username);
+        let responseBody = await response.json();
+        isUsernameAvailable = responseBody.body.available;
+
+        if (!validateUsername(username)) {
+            alert("아이디 형식이 올바르지 않습니다.");
+            return;
+        }
+
+        if (isUsernameAvailable) {
+            alert("중복확인 완료");
+        } else {
+            alert("동일한 유저네임이 존재합니다");
+        }
+    }
+
+
+    // 4. 최종 유효성 검사
+    function valid() {
+        if (!validateForm()) return false;
+        if (!isUsernameAvailable) {
+            alert("아이디 중복체크를 해주세요");
+            return false;
+        }
+
+        return true;
+    }
+</script>
 {{> layout/footer}}
