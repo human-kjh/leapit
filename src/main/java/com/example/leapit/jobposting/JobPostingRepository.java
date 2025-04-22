@@ -8,4 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JobPostingRepository {
     private final EntityManager em;
+
+    // 등록
+    public void save(JobPosting jobPosting) {
+        em.persist(jobPosting);
+    }
 }
