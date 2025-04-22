@@ -12,4 +12,8 @@ public class CompanyInfoRepository {
     public void save(CompanyInfo companyInfo) {
         em.persist(companyInfo);
     }
+
+    public CompanyInfo findById(Integer id) {
+        return em.find(CompanyInfo.class, id);
+    }
 }

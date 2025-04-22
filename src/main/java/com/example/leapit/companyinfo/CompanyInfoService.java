@@ -43,4 +43,10 @@ public class CompanyInfoService {
         CompanyInfo companyInfo = reqDTO.toEntity(sessionUser);
         companyInfoRepository.save(companyInfo);
     }
+
+    public CompanyInfoResponse.DetailDTO detail(Integer id) {
+        CompanyInfo companyInfo = companyInfoRepository.findById(id);
+        CompanyInfoResponse.DetailDTO respDTO = new CompanyInfoResponse.DetailDTO(companyInfo);
+        return respDTO;
+    }
 }
