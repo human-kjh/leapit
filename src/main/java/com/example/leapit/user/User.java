@@ -2,6 +2,7 @@ package com.example.leapit.user;
 
 import com.example.leapit.common.enums.Role;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,7 +26,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -41,4 +42,17 @@ public class User {
     // --- 개인 유저일 경우 ---
     private String name;
     private LocalDate birthDate;
+
+    @Builder
+    public User(String username, String password, String email, String contactNumber,
+                Role role, String name, LocalDate birthDate) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.contactNumber = contactNumber;
+        this.role = role;
+        this.name = name;
+        this.birthDate = birthDate;
+    }
+
 }

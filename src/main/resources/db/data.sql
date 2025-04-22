@@ -1,10 +1,10 @@
 -- 1. user_tb
 INSERT INTO user_tb (username, password, email, contact_number, role, created_at, name, birth_date)
-VALUES ('ssar', '1234', 'ssar@nate.com', '010-1234-5678', 'PERSONAL', NOW(), '김랩핏', '2000-01-01');
+VALUES ('ssar', '1234', 'ssar@nate.com', '010-1234-5678', 'PERSONAL', NOW(), '쌀', '2000-01-01');
 INSERT INTO user_tb (username, password, email, contact_number, role, created_at, name, birth_date)
-VALUES ('cos', '1234', 'cos@nate.com', '010-2345-6789', 'PERSONAL', NOW(), '김망고', '1999-12-31');
+VALUES ('cos', '1234', 'cos@nate.com', '010-2345-6789', 'PERSONAL', NOW(), '코스', '1999-12-31');
 INSERT INTO user_tb (username, password, email, contact_number, role, created_at, name, birth_date)
-VALUES ('love', '1234', 'love@nate.com', '010-3456-6709', 'PERSONAL', NOW(), '김사랑', '1999-10-25');
+VALUES ('love', '1234', 'love@nate.com', '010-3456-6709', 'PERSONAL', NOW(), '러브', '1999-10-25');
 INSERT INTO user_tb (username, password, email, contact_number, role, created_at, name, birth_date)
 VALUES ('hana', '1234', 'hana@nate.com', '010-4567-7890', 'PERSONAL', NOW(), '김하나', '2001-03-14');
 INSERT INTO user_tb (username, password, email, contact_number, role, created_at, name, birth_date)
@@ -48,9 +48,9 @@ VALUES ('Django');
 
 -- 2. resume_tb
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (1, '김개발의 이력서', NULL, '자바 개발자입니다', 'backend', '적극적이고 성실합니다', true, '2025-04-18 12:00:00');
+VALUES (1, '쌀의 이력서', NULL, '자바 개발자입니다', 'backend', '적극적이고 성실합니다', true, '2025-04-18 12:00:00');
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (1, '슬기님의 이력서', 'file://localhost/c:/image1.png', '프론트엔드 자신 있습니다', 'frontend', '디자인 감각도 좋아요', true, '2025-04-18 12:05:00');
+VALUES (1, '쌀님의 이력서2', 'file://localhost/c:/image1.png', '프론트엔드 자신 있습니다', 'frontend', '디자인 감각도 좋아요', true, '2025-04-18 12:05:00');
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
 VALUES (2, '파이썬 이력서', NULL, 'Django와 FastAPI 경험 있음', 'backend', '데이터 파이프라인 경험', false, '2025-04-18 12:10:00');
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
