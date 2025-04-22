@@ -15,6 +15,7 @@ public class Link {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private Resume resume;
 
     @Column(nullable = false)

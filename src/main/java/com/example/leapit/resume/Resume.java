@@ -27,13 +27,13 @@ public class Resume {
 
     private String photoUrl;
 
-    @Column(columnDefinition = "TEXT")
+    @Lob
     private String summary;
 
     @Column(name = "position_type", nullable = false)
     private String positionType;
 
-    @Column(columnDefinition = "TEXT")
+    @Lob
     private String selfIntroduction;
 
     @Column(nullable = false)

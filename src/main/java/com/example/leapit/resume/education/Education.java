@@ -20,6 +20,7 @@ public class Education {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private Resume resume;
 
     private LocalDate graduationDate;
