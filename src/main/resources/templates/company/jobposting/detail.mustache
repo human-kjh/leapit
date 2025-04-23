@@ -4,12 +4,12 @@
     <div class="ms-2">
         <h1 class="fs-4 fw-bold mb-2">
             {{jobPosting.title}}
-            <form action="/job-postings/edit-form/{{jobPosting.id}}" method="get" class="d-inline">
+            <form action="/jobposting/update-form/{{jobPosting.id}}" method="get" class="d-inline">
                 <button type="submit" class="fs-6 text-primary"
                         style="border: none; background: none; padding: 0;">수정
                 </button>
             </form>
-            <form action="/job-postings/delete" method="post" class="d-inline ms-2">
+            <form action="/jobposting/delete" method="post" class="d-inline ms-2">
                 <input type="hidden" name="id" value="{{jobPosting.id}}">
                 <button type="button" class="fs-6 text-danger" style="cursor:pointer; border: none; background: none;"
                         onclick="confirmDelete()">삭제
@@ -109,7 +109,7 @@
 <script>
     function confirmDelete() {
         if (confirm("삭제하시겠습니까?")) {
-            document.querySelector('form[action="/job-postings/delete"]').submit();
+            document.querySelector('form[action="/jobposting/delete"]').submit();
         }
     }
 </script>

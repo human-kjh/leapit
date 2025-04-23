@@ -4,7 +4,7 @@
     <div class="container">
         <div class="bg-white p-5 rounded shadow">
             <h2 class="mb-4 fw-bold">채용 포지션 등록</h2>
-            <form class="row g-4" action="/job-postings/save" method="post">
+            <form class="row g-4" action="/jobposting/save" method="post">
                 <div class="col-md-6">
                     <div>직무 <span class="text-danger">*</span></div>
                     <select class="form-select" name="positionType" required>
@@ -17,7 +17,6 @@
                 <div class="mb-3">
                     <label class="form-label">기술 스택 <span class="text-danger">*</span></label>
                     <div>
-                        <!-- 프론트엔드 -->
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" name="techStack" value="React" id="tech1"/>
                             <label class="form-check-label" for="tech1">React</label>
@@ -42,7 +41,6 @@
                             <label class="form-check-label" for="tech5">Angular</label>
                         </div>
 
-                        <!-- 백엔드 -->
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" name="techStack" value="Node.js"
                                    id="tech6"/>
@@ -72,7 +70,6 @@
                             <label class="form-check-label" for="tech11">NestJS</label>
                         </div>
 
-                        <!-- 데이터베이스 -->
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" name="techStack" value="MySQL" id="tech12"/>
                             <label class="form-check-label" for="tech12">MySQL</label>
@@ -92,7 +89,6 @@
                             <label class="form-check-label" for="tech15">Redis</label>
                         </div>
 
-                        <!-- DevOps -->
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" name="techStack" value="Docker"
                                    id="tech16"/>

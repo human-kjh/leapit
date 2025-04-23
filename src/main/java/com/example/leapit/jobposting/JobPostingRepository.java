@@ -5,6 +5,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RequiredArgsConstructor
 @Repository
 public class JobPostingRepository {
@@ -30,5 +33,19 @@ public class JobPostingRepository {
     @Transactional
     public void update(JobPosting jobPosting) {
         em.merge(jobPosting);
+    }
+
+    // 진행 중인 채용 공고 목록 조회
+    public List<JobPosting> findByDeadlineGreaterThanEqual(LocalDate deadline) {
+        return em.createQuery("select jp from JobPosting jp where jp.deadline >= :deadline", JobPosting.class)
+                .setParameter("deadline", deadline)
+                .getResultList();
+    }
+
+    // 마감된 채용 공고 목록 조회
+    public List<JobPosting> findByDeadlineBefore(LocalDate deadline) {
+        return em.createQuery("select jp from JobPosting jp where jp.deadline < :deadline", JobPosting.class)
+                .setParameter("deadline", deadline)
+                .getResultList();
     }
 }
