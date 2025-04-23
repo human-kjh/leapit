@@ -14,46 +14,49 @@
                     <!-- 정보 수정 폼 -->
                     <div class="editForm">
                         <h3 class="mb-4 fw-bold fs-3 text-dark">회원 정보 수정</h3> <!-- 제목 -->
-
-                        <!-- 아이디 입력 -->
-                        <div class="mb-3">
-                            <label for="userId" class="form-label">아이디</label>
-                            <div class="emailRow">
-                                <input type="text" class="form-control" id="userId"
-                                    placeholder="4~20자 / 영문, 숫자, 특수문자 *_ 사용가능" readonly value="jumpit123">
+                        <form action="/company/user/update" method="post" enctype="application/x-www-form-urlencoded">
+                            <!-- 아이디 입력 -->
+                            <div class="mb-3">
+                                <label for="username" class="form-label">아이디</label>
+                                <div class="emailRow">
+                                    <input type="text" class="form-control" id="username"
+                                           placeholder="4~20자 / 영문, 숫자, 특수문자 *_ 사용가능" readonly value="{{sessionUser.username}}">
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- 새 비밀번호 입력 필드 -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label">새 비밀번호</label>
-                            <input type="password" class="form-control" id="password" placeholder="새 비밀번호 입력">
-                        </div>
+                            <!-- 새 비밀번호 입력 필드 -->
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">새 비밀번호</label>
+                                <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="새 비밀번호 입력">
+                            </div>
 
-                        <!-- 새 비밀번호 입력 필드 -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label">새 비밀번호 확인</label>
-                            <input type="password" class="form-control" id="password" placeholder="새 비밀번호 입력">
-                        </div>
+                            <!-- 새 비밀번호 입력 필드 -->
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">새 비밀번호 확인</label>
+                                <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="새 비밀번호 입력">
+                            </div>
 
-                        <!-- 기업 이메일 입력 필드 -->
-                        <div class="mb-3">
-                            <label for="companyEmail" class="form-label">기업 이메일</label>
-                            <input type="email" class="form-control" id="companyEmail" value="company@example.com"
-                                readonly>
-                            <!-- 이메일 입력 필드 (수정 불가) -->
-                        </div>
+                            <!-- 기업 이메일 입력 필드 -->
+                            <div class="mb-3">
+                                <label for="email" class="form-label">기업 이메일</label>
+                                <input type="email" class="form-control" id="email" value="{{sessionUser.email}}"
+                                       readonly>
+                                <!-- 이메일 입력 필드 (수정 불가) -->
+                            </div>
 
-                        <!-- 담당자 연락처 입력 필드 -->
-                        <div class="mb-3">
-                            <label for="managerPhone" class="form-label">담당자 연락처</label>
-                            <input type="text" class="form-control" id="managerPhone" placeholder="010-0000-0000">
                             <!-- 담당자 연락처 입력 필드 -->
-                        </div>
+                            <div class="mb-3">
+                                <label for="contactNumber" class="form-label">담당자 연락처</label>
+                                <input type="text" class="form-control" name="contactNumber" id="contactNumber" placeholder="{{sessionUser.contactNumber}}">
+                                <!-- 담당자 연락처 입력 필드 -->
+                            </div>
 
-                        <!-- 정보 수정 완료 버튼 -->
-                        <button class="btn btn-primary btnEdit" onclick="submitEdit()">회원정보 수정</button>
-                        <!-- 버튼 클릭 시 submitEdit() 함수 호출 -->
+                            <!-- 정보 수정 완료 버튼 -->
+                            <button type="submit" class="btn btn-primary btnEdit">회원정보 수정</button>
+                            <!-- 버튼 클릭 시 submitEdit() 함수 호출 -->
+                        </form>
+
+
                     </div>
                 </div>
             </div>
