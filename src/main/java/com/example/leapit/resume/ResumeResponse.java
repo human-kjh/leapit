@@ -41,14 +41,15 @@ public class ResumeResponse {
 
         private List<Link> links = new ArrayList<>(); // 없을 수도 있으니까 초기화
         private List<Education> educations;
-//        private List<ExperienceResponse.DetailDTO> experiences = new ArrayList<>();
+        private List<ExperienceResponse.DetailDTO> experiences = new ArrayList<>();
 //        private List<ProjectResponse.DetailDTO> projects;
 //        private List<TrainingResponse.DetailDTO> trainings = new ArrayList<>();
         private List<Etc> etcs = new ArrayList<>();
 
 
 
-        public DetailDTO(Resume resume, String label, List<ResumeTechStack> techStacks, List<Link> links, List<Education> educations, List<Etc> etcs) {
+        public DetailDTO(Resume resume, String label, List<ResumeTechStack> techStacks, List<Link> links,
+                         List<Education> educations, List<ExperienceResponse.DetailDTO> experiences, List<Etc> etcs) {
             this.title = resume.getTitle();
             this.photoUrl = resume.getPhotoUrl();
             this.name = resume.getUser().getName();
@@ -61,6 +62,7 @@ public class ResumeResponse {
             this.techStackList = techStacks;
             this.links = links;
             this.educations = educations;
+            this.experiences = experiences;
             this.etcs = etcs;
         }
     }

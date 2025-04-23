@@ -19,9 +19,19 @@ public class ExperienceResponse {
         private String position;
 
         // 기술스택
-        private List<ExperienceTechStack> techStacks;
+        private List<ExperienceTechStack> techStackList;
 
         private String responsibility;
 
+        public DetailDTO(Experience experience,List<ExperienceTechStack> techStacks) {
+            this.startDate = experience.getStartDate();
+            this.endDate = experience.getEndDate();
+            this.isEmployed = experience.getIsEmployed();
+            this.companyName = experience.getCompanyName();
+            this.summary = experience.getSummary();
+            this.position = experience.getPosition();
+            this.techStackList = techStacks;
+            this.responsibility = experience.getResponsibility();
+        }
     }
 }
