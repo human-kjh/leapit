@@ -165,7 +165,7 @@
                   <hr class="mt-1 mb-3" />
 
                   {{#model.educations}}
-                      <div class="d-flex flex-wrap education-wrapper gap-3">
+                      <div class="d-flex flex-wrap education-wrapper gap-3 mb-3">
                           <!-- 왼쪽: 졸업예정/중퇴 -->
                           <div class="left-edu-box" style="min-width: 180px;">
                               <label for="graduateMonth" class="form-label fw-bold"><span class ="text-danger">*</span> 졸업(예정)</label>
@@ -192,13 +192,13 @@
                               </div>
                               <div class="d-flex align-items-center gap-2">
                                   <span class="fw-semibold me-2">학점 : </span><span>{{gpa}} / {{gpaScale}}</span>
-
-
                               </div>
                           </div>
                       </div>
-                  </div>
+
                   {{/model.educations}}
+                </div>
+
 
                 <!-- 경력(업무경험) 입력 폼 -->
                 <!-- 경력 -->
