@@ -41,14 +41,9 @@ public class CompanyInfoResponse {
                 this.title = jobPostings.getTitle();
                 this.deadline = jobPostings.getDeadline();
                 this.dDay = calculateDDay(deadline);
-                System.out.println("공고 ID: " + jobPostings.getId());
-
                 this.techStacks = techStacks.stream()
                         .map(stack -> new TechStackDTO(stack.getTechStack()))
                         .collect(Collectors.toList());
-
-                System.out.println("=== 기술스택 리스트 ===");
-                this.techStacks.forEach(ts -> System.out.println(ts.getName()));
             }
 
             private int calculateDDay(LocalDate deadline) {
@@ -80,7 +75,7 @@ public class CompanyInfoResponse {
 
             List<JobPostingDTO> jobPostingsDTO = new ArrayList<>();
 
-        
+
             for (JobPosting jobPosting : jobPostings) {
                 // 마감일이 지난 공고는 건너뛰기
                 if (jobPosting.getDeadline().isBefore(LocalDate.now())) {
