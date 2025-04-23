@@ -89,9 +89,14 @@
                 </div>
 
                 <form action="/company/info/{{model.id}}/update-form" method="get">
-                <div class="d-grid mt-5 mb-5">
+                <div class="d-grid mt-5">
                     <button type="submit" class="btn btn-primary rounded">수정하기</button>
                 </div>
+                </form>
+                <form action="/company/info/{{model.id}}/delete" method="post">
+                    <div class="d-grid mt-3 mb-5">
+                        <button type="submit" class="btn btn-primary rounded">삭제하기</button>
+                    </div>
                 </form>
             </div>
         </div>

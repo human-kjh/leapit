@@ -124,4 +124,11 @@ public class CompanyInfoService {
 
         return companyInfo;
     }
+
+    @Transactional
+    public void delete(Integer id) {
+
+        companyInfoRepository.deleteById(id);
+
+    }
 }

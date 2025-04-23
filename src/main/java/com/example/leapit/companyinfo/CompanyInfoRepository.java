@@ -16,4 +16,9 @@ public class CompanyInfoRepository {
     public CompanyInfo findById(Integer id) {
         return em.find(CompanyInfo.class, id);
     }
+
+    public void deleteById(Integer id) {
+        CompanyInfo companyInfo = em.find(CompanyInfo.class, id);
+        em.remove(companyInfo);
+    }
 }

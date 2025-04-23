@@ -65,4 +65,10 @@ public class CompanyInfoController {
     }
 
 
+    @PostMapping("/company/info/{id}/delete")
+    public String delete(@PathVariable("id") Integer id) {
+        companyInfoService.delete(id);
+
+        return "redirect:/company";
+    }
 }
