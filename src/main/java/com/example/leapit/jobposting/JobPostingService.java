@@ -16,4 +16,9 @@ public class JobPostingService {
         jobPostingRepository.save(jobPosting);
     }
 
+    @Transactional
+    public void deleteJobPosting(Integer id) {
+        jobPostingRepository.deleteById(id);
+    }
+
 }
