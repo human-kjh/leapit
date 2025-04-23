@@ -48,7 +48,7 @@ VALUES ('Django');
 
 -- 2. resume_tb
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (1, '쌀의 이력서', NULL, '자바 개발자입니다', 'backend', '적극적이고 성실합니다', true, '2025-04-18 12:00:00');
+VALUES (1, '쌀의 이력서', NULL, '자바 개발자입니다', 'backend', '적극적이고 성실합니다', false, '2025-04-18 12:00:00');
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
 VALUES (1, '쌀님의 이력서2', 'file://localhost/c:/image1.png', '프론트엔드 자신 있습니다', 'frontend', '디자인 감각도 좋아요', true, '2025-04-18 12:05:00');
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)

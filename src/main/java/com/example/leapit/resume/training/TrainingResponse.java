@@ -1,10 +1,8 @@
 package com.example.leapit.resume.training;
 
-import com.example.leapit.resume.training.techstack.TrainingTechStackResponse;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public class TrainingResponse {
     @Data

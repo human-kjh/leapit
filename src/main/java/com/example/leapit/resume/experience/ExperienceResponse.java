@@ -1,8 +1,10 @@
 package com.example.leapit.resume.experience;
 
+import com.example.leapit.resume.experience.techstack.ExperienceTechStack;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class ExperienceResponse {
     @Data
@@ -17,7 +19,9 @@ public class ExperienceResponse {
         private String position;
 
         // 기술스택
+        private List<ExperienceTechStack> techStacks;
 
         private String responsibility;
+
     }
 }
