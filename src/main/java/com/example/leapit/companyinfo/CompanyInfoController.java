@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.net.http.HttpRequest;
-
 @RequiredArgsConstructor
 @Controller
 public class CompanyInfoController {
@@ -44,7 +42,7 @@ public class CompanyInfoController {
 
         companyInfoService.save(reqDTO, sessionUser);
 
-        return "redirect:/s/company/info/";
+        return "redirect:/company/info/";
     }
 
 

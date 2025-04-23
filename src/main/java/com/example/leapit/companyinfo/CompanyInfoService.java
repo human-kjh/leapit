@@ -1,5 +1,9 @@
 package com.example.leapit.companyinfo;
 
+import com.example.leapit.jobposting.JobPosting;
+import com.example.leapit.jobposting.JobPostingRepository;
+import com.example.leapit.jobposting.techstack.JobPostingTechStack;
+import com.example.leapit.jobposting.techstack.JobPostingTechStackRepository;
 import com.example.leapit.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,12 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
 public class CompanyInfoService {
     private final CompanyInfoRepository companyInfoRepository;
+    private final JobPostingRepository jobPostingRepository;
+    private final JobPostingTechStackRepository jobPostingTechStackRepository;
 
     @Transactional
     public void save(CompanyInfoRequest.SaveDTO reqDTO, User sessionUser) {
@@ -46,7 +52,34 @@ public class CompanyInfoService {
 
     public CompanyInfoResponse.DetailDTO detail(Integer id) {
         CompanyInfo companyInfo = companyInfoRepository.findById(id);
-        CompanyInfoResponse.DetailDTO respDTO = new CompanyInfoResponse.DetailDTO(companyInfo);
-        return respDTO;
+
+        User user = companyInfo.getUser();
+
+        // 1. 조인된 결과 가져오기 (JobPosting + JobPostingTechStack)
+        List<Object[]> results = jobPostingRepository.findJobPostingsWithTechStacksByUserId(user.getId());
+
+        // 2. 공고 Map과 기술스택 Map 생성
+        Map<Integer, JobPosting> postingMap = new HashMap<>();
+        List<JobPostingTechStack> allTechStacks = new ArrayList<>();
+
+        for (Object[] row : results) {
+            JobPosting jobPosting = (JobPosting) row[0];
+            JobPostingTechStack techStack = (JobPostingTechStack) row[1];
+
+            postingMap.putIfAbsent(jobPosting.getId(), jobPosting);
+            if (techStack != null) {
+                allTechStacks.add(techStack);
+            }
+        }
+
+        // 3. Map → List<JobPosting>
+        List<JobPosting> jobPostings = new ArrayList<>(postingMap.values());
+
+        // 4. 마감일이 지나지 않은 공고 수 계산
+        Long jobPostingCount = jobPostingRepository.countByUserIdAndDeadlineAfter(user.getId());
+
+        // 5. DTO 생성자 호출
+        return new CompanyInfoResponse.DetailDTO(companyInfo, jobPostingCount.intValue(), jobPostings, allTechStacks
+        );
     }
 }
