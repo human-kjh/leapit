@@ -13,4 +13,12 @@ public class JobPostingRepository {
     public void save(JobPosting jobPosting) {
         em.persist(jobPosting);
     }
+
+    // 삭제
+    public void deleteById(Integer id) {
+        JobPosting jobPosting = em.find(JobPosting.class, id);
+        if (jobPosting != null) {
+            em.remove(jobPosting);
+        }
+    }
 }
