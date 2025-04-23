@@ -164,36 +164,41 @@
                   </label>
                   <hr class="mt-1 mb-3" />
 
-                  <div class="d-flex flex-wrap education-wrapper gap-3">
-                    <!-- 왼쪽: 졸업예정/중퇴 -->
-                    <div class="left-edu-box" style="min-width: 180px;">
-                      <label for="graduateMonth" class="form-label fw-bold"><span class ="text-danger">*</span> 졸업(예정)</label>
-                      <div class="mb-2">2025년 02월</div>
-                      <div class="form-check mt-1 ps-0">
-                        <span class="badge bg-primary mb-2">중퇴</span>
-                      </div>
-                    </div>
+                  {{#model.educations}}
+                      <div class="d-flex flex-wrap education-wrapper gap-3">
+                          <!-- 왼쪽: 졸업예정/중퇴 -->
+                          <div class="left-edu-box" style="min-width: 180px;">
+                              <label for="graduateMonth" class="form-label fw-bold"><span class ="text-danger">*</span> 졸업(예정)</label>
+                              <div class="mb-2">{{graduationDate}}</div>
+                              {{#isDropOut}}
+                                  <div class="form-check mt-1 ps-0">
+                                      <span class="badge bg-primary mb-2">중퇴</span>
+                                  </div>
+                              {{/isDropOut}}
+                          </div>
 
-                    <!-- 오른쪽: 학력구분 ~ 학점 -->
-                    <div class="right-edu-box flex-grow-1">
-                      <div class="row gx-2 mb-2">
-                        <div class="col-4">
-                          <div><span class ="text-danger">*</span><span class="fw-semibold me-2"> 학력 구분 : </span><span>고등학교</span></div>
-                        </div>
-                        <div class="col-8">
-                          <span class="fw-semibold me-2">대학명 : </span><span>가나다라 대학교</span>
-                        </div>
+                          <!-- 오른쪽: 학력구분 ~ 학점 -->
+                          <div class="right-edu-box flex-grow-1">
+                              <div class="row gx-2 mb-2">
+                                  <div class="col-4">
+                                      <div><span class ="text-danger">*</span><span class="fw-semibold me-2"> 학력 구분 : </span><span>{{educationLevel}}</span></div>
+                                  </div>
+                                  <div class="col-8">
+                                      <span class="fw-semibold me-2">대학명 : </span><span>{{schoolName}}</span>
+                                  </div>
+                              </div>
+                              <div class="mb-2">
+                                  <span class="fw-semibold me-2">학과명 : </span><span>{{major}}</span>
+                              </div>
+                              <div class="d-flex align-items-center gap-2">
+                                  <span class="fw-semibold me-2">학점 : </span><span>{{gpa}} / {{gpaScale}}</span>
+
+
+                              </div>
+                          </div>
                       </div>
-                      <div class="mb-2">
-                        <span class="fw-semibold me-2">학과명 : </span><span>학과명</span>
-                      </div>
-                      <div class="d-flex align-items-center gap-2">
-                        <span class="fw-semibold">학점 /</span>
-                        <div>4.5</div>
-                      </div>
-                    </div>
                   </div>
-                </div>
+                  {{/model.educations}}
 
                 <!-- 경력(업무경험) 입력 폼 -->
                 <!-- 경력 -->
@@ -325,59 +330,67 @@
                     기타사항
                   </label>
                   <hr class="mt-1 mb-3" />
-
+                    <div class="text-muted mb-3" style="font-size: 14px;">
+                        자격증, 대외활동, 어학, 수상이력 등을 추가하여 풍부한 이력서를 완성해보세요!
+                    </div>
                   <!-- 전체 wrapper -->
-                  <div class="text-muted mb-3" style="font-size: 14px;">
-                    자격증, 대외활동, 어학, 수상이력 등을 추가하여 풍부한 이력서를 완성해보세요!
-                  </div>
-                  <div class="d-flex flex-wrap gap-3">
+                  {{#model.etcs}}
 
-                    <!-- 날짜 및 재직 중 -->
-                    <div class="d-flex flex-column" style="min-width: 200px">
-                      <div class="mb-2">
-                        <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
-                        <div class="d-flex align-items-center gap-2">
-                          <!-- 시작일 -->
-                          <div>2025년 04월 17일</div>
-                          ~
-                          <!-- 종료일 -->
-                          <div>2025년 04월 17일</div>
-                        </div>
-                      </div>
+                      <div class="d-flex flex-wrap gap-3 mb-3">
 
-                      <div class="form-check ps-0">
-                        <span class="badge bg-primary mb-2">종료일 없음</span>
-                      </div>
-                    </div>
+                          <!-- 교육기간 및 종료일 유무 -->
+                          <div class="d-flex flex-column" style="min-width: 200px">
+                              <div class="mb-2">
+                                  <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
+                                  {{#hasEndDate}}
+                                      <div class="d-flex align-items-center gap-2">
+                                          <!-- 시작일 -->
+                                          <div>{{startDate}}</div>
+                                          ~
+                                          <!-- 종료일 -->
+                                          <div>{{endDate}}</div>
+                                      </div>
+                                  {{/hasEndDate}}
+                                  {{^hasEndDate}}
+                                      <div class="d-flex align-items-center gap-2">
+                                          <!-- 시작일 -->
+                                          <div>{{startDate}}</div>
 
-                    <!-- 회사 정보 영역 -->
-                    <div class="flex-grow-1">
-                      <div class="mb-2">
-                        <span class="fw-semibold me-2">활동명/이력제목 : </span><span>활동명입니다.</span>
-                      </div>
-
-
-                      <div class="row gx-2 mb-2">
-                        <div class="col-md-4">
-                          <span class="fw-semibold me-2">
-                            자격증 :</span><span>자격증입니다.</span>
-                        </div>
-                        <div class="col-md-8">
-                          <div>
-                            <span class="fw-semibold me-2">교육기관 :
-                            </span> <span>교육기관입니다.</span>
+                                      </div>
+                                      <div class="form-check ps-0">
+                                          <span class="badge bg-primary mb-2">종료일 없음</span>
+                                      </div>
+                                  {{/hasEndDate}}
+                              </div>
                           </div>
-                        </div>
-                      </div>
-                      <div class="mb-2">
-                        <div class="mb-2 bg-light p-2">
-                          <span>상세 내용/점수 및 수준입니다.</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
+                          <div class="flex-grow-1">
+                              <div class="mb-2">
+                                  <span class="fw-semibold me-2">활동명/이력제목 : </span><span>{{title}}</span>
+                              </div>
+
+
+                              <div class="row gx-2 mb-2">
+                                  <div class="col-md-4">
+                                      {{etcType}}
+                                  </div>
+                                  <div class="col-md-8">
+                                      <div>
+                            <span class="fw-semibold me-2">교육기관 :
+                            </span> <span>{{institutionName}}</span>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="mb-2">
+                                  <div class="mb-2 bg-light p-2">
+                                      <span>{{description}}</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                  {{/model.etcs}}
+                </div>
 
                 <div class="form-section bg-white rounded-3 p-4 mb-4 shadow-sm">
                   <label class="form-label fw-bold mb-1 text-dark">

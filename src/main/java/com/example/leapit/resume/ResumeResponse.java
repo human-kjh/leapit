@@ -1,5 +1,7 @@
 package com.example.leapit.resume;
 
+import com.example.leapit.resume.education.Education;
+import com.example.leapit.resume.etc.Etc;
 import com.example.leapit.resume.link.Link;
 import com.example.leapit.resume.link.LinkResponse;
 import com.example.leapit.resume.education.EducationResponse;
@@ -38,15 +40,15 @@ public class ResumeResponse {
 
 
         private List<Link> links = new ArrayList<>(); // 없을 수도 있으니까 초기화
-//        private List<EducationResponse.DetailDTO> educations;
+        private List<Education> educations;
 //        private List<ExperienceResponse.DetailDTO> experiences = new ArrayList<>();
 //        private List<ProjectResponse.DetailDTO> projects;
 //        private List<TrainingResponse.DetailDTO> trainings = new ArrayList<>();
-//        private List<EtcResponse.DetailDTO> etcs = new ArrayList<>();
+        private List<Etc> etcs = new ArrayList<>();
 
 
 
-        public DetailDTO(Resume resume, String label, List<ResumeTechStack> techStacks, List<Link> links) {
+        public DetailDTO(Resume resume, String label, List<ResumeTechStack> techStacks, List<Link> links, List<Education> educations, List<Etc> etcs) {
             this.title = resume.getTitle();
             this.photoUrl = resume.getPhotoUrl();
             this.name = resume.getUser().getName();
@@ -58,6 +60,8 @@ public class ResumeResponse {
             this.selfIntroduction = resume.getSelfIntroduction();
             this.techStackList = techStacks;
             this.links = links;
+            this.educations = educations;
+            this.etcs = etcs;
         }
     }
 }

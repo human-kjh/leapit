@@ -201,7 +201,7 @@ VALUES (5, 'Node.js');
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description, created_at)
 VALUES (1, '2024-01-01', '2024-03-01', true, '토익', 0, 'YBM', '850점', '2025-04-18 12:00:00');
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description, created_at)
-VALUES (2, '2023-06-01', NULL, false, '정보처리기사', 1, 'HRD', '필기합격', '2025-04-18 12:05:00');
+VALUES (1, '2023-06-01', NULL, false, '정보처리기사', 1, 'HRD', '필기합격', '2025-04-18 12:05:00');
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description, created_at)
 VALUES (3, '2023-10-01', '2023-12-01', true, '오픈소스 컨트리뷰션', 2, 'OSS Korea', '3건 PR 기여', '2025-04-18 12:10:00');
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description, created_at)
