@@ -4,6 +4,8 @@ import com.example.leapit.common.positiontype.PositionTypeRepository;
 import com.example.leapit.common.positiontype.PositionTypeService;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
+import com.example.leapit.resume.link.Link;
+import com.example.leapit.resume.link.LinkRepository;
 import com.example.leapit.resume.techstack.ResumeTechStack;
 import com.example.leapit.resume.techstack.ResumeTechStackRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ public class ResumeService {
     private final ResumeRepository resumeRepository;
     private final PositionTypeService positionTypeService;
     private final ResumeTechStackRepository resumeTechStackRepository;
+    private final LinkRepository linkRepository;
 
     public List<Resume> list(int userId) {
         // 자신의 userId로 된 모든 resume을 찾아서 return
@@ -33,8 +36,10 @@ public class ResumeService {
 
         List<ResumeTechStack> techStacks  = resumeTechStackRepository.findAllById(resumeId);
 
+        List<Link> links = linkRepository.findAllById(resumeId);
 
-        ResumeResponse.DetailDTO detailDTO = new ResumeResponse.DetailDTO(resume, label, techStacks);
+
+        ResumeResponse.DetailDTO detailDTO = new ResumeResponse.DetailDTO(resume, label, techStacks, links);
         return detailDTO;
     }
 }
