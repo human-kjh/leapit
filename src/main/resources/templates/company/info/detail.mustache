@@ -7,13 +7,13 @@
             <!-- 회사명 -->
             <div class="d-flex align-items-end gap-2 mb-4">
                 <h1 class="display-5 fw-bold">{{model.companyName}}</h1>
-                <a href="/edit" class="text-primary small text-decoration-none">수정</a>
+                <a href="/company/info/{{model.id}}/update-form" class="text-primary small text-decoration-none">수정</a>
             </div>
 
             <!-- 기업 정보 -->
             <h2 class="h6 text-dark fw-semibold mb-2">기업 정보</h2>
             <div class="border rounded p-4 d-flex gap-3 align-items-start bg-light">
-                <img src="{{model.logoImage}}" alt="로고"
+                <img src="/img/{{model.logoImage}}" alt="로고"
                      class="img-thumbnail rounded-circle" style="width: 48px; height: 48px"/>
                 <div class="small text-secondary">
                     <div>
@@ -45,7 +45,7 @@
                 <div class="text-secondary small lh-lg">
                     {{{model.introduction}}}
                     <div>
-                        <img src="{{model.image}}"
+                        <img src="/img/{{model.image}}"
                              alt="차량 관리 이미지" class="img-fluid rounded mt-3" style="max-width: 400px"/>
                     </div>
                 </div>
@@ -88,9 +88,11 @@
                     {{/model.jobPostings}}
                 </div>
 
+                <form action="/company/info/{{model.id}}/update-form" method="get">
                 <div class="d-grid mt-5 mb-5">
                     <button type="submit" class="btn btn-primary rounded">수정하기</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
