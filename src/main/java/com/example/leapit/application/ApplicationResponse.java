@@ -27,12 +27,12 @@ public class ApplicationResponse {
 
     // 지원 현황 통계
     @Data
-    public static class ApplicationSummaryDto {
+    public static class ApplicationStatusDto {
         private Long total;
         private Long passed;
         private Long failed;
 
-        public ApplicationSummaryDto(Long total, Long passed, Long failed) {
+        public ApplicationStatusDto(Long total, Long passed, Long failed) {
             this.total = total;
             this.passed = passed;
             this.failed = failed;

@@ -22,12 +22,12 @@ public class ApplicationController {
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         // 지원 현황 통계
-        ApplicationResponse.ApplicationSummaryDto summary = applicationService.getSummaryByUserId(sessionUser.getId());
+        ApplicationResponse.ApplicationStatusDto status = applicationService.statusByUserId(sessionUser.getId());
 
         // 지원 목록
         List<ApplicationResponse.ApplicationDto> applications = applicationService.getApplicationsByUserId(sessionUser.getId());
 
-        request.setAttribute("model", summary);
+        request.setAttribute("model", status);
         request.setAttribute("models", applications);
 
         return "personal/mypage/application";

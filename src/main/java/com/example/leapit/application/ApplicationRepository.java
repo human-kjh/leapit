@@ -14,15 +14,8 @@ public class ApplicationRepository {
 
     private final EntityManager em;
 
-    public List<Application> findByUserId(Integer userId) {
-        String jpql = "SELECT a FROM Application a LEFT JOIN a.resume r WHERE r.user.id = :userId";
-        return em.createQuery(jpql, Application.class)
-                .setParameter("userId", userId)
-                .getResultList();
-    }
-
     // 지원 현황 통계
-    public ApplicationResponse.ApplicationSummaryDto findSummaryByUserId(Integer userId) {
+    public ApplicationResponse.ApplicationStatusDto findSummaryByUserId(Integer userId) {
         String jpql = """
         SELECT COUNT(a), 
                SUM(CASE WHEN a.isPassed = true THEN 1 ELSE 0 END), 
@@ -37,7 +30,7 @@ public class ApplicationRepository {
                 .setParameter("userId", userId)
                 .getSingleResult();
 
-        return new ApplicationResponse.ApplicationSummaryDto(
+        return new ApplicationResponse.ApplicationStatusDto(
                 (Long) result[0],
                 (Long) result[1],
                 (Long) result[2]

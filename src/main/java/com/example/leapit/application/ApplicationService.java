@@ -11,7 +11,7 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
 
     // 지원 현황 통계
-    public ApplicationResponse.ApplicationSummaryDto getSummaryByUserId(Integer userId) {
+    public ApplicationResponse.ApplicationStatusDto statusByUserId(Integer userId) {
         return applicationRepository.findSummaryByUserId(userId);
     }
 
