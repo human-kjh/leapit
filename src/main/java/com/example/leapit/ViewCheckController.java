@@ -118,7 +118,7 @@ public class ViewCheckController {
 
     @GetMapping("/t23")
     public String t23() {
-        return "personal/mypage/jobposting";
+        return "personal/mypage/bookmark";
     }
 
     @GetMapping("/t24")
