@@ -21,7 +21,7 @@ public class ApplicationRepository {
                 .getResultList();
     }
 
-    // 지원현황
+    // 지원 현황 통계
     public ApplicationResponse.ApplicationSummaryDto findSummaryByUserId(Integer userId) {
         String jpql = """
         SELECT COUNT(a), 
@@ -44,6 +44,7 @@ public class ApplicationRepository {
         );
     }
 
+    // 지원 현황 목록
     public List<ApplicationResponse.ApplicationDto> findApplicationsByUserId(Integer userId) {
         String jpql = """
         SELECT company.username, jp.title, a.appliedDate, r.id, jp.id

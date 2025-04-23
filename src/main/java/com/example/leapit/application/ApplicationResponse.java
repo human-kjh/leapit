@@ -6,6 +6,7 @@ import java.util.List;
 
 public class ApplicationResponse {
 
+    // 지원 형황 목록
     @Data
     public static class ApplicationDto {
         private String companyName;
@@ -24,6 +25,7 @@ public class ApplicationResponse {
         }
     }
 
+    // 지원 현황 통계
     @Data
     public static class ApplicationSummaryDto {
         private Long total;
