@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class ApplicationController {
 
     // 지원자 현황 관리
     @GetMapping("/personal/mypage/application")
-    public String application(Model model) {
+    public String application(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
@@ -28,8 +27,8 @@ public class ApplicationController {
         // 지원 목록
         List<ApplicationResponse.ApplicationDto> applications = applicationService.getApplicationsByUserId(sessionUser.getId());
 
-        model.addAttribute("model", summary);
-        model.addAttribute("models", applications);
+        request.setAttribute("model", summary);
+        request.setAttribute("models", applications);
 
         return "personal/mypage/application";
     }
