@@ -99,4 +99,24 @@ public class JobPosting {
         this.techStack = techStack;
         this.viewCount = 0;
     }
+
+    // update 메서드 추가
+    public void update(JobPostingRequest.UpdateDTO updateDTO) {
+        this.title = updateDTO.getTitle();
+        this.positionType = updateDTO.getPositionType();
+        this.minCareerLevel = updateDTO.getMinCareerLevel();
+        this.maxCareerLevel = updateDTO.getMaxCareerLevel();
+        this.educationLevel = updateDTO.getEducationLevel();
+        this.addressRegionId = updateDTO.getAddressRegionId();
+        this.addressSubRegionId = updateDTO.getAddressSubRegionId();
+        this.addressDetail = updateDTO.getAddressDetail();
+        this.serviceIntro = updateDTO.getServiceIntro();
+        this.deadline = updateDTO.getDeadline();
+        this.responsibility = updateDTO.getResponsibility();
+        this.qualification = updateDTO.getQualification();
+        this.preference = updateDTO.getPreference();
+        this.benefit = updateDTO.getBenefit();
+        this.additionalInfo = updateDTO.getAdditionalInfo();
+        this.techStack = updateDTO.getTechStack();
+    }
 }

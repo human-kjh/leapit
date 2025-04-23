@@ -4,16 +4,16 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="fs-4 fw-semibold">포지션 리스트</h1>
-            <button class="btn btn-primary" onclick="location.href='/company/jobposting/save-form'">포지션 등록</button>
+            <button class="btn btn-primary" onclick="location.href='/jobposting/save-form'">포지션 등록</button>
         </div>
 
         <div class="row g-5">
             <div class="col-md-6">
                 <h2 class="fs-6 fw-medium mb-3">
-                    진행 중 <span class="text-success fw-semibold">{{ongoingJobPostings.size}}</span>
+                    진행 중 <span class="text-success fw-semibold">{{openJobPostings.size}}</span>
                 </h2>
                 <div class="vstack gap-3">
-                    {{#ongoingJobPostings}}
+                    {{#openJobPostings}}
                         <div class="card p-3 card-clickable">
                             <div class="card-body text-start">
                                 <a href="/jobposting/{{id}}"
@@ -24,10 +24,10 @@
                                 <span class="badge bg-primary">진행중</span>
                             </div>
                         </div>
-                    {{/ongoingJobPostings}}
-                    {{^ongoingJobPostings}}
+                    {{/openJobPostings}}
+                    {{^openJobPostings}}
                         <div class="text-muted">진행 중인 채용 공고가 없습니다.</div>
-                    {{/ongoingJobPostings}}
+                    {{/openJobPostings}}
                 </div>
             </div>
 
