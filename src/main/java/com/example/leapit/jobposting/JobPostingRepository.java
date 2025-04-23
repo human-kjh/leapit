@@ -17,6 +17,15 @@ public class JobPostingRepository {
         em.persist(jobPosting);
     }
 
+    // 삭제
+    public void deleteById(Integer id) {
+        JobPosting jobPosting = em.find(JobPosting.class, id);
+        if (jobPosting != null) {
+            em.remove(jobPosting);
+        }
+
+    }
+
     // 채용공고 & 해당 채용공고의 기술스택 조회
     public List<Object[]> findJobPostingsWithTechStacksByUserId(Integer userId) {
         Query query = em.createQuery(
@@ -34,4 +43,5 @@ public class JobPostingRepository {
         query.setParameter("userId", userId);
         return (Long) query.getSingleResult();
     }
+
 }

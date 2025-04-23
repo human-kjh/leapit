@@ -32,4 +32,10 @@ public class JobPostingController {
         return "redirect:/company/jobposting/list";
     }
 
+    // 채용 공고 삭제 처리 메서드
+    @PostMapping("/job-postings/delete")
+    public String deleteJobPosting(@RequestParam("id") Integer id) {
+        jobPostingService.deleteJobPosting(id);
+        return "redirect:/company/jobposting/list"; // 삭제 후 목록 페이지로 리다이렉트
+    }
 }

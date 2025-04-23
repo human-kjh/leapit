@@ -7,6 +7,23 @@ import java.time.LocalDate;
 
 public class UserRequest {
 
+
+    @Data
+    public static class PersonalUpdateDTO {
+        private String name;
+        private String newPassword;
+        private String confirmPassword;
+        private String email;
+        private String contactNumber;
+    }
+
+    @Data
+    public static class CompanyUpdateDTO {
+        private String newPassword;
+        private String confirmPassword;
+        private String contactNumber;
+    }
+
     @Data
     public static class PersonalJoinDTO {
         private String name;
