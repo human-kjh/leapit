@@ -21,4 +21,36 @@ public class JobPostingService {
         jobPostingRepository.deleteById(id);
     }
 
+    public JobPosting findById(Integer id) {
+        return jobPostingRepository.findById(id);
+    }
+
+    @Transactional
+    public void updateJobPosting(Integer id, JobPostingRequest request) {
+        JobPosting existingJobPosting = jobPostingRepository.findById(id);
+
+        // null 체크 (매우 중요!)
+        if (existingJobPosting != null) {
+            existingJobPosting.setTitle(request.getTitle());
+            existingJobPosting.setPositionType(request.getPositionType());
+            existingJobPosting.setMinCareerLevel(request.getMinCareerLevel());
+            existingJobPosting.setMaxCareerLevel(request.getMaxCareerLevel());
+            existingJobPosting.setEducationLevel(request.getEducationLevel());
+            existingJobPosting.setAddressRegionId(request.getAddressRegionId());
+            existingJobPosting.setAddressSubRegionId(request.getAddressSubRegionId());
+            existingJobPosting.setAddressDetail(request.getAddressDetail());
+            existingJobPosting.setServiceIntro(request.getServiceIntro());
+            existingJobPosting.setDeadline(request.getDeadline());
+            existingJobPosting.setResponsibility(request.getResponsibility());
+            existingJobPosting.setQualification(request.getQualification());
+            existingJobPosting.setPreference(request.getPreference());
+            existingJobPosting.setBenefit(request.getBenefit());
+            existingJobPosting.setAdditionalInfo(request.getAdditionalInfo());
+            existingJobPosting.setTechStack(request.getTechStack());
+
+            jobPostingRepository.update(existingJobPosting);
+
+        }
+        // 찾지 못하면 아무것도 하지 않음 TODO
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.leapit.jobposting;
 
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,5 +21,14 @@ public class JobPostingRepository {
         if (jobPosting != null) {
             em.remove(jobPosting);
         }
+    }
+
+    public JobPosting findById(Integer id) {
+        return em.find(JobPosting.class, id);
+    }
+
+    @Transactional
+    public void update(JobPosting jobPosting) {
+        em.merge(jobPosting);
     }
 }
