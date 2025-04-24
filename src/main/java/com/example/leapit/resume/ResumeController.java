@@ -16,8 +16,8 @@ public class ResumeController {
     private final ResumeService resumeService;
     private final HttpSession session;
 
-    @GetMapping("/resume/list")
-    public String resumeList(HttpServletRequest request) {
+    @GetMapping("/resume")
+    public String list(HttpServletRequest request) {
         // session 구현 전
         // 로그인 한 유저의 이력서들만 출력된다.
         Integer userId = 2;

@@ -12,7 +12,7 @@ import java.util.List;
 public class EtcRepository {
     private final EntityManager em;
 
-    public List<Etc> findAllById(int resumeId) {
+    public List<Etc> findAllByResumeId(int resumeId) {
         Query query = em.createQuery("SELECT e FROM Etc e WHERE e.resume.id = :resumeId");
         query.setParameter("resumeId", resumeId);
         return query.getResultList();

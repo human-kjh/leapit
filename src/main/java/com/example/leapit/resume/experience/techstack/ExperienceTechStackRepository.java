@@ -12,7 +12,7 @@ import java.util.List;
 public class ExperienceTechStackRepository {
     private final EntityManager em;
 
-    public List<ExperienceTechStack> findAllExperienceId(Integer id) {
+    public List<ExperienceTechStack> findAllByExperienceId(Integer id) {
         Query query = em.createQuery("SELECT e FROM ExperienceTechStack e WHERE e.experience.id = :id");
         query.setParameter("id", id);
         return query.getResultList();

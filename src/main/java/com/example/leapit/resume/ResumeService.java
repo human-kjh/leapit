@@ -52,17 +52,16 @@ public class ResumeService {
         String code = resume.getPositionType();
         String label = positionTypeService.codeToLabel(code);
 
-        List<ResumeTechStack> techStacks  = resumeTechStackRepository.findAllById(resumeId);
+        List<ResumeTechStack> techStacks  = resumeTechStackRepository.findAllByResumeId(resumeId);
 
-        List<Link> links = linkRepository.findAllById(resumeId);
-        List<Education> educations = educationRepository.findAllById(resumeId) ;
+        List<Link> links = linkRepository.findAllByResumeId(resumeId);
+        List<Education> educations = educationRepository.findAllByResumeId(resumeId) ;
 
         List<ExperienceResponse.DetailDTO> experiences = experienceService.getDTOsByResumeId(resumeId);
-
         List<ProjectResponse.DetailDTO> projects = projectService.getDTOsByResumeId(resumeId);
         List<TrainingResponse.DetailDTO> trainings = trainingService.getDTOsByResumeId(resumeId);
 
-        List<Etc> etcs = etcRepository.findAllById(resumeId);
+        List<Etc> etcs = etcRepository.findAllByResumeId(resumeId);
 
 
         ResumeResponse.DetailDTO detailDTO = new ResumeResponse.DetailDTO(resume, label, techStacks, links, educations, experiences, projects, trainings, etcs);
