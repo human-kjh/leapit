@@ -20,7 +20,7 @@ public class ExperienceService {
 
 
         for (Experience experience : experienceList) {
-            List<ExperienceTechStack> techStacks = experienceTechStackRepository.findAllExperienceId(experience.getId());
+            List<ExperienceTechStack> techStacks = experienceTechStackRepository.findAllByExperienceId(experience.getId());
             dtoList.add(new ExperienceResponse.DetailDTO(experience, techStacks));
         }
 

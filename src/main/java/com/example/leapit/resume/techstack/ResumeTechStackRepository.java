@@ -12,7 +12,7 @@ import java.util.List;
 public class ResumeTechStackRepository {
     private final EntityManager em;
 
-    public List<ResumeTechStack> findAllById(Integer resumeId) {
+    public List<ResumeTechStack> findAllByResumeId(Integer resumeId) {
         Query query = em.createQuery("SELECT r FROM ResumeTechStack r WHERE r.resume.id = :resumeId");
         query.setParameter("resumeId", resumeId);
         return query.getResultList();
