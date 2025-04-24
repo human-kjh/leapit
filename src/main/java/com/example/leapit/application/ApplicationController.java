@@ -46,7 +46,7 @@ public class ApplicationController {
         ApplicationResponse.ApplicantListPageDTO pageDTO =
                 applicationService.기업지원현황페이지조회(sessionUser.getId(), reqDTO.getJobPostingId());
 
-        request.setAttribute("models", pageDTO); // 뿌리는 List가 2개라 positions이라 별칭함
+        request.setAttribute("models", pageDTO);
         request.setAttribute("req", reqDTO);
 
         return "company/applicant/list";
