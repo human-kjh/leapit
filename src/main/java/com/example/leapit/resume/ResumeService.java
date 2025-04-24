@@ -41,28 +41,29 @@ public class ResumeService {
 
     public List<Resume> list(int userId) {
         // 자신의 userId로 된 모든 resume을 찾아서 return
-        return resumeRepository.findAllById(userId);
+        return resumeRepository.findAllByUserId(userId);
     }
 
-    public ResumeResponse.DetailDTO detail(int resumeId) {
-
+    public ResumeResponse.DetailDTO detail(int resumeId, Integer sessionUserId) {
+        // 1. 이력서 존재 확인
         Resume resume =  resumeRepository.findByIdJoinUser(resumeId);
+        if (resume == null) throw new RuntimeException("이력서가 존재하지 않습니다.");
 
-        // 직무 : code -> label
-        String code = resume.getPositionType();
+        // 2. 이력서 주인 (권한) 확인
+        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
+            throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
+        }
+
+        // 3. 이력서 DTO 조립
+        String code = resume.getPositionType(); // 직무 : code -> label
         String label = positionTypeService.codeToLabel(code);
-
         List<ResumeTechStack> techStacks  = resumeTechStackRepository.findAllByResumeId(resumeId);
-
         List<Link> links = linkRepository.findAllByResumeId(resumeId);
         List<Education> educations = educationRepository.findAllByResumeId(resumeId) ;
-
         List<ExperienceResponse.DetailDTO> experiences = experienceService.getDTOsByResumeId(resumeId);
         List<ProjectResponse.DetailDTO> projects = projectService.getDTOsByResumeId(resumeId);
         List<TrainingResponse.DetailDTO> trainings = trainingService.getDTOsByResumeId(resumeId);
-
         List<Etc> etcs = etcRepository.findAllByResumeId(resumeId);
-
 
         ResumeResponse.DetailDTO detailDTO = new ResumeResponse.DetailDTO(resume, label, techStacks, links, educations, experiences, projects, trainings, etcs);
 

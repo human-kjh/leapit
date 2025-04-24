@@ -12,7 +12,7 @@ import java.util.List;
 public class ResumeRepository {
     private final EntityManager em;
 
-    public List<Resume> findAllById(int userId) {
+    public List<Resume> findAllByUserId(int userId) {
         Query query = em.createQuery("SELECT r FROM Resume r WHERE r.user.id = :userId", Resume.class);
         query.setParameter("userId", userId);
         return query.getResultList();
