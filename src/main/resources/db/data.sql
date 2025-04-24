@@ -54,18 +54,17 @@ VALUES ('Django');
 
 -- 2. resume_tb
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (1, '쌀의 이력서', NULL, '자바 개발자입니다', 'backend', '적극적이고 성실합니다', false, '2025-04-18 12:00:00');
+VALUES (1, '쌀의 이력서', NULL, '자바 개발자입니다', 'backend', '적극적이고 성실합니다', false, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (1, '쌀님의 이력서2', 'file://localhost/c:/image1.png', '프론트엔드 자신 있습니다', 'frontend', '디자인 감각도 좋아요', true,
-        '2025-04-18 12:05:00');
+VALUES (1, '쌀님의 이력서2', 'file://localhost/c:/image1.png', '프론트엔드 자신 있습니다', 'frontend', '디자인 감각도 좋아요', true, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (2, '파이썬 이력서', NULL, 'Django와 FastAPI 경험 있음', 'backend', '데이터 파이프라인 경험', false, '2025-04-18 12:10:00');
+VALUES (2, '파이썬 이력서', NULL, 'Django와 FastAPI 경험 있음', 'backend', '데이터 파이프라인 경험', false, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (3, '풀스택 도전기', NULL, '다양한 프로젝트 수행 경험 있음', 'fullstack', '매일 꾸준히 성장 중', true, '2025-04-18 12:15:00');
+VALUES (3, '풀스택 도전기', NULL, '다양한 프로젝트 수행 경험 있음', 'fullstack', '매일 꾸준히 성장 중', true, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (4, '코틀린 마스터', NULL, '안드로이드 개발 경험 풍부', 'mobile_app', '성능 최적화에 관심 많습니다', true, '2025-04-18 12:20:00');
+VALUES (4, '코틀린 마스터', NULL, '안드로이드 개발 경험 풍부', 'mobile_app', '성능 최적화에 관심 많습니다', true, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (5, '데이터 분석가', NULL, 'SQL과 데이터 시각화 강점', 'data_engineer', '통계에 자신 있습니다', false, '2025-04-18 12:25:00');
+VALUES (5, '데이터 분석가', NULL, 'SQL과 데이터 시각화 강점', 'data_engineer', '통계에 자신 있습니다', false, now());
 
 -- 2.3 resume_tech_stack_tb
 INSERT INTO resume_tech_stack_tb (resume_id, tech_stack)

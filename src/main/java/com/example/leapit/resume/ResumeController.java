@@ -20,7 +20,7 @@ public class ResumeController {
     public String list(HttpServletRequest request) {
         // session 구현 전
         // 로그인 한 유저의 이력서들만 출력된다.
-        Integer userId = 2;
+        Integer userId = 1;
 
         List<Resume> resumeList = resumeService.list(userId);
         request.setAttribute("models", resumeList);
