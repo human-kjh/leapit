@@ -3,6 +3,7 @@ package com.example.leapit.application;
 import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.resume.Resume;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +29,9 @@ public class Application {
     private LocalDate appliedDate;
     private Boolean isPassed;
     private Boolean isViewed= false;
+
+    @Builder
+    public Application(Integer id) {
+        this.id = id;
+    }
 }
