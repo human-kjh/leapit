@@ -64,4 +64,10 @@ public class ApplicationRepository {
                 ))
                 .toList();
     }
+
+    public List<Application> findAllByResumeId(int resumeId) {
+        Query query = em.createQuery("Select a from Application a where a.resume.id = :resumeId");
+        query.setParameter("resumeId", resumeId);
+        return query.getResultList();
+    }
 }
