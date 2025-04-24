@@ -36,6 +36,7 @@ public class CompanyInfoController {
         return "company/info/save-form";
     }
 
+
     @PostMapping("/company/info/save")
     public String save(CompanyInfoRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -43,6 +44,24 @@ public class CompanyInfoController {
         companyInfoService.save(reqDTO, sessionUser);
 
         return "redirect:/company/info/";
+    }
+
+
+    @GetMapping("/company/info/{id}/update-form")
+    public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
+
+        CompanyInfo companyInfo = companyInfoService.updateCheck(id);
+        request.setAttribute("model", companyInfo);
+
+        return "company/info/update-form";
+    }
+
+    @PostMapping("/company/info/{id}/update")
+    public String update(@PathVariable("id") Integer id,CompanyInfoRequest.UpdateDTO reqDTO) {
+
+        companyInfoService.update(id,reqDTO);
+
+        return "redirect:/company/info/"+id;
     }
 
 

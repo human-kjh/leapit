@@ -82,4 +82,46 @@ public class CompanyInfoService {
         return new CompanyInfoResponse.DetailDTO(companyInfo, jobPostingCount.intValue(), jobPostings, allTechStacks
         );
     }
+
+    public CompanyInfo updateCheck(Integer id) {
+        CompanyInfo companyInfo = companyInfoRepository.findById(id);
+
+        return companyInfo;
+    }
+
+    @Transactional
+    public CompanyInfo update(Integer id,CompanyInfoRequest.UpdateDTO reqDTO) {
+        CompanyInfo companyInfo = companyInfoRepository.findById(id);
+
+        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/img/";
+
+        try {
+            if (reqDTO.getLogoImageFile() != null && !reqDTO.getLogoImageFile().isEmpty()) {
+                // 새 파일 저장
+                String logoFilename = UUID.randomUUID() + "_" + reqDTO.getLogoImageFile().getOriginalFilename();
+                Path logoPath = Paths.get(uploadDir + logoFilename);
+                Files.write(logoPath, reqDTO.getLogoImageFile().getBytes());
+                reqDTO.setLogoImage(logoFilename);
+            } else {
+                // 기존 값 유지
+                reqDTO.setLogoImage(companyInfo.getLogoImage());
+            }
+
+            if (reqDTO.getImageFile() != null && !reqDTO.getImageFile().isEmpty()) {
+                String imageFilename = UUID.randomUUID() + "_" + reqDTO.getImageFile().getOriginalFilename();
+                Path imagePath = Paths.get(uploadDir + imageFilename);
+                Files.write(imagePath, reqDTO.getImageFile().getBytes());
+                reqDTO.setImage(imageFilename);
+            } else {
+                reqDTO.setImage(companyInfo.getImage());
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("파일 업로드 실패", e);
+        }
+
+        companyInfo.update(reqDTO.getLogoImage(), reqDTO.getCompanyName(), reqDTO.getEstablishmentDate(),reqDTO.getAddress(),reqDTO.getMainService(),reqDTO.getIntroduction(), reqDTO.getImage(), reqDTO.getBenefit());
+
+        return companyInfo;
+    }
 }
