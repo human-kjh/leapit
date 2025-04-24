@@ -10,14 +10,11 @@ public class ApplicationResponse {
     public static class ApplicantListPageDTO {
         private List<CompanyeApplicantDto> applicants;
         private List<IsClosedDTO> positions;
-        private ApplicantListViewDTO viewInfo;
 
         public ApplicantListPageDTO(List<CompanyeApplicantDto> applicants,
-                                    List<IsClosedDTO> positions,
-                                    ApplicantListViewDTO viewInfo) {
+                                    List<IsClosedDTO> positions) {
             this.applicants = applicants;
             this.positions = positions;
-            this.viewInfo = viewInfo;
         }
     }
 

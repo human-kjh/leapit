@@ -43,14 +43,10 @@ public class ApplicationController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-        List<ApplicationResponse.CompanyeApplicantDto> applicants =
-                applicationService.지원자목록조회(sessionUser.getId(), reqDTO.getJobPostingId());
+        ApplicationResponse.ApplicantListPageDTO pageDTO =
+                applicationService.기업지원현황페이지조회(sessionUser.getId(), reqDTO.getJobPostingId());
 
-        List<ApplicationResponse.IsClosedDTO> positions =
-                applicationService.진행중과마감포지션조회(sessionUser.getId());
-
-        request.setAttribute("models", applicants);
-        request.setAttribute("positions", positions); // 뿌리는 List가 2개라 positions이라 별칭함
+        request.setAttribute("models", pageDTO); // 뿌리는 List가 2개라 positions이라 별칭함
         request.setAttribute("req", reqDTO);
 
         return "company/applicant/list";

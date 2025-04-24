@@ -26,7 +26,14 @@ public class ApplicationService {
         return applicationRepository.findApplicationsByUserId(userId);
     }
 
-    public List<ApplicationResponse.CompanyeApplicantDto> 지원자목록조회(Integer companyUserId, Integer jobPostingId) {
-        return applicationRepository.findAllApplicantsByCompanyUserId(companyUserId,jobPostingId);
+//    public List<ApplicationResponse.CompanyeApplicantDto> 지원자목록조회(Integer companyUserId, Integer jobPostingId) {
+//        return applicationRepository.findAllApplicantsByCompanyUserId(companyUserId,jobPostingId);
+//    }
+
+    public ApplicationResponse.ApplicantListPageDTO 기업지원현황페이지조회(Integer companyUserId, Integer jobPostingId) {
+        List<ApplicationResponse.IsClosedDTO> a = applicationRepository.positionAndIsClosedDtoBycompanyUserIds(companyUserId);
+        List<ApplicationResponse.CompanyeApplicantDto> b =applicationRepository.findAllApplicantsByCompanyUserId(companyUserId,jobPostingId);
+        ApplicationResponse.ApplicantListPageDTO pageDTO = new ApplicationResponse.ApplicantListPageDTO(b,a);
+        return pageDTO;
     }
 }

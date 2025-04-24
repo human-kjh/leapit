@@ -20,13 +20,13 @@
                 <div class="collapse" id="inProgress">
                     <div class="card">
                         <ul class="list-group list-group-flush">
-                            {{#positions}}
-                                {{^isClosed}} <!-- 마감되지 않은 포지션만 -->
+                            {{#models.positions}}
+                                {{^isClosed}}
                                     <a href="/company/applicant/list?jobPostingId={{jobPostingId}}" class="list-group-item">
                                     {{title}}
                                     </a>
                                 {{/isClosed}}
-                            {{/positions}}
+                            {{/models.positions}}
                         </ul>
                     </div>
                 </div>
@@ -41,13 +41,13 @@
                 <div class="collapse" id="ended">
                     <div class="card">
                         <ul class="list-group list-group-flush">
-                            {{#positions}}
-                                {{#isClosed}} <!-- ✅ 마감된 포지션만 -->
+                            {{#models.positions}}
+                                {{#isClosed}}
                                     <a href="/company/applicant/list?jobPostingId={{jobPostingId}}" class="list-group-item">
                                     {{title}}
                                     </a>
                                 {{/isClosed}}
-                            {{/positions}}
+                            {{/models.positions}}
                         </ul>
                     </div>
                 </div>
@@ -87,39 +87,36 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {{#models}}
+                        {{#models.applicants}}
                             <tr>
                                 <td>
                                     {{#isBookmarked}}
-                                        <i class="fa fa-star text-warning ms-4 bookmark-icon"
+                                        <i class="fa fa-star text-warning ms-4"
                                            id="bookmark-{{applicationId}}"
+                                           tabindex="-1"
                                            style="cursor: pointer;"
+                                           onmousedown="event.preventDefault()"
                                            onclick="deleteBookmark({{applicationId}})"></i>
                                     {{/isBookmarked}}
-
                                     {{^isBookmarked}}
-                                        <i class="fa fa-star-o ms-4 bookmark-icon"
+                                        <i class="fa fa-star-o ms-4"
                                            id="bookmark-{{applicationId}}"
+                                           tabindex="-1"
                                            style="cursor: pointer;"
+                                           onmousedown="event.preventDefault()"
                                            onclick="saveBookmark({{applicationId}})"></i>
                                     {{/isBookmarked}}
                                 </td>
                                 <td>{{appliedDate}}</td>
-                                <td>
-                                    <a href="/resume/{{resumeId}}" class="text-decoration-none text-dark">
-                                        {{applicantName}}
-                                    </a>
-                                </td>
+                                <td>{{applicantName}}</a></td>
                                 <td>{{jobTitle}}</td>
                                 <td>{{evaluationStatus}}</td>
                             </tr>
-                        {{/models}}
+                        {{/models.applicants}}
 
-                        {{^models}}
-                            <tr>
-                                <td colspan="5" class="text-center text-muted">지원자가 없습니다.</td>
-                            </tr>
-                        {{/models}}
+                        {{^models.applicants}}
+                            <tr><td colspan="5" class="text-center text-muted">지원자가 없습니다.</td></tr>
+                        {{/models.applicants}}
                         </tbody>
                     </table>
                 </div>
