@@ -15,7 +15,7 @@ public class ResumeTechStack {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "resume_id", nullable = false)
     private Resume resume;
 
     @Column(nullable = false)

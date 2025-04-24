@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -34,5 +35,14 @@ public class ResumeController {
         ResumeResponse.DetailDTO detailDTO = resumeService.detail(id, sessionUser.getId());
         request.setAttribute("model", detailDTO);
         return "personal/resume/detail";
+    }
+
+    @PostMapping("/resume/{id}/delete")
+    public String delete(@PathVariable("id") int id) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
+        resumeService.delete(id,sessionUser.getId());
+        return "redirect:/resume";
     }
 }

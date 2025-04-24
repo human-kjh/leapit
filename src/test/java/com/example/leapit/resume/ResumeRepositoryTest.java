@@ -20,12 +20,9 @@ public class ResumeRepositoryTest {
         Integer userId = 1;
 
         // when
-        List<Resume> resumeList = resumeRepository.findAllById(userId);
+        resumeRepository.deleteById(userId);
 
         // eye
-        for (Resume resume : resumeList) {
-            System.out.println("title : " + resume.getTitle());
-        }
     }
 
 }

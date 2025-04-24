@@ -23,4 +23,8 @@ public class ResumeRepository {
         query.setParameter("id", id);
         return (Resume) query.getSingleResult();
     }
+
+    public void deleteById(Integer resumeId) {
+        em.remove(em.find(Resume.class, resumeId));
+    }
 }

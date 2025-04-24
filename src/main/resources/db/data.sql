@@ -354,7 +354,7 @@ VALUES (3, 3, NOW());
 
 -- 5. application_tb
 INSERT INTO application_tb (resume_id, job_posting_id, applied_date, is_passed, is_viewed)
-VALUES (1, 2, '2025-04-18', null, false);
+VALUES (2, 2, '2025-04-18', null, false);
 INSERT INTO application_tb (resume_id, job_posting_id, applied_date, is_passed, is_viewed)
 VALUES (2, 2, '2025-04-19', true, true);
 INSERT INTO application_tb (resume_id, job_posting_id, applied_date, is_passed, is_viewed)
