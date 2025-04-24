@@ -43,13 +43,13 @@ public class ResumeResponse {
         private List<Education> educations;
         private List<ExperienceResponse.DetailDTO> experiences = new ArrayList<>();
 //        private List<ProjectResponse.DetailDTO> projects;
-//        private List<TrainingResponse.DetailDTO> trainings = new ArrayList<>();
+        private List<TrainingResponse.DetailDTO> trainings = new ArrayList<>();
         private List<Etc> etcs = new ArrayList<>();
 
 
 
         public DetailDTO(Resume resume, String label, List<ResumeTechStack> techStacks, List<Link> links,
-                         List<Education> educations, List<ExperienceResponse.DetailDTO> experiences, List<Etc> etcs) {
+                         List<Education> educations, List<ExperienceResponse.DetailDTO> experiences, List<TrainingResponse.DetailDTO> trainings, List<Etc> etcs) {
             this.title = resume.getTitle();
             this.photoUrl = resume.getPhotoUrl();
             this.name = resume.getUser().getName();
@@ -63,6 +63,7 @@ public class ResumeResponse {
             this.links = links;
             this.educations = educations;
             this.experiences = experiences;
+            this.trainings = trainings;
             this.etcs = etcs;
         }
     }

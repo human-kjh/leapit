@@ -16,6 +16,8 @@ import com.example.leapit.resume.link.Link;
 import com.example.leapit.resume.link.LinkRepository;
 import com.example.leapit.resume.techstack.ResumeTechStack;
 import com.example.leapit.resume.techstack.ResumeTechStackRepository;
+import com.example.leapit.resume.training.TrainingResponse;
+import com.example.leapit.resume.training.TrainingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,7 @@ public class ResumeService {
     private final EtcRepository etcRepository;
 
     private final ExperienceService experienceService;
+    private final TrainingService trainingService;
 
     public List<Resume> list(int userId) {
         // 자신의 userId로 된 모든 resume을 찾아서 return
@@ -53,14 +56,13 @@ public class ResumeService {
 
         List<ExperienceResponse.DetailDTO> experiences = experienceService.getDTOsByResumeId(resumeId);
 
+        List<TrainingResponse.DetailDTO> trainings = trainingService.getDTOsByResumeId(resumeId);
+
         List<Etc> etcs = etcRepository.findAllById(resumeId);
 
 
+        ResumeResponse.DetailDTO detailDTO = new ResumeResponse.DetailDTO(resume, label, techStacks, links, educations, experiences, trainings, etcs);
 
-
-
-
-        ResumeResponse.DetailDTO detailDTO = new ResumeResponse.DetailDTO(resume, label, techStacks, links, educations, experiences, etcs);
         return detailDTO;
     }
 }

@@ -285,51 +285,65 @@
                   <hr class="mt-1 mb-3" />
 
                   <!-- 전체 wrapper -->
+                  {{#model.trainings}}
+                      <div class="d-flex flex-wrap gap-3 mb-3">
 
-                  <div class="d-flex flex-wrap gap-3">
+                          <!-- 날짜 및 진행 중 -->
+                          <div class="d-flex flex-column" style="min-width: 200px">
+                              {{#isOngoing}}
+                                  <div class="mb-2">
+                                      <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
+                                      <div class="d-flex align-items-center gap-2">
+                                          <!-- 시작일 -->
+                                          <div>{{startDate}}</div>
+                                          ~
+                                      </div>
+                                  </div>
 
-                    <!-- 날짜 및 재직 중 -->
-                    <div class="d-flex flex-column" style="min-width: 200px">
-                      <div class="mb-2">
-                        <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
-                        <div class="d-flex align-items-center gap-2">
-                          <!-- 시작일 -->
-                          <div>2025년 04월 17일</div>
-                          ~
-                          <!-- 종료일 -->
-                          <div>2025년 04월 17일</div>
-                        </div>
-                      </div>
+                                  <div class="form-check ps-0">
+                                      <span class="badge bg-primary mb-2">진행중</span>
+                                  </div>
+                              {{/isOngoing}}
+                              {{^isOngoing}}
+                                  <div class="mb-2">
+                                      <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
+                                      <div class="d-flex align-items-center gap-2">
+                                          <!-- 시작일 -->
+                                          <div>{{startDate}}</div>
+                                          ~
+                                          <!-- 종료일 -->
+                                          <div>{{endDate}}</div>
+                                      </div>
+                                  </div>
+                              {{/isOngoing}}
+                          </div>
 
-                      <div class="form-check ps-0">
-                        <span class="badge bg-primary mb-2">진행중</span>
-                      </div>
-                    </div>
-
-                    <!-- 회사 정보 영역 -->
-                    <div class="flex-grow-1">
-                      <div class="mb-2">
-                        <span class="fw-semibold me-2">교육명 : </span><span>교육과정입니다.</span>
-                      </div>
+                          <!-- 회사 정보 영역 -->
+                          <div class="flex-grow-1">
+                              <div class="mb-2">
+                                  <span class="fw-semibold me-2">교육명 : </span><span>{{courseName}}</span>
+                              </div>
 
 
-                      <div class="row gx-2 mb-2">
+                              <div class="row gx-2 mb-2">
 
-                        <div>
+                                  <div>
                           <span class="fw-semibold me-2">교육기관 :
-                          </span> <span>교육기관입니다.</span>
-                        </div>
+                          </span> <span>{{institutionName}}</span>
+                                  </div>
+                              </div>
+                              <div class="mb-2 d-flex flex-wrap gap-2">
+                                  {{#techStackList}}
+                                      <span class="badge bg-secondary me-1">{{techStack}}</span>
+                                  {{/techStackList}}
+                              </div>
+                              <div class="mb-2 bg-light p-2">
+                                  <span>{{description}}</span>
+                              </div>
+                          </div>
                       </div>
-                      <div class="mb-2 d-flex flex-wrap gap-2">
-                        <span class="badge bg-secondary">JavaScript</span>
-                        <span class="badge bg-secondary">React</span>
-                        <span class="badge bg-secondary">Node.js</span>
-                      </div>
-                      <div class="mb-2 bg-light p-2">
-                        <span>상세내용입니다.</span>
-                      </div>
-                    </div>
-                  </div>
+                  {{/model.trainings}}
+
                 </div>
 
                 <!--기타 사항 부분-->
