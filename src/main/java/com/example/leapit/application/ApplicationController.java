@@ -28,7 +28,7 @@ public class ApplicationController {
         ApplicationResponse.ApplicationStatusDto status = applicationService.statusByUserId(sessionUser.getId());
 
         // 지원 목록
-        List<ApplicationResponse.ApplicationDto> applications = applicationService.getApplicationsByUserId(sessionUser.getId());
+        List<ApplicationResponse.ApplicationDto> applications = applicationService.findApplicationsByUserId(sessionUser.getId());
 
         request.setAttribute("model", status);
         request.setAttribute("models", applications);
@@ -57,7 +57,7 @@ public class ApplicationController {
         if ("true".equals(isBookmarkStr)) isBookmark = true;
 
         ApplicationResponse.ApplicantListPageDTO pageDTO =
-                applicationService.기업지원현황페이지조회(sessionUser.getId(), reqDTO.getJobPostingId(),passStatus,isViewed, isBookmark);
+                applicationService.findApplicantPageWithFilters(sessionUser.getId(), reqDTO.getJobPostingId(),passStatus,isViewed, isBookmark);
 
         request.setAttribute("models", pageDTO);
 

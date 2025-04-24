@@ -15,7 +15,7 @@ public class ApplicationRepository {
 
     private final EntityManager em;
 
-    public List<ApplicationResponse.CompanyeApplicantDto> findAllApplicantsByCompanyUserId(
+    public List<ApplicationResponse.CompanyeApplicantDto> findAllApplicantsByFilter(
             Integer companyUserId, Integer jobPostingId, String passStatus, Boolean isViewed, Boolean isBookmark) {
 
         String sql = """

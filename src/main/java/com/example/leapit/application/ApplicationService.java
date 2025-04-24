@@ -16,16 +16,16 @@ public class ApplicationService {
     }
 
     // 지원 현황 목록 조회
-    public List<ApplicationResponse.ApplicationDto> getApplicationsByUserId(Integer userId) {
+    public List<ApplicationResponse.ApplicationDto> findApplicationsByUserId(Integer userId) {
         return applicationRepository.findApplicationsByUserId(userId);
     }
 
-    public ApplicationResponse.ApplicantListPageDTO 기업지원현황페이지조회(Integer companyUserId, Integer jobPostingId, String passStatus, Boolean isViewed, Boolean isBookmark) {
+    public ApplicationResponse.ApplicantListPageDTO findApplicantPageWithFilters(Integer companyUserId, Integer jobPostingId, String passStatus, Boolean isViewed, Boolean isBookmark) {
         // 1. 진행중과 마감된 리스트 조회
         List<ApplicationResponse.IsClosedDTO> positions = applicationRepository.positionAndIsClosedDtoBycompanyUserIds(companyUserId);
 
         // 2. 지원받은 이력서 목록 조회
-        List<ApplicationResponse.CompanyeApplicantDto> applicants =applicationRepository.findAllApplicantsByCompanyUserId(companyUserId,jobPostingId,passStatus,isViewed, isBookmark);
+        List<ApplicationResponse.CompanyeApplicantDto> applicants =applicationRepository.findAllApplicantsByFilter(companyUserId,jobPostingId,passStatus,isViewed, isBookmark);
 
         // 3. 선택된 필터 정보 포함한 DTO 구성
         ApplicationResponse.ApplicantListViewDTO listView = new ApplicationResponse.ApplicantListViewDTO(jobPostingId, passStatus, isViewed,isBookmark);
