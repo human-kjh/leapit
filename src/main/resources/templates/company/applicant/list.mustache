@@ -58,10 +58,11 @@
             <div class="right-panel d-flex flex-column mt-4 me-4 ms-3">
                 <!-- 위쪽 -->
                 <div class="p-3 bg-white mb-3">
-                    <button onclick="filterApplicants(null, null)" class="btn btn-outline-primary">전체</button>
-                    <button onclick="filterApplicants(null, true)" class="btn btn-outline-primary">합격</button>
-                    <button onclick="filterApplicants(null, false)" class="btn btn-outline-primary">불합격</button>
-                </div>
+                    <form action="/company/applicant/list" method="get">
+                        <button type="submit" name="passStatus" value="전체" class="btn btn-outline-primary">전체</button>
+                        <button type="submit" name="passStatus" value="합격" class="btn btn-outline-primary">합격</button>
+                        <button type="submit" name="passStatus" value="불합격" class="btn btn-outline-primary">불합격</button>
+                    </form> </div>
 
                 <!-- 아래쪽  -->
                 <div class="flex-grow-1 bg-white p-3 mb-4">

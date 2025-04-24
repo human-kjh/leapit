@@ -10,11 +10,19 @@ public class ApplicationResponse {
     public static class ApplicantListPageDTO {
         private List<CompanyeApplicantDto> applicants;
         private List<IsClosedDTO> positions;
+        private ApplicantListViewDTO listView;
 
-        public ApplicantListPageDTO(List<CompanyeApplicantDto> applicants,
-                                    List<IsClosedDTO> positions) {
+        public ApplicantListPageDTO(List<CompanyeApplicantDto> applicants, List<IsClosedDTO> positions) {
             this.applicants = applicants;
             this.positions = positions;
+        }
+
+        public ApplicantListPageDTO(List<CompanyeApplicantDto> applicants,
+                                    List<IsClosedDTO> positions,
+                                    ApplicantListViewDTO listView) {
+            this.applicants = applicants;
+            this.positions = positions;
+            this.listView = listView;
         }
     }
 

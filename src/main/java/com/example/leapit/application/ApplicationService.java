@@ -30,10 +30,18 @@ public class ApplicationService {
 //        return applicationRepository.findAllApplicantsByCompanyUserId(companyUserId,jobPostingId);
 //    }
 
-    public ApplicationResponse.ApplicantListPageDTO 기업지원현황페이지조회(Integer companyUserId, Integer jobPostingId) {
-        List<ApplicationResponse.IsClosedDTO> a = applicationRepository.positionAndIsClosedDtoBycompanyUserIds(companyUserId);
-        List<ApplicationResponse.CompanyeApplicantDto> b =applicationRepository.findAllApplicantsByCompanyUserId(companyUserId,jobPostingId);
-        ApplicationResponse.ApplicantListPageDTO pageDTO = new ApplicationResponse.ApplicantListPageDTO(b,a);
+    public ApplicationResponse.ApplicantListPageDTO 기업지원현황페이지조회(Integer companyUserId, Integer jobPostingId,String passStatus) {
+        // 1. 진행중과 마감된 리스트 조회
+        List<ApplicationResponse.IsClosedDTO> positions = applicationRepository.positionAndIsClosedDtoBycompanyUserIds(companyUserId);
+
+        // 2. 지원받은 이력서 목록 조회
+        List<ApplicationResponse.CompanyeApplicantDto> applicants =applicationRepository.findAllApplicantsByCompanyUserId(companyUserId,jobPostingId,passStatus);
+
+        // 3. 선택된 필터 정보 포함한 DTO 구성
+        ApplicationResponse.ApplicantListViewDTO listView = new ApplicationResponse.ApplicantListViewDTO(jobPostingId, passStatus);
+
+        // 4. pageDTO에 담아서 컨트롤러에 넘김
+        ApplicationResponse.ApplicantListPageDTO pageDTO = new ApplicationResponse.ApplicantListPageDTO(applicants,positions,listView);
         return pageDTO;
     }
 }

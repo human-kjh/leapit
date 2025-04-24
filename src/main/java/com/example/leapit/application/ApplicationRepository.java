@@ -13,7 +13,7 @@ public class ApplicationRepository {
 
     private final EntityManager em;
 
-    public List<ApplicationResponse.CompanyeApplicantDto> findAllApplicantsByCompanyUserId(Integer companyUserId, Integer jobPostingId) {
+    public List<ApplicationResponse.CompanyeApplicantDto> findAllApplicantsByCompanyUserId(Integer companyUserId, Integer jobPostingId,String passStatus) {
         String jpql = """
         SELECT new com.example.leapit.application.ApplicationResponse$CompanyeApplicantDto(
             a.id,
@@ -37,8 +37,15 @@ public class ApplicationRepository {
         LEFT JOIN ApplicationBookmark abt ON abt.application.id = a.id AND abt.user.id = :companyUserId
         WHERE company.id = :companyUserId
           AND (:jobPostingId IS NULL OR jpt.id = :jobPostingId)
-        ORDER BY a.appliedDate DESC
     """;
+
+        if ("합격".equals(passStatus)) {
+            jpql += " AND a.isPassed = true";
+        } else if ("불합격".equals(passStatus)) {
+            jpql += " AND a.isPassed = false";
+        }
+
+        jpql += " ORDER BY a.appliedDate DESC";
 
         return em.createQuery(jpql, ApplicationResponse.CompanyeApplicantDto.class)
                 .setParameter("companyUserId", companyUserId)

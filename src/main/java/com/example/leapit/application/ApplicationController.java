@@ -38,13 +38,14 @@ public class ApplicationController {
 
     @GetMapping("/company/applicant/list")
     public String applicantList(ApplicationRequest.ApplicantListReqDTO reqDTO ,
-                                HttpServletRequest request
+                                HttpServletRequest request,
+                            @RequestParam(required = false, value = "passStatus", defaultValue = "전체") String passStatus
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         ApplicationResponse.ApplicantListPageDTO pageDTO =
-                applicationService.기업지원현황페이지조회(sessionUser.getId(), reqDTO.getJobPostingId());
+                applicationService.기업지원현황페이지조회(sessionUser.getId(), reqDTO.getJobPostingId(),passStatus);
 
         request.setAttribute("models", pageDTO);
         request.setAttribute("req", reqDTO);
