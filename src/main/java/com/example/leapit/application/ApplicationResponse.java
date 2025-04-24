@@ -12,17 +12,18 @@ public class ApplicationResponse {
         private List<IsClosedDTO> positions;
         private ApplicantListViewDTO listView;
 
-        public ApplicantListPageDTO(List<CompanyeApplicantDto> applicants, List<IsClosedDTO> positions) {
-            this.applicants = applicants;
-            this.positions = positions;
-        }
+
 
         public ApplicantListPageDTO(List<CompanyeApplicantDto> applicants,
                                     List<IsClosedDTO> positions,
                                     ApplicantListViewDTO listView) {
             this.applicants = applicants;
             this.positions = positions;
-            this.listView = listView;
+            if (listView == null) {
+                this.listView = new ApplicantListViewDTO(null, "전체", null,null);
+            } else {
+                this.listView = listView;
+            };
         }
     }
 
@@ -33,10 +34,14 @@ public class ApplicationResponse {
         private Boolean is합격선택;
         private Boolean is불합격선택;
         private Boolean is전체선택;
+        private Boolean isViewed;
+        private Boolean isBookmark;
 
-        public ApplicantListViewDTO(Integer jobPostingId, String passStatus) {
+        public ApplicantListViewDTO(Integer jobPostingId, String passStatus, Boolean isViewed,Boolean isBookmark) {
             this.selectedJobPostingId = jobPostingId;
             this.passStatus = passStatus;
+            this.isViewed = isViewed;
+            this.isBookmark = isBookmark;
 
             this.is합격선택 = "합격".equals(passStatus);
             this.is불합격선택 = "불합격".equals(passStatus);
@@ -69,6 +74,7 @@ public class ApplicationResponse {
         private LocalDate appliedDate;      // 지원일 (application.applied_date)
         private Boolean isBookmarked;       // 북마크 여부 (application_bookmark 존재 여부)
         private String evaluationStatus;    // 평가 상태 ('미열람' / '열람' / '합격' / '불합격')
+        private Boolean isViewed;
 
         public CompanyeApplicantDto(Integer applicationId,
                                     Integer resumeId,
@@ -76,7 +82,8 @@ public class ApplicationResponse {
                                     String jobTitle,
                                     LocalDate appliedDate,
                                     Boolean isBookmarked,
-                                    String evaluationStatus) {
+                                    String evaluationStatus,
+                                    Boolean isViewed) {
             this.applicationId = applicationId;
             this.resumeId = resumeId;
             this.applicantName = applicantName;
@@ -84,6 +91,7 @@ public class ApplicationResponse {
             this.appliedDate = appliedDate;
             this.isBookmarked = isBookmarked;
             this.evaluationStatus = evaluationStatus;
+            this.isViewed = isViewed;
         }
     }
 
