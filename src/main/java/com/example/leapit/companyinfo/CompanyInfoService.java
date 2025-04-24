@@ -90,7 +90,7 @@ public class CompanyInfoService {
     }
 
     @Transactional
-    public CompanyInfo update(Integer id,CompanyInfoRequest.UpdateDTO reqDTO) {
+    public CompanyInfo update(Integer id, CompanyInfoRequest.UpdateDTO reqDTO) {
         CompanyInfo companyInfo = companyInfoRepository.findById(id);
 
         String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/img/";
@@ -120,8 +120,16 @@ public class CompanyInfoService {
             throw new RuntimeException("파일 업로드 실패", e);
         }
 
-        companyInfo.update(reqDTO.getLogoImage(), reqDTO.getCompanyName(), reqDTO.getEstablishmentDate(),reqDTO.getAddress(),reqDTO.getMainService(),reqDTO.getIntroduction(), reqDTO.getImage(), reqDTO.getBenefit());
+        companyInfo.update(reqDTO.getLogoImage(), reqDTO.getCompanyName(), reqDTO.getEstablishmentDate(), reqDTO.getAddress(), reqDTO.getMainService(), reqDTO.getIntroduction(), reqDTO.getImage(), reqDTO.getBenefit());
 
         return companyInfo;
+    }
+
+
+    @Transactional
+    public void delete(Integer id) {
+
+        companyInfoRepository.deleteById(id);
+
     }
 }

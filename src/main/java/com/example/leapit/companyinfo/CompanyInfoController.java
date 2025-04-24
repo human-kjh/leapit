@@ -57,12 +57,19 @@ public class CompanyInfoController {
     }
 
     @PostMapping("/company/info/{id}/update")
-    public String update(@PathVariable("id") Integer id,CompanyInfoRequest.UpdateDTO reqDTO) {
+    public String update(@PathVariable("id") Integer id, CompanyInfoRequest.UpdateDTO reqDTO) {
 
-        companyInfoService.update(id,reqDTO);
+        companyInfoService.update(id, reqDTO);
 
-        return "redirect:/company/info/"+id;
+        return "redirect:/company/info/" + id;
     }
 
+
+    @PostMapping("/company/info/{id}/delete")
+    public String delete(@PathVariable("id") Integer id) {
+        companyInfoService.delete(id);
+
+        return "redirect:/company";
+    }
 
 }
