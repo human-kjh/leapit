@@ -247,33 +247,40 @@
                 <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
                   <label class="form-label fw-bold"><span class ="text-danger">*</span> 프로젝트</label>
                   <hr class="mt-1 mb-3" />
-                  <div class="row">
-                    <!-- 좌측: 프로젝트 기간 -->
-                    <div class="col-md-4 mb-2">
-                      <div class="fw-semibold text mb-1"><span class ="text-danger">*</span>프로젝트 기간</div>
-                      <div>2025년 04월 17일 ~ 2025년 04월 17일</div>
-                      <span class="badge bg-primary mt-1">진행중</span>
-                    </div>
+                  {{#model.projects}}
+                      <div class="row mb-3">
+                          <!-- 좌측: 프로젝트 기간 -->
+                          <div class="col-md-4 mb-2">
+                              <div class="fw-semibold text mb-1"><span class ="text-danger">*</span>프로젝트 기간</div>
+                              {{#isOngoing}}
+                                  <div>{{startDate}} ~ </div>
+                                  <span class="badge bg-primary mt-1">진행중</span>
+                              {{/isOngoing}}
+                              {{^isOngoing}}
+                                  <div>{{startDate}} ~ {{endDate}}</div>
+                              {{/isOngoing}}
+                          </div>
 
-                    <!-- 우측: 프로젝트 상세 -->
-                    <div class="col-md-8">
-                      <div><span class ="text-danger">*</span><strong> 프로젝트명 :</strong> 프로젝트명 입니다.</div>
-                      <div><strong>프로젝트 소개 :</strong> 프로젝트 소개입니다.</div>
-                      <div class="mt-2">
-                        <span class="badge bg-secondary me-1">JavaScript</span>
-                        <span class="badge bg-secondary me-1">React</span>
-                        <span class="badge bg-secondary me-1">Node.js</span>
+                          <!-- 우측: 프로젝트 상세 -->
+                          <div class="col-md-8">
+                              <div><span class ="text-danger">*</span><strong> 프로젝트명 :</strong>{{title}}</div>
+                              <div><strong>프로젝트 소개 :</strong> {{summary}}</div>
+                              <div class="mt-2">
+                                  <span class="badge bg-secondary me-1">JavaScript</span>
+                                  <span class="badge bg-secondary me-1">React</span>
+                                  <span class="badge bg-secondary me-1">Node.js</span>
+                              </div>
+                              <div class="bg-light rounded mt-2 p-2">
+                                  <span class ="text-danger">*</span>
+                                  {{description}}
+                              </div>
+                              <div class="mt-2">
+                                  <div><strong>저장소 링크</strong></div>
+                                  <div class="bg-light p-2 rounded text-muted">{{repositoryUrl}}</div>
+                              </div>
+                          </div>
                       </div>
-                      <div class="bg-light rounded mt-2 p-2">
-                          <span class ="text-danger">*</span>
-                           상세내용입니다.상세내용입니다.상세내용입니다.상세내용입니다.
-                      </div>
-                      <div class="mt-2">
-                        <div><strong>저장소 링크</strong></div>
-                        <div class="bg-light p-2 rounded text-muted">https://www.naver.com/</div>
-                      </div>
-                    </div>
-                  </div>
+                  {{/model.projects}}
                 </div>
 
 

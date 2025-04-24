@@ -14,6 +14,8 @@ import com.example.leapit.resume.experience.ExperienceResponse;
 import com.example.leapit.resume.experience.ExperienceService;
 import com.example.leapit.resume.link.Link;
 import com.example.leapit.resume.link.LinkRepository;
+import com.example.leapit.resume.project.ProjectResponse;
+import com.example.leapit.resume.project.ProjectService;
 import com.example.leapit.resume.techstack.ResumeTechStack;
 import com.example.leapit.resume.techstack.ResumeTechStackRepository;
 import com.example.leapit.resume.training.TrainingResponse;
@@ -35,6 +37,7 @@ public class ResumeService {
 
     private final ExperienceService experienceService;
     private final TrainingService trainingService;
+    private final ProjectService projectService;
 
     public List<Resume> list(int userId) {
         // 자신의 userId로 된 모든 resume을 찾아서 return
@@ -56,12 +59,13 @@ public class ResumeService {
 
         List<ExperienceResponse.DetailDTO> experiences = experienceService.getDTOsByResumeId(resumeId);
 
+        List<ProjectResponse.DetailDTO> projects = projectService.getDTOsByResumeId(resumeId);
         List<TrainingResponse.DetailDTO> trainings = trainingService.getDTOsByResumeId(resumeId);
 
         List<Etc> etcs = etcRepository.findAllById(resumeId);
 
 
-        ResumeResponse.DetailDTO detailDTO = new ResumeResponse.DetailDTO(resume, label, techStacks, links, educations, experiences, trainings, etcs);
+        ResumeResponse.DetailDTO detailDTO = new ResumeResponse.DetailDTO(resume, label, techStacks, links, educations, experiences, projects, trainings, etcs);
 
         return detailDTO;
     }

@@ -18,10 +18,20 @@ public class ProjectResponse {
         private String summary;
 
         // 기술스택
-        private List<ProjectTechStack> techStacks;
+        private List<ProjectTechStack> techStackList;
 
         private String description;
         private String repositoryUrl;
 
+        public DetailDTO(Project project, List<ProjectTechStack> techStacks) {
+            this.startDate = project.getStartDate();
+            this.endDate = project.getEndDate();
+            this.isOngoing = project.getIsOngoing();
+            this.title = project.getTitle();
+            this.summary = project.getSummary();
+            this.techStackList = techStacks;
+            this.description = project.getDescription();
+            this.repositoryUrl = project.getRepositoryUrl();
+        }
     }
 }
