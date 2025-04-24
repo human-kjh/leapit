@@ -55,4 +55,15 @@ public class User {
         this.birthDate = birthDate;
     }
 
+    public void PersonalUpdate(String name,String password, String email,  String contactNumber) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.contactNumber = contactNumber;
+    }
+
+    public void CompanyUpdate(String newPassword, String contactNumber) {
+        this.password = newPassword;
+        this.contactNumber = contactNumber;
+    }
 }

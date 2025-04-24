@@ -1,66 +1,58 @@
 {{> layout/personal-header}}
+<!-- 헤더 끝 -->
 
-            <!-- 본문 -->
-            <div class="main container mt-5">
-                <div class="editContainer">
-                    <!-- 왼쪽에 표시될 이미지 박스 -->
-                    <div class="leftImageBox">
-                        <!-- 이미지를 적절한 경로로 추가해야 함 -->
-                        <img src="/img/logo2.png" alt="회원정보 수정 이미지">
-                    </div>
+<!-- 본문 -->
+<div class="main container mt-5">
+    <div class="editContainer">
+        <div class="leftImageBox">
+            <img src="/img/logo2.png" alt="회원정보 수정 이미지">
+        </div>
 
-                    <!-- 수정 폼 -->
-                    <div class="editForm">
-                        <!-- 폼 제목 -->
-                        <h3 class="mb-4 fw-bold fs-3 text-dark">회원 정보 수정</h3>
+        <div class="editForm">
+            <form action="/personal/user/update" method="post" enctype="application/x-www-form-urlencoded">
+                <h3 class="mb-4 fw-bold fs-3 text-dark">회원 정보 수정</h3>
 
-                        <!-- 이름 입력 -->
-                        <div class="mb-3">
-                            <label for="userName" class="form-label">이름</label>
-                            <input type="text" class="form-control" id="userName" placeholder="이름을 입력해주세요." value="김점핏">
-                        </div>
-
-                        <!-- 아이디 필드 (수정 불가능, 읽기 전용) -->
-                        <div class="mb-3">
-                            <label for="userId" class="form-label">아이디</label>
-                            <input type="text" class="form-control" id="userId" value="user1234" readonly>
-                        </div>
-
-                        <!-- 새비밀번호 필드 -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label">새 비밀번호</label>
-                            <input type="password" class="form-control" id="password" placeholder="새 비밀번호 입력">
-                        </div>
-
-                        <!-- 비밀번호 필드 -->
-                        <div class="mb-3">
-                            <label for="password" class="form-label">새 비밀번호 확인</label>
-                            <input type="password" class="form-control" id="password" placeholder="새 비밀번호 입력">
-                        </div>
-
-                        <!-- 이메일 필드 -->
-                        <div class="mb-3">
-                            <label for="email" class="form-label">이메일</label>
-                            <input type="email" class="form-control" id="email" value="user@example.com">
-                        </div>
-
-                        <!-- 생년월일 입력 -->
-                        <div class="mb-3">
-                            <label for="birthdate" class="form-label">생년월일</label>
-                            <input type="date" class="form-control" id="birthdate" readonly value="2000-01-01">
-                        </div>
-
-                        <!-- 전화번호 입력 -->
-                        <div class="mb-3">
-                            <label for="phoneNumber" class="form-label">전화번호</label>
-                            <input type="tel" class="form-control" id="phoneNumber" placeholder="010-1234-5678">
-                        </div>
-
-                        <!-- 회원 정보 수정 버튼 -->
-                        <button class="btn btn-primary btnEdit" onclick="submitEdit()">회원정보 수정</button>
-                    </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">이름</label>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="이름을 입력해주세요." value="{{sessionUser.name}}">
                 </div>
-            </div>
-            <!-- 본문 끝 -->
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">아이디</label>
+                    <input type="text" class="form-control" id="username" value="{{sessionUser.username}}" readonly>
+                </div>
+
+                <div class="mb-3">
+                    <label for="newPassword" class="form-label">새 비밀번호</label>
+                    <input type="password" class="form-control" name="newPassword" id="newPassword" placeholder="새 비밀번호 입력">
+                </div>
+
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">새 비밀번호 확인</label>
+                    <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="새 비밀번호 입력">
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">이메일</label>
+                    <input type="email" class="form-control" name="email" id="email" value="{{sessionUser.email}}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="birthdate" class="form-label">생년월일</label>
+                    <input type="date" class="form-control" id="birthdate" readonly value="{{sessionUser.birthDate}}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="contactNumber" class="form-label">전화번호</label>
+                    <input type="tel" class="form-control" name="contactNumber" id="contactNumber" placeholder="010-1234-5678" value="{{sessionUser.contactNumber}}">
+                </div>
+
+                <button type="submit" class="btn btn-primary btnEdit">회원정보 수정</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- 본문 끝 -->
 
 {{> layout/footer}}

@@ -12,6 +12,19 @@ import java.util.Map;
 public class UserService {
     private final UserRepository userRepository;
 
+    public User login(UserRequest.LoginDTO loginDTO) {
+
+        User user = userRepository.findByUsernameAndRole(loginDTO.getUsername(), loginDTO.getRole());
+
+        if (user == null) {
+            throw new RuntimeException("유저네임 혹은 비밀번호가 틀렸습니다");
+        }
+
+        if (!user.getPassword().equals(loginDTO.getPassword())) {
+            throw new RuntimeException("유저네임 혹은 비밀번호가 틀렸습니다");
+        }return user;
+    }
+
     @Transactional
     public void join(UserRequest.PersonalJoinDTO personalJoinDTO) {
         userRepository.save(personalJoinDTO.toEntity());
@@ -33,4 +46,25 @@ public class UserService {
         }
         return dto;
     }
+
+
+    @Transactional
+    public User update(UserRequest.PersonalUpdateDTO reqDTO, Integer userId) {
+        User userPS = userRepository.findById(userId);
+
+        if (userPS == null) throw new RuntimeException("자원을 찾을 수 없습니다");
+        userPS.PersonalUpdate(reqDTO.getName(),reqDTO.getNewPassword(), reqDTO.getEmail(),reqDTO.getContactNumber()); // 영속화된 객체의 상태변경
+        return userPS;
+    }
+
+    @Transactional
+    public User update(UserRequest.CompanyUpdateDTO reqDTO, Integer userId) {
+        User userPS = userRepository.findById(userId);
+
+        if (userPS == null) throw new RuntimeException("자원을 찾을 수 없습니다");
+        userPS.CompanyUpdate(reqDTO.getNewPassword(),reqDTO.getContactNumber()); // 영속화된 객체의 상태변경
+        return userPS;
+    }
+
+
 }

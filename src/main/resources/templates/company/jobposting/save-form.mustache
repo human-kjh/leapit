@@ -1,218 +1,276 @@
 {{> layout/company-header}}
 
-      <!-- 본문 -->
-      <div class="main container mt-5">
-        <div class="container">
-          <div class="bg-white p-5 rounded shadow">
+<div class="main container mt-5">
+    <div class="container">
+        <div class="bg-white p-5 rounded shadow">
             <h2 class="mb-4 fw-bold">채용 포지션 등록</h2>
-            <form class="row g-4">
-              <div class="col-md-6">
-                <div>직무 <span class="text-danger">*</span></div>
-                <select class="form-select">
-                  <option selected disabled>선택하세요</option>
-                  <option>프론트엔드</option>
-                  <option>백엔드</option>
-                  <option>AI 엔지니어</option>
-                </select>
-              </div>
-              <!-- 기술 스택 -->
-              <div class="mb-3">
-                <label class="form-label">기술 스택 <span class="text-danger">*</span></label>
-                <div class="dropdown">
-                  <button class="form-select text-start" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    선택하세요
-                  </button>
-                  <ul class="dropdown-menu p-3" style="min-width: 250px">
-                    <li>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="React" id="tech1" />
-                        <label class="form-check-label" for="tech1">React</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="JavaScript" id="tech2" />
-                        <label class="form-check-label" for="tech2">JavaScript</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="Vue" id="tech3" />
-                        <label class="form-check-label" for="tech3">Vue</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="TypeScript" id="tech4" />
-                        <label class="form-check-label" for="tech4">TypeScript</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="Node.js" id="tech5" />
-                        <label class="form-check-label" for="tech5">Node.js</label>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <div class="form-text">
-                  원하는 기술 스택을 모두 선택하세요
-                </div>
-              </div>
-
-              <div class="col-12">
-                <div>포지션 제목 <span class="text-danger">*</span></div>
-                <textarea class="form-control" rows="3" placeholder="서비스나 제품의 핵심이 되는 컴포넌트를 함께 만들며..."></textarea>
-              </div>
-
-              <div class="row align-items-end mt-3">
+            <form class="row g-4" action="/job-postings/save" method="post">
                 <div class="col-md-6">
-                  <div>포지션 마감일 <span class="text-danger">*</span></div>
-                  <input type="date" class="form-control" />
+                    <div>직무 <span class="text-danger">*</span></div>
+                    <select class="form-select" name="positionType" required>
+                        <option selected disabled>선택하세요</option>
+                        <option value="프론트엔드">프론트엔드</option>
+                        <option value="백엔드">백엔드</option>
+                        <option value="AI 엔지니어">AI 엔지니어</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">기술 스택 <span class="text-danger">*</span></label>
+                    <div>
+                        <!-- 프론트엔드 -->
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="React" id="tech1"/>
+                            <label class="form-check-label" for="tech1">React</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="JavaScript"
+                                   id="tech2"/>
+                            <label class="form-check-label" for="tech2">JavaScript</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="Vue" id="tech3"/>
+                            <label class="form-check-label" for="tech3">Vue</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="TypeScript"
+                                   id="tech4"/>
+                            <label class="form-check-label" for="tech4">TypeScript</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="Angular"
+                                   id="tech5"/>
+                            <label class="form-check-label" for="tech5">Angular</label>
+                        </div>
+
+                        <!-- 백엔드 -->
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="Node.js"
+                                   id="tech6"/>
+                            <label class="form-check-label" for="tech6">Node.js</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="Java" id="tech7"/>
+                            <label class="form-check-label" for="tech7">Java</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="Spring Boot"
+                                   id="tech8"/>
+                            <label class="form-check-label" for="tech8">Spring Boot</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="Python" id="tech9"/>
+                            <label class="form-check-label" for="tech9">Python</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="Django"
+                                   id="tech10"/>
+                            <label class="form-check-label" for="tech10">Django</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="NestJS"
+                                   id="tech11"/>
+                            <label class="form-check-label" for="tech11">NestJS</label>
+                        </div>
+
+                        <!-- 데이터베이스 -->
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="MySQL" id="tech12"/>
+                            <label class="form-check-label" for="tech12">MySQL</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="PostgreSQL"
+                                   id="tech13"/>
+                            <label class="form-check-label" for="tech13">PostgreSQL</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="MongoDB"
+                                   id="tech14"/>
+                            <label class="form-check-label" for="tech14">MongoDB</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="Redis" id="tech15"/>
+                            <label class="form-check-label" for="tech15">Redis</label>
+                        </div>
+
+                        <!-- DevOps -->
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="Docker"
+                                   id="tech16"/>
+                            <label class="form-check-label" for="tech16">Docker</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="Kubernetes"
+                                   id="tech17"/>
+                            <label class="form-check-label" for="tech17">Kubernetes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="AWS" id="tech18"/>
+                            <label class="form-check-label" for="tech18">AWS</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="GCP" id="tech19"/>
+                            <label class="form-check-label" for="tech19">GCP</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="techStack" value="Azure" id="tech20"/>
+                            <label class="form-check-label" for="tech20">Azure</label>
+                        </div>
+                    </div>
+                    <div class="form-text">
+                        원하는 기술 스택을 모두 선택하세요
+                    </div>
                 </div>
 
-                <div class="col-md-3">
-                  <label class="form-label">연차 (최소)</label>
-                  <!--수정된 부분 : 최소 연차 input 에서 select로 변경-->
-                  <select class="form-select">
-                    <option selected disabled>선택하세요</option>
-                    <option>신입</option>
-                    <option>1년차</option>
-                    <option>2년차</option>
-                    <option>3년차</option>
-                    <option>4년차</option>
-                    <option>5년차</option>
-                    <option>6년차</option>
-                    <option>7년차</option>
-                    <option>8년차</option>
-                    <option>9년차</option>
-                    <option>10년 이상</option>
-                  </select>
-                </div>
-                <div class="col-md-3">
-                  <label class="form-label">연차 (최대)</label>
-                  <!--수정된 부분 : 최대 연차 input 에서 select로 변경-->
-                  <select class="form-select">
-                    <option selected disabled>선택하세요</option>
-                    <option>신입</option>
-                    <option>1년차</option>
-                    <option>2년차</option>
-                    <option>3년차</option>
-                    <option>4년차</option>
-                    <option>5년차</option>
-                    <option>6년차</option>
-                    <option>7년차</option>
-                    <option>8년차</option>
-                    <option>9년차</option>
-                    <option>10년 이상</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row g-3 align-items-end mt-3" style="max-width: 720px">
-                <!--수정된 부분 : 근무지 입력 input란에서 시/군/구 선택 박스로 변경-->
-                <div class="col-md-3">
-                  <div>시/도 <span class="text-danger">*</span></div>
-                  <select class="form-select">
-                    <option selected disabled>선택하세요</option>
-                    <option>서울특별시</option>
-                    <option>부산광역시</option>
-                    <option>대구광역시</option>
-                    <option>인천광역시</option>
-                    <option>광주광역시</option>
-                    <option>대전광역시</option>
-                    <option>울산광역시</option>
-                    <option>세종특별자치시</option>
-                    <option>경기도</option>
-                    <option>강원특별자치도</option>
-                    <option>충청북도</option>
-                    <option>충청남도</option>
-                    <option>전라북도</option>
-                    <option>전라남도</option>
-                    <option>경상북도</option>
-                    <option>경상남도</option>
-                    <option>제주특별자치도</option>
-                  </select>
+                <div class="col-12">
+                    <div>포지션 제목 <span class="text-danger">*</span></div>
+                    <textarea class="form-control" rows="3" placeholder="서비스나 제품의 핵심이 되는 컴포넌트를 함께 만들며..."
+                              name="title" required></textarea>
                 </div>
 
-                <div class="col-md-3">
-                  <div>시/군/구 <span class="text-danger">*</span></div>
-                  <select class="form-select">
-                    <option selected disabled>선택하세요</option>
-                    <option>서울특별시</option>
-                    <option>부산광역시</option>
-                    <option>대구광역시</option>
-                    <option>인천광역시</option>
-                    <option>광주광역시</option>
-                    <option>대전광역시</option>
-                    <option>울산광역시</option>
-                    <option>세종특별자치시</option>
-                    <option>경기도</option>
-                    <option>강원특별자치도</option>
-                    <option>충청북도</option>
-                    <option>충청남도</option>
-                    <option>전라북도</option>
-                    <option>전라남도</option>
-                    <option>경상북도</option>
-                    <option>경상남도</option>
-                    <option>제주특별자치도</option>
-                  </select>
+                <div class="row align-items-end mt-3">
+                    <div class="col-md-6">
+                        <div>포지션 마감일 <span class="text-danger">*</span></div>
+                        <input type="date" class="form-control" name="deadline" required/>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">연차 (최소)</label>
+                        <select class="form-select" name="minCareerLevel">
+                            <option selected value="0">신입</option>
+                            <option value="1">1년차</option>
+                            <option value="2">2년차</option>
+                            <option value="3">3년차</option>
+                            <option value="4">4년차</option>
+                            <option value="5">5년차</option>
+                            <option value="6">6년차</option>
+                            <option value="7">7년차</option>
+                            <option value="8">8년차</option>
+                            <option value="9">9년차</option>
+                            <option value="10">10년 이상</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">연차 (최대)</label>
+                        <select class="form-select" name="maxCareerLevel">
+                            <option selected value="10">10년 이상</option>
+                            <option value="0">신입</option>
+                            <option value="1">1년차</option>
+                            <option value="2">2년차</option>
+                            <option value="3">3년차</option>
+                            <option value="4">4년차</option>
+                            <option value="5">5년차</option>
+                            <option value="6">6년차</option>
+                            <option value="7">7년차</option>
+                            <option value="8">8년차</option>
+                            <option value="9">9년차</option>
+                            <option value="10">10년 이상</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                  <div>상세주소 <span class="text-danger">*</span></div>
-                  <input class="form-control" placeholder="상세주소입력" />
+
+                <div class="row g-3 align-items-end mt-3" style="max-width: 720px">
+                    <div class="col-md-3">
+                        <div>시/도 <span class="text-danger">*</span></div>
+                        <select class="form-select" name="addressRegionId" required>
+                            <option selected disabled>선택하세요</option>
+                            <option value="1">서울특별시</option>
+                            <option value="2">부산광역시</option>
+                            <option value="3">대구광역시</option>
+                            <option value="4">인천광역시</option>
+                            <option value="5">광주광역시</option>
+                            <option value="6">대전광역시</option>
+                            <option value="7">울산광역시</option>
+                            <option value="8">세종특별자치시</option>
+                            <option value="31">경기도</option>
+                            <option value="42">강원특별자치도</option>
+                            <option value="43">충청북도</option>
+                            <option value="44">충청남도</option>
+                            <option value="45">전라북도</option>
+                            <option value="46">전라남도</option>
+                            <option value="47">경상북도</option>
+                            <option value="48">경상남도</option>
+                            <option value="50">제주특별자치도</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div>시/군/구 <span class="text-danger">*</span></div>
+                        <select class="form-select" name="addressSubRegionId" required>
+                            <option selected disabled>선택하세요</option>
+                            <option value="11010">종로구</option>
+                            <option value="26030">해운대구</option>
+                            <option value="27060">달서구</option>
+                            <option value="28177">부평구</option>
+                            <option value="29155">광산구</option>
+                            <option value="30170">유성구</option>
+                            <option value="31710">울주군</option>
+                            <option value="36110">세종시</option>
+                            <option value="41117">수정구</option>
+                            <option value="42150">춘천시</option>
+                            <option value="43111">청주시 상당구</option>
+                            <option value="44210">천안시 동남구</option>
+                            <option value="45140">전주시 완산구</option>
+                            <option value="46100">목포시</option>
+                            <option value="47170">안동시</option>
+                            <option value="48127">창원시 진해구</option>
+                            <option value="50110">제주시</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <div>상세주소 <span class="text-danger">*</span></div>
+                        <input class="form-control" placeholder="상세주소입력" name="addressDetail" required/>
+                    </div>
                 </div>
-              </div>
 
-              <div class="col-12">
-                <div>서비스 소개</div>
-                <textarea class="form-control" placeholder="서비스에 대한 간략한 소개"></textarea>
-              </div>
+                <div class="col-12">
+                    <div>서비스 소개</div>
+                    <textarea class="form-control" placeholder="서비스에 대한 간략한 소개" name="serviceIntro"></textarea>
+                </div>
 
-              <div class="col-12">
-                <div>담당 업무 <span class="text-danger">*</span></div>
-                <textarea class="form-control" placeholder="예: 프론트엔드 UI 개발"></textarea>
-              </div>
-              <div class="col-12">
-                <div>자격요건 <span class="text-danger">*</span></div>
-                <textarea class="form-control" placeholder="예: React 경험 2년 이상"></textarea>
-              </div>
-              <div class="col-12">
-                <div>학력 제한 <span class="text-danger">*</span></div>
-                <select class="form-select">
-                  <option selected>전체</option>
-                  <option>중학교</option>
-                  <option>고등학교</option>
-                  <option>전문학사</option>
-                  <option>학사</option>
-                  <option>석사</option>
-                  <option>박사</option>
-                </select>
-              </div>
-              <div class="col-12">
-                <div>우대 사항 <span class="text-danger">*</span></div>
-                <textarea class="form-control" placeholder="예: 오픈소스 기여 경험"></textarea>
-              </div>
+                <div class="col-12">
+                    <div>담당 업무 <span class="text-danger">*</span></div>
+                    <textarea class="form-control" placeholder="예: 프론트엔드 UI 개발" name="responsibility"
+                              required></textarea>
+                </div>
+                <div class="col-12">
+                    <div>자격요건 <span class="text-danger">*</span></div>
+                    <textarea class="form-control" placeholder="예: React 경험 2년 이상" name="qualification"
+                              required></textarea>
+                </div>
+                <div class="col-12">
+                    <div>학력 제한 <span class="text-danger">*</span></div>
+                    <select class="form-select" name="educationLevel" required>
+                        <option selected value="전체">전체</option>
+                        <option value="중학교 졸업">중학교</option>
+                        <option value="고등학교 졸업">고등학교</option>
+                        <option value="전문학사 졸업">전문학사</option>
+                        <option value="학사 졸업">학사</option>
+                        <option value="석사 졸업">석사</option>
+                        <option value="박사 졸업">박사</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <div>우대 사항</div>
+                    <textarea class="form-control" placeholder="예: 오픈소스 기여 경험" name="preference"></textarea>
+                </div>
 
-              <div class="col-12">
-                <div>복지 및 혜택 <span class="text-danger">*</span></div>
-                <textarea class="form-control" placeholder="예: 점심 제공, 자율 출퇴근 등"></textarea>
-              </div>
+                <div class="col-12">
+                    <div>복지 및 혜택 <span class="text-danger">*</span></div>
+                    <textarea class="form-control" placeholder="예: 점심 제공, 자율 출퇴근 등" name="benefit" required></textarea>
+                </div>
 
-              <div class="col-12">
-                <div>기타</div>
-                <textarea class="form-control" placeholder="채용절차/지원방법 등"></textarea>
-              </div>
+                <div class="col-12">
+                    <div>기타</div>
+                    <textarea class="form-control" placeholder="채용절차/지원방법 등" name="additionalInfo"></textarea>
+                </div>
 
-              <div class="col-12">
-                <button type="submit" class="btn btn-primary w-100">
-                  등록하기
-                </button>
-              </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary w-100">
+                        등록하기
+                    </button>
+                </div>
             </form>
-          </div>
         </div>
-      </div>
-      <!-- 본문 끝 -->
-
+    </div>
+</div>
 {{> layout/footer}}
