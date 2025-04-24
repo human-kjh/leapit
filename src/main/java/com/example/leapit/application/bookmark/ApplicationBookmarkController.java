@@ -18,7 +18,7 @@ public class ApplicationBookmarkController {
     @PostMapping("/api/bookmark")
     public Resp<?> saveBookmark(@RequestBody ApplicationBookmarkRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        ApplicationBookmarkResponse.SaveDTO respDTO = bookmarkService.스크랩등록(reqDTO, sessionUser.getId());
+        ApplicationBookmarkResponse.SaveDTO respDTO = bookmarkService.saveBookmark(reqDTO, sessionUser.getId());
 
         return Resp.ok(respDTO);
     }
@@ -29,7 +29,7 @@ public class ApplicationBookmarkController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         System.out.println("applicationId = " + applicationId + ", sessionUserId = " + sessionUser.getId());
 
-        bookmarkService.북마크삭제(applicationId, sessionUser.getId());
+        bookmarkService.deleteBookmark(applicationId, sessionUser.getId());
         return Resp.ok("북마크 삭제");
     }
 }

@@ -18,7 +18,7 @@ public class ApplicationBookmarkService {
 
 
     @Transactional
-    public ApplicationBookmarkResponse.SaveDTO 스크랩등록(ApplicationBookmarkRequest.SaveDTO reqDTO, Integer sessionUserId) {
+    public ApplicationBookmarkResponse.SaveDTO saveBookmark(ApplicationBookmarkRequest.SaveDTO reqDTO, Integer sessionUserId) {
 
         User companyUser = userRepository.findById(sessionUserId);
         if (companyUser == null) throw new RuntimeException("유저가 존재하지 않습니다");
@@ -36,7 +36,7 @@ public class ApplicationBookmarkService {
     }
 
     @Transactional
-    public void 북마크삭제(Integer applicationId, Integer sessionUserId) {
+    public void deleteBookmark(Integer applicationId, Integer sessionUserId) {
         ApplicationBookmark bookmark = applicationBookmarkRepository.findByUserIdAndApplicationId(sessionUserId, applicationId);
 
         if (bookmark == null) throw new RuntimeException("해당 스크랩이 존재하지 않습니다.");
