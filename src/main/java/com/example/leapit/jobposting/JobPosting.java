@@ -1,5 +1,6 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit.jobposting.bookmark.JobPostingBookmark;
 import com.example.leapit.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -68,6 +69,10 @@ public class JobPosting {
     @CreationTimestamp
     private Timestamp createdAt;
 
+    // 채용 공고 삭제할 때 bookmark에서 참조하고 있어서 같이 지워야 하기 때문에 생성함
+    @OneToMany(mappedBy = "jobPosting", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<JobPostingBookmark> bookmarks;
+
     @ElementCollection
     @CollectionTable(name = "job_posting_tech_stack_tb", joinColumns = @JoinColumn(name = "job_posting_id"))
     @Column(name = "techStack", nullable = false)
@@ -117,6 +122,5 @@ public class JobPosting {
         this.preference = updateDTO.getPreference();
         this.benefit = updateDTO.getBenefit();
         this.additionalInfo = updateDTO.getAdditionalInfo();
-        this.techStack = updateDTO.getTechStack();
     }
 }

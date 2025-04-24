@@ -28,12 +28,6 @@ public class JobPostingRepository {
         return em.find(JobPosting.class, id);
     }
 
-    // 전체 조회
-    public List<JobPosting> findAll() {
-        String sql = "SELECT j FROM JobPosting j ORDER BY j.id DESC";
-        return em.createQuery(sql, JobPosting.class).getResultList();
-    }
-
     // 진행 중인 채용 공고 목록 조회
     public List<JobPosting> findByDeadlineOpen(LocalDate deadline) {
         return em.createQuery("select jp from JobPosting jp where jp.deadline >= :deadline", JobPosting.class)
@@ -47,4 +41,5 @@ public class JobPostingRepository {
                 .setParameter("deadline", deadline)
                 .getResultList();
     }
+
 }

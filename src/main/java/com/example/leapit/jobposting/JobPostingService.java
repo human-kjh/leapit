@@ -1,9 +1,9 @@
 package com.example.leapit.jobposting;
 
 import com.example.leapit.user.User;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,13 +36,8 @@ public class JobPostingService {
     public void update(Integer id, JobPostingRequest.UpdateDTO updateDTO) {
         JobPosting jobPosting = jobPostingRepository.findById(id);
 
-        if (jobPosting != null) {
-            updateDTO.toEntity(jobPosting);
-        } else {
-            throw new RuntimeException("채용 공고를 찾을 수 없습니다.");
-        }
+        jobPosting.update(updateDTO);
     }
-
 
     // 진행 중인 채용 공고 목록 조회
     public List<JobPosting> OpenJobPostings() {

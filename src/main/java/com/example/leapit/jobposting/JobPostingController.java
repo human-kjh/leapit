@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,9 +18,9 @@ public class JobPostingController {
 
     // 채용 공고 목록 보기
     @GetMapping("/company/jobposting/list")
-    public String list(Model request) {
-        request.addAttribute("openJobPostings", jobPostingService.OpenJobPostings());
-        request.addAttribute("closedJobPostings", jobPostingService.ClosedJobPostings());
+    public String list(HttpServletRequest request) {
+        request.setAttribute("openJobPostings", jobPostingService.OpenJobPostings());
+        request.setAttribute("closedJobPostings", jobPostingService.ClosedJobPostings());
         return "company/jobposting/list";
     }
 
@@ -29,7 +28,7 @@ public class JobPostingController {
     @GetMapping("/jobposting/{id}")
     public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
         JobPosting jobPosting = jobPostingService.findById(id);
-        request.setAttribute("jobPosting", jobPosting);
+        request.setAttribute("model", jobPosting);
         return "company/jobposting/detail";
     }
 
@@ -45,13 +44,16 @@ public class JobPostingController {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         jobPostingService.save(saveDTO, sessionUser);
-        return "redirect:company/jobposting/list";
+        return "redirect:/company/jobposting/list";
     }
 
     // 채용 공고 수정 폼
-    @GetMapping("/jobposting/update-form/{id}")
+    @GetMapping("/jobposting/{id}/update-form")
     public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
-        request.setAttribute("model", jobPostingService.findById(id));
+        JobPosting updateDTO = jobPostingService.findById(id);
+
+        request.setAttribute("model", updateDTO);
+
         return "company/jobposting/update-form";
     }
 
@@ -59,13 +61,13 @@ public class JobPostingController {
     @PostMapping("/jobposting/{id}/update")
     public String update(@PathVariable("id") Integer id, JobPostingRequest.UpdateDTO updateDTO) {
         jobPostingService.update(id, updateDTO);
-        return "redirect:company/jobposting/" + id;
+        return "redirect:/jobposting/" + id;
     }
 
     // 채용 공고 삭제
-    @PostMapping("/jobposting/delete/{id}")
+    @PostMapping("/jobposting/{id}/delete")
     public String delete(@PathVariable("id") Integer id) {
         jobPostingService.delete(id);
-        return "redirect:company/jobposting/list";
+        return "redirect:/company/jobposting/list";
     }
 }
