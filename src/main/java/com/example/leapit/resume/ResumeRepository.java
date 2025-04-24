@@ -17,4 +17,10 @@ public class ResumeRepository {
         query.setParameter("userId", userId);
         return query.getResultList();
     }
+
+    public Resume findByIdJoinUser(Integer id) {
+        Query query = em.createQuery("SELECT r FROM Resume r join fetch r.user WHERE r.id = :id", Resume.class);
+        query.setParameter("id", id);
+        return (Resume) query.getSingleResult();
+    }
 }

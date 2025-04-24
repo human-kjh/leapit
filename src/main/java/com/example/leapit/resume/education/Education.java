@@ -20,6 +20,7 @@ public class Education {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private Resume resume;
 
     private LocalDate graduationDate;
@@ -37,7 +38,7 @@ public class Education {
     @Column(precision = 3, scale = 2)
     private BigDecimal gpa;
 
-    @Column(precision = 3, scale = 2)
+    @Column(precision = 2, scale = 1)
     private BigDecimal gpaScale;
 
     @CreationTimestamp

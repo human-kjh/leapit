@@ -8,4 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class PositionTypeRepository {
     private final EntityManager em;
+
+    public PositionType findByCode(String code) {
+        return em.find(PositionType.class, code);
+    }
 }

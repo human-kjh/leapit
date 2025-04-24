@@ -19,6 +19,7 @@ public class Etc {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(nullable = false)
     private Resume resume;
 
     private LocalDate startDate;
