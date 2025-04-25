@@ -1,13 +1,17 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit.common.techstack.TechStack;
+import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.companyinfo.CompanyInfo;
 import com.example.leapit.companyinfo.CompanyInfoRepository;
 import com.example.leapit.jobposting.techstack.JobPostingTechStack;
+import com.example.leapit.jobposting.techstack.JobPostingTechStackRepository;
 import com.example.leapit.user.User;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,17 +21,75 @@ import java.util.Map;
 @Service
 public class JobPostingService {
     private final JobPostingRepository jobPostingRepository;
+    private final TechStackRepository techStackRepository;
     private final CompanyInfoRepository companyInfoRepository;
+    private final JobPostingTechStackRepository jobPostingTechStackRepository;
 
-    @Transactional
-    public void createJobPosting(JobPostingRequest request, User user) {
-        JobPosting jobPosting = request.toEntity(user); // 빌더로 생성
+    // 채용 공고 등록
+    @org.springframework.transaction.annotation.Transactional
+    public void save(JobPostingRequest.SaveDTO saveDTO, User sessionUser, String[] techStacks) {
+        JobPosting jobPosting = saveDTO.toEntity(sessionUser);
         jobPostingRepository.save(jobPosting);
+        // 2. 선택된 기술 스택 처리
+        if (techStacks != null && techStacks.length > 0) {
+            for (String techStackCode : techStacks) {
+                // 해당 코드의 TechStack 엔티티 조회
+                TechStack techStack = techStackRepository.findByCode(techStackCode);
+                if (techStack != null) {
+                    // JobPostingTechStack 엔티티 생성 및 연관 관계 설정
+                    JobPostingTechStack jobPostingTechStack = new JobPostingTechStack(jobPosting, techStack);
+                    // JobPostingTechStack 저장
+                    jobPostingRepository.saveJobPostingTechStack(jobPostingTechStack);
+                }
+            }
+        }
     }
 
-    @Transactional
-    public void deleteJobPosting(Integer id) {
+    // 특정 채용 공고에 등록된 기술 스택 목록 조회
+    public List<String> getTechStacksByJobPostingId(Integer jobPostingId) {
+        return jobPostingRepository.findTechStacksByJobPostingId(jobPostingId);
+    }
+
+    // 채용 공고 삭제
+    @org.springframework.transaction.annotation.Transactional
+    public void delete(Integer id) {
         jobPostingRepository.deleteById(id);
+    }
+
+    // 아이디 조회
+    public JobPosting findById(Integer id) {
+        return jobPostingRepository.findById(id);
+    }
+
+    // 채용 공고 수정
+    @Transactional
+    public void update(Integer id, JobPostingRequest.UpdateDTO updateDTO, String[] techStacks) {
+        JobPosting jobPosting = jobPostingRepository.findById(id);
+        jobPosting.update(updateDTO);
+
+        jobPostingTechStackRepository.deleteByJobPostingId(id);
+
+        if (techStacks != null) {
+            for (String techStackCode : techStacks) {
+                TechStack techStack = techStackRepository.findByCode(techStackCode);
+                if (techStack != null) {
+                    JobPostingTechStack jobPostingTechStack = new JobPostingTechStack(jobPosting, techStack);
+                    jobPostingRepository.saveJobPostingTechStack(jobPostingTechStack);
+                }
+            }
+        }
+    }
+
+    // 진행 중인 채용 공고 목록 조회
+    public List<JobPosting> OpenJobPostings() {
+        LocalDate now = LocalDate.now();
+        return jobPostingRepository.findByDeadlineOpen(now);
+    }
+
+    // 마감된 채용 공고 목록 조회
+    public List<JobPosting> ClosedJobPostings() {
+        LocalDate now = LocalDate.now();
+        return jobPostingRepository.findByDeadlineClosed(now);
     }
 
     public List<JobPostingResponse.JobPostingDTO> getAllJobPostings() {

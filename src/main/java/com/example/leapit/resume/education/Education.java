@@ -28,7 +28,7 @@ public class Education {
     private Boolean isDropout = false;
 
     @Column(nullable = false)
-    private Integer educationLevel;
+    private String educationLevel;
 
     @Column(nullable = false)
     private String schoolName;
