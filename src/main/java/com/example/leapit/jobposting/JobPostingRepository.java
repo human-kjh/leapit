@@ -5,6 +5,7 @@ import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -42,6 +43,34 @@ public class JobPostingRepository {
         Query query = em.createQuery("SELECT COUNT(j) FROM JobPosting j WHERE j.user.id = :userId AND j.deadline >= CURRENT_DATE");
         query.setParameter("userId", userId);
         return (Long) query.getSingleResult();
+    }
+
+    // 주소 - 시 조회
+    public String findByRegion(Integer id) {
+        Query query = em.createNativeQuery("select R.name from job_posting_tb J inner join  region_tb R  on R.id = J.address_region_id where J.id = ?");
+        query.setParameter(1, id);
+
+        return (String) query.getSingleResult();
+    }
+
+    // 주소 - 구 조회
+    public String findBySubRegion(Integer id) {
+        Query query = em.createNativeQuery("select S.name from job_posting_tb J inner join  sub_region_tb S  on S.id = J.address_sub_region_id where J.id = ?");
+        query.setParameter(1, id);
+        return (String) query.getSingleResult();
+
+    }
+
+    // 채용공고 & 해당 채용공고의 기술스택 전체조회
+    public List<Object[]> findAllJobPostingsWithTechStacks() {
+        LocalDate today = LocalDate.now();
+
+        Query query = em.createQuery(
+                "SELECT jp, jpts FROM JobPosting jp " +
+                        "LEFT JOIN JobPostingTechStack jpts ON jp.id = jpts.jobPosting.id where jp.deadline >= :today"
+        );
+        query.setParameter("today", today);
+        return query.getResultList();
     }
 
 }

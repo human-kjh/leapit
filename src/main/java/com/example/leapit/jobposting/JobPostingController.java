@@ -1,6 +1,7 @@
 package com.example.leapit.jobposting;
 
 import com.example.leapit.user.User;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,5 +38,13 @@ public class JobPostingController {
     public String deleteJobPosting(@RequestParam("id") Integer id) {
         jobPostingService.deleteJobPosting(id);
         return "redirect:/company/jobposting/list"; // 삭제 후 목록 페이지로 리다이렉트
+    }
+
+    // 구직자 - 채용공고 목록
+    @GetMapping("/personal/jobposting/list")
+    public String list(HttpServletRequest req) {
+        List<JobPostingResponse.JobPostingDTO> jobpostingList = jobPostingService.getAllJobPostings();
+        req.setAttribute("models", jobpostingList);
+        return "personal/jobposting/list";
     }
 }
