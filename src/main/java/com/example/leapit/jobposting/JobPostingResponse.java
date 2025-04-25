@@ -35,7 +35,7 @@ public class JobPostingResponse {
             this.image = image;
             this.companyName = companyName;
             this.techStacks = techStacks.stream()
-                    .map(stack -> new CompanyInfoResponse.DetailDTO.TechStackDTO(stack.getTechStack()))
+                    .map(stack -> new CompanyInfoResponse.DetailDTO.TechStackDTO(stack.getTechStack().getCode()))
                     .collect(Collectors.toList());
         }
 
@@ -101,7 +101,7 @@ public class JobPostingResponse {
                 this.viewCount = jp.getViewCount();
 
                 this.techStacks = techStacks.stream()
-                        .map(stack -> new CompanyInfoResponse.DetailDTO.TechStackDTO(stack.getTechStack()))
+                        .map(stack -> new CompanyInfoResponse.DetailDTO.TechStackDTO(stack.getTechStack().getCode()))
                         .collect(Collectors.toList());
             }
 

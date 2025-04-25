@@ -1,4 +1,6 @@
 package com.example.leapit.jobposting.techstack;
+
+import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.jobposting.JobPosting;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,8 +16,15 @@ public class JobPostingTechStack {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_posting_id")
     private JobPosting jobPosting;
 
-    @Column(nullable = false)
-    private String techStack;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tech_stack_code", referencedColumnName = "code") // 외래 키 설정
+    private TechStack techStack;
+
+    public JobPostingTechStack(JobPosting jobPosting, TechStack techStack) {
+        this.jobPosting = jobPosting;
+        this.techStack = techStack;
+    }
 }

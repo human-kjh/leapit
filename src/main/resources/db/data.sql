@@ -95,19 +95,19 @@ VALUES (2, '개인 블로그', 'https://velog.io/@username');
 -- 2.5 education_tb
 INSERT INTO education_tb (resume_id, graduation_date, is_dropout, education_level, school_name, major, gpa, gpa_scale,
                           created_at)
-VALUES (1, '2025-02-28', FALSE, 2, '가나다대학교', '컴퓨터공학과', 4.2, 4.5, NOW());
+VALUES (1, '2025-02-28', FALSE, '전문학사', '가나다대학교', '컴퓨터공학과', 4.2, 4.5, NOW());
 INSERT INTO education_tb (resume_id, graduation_date, is_dropout, education_level, school_name, major, gpa, gpa_scale,
                           created_at)
-VALUES (2, '2025-02-28', TRUE, 2, '가나다대학교', '컴퓨터공학과', 2.2, 4.5, NOW());
+VALUES (2, '2025-02-28', TRUE, '전문학사', '가나다대학교', '컴퓨터공학과', 2.2, 4.5, NOW());
 INSERT INTO education_tb (resume_id, graduation_date, is_dropout, education_level, school_name, major, gpa, gpa_scale,
                           created_at)
-VALUES (3, '2024-08-31', TRUE, 1, '라마바대학교', '정보처리학과', 3.5, 4.5, NOW());
+VALUES (3, '2024-08-31', TRUE, '고등학교', '라마바대학교', '정보처리학과', 3.5, 4.5, NOW());
 INSERT INTO education_tb (resume_id, graduation_date, is_dropout, education_level, school_name, major, gpa, gpa_scale,
                           created_at)
-VALUES (4, '2023-02-28', FALSE, 3, '사아자차카대학교', '인공지능학과', 3.9, 4.3, NOW());
+VALUES (4, '2023-02-28', FALSE, '학사', '사아자차카대학교', '인공지능학과', 3.9, 4.3, NOW());
 INSERT INTO education_tb (resume_id, graduation_date, is_dropout, education_level, school_name, major, gpa, gpa_scale,
                           created_at)
-VALUES (5, '2024-02-28', FALSE, 2, '부산대학교', '통계학과', 4.25, 4.3, NOW());
+VALUES (5, '2024-02-28', FALSE, '전문학사', '부산대학교', '통계학과', 4.25, 4.3, NOW());
 
 -- 2.6 experience_tb
 INSERT INTO experience_tb (resume_id, start_date, end_date, is_employed, company_name, summary, position,
@@ -285,8 +285,8 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (6, '시니어 백엔드 개발자 채용', 'backend', 5, 10,
-        2, 1, 1, '강남대로 123',
+VALUES (6, '시니어 백엔드 개발자 채용', '백엔드', 5, 10,
+        '전문학사', 1, 1, '강남대로 123',
         '대용량 트래픽 처리 기반 백엔드 플랫폼 개발',
         '2025-06-30', '마이크로서비스 아키텍처 기반 시스템 설계 및 운영',
         'Java, Spring 기반 개발 경험 필수',
@@ -298,7 +298,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (7, '프론트엔드 개발자 모집', 'frontend', 0, 2,
+VALUES (7, '프론트엔드 개발자 모집', '프론트엔드', 0, 2,
         NULL, 1, 2, '서초대로 77',
         'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
         '2025-05-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
@@ -348,23 +348,23 @@ VALUES (8, '데이터 엔지니어 채용', 'data_engineer', 3, 5,
 
 
 -- 3-1. job_posting_tech_stack_tb
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (1, 'Python');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (1, 'Java');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (1, 'React');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (2, 'Django');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (2, 'Kotlin');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (2, 'Spring Boot');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (3, 'SQL');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (3, 'Node.js');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (3, 'React');
 
 
