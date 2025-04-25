@@ -10,15 +10,17 @@ import java.util.List;
 public class ApplicationService {
     private final ApplicationRepository applicationRepository;
 
-    // 지원 현황 통계
-    public ApplicationResponse.ApplicationStatusDto statusByUserId(Integer userId) {
-        return applicationRepository.findSummaryByUserId(userId);
+
+    public ApplicationResponse.ApplicationListViewDTO findApplicationListByUserId(Integer userId) {
+        // 지원 현황 통계
+        ApplicationResponse.ApplicationStatusDto statusDto = applicationRepository.findSummaryByUserId(userId);
+        // 지원 현황 목록 조회
+        List<ApplicationResponse.ApplicationDto> applicationDtos = applicationRepository.findApplicationsByUserId(userId);
+        // viewDTO에 담기
+        ApplicationResponse.ApplicationListViewDTO respDTO = new ApplicationResponse.ApplicationListViewDTO(statusDto, applicationDtos);
+        return respDTO;
     }
 
-    // 지원 현황 목록 조회
-    public List<ApplicationResponse.ApplicationDto> findApplicationsByUserId(Integer userId) {
-        return applicationRepository.findApplicationsByUserId(userId);
-    }
 
     public ApplicationResponse.ApplicantListPageDTO findApplicantPageWithFilters(Integer companyUserId, Integer jobPostingId, String passStatus, Boolean isViewed, Boolean isBookmark) {
         // 1. 진행중과 마감된 리스트 조회
@@ -32,9 +34,9 @@ public class ApplicationService {
 
 
         // 4. pageDTO에 담아서 컨트롤러에 넘김
-        ApplicationResponse.ApplicantListPageDTO pageDTO = new ApplicationResponse.ApplicantListPageDTO(applicants,positions,listView);
+        ApplicationResponse.ApplicantListPageDTO respDTO = new ApplicationResponse.ApplicantListPageDTO(applicants,positions,listView);
 
 
-        return pageDTO;
+        return respDTO;
     }
 }
