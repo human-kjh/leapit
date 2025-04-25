@@ -5,7 +5,6 @@ import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.common.techstack.TechStackService;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,7 +26,7 @@ public class JobPostingController {
 
     // 채용 공고 목록 보기
     @GetMapping("/company/jobposting/list")
-    public String list(HttpServletRequest request) {
+    public String companyList(HttpServletRequest request) {
         request.setAttribute("openJobPostings", jobPostingService.OpenJobPostings());
         request.setAttribute("closedJobPostings", jobPostingService.ClosedJobPostings());
         return "company/jobposting/list";
@@ -102,11 +100,9 @@ public class JobPostingController {
 
     // 구직자 - 채용공고 목록
     @GetMapping("/personal/jobposting/list")
-    public String list(HttpServletRequest req) {
+    public String personalList(HttpServletRequest req) {
         List<JobPostingResponse.JobPostingDTO> jobpostingList = jobPostingService.getAllJobPostings();
         req.setAttribute("models", jobpostingList);
         return "personal/jobposting/list";
     }
-
-
 }
