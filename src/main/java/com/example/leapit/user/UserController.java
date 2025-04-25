@@ -1,6 +1,7 @@
 package com.example.leapit.user;
 
 import com.example.leapit._core.util.Resp;
+import com.example.leapit.common.enums.Role;
 import com.example.leapit.companyinfo.CompanyInfoService;
 import com.example.leapit.jobposting.JobPostingResponse;
 import com.example.leapit.jobposting.JobPostingService;
@@ -91,7 +92,7 @@ public class UserController {
             response.addCookie(cookie);
         }
         // 사용자 역할에 따라 리다이렉트 분기
-        if (loginDTO.getRole().equals("personal")) {
+        if (loginDTO.getRole() == Role.personal) {
             return "redirect:/";
         } else {
             // 회사 사용자일 경우 companyInfoId 확인

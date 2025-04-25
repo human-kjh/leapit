@@ -41,6 +41,37 @@
             </div>
         </div>
         <!-- 오른쪽 영역 -->
+    {{#sessionUser}}
+        <div class="col-12 col-md-4 bg-light d-flex flex-column justify-content-between"
+             style="height: 300px;">
+            <!-- 사용자 정보 영역 -->
+            <div class="d-flex align-items-center gap-2 mt-5 mb-1">
+                <div class="fs-3 fw-bold">{{sessionUser.name}}님</div>
+                <a class="text-muted small mt-3 mb-1 ms-0" href="/logout"
+                   style="text-decoration:none;">로그아웃</a>
+            </div>
+            <div class="text-secondary  mt-1 ms-1">{{sessionUser.email}}</div>
+
+            <!-- 버튼 그룹 영역 -->
+            <div class="mt-auto">
+                <button
+                        class="btn btn-outline-primary w-100  mb-3 d-flex align-items-center justify-content-center gap-2"
+                        id="joinLoginButton">
+                    <i class="fa fa-file-text-o"></i>
+                    <span>이력서 작성</span>
+                </button>
+                <button
+                        class="btn btn-outline-primary w-100  d-flex align-items-center justify-content-center gap-2"
+                        id="myPageButton">
+                    <i class="fa fa-user-o"></i>
+                    <span>마이페이지</span>
+                </button>
+
+            </div>
+        </div>
+    {{/sessionUser}}
+
+    {{^sessionUser}}
         <div class="col-12 col-md-4 bg-light d-flex flex-column justify-content-between p-3"
              style="height: 300px;">
             <!-- 상단 로고 -->
@@ -49,10 +80,11 @@
 
             <!-- 하단 버튼 -->
             <div class="text-center">
-                <button class="btn btn-primary w-100" id="joinLoginButton">회원가입/로그인</button>
+                <a href="/login-form" class="btn btn-primary w-100" id="joinLoginButton">회원가입/로그인</a>
             </div>
         </div>
     </div>
+    {{/sessionUser}}
 
     <!-- 아래 영역  -->
     <div>
