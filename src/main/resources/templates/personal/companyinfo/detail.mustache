@@ -1,0 +1,94 @@
+{{> layout/personal-header}}
+
+<!-- 본문 -->
+<div class="main container mt-5">
+    <div class="bg-white text-black">
+        <div class="container">
+            <!-- 회사명 -->
+            <div class="d-flex align-items-end gap-2 mb-4">
+                <h1 class="display-5 fw-bold">{{model.companyName}}</h1>
+            </div>
+
+            <!-- 기업 정보 -->
+            <h2 class="h6 text-dark fw-semibold mb-2">기업 정보</h2>
+            <div class="border rounded p-4 d-flex gap-3 align-items-start bg-light">
+                <img src="/img/{{model.logoImage}}" alt="로고"
+                     class="img-thumbnail rounded-circle" style="width: 48px; height: 48px"/>
+                <div class="small text-secondary">
+                    <div>
+                        <span class="text-muted me-2">연혁</span>{{model.formattedEstablishmentInfo}}
+                    </div>
+                    <div class="d-flex">
+                        <span class="text-muted me-2" style="min-width: 80px">대표주소</span>
+                        <div>
+                            <div class="text-dark">
+                                {{model.address}}
+                            </div>
+                            <div class="small mt-1 text-muted d-flex gap-2">
+                                <a href="https://map.naver.com" target="_blank" class="text-decoration-none">지도보기</a>
+                                <span class="text-secondary">·</span>
+                                <a href="#" class="text-primary text-decoration-none">주소복사</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <span class="text-muted me-2">주요 서비스</span>
+                        <a href="#" class="text-primary text-decoration-none">{{model.mainService}} ↗</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 회사 소개 -->
+            <div class="mt-5">
+                <h2 class="h5 fw-semibold mb-3">회사 소개</h2>
+                <div class="text-secondary small lh-lg">
+                    {{{model.introduction}}}
+                    <div>
+                        <img src="/img/{{model.image}}"
+                             alt="차량 관리 이미지" class="img-fluid rounded mt-3" style="max-width: 400px"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 복지 및 혜택 -->
+            <div class="mt-5">
+                <h2 class="h5 fw-semibold mb-3">복지 및 혜택</h2>
+                <div class="text-secondary small lh-lg">
+                    {{{model.benefit}}}
+                </div>
+            </div>
+
+            <!-- 채용 포지션 -->
+            <div class="mt-5">
+                <h2 class="h5 fw-semibold mb-3">
+                    채용중인 포지션 <span class="text-primary fw-bold">{{model.jobPostingCount}}</span>
+                </h2>
+
+                <div class="row g-4">
+                    {{#model.jobPostings}}
+                        <div class="col-md-6">
+                            <div class="border rounded p-3 position-relative shadow-sm">
+                                <div class="text-muted small mb-1">D-{{dDay}}</div>
+                                <a href="/position-detail/{{id}}"
+                                   class="fw-semibold text-dark text-decoration-none d-block">
+                                    {{title}}
+                                </a>
+                                <div class="text-muted small mt-1">
+                                    {{#techStacks}}
+                                        {{name}} ·
+                                    {{/techStacks}}
+                                </div>
+                            </div>
+                        </div>
+                    {{/model.jobPostings}}
+
+                    {{^model.jobPostings}}
+                        <p class="text-muted">등록된 채용공고가 없습니다.</p>
+                    {{/model.jobPostings}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 본문 끝 -->
+
+{{> layout/footer}}
