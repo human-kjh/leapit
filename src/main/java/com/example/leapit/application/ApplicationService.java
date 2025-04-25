@@ -11,7 +11,7 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
 
 
-    public ApplicationResponse.ApplicationListViewDTO 내지원현황목록(Integer userId) {
+    public ApplicationResponse.ApplicationListViewDTO findApplicationListByUserId(Integer userId) {
         // 지원 현황 통계
         ApplicationResponse.ApplicationStatusDto statusDto = applicationRepository.findSummaryByUserId(userId);
         // 지원 현황 목록 조회

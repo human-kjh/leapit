@@ -23,7 +23,7 @@ public class ApplicationController {
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
 
-        ApplicationResponse.ApplicationListViewDTO respDTO = applicationService.내지원현황목록(sessionUser.getId());
+        ApplicationResponse.ApplicationListViewDTO respDTO = applicationService.findApplicationListByUserId(sessionUser.getId());
         request.setAttribute("models", respDTO);
 
         return "personal/mypage/application";
