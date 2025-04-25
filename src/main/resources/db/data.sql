@@ -307,18 +307,53 @@ VALUES (7, '프론트엔드 개발자 모집', 'frontend', 0, 2,
         '재택 가능, 장비 지원',
         NULL, 13, NOW());
 
-INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max_career_level,
-                            education_level, address_region_id, address_sub_region_id, address_detail,
-                            service_intro, deadline, responsibility, qualification, preference,
-                            benefit, additional_info, view_count, created_at)
-VALUES (8, '데이터 엔지니어 채용', 'data_engineer', 3, 5,
-        3, 2, 3, '해운대로 456',
-        'AI 데이터 파이프라인 구축 기업입니다.',
-        '2025-04-15', 'ETL 파이프라인 설계 및 데이터 웨어하우스 운영',
-        'Python, SQL, AWS Redshift 경험',
-        '빅데이터 처리 경험 우대',
-        '성과급, 복지포인트',
-        '해외 컨퍼런스 참가 지원', 23, NOW());
+INSERT INTO job_posting_tb (
+    user_id, title, position_type, min_career_level, max_career_level,
+    education_level, address_region_id, address_sub_region_id, address_detail,
+    service_intro, deadline, responsibility, qualification, preference,
+    benefit, additional_info, view_count, created_at
+) VALUES (
+             7, '백엔드 개발자 모집', 'frontend', 0, 2,
+             NULL, 1, 2, '서초대로 77',
+             'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
+             '2025-05-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
+             'React, TypeScript 기반 개발 경험',
+             'Figma 연동 경험자 우대',
+             '재택 가능, 장비 지원',
+             NULL, 13, NOW()
+         );
+
+INSERT INTO job_posting_tb (
+    user_id, title, position_type, min_career_level, max_career_level,
+    education_level, address_region_id, address_sub_region_id, address_detail,
+    service_intro, deadline, responsibility, qualification, preference,
+    benefit, additional_info, view_count, created_at
+) VALUES (
+             7, '마감된 개발자 모집', 'frontend', 0, 2,
+             NULL, 1, 2, '서초대로 77',
+             'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
+             '2025-03-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
+             'React, TypeScript 기반 개발 경험',
+             'Figma 연동 경험자 우대',
+             '재택 가능, 장비 지원',
+             NULL, 13, NOW()
+         );
+
+INSERT INTO job_posting_tb (
+    user_id, title, position_type, min_career_level, max_career_level,
+    education_level, address_region_id, address_sub_region_id, address_detail,
+    service_intro, deadline, responsibility, qualification, preference,
+    benefit, additional_info, view_count, created_at
+) VALUES (
+             8, '데이터 엔지니어 채용', 'data_engineer', 3, 5,
+             3, 2, 3, '해운대로 456',
+             'AI 데이터 파이프라인 구축 기업입니다.',
+             '2025-04-15', 'ETL 파이프라인 설계 및 데이터 웨어하우스 운영',
+             'Python, SQL, AWS Redshift 경험',
+             '빅데이터 처리 경험 우대',
+             '성과급, 복지포인트',
+             '해외 컨퍼런스 참가 지원', 23, NOW()
+         );
 
 -- 3-1. job_posting_tech_stack_tb
 INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)

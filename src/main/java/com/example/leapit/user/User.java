@@ -66,4 +66,9 @@ public class User {
         this.password = newPassword;
         this.contactNumber = contactNumber;
     }
+
+    @Builder(builderMethodName = "idBuilder")
+    public User(Integer id) {
+        this.id = id;
+    }
 }

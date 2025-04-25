@@ -3,6 +3,7 @@ package com.example.leapit.application.bookmark;
 import com.example.leapit.application.Application;
 import com.example.leapit.user.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,4 +27,12 @@ public class ApplicationBookmark {
 
     @CreationTimestamp
     private Timestamp createdAt;
+
+    @Builder
+    public ApplicationBookmark(Integer id, User user, Application application, Timestamp createdAt) {
+        this.id = id;
+        this.user = user;
+        this.application = application;
+        this.createdAt = createdAt;
+    }
 }
