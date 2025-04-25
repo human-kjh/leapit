@@ -51,7 +51,7 @@ public class JobPostingService {
     }
 
     // 채용 공고 삭제
-    @org.springframework.transaction.annotation.Transactional
+    @Transactional
     public void delete(Integer id) {
         jobPostingRepository.deleteById(id);
     }

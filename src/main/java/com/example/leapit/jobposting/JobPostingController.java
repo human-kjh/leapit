@@ -3,6 +3,8 @@ package com.example.leapit.jobposting;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.common.techstack.TechStackService;
+import com.example.leapit.companyinfo.CompanyInfo;
+import com.example.leapit.companyinfo.CompanyInfoRepository;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class JobPostingController {
     private final TechStackService techStackService;
     private final JobPostingRepository jobPostingRepository;
     private final TechStackRepository techStackRepository;
+    private final CompanyInfoRepository companyInfoRepository;
 
     // 채용 공고 목록 보기
     @GetMapping("/company/jobposting/list")
@@ -33,8 +37,8 @@ public class JobPostingController {
     }
 
     // 채용 공고 상세보기
-    @GetMapping("/jobposting/{id}")
-    public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
+    @GetMapping("/company/jobposting/{id}")
+    public String companyDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
         JobPosting jobPosting = jobPostingService.findById(id);
         List<String> techStack = jobPostingService.getTechStacksByJobPostingId(id); // 기술 스택 목록 조회
         request.setAttribute("model", jobPosting);
@@ -88,7 +92,7 @@ public class JobPostingController {
     public String update(@PathVariable("id") Integer id, JobPostingRequest.UpdateDTO updateDTO,
                          @RequestParam(value = "techStacks", required = false) String[] techStacks) {
         jobPostingService.update(id, updateDTO, techStacks);
-        return "redirect:/jobposting/" + id;
+        return "redirect:/company/jobposting/" + id;
     }
 
     // 채용 공고 삭제
@@ -104,5 +108,19 @@ public class JobPostingController {
         List<JobPostingResponse.JobPostingDTO> jobpostingList = jobPostingService.getAllJobPostings();
         req.setAttribute("models", jobpostingList);
         return "personal/jobposting/list";
+    }
+
+    // 구직자 - 채용공고 상세
+    @GetMapping("/personal/jobposting/{id}")
+    public String personalDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
+        JobPosting jobPosting = jobPostingService.findById(id);
+        List<String> techStack = jobPostingService.getTechStacksByJobPostingId(id);
+        CompanyInfo companyInfo = companyInfoRepository.findByUserId(jobPosting.getUser().getId());
+
+        request.setAttribute("model", jobPosting);
+        request.setAttribute("techStack", techStack);
+        request.setAttribute("company", companyInfo);
+
+        return "personal/jobposting/detail";
     }
 }
