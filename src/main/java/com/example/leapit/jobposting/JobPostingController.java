@@ -45,8 +45,6 @@ public class JobPostingController {
     public String list(HttpServletRequest req) {
         List<JobPostingResponse.JobPostingDTO> jobpostingList = jobPostingService.getAllJobPostings();
         req.setAttribute("models", jobpostingList);
-//        CompanyInfoResponse.DetailDTO respDTO = companyInfoService.detail(id, sessionUser.getId());
-//        request.setAttribute("model", respDTO);
         return "personal/jobposting/list";
     }
 }
