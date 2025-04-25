@@ -22,7 +22,7 @@ public class CompanyInfoService {
     private final JobPostingTechStackRepository jobPostingTechStackRepository;
 
     @Transactional
-    public void save(CompanyInfoRequest.SaveDTO reqDTO, User sessionUser) {
+    public CompanyInfo save(CompanyInfoRequest.SaveDTO reqDTO, User sessionUser) {
         String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/img/";
 
         try {
@@ -48,15 +48,14 @@ public class CompanyInfoService {
 
         CompanyInfo companyInfo = reqDTO.toEntity(sessionUser);
         companyInfoRepository.save(companyInfo);
+        return companyInfo;
     }
 
-    public CompanyInfoResponse.DetailDTO detail(Integer id) {
+    public CompanyInfoResponse.DetailDTO detail(Integer id, Integer userId) {
         CompanyInfo companyInfo = companyInfoRepository.findById(id);
 
-        User user = companyInfo.getUser();
-
         // 1. 조인된 결과 가져오기 (JobPosting + JobPostingTechStack)
-        List<Object[]> results = jobPostingRepository.findJobPostingsWithTechStacksByUserId(user.getId());
+        List<Object[]> results = jobPostingRepository.findJobPostingsWithTechStacksByUserId(userId);
 
         // 2. 공고 Map과 기술스택 Map 생성
         Map<Integer, JobPosting> postingMap = new HashMap<>();
@@ -76,11 +75,11 @@ public class CompanyInfoService {
         List<JobPosting> jobPostings = new ArrayList<>(postingMap.values());
 
         // 4. 마감일이 지나지 않은 공고 수 계산
-        Long jobPostingCount = jobPostingRepository.countByUserIdAndDeadlineAfter(user.getId());
+        Long jobPostingCount = jobPostingRepository.countByUserIdAndDeadlineAfter(userId);
 
         // 5. DTO 생성자 호출
-        return new CompanyInfoResponse.DetailDTO(companyInfo, jobPostingCount.intValue(), jobPostings, allTechStacks
-        );
+        CompanyInfoResponse.DetailDTO respDTO = new CompanyInfoResponse.DetailDTO(companyInfo, userId, jobPostingCount.intValue(), jobPostings, allTechStacks);
+        return respDTO;
     }
 
     public CompanyInfo updateCheck(Integer id) {
@@ -90,7 +89,7 @@ public class CompanyInfoService {
     }
 
     @Transactional
-    public CompanyInfo update(Integer id, CompanyInfoRequest.UpdateDTO reqDTO) {
+    public CompanyInfo update(Integer id, Integer userId, CompanyInfoRequest.UpdateDTO reqDTO) {
         CompanyInfo companyInfo = companyInfoRepository.findById(id);
 
         String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/img/";
@@ -131,5 +130,10 @@ public class CompanyInfoService {
 
         companyInfoRepository.deleteById(id);
 
+    }
+
+    public Integer findCompanyInfoIdByUserId(Integer userId) {
+        CompanyInfo companyInfo = companyInfoRepository.findByUserId(userId);
+        return companyInfo != null ? companyInfo.getId() : null;
     }
 }

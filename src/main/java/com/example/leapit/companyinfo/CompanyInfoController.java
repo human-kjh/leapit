@@ -14,18 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class CompanyInfoController {
     private final CompanyInfoService companyInfoService;
     private final HttpSession session;
-
-    @GetMapping("/company")
-    public String index() {
-        return "company/main";
-    }
-
-
+    
     @GetMapping("/company/info/{id}")
     public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-
-        CompanyInfoResponse.DetailDTO respDTO = companyInfoService.detail(id);
+        CompanyInfoResponse.DetailDTO respDTO = companyInfoService.detail(id, sessionUser.getId());
         request.setAttribute("model", respDTO);
 
         return "company/info/detail";
@@ -33,6 +28,9 @@ public class CompanyInfoController {
 
     @GetMapping("/company/info/save-form")
     public String saveForm() {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
         return "company/info/save-form";
     }
 
@@ -40,15 +38,20 @@ public class CompanyInfoController {
     @PostMapping("/company/info/save")
     public String save(CompanyInfoRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-        companyInfoService.save(reqDTO, sessionUser);
+        CompanyInfo companyInfo = companyInfoService.save(reqDTO, sessionUser);
 
-        return "redirect:/company/info/";
+        session.setAttribute("companyInfoId", companyInfo.getId());
+
+        return "redirect:/company/info/" + companyInfo.getId();
     }
 
 
     @GetMapping("/company/info/{id}/update-form")
     public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         CompanyInfo companyInfo = companyInfoService.updateCheck(id);
         request.setAttribute("model", companyInfo);
@@ -58,8 +61,10 @@ public class CompanyInfoController {
 
     @PostMapping("/company/info/{id}/update")
     public String update(@PathVariable("id") Integer id, CompanyInfoRequest.UpdateDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-        companyInfoService.update(id, reqDTO);
+        companyInfoService.update(id, sessionUser.getId(), reqDTO);
 
         return "redirect:/company/info/" + id;
     }
@@ -67,9 +72,14 @@ public class CompanyInfoController {
 
     @PostMapping("/company/info/{id}/delete")
     public String delete(@PathVariable("id") Integer id) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
         companyInfoService.delete(id);
 
-        return "redirect:/company";
+        session.removeAttribute("companyInfoId");
+
+        return "redirect:/company/main";
     }
 
 }

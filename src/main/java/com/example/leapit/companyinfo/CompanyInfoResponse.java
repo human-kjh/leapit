@@ -60,7 +60,7 @@ public class CompanyInfoResponse {
             }
         }
 
-        public DetailDTO(CompanyInfo companyInfo, Integer jobPostingCount, List<JobPosting> jobPostings, List<JobPostingTechStack> techStacks) {
+        public DetailDTO(CompanyInfo companyInfo, Integer userId, Integer jobPostingCount, List<JobPosting> jobPostings, List<JobPostingTechStack> techStacks) {
             this.id = companyInfo.getId();
             this.logoImage = companyInfo.getLogoImage();
             this.companyName = companyInfo.getCompanyName();
