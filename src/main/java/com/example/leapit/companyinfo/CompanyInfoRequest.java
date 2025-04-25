@@ -10,6 +10,7 @@ public class CompanyInfoRequest {
 
     @Data
     public static class SaveDTO {
+        private Integer id;
         private String logoImage;
         private String companyName;
         private LocalDate establishmentDate;
