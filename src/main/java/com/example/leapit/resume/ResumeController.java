@@ -45,4 +45,14 @@ public class ResumeController {
         resumeService.delete(id,sessionUser.getId());
         return "redirect:/resume";
     }
+
+    @GetMapping("/resume/save-form")
+    public String saveForm() {
+        return "personal/resume/save-form";
+    }
+
+    @PostMapping("/resume/save")
+    public String save() {
+        return "redirect:/";
+    }
 }
