@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -73,4 +74,42 @@ public class JobPostingRepository {
         return query.getResultList();
     }
 
+    // 구직자 메인페이지 - 인기공고 8개
+    public List<Object[]> findTop8PopularJobPostingsWithTechStacks() {
+        LocalDate today = LocalDate.now();
+
+        // 1. 마감일 이후 + viewCount 기준 상위 8개 채용공고 ID 조회
+        List<Integer> top8Ids = em.createQuery(
+                        "SELECT jp.id FROM JobPosting jp " +
+                                "WHERE jp.deadline >= :today " +
+                                "ORDER BY jp.viewCount DESC", Integer.class)
+                .setParameter("today", today)
+                .setMaxResults(8)
+                .getResultList();
+
+        if (top8Ids.isEmpty()) return new ArrayList<>();
+
+        // 2. 해당 ID들 기준으로 기술스택 조인 포함 재조회
+        return em.createQuery(
+                        "SELECT jp, jpts FROM JobPosting jp " +
+                                "LEFT JOIN JobPostingTechStack jpts ON jp.id = jpts.jobPosting.id " +
+                                "WHERE jp.id IN :ids", Object[].class)
+                .setParameter("ids", top8Ids)
+                .getResultList();
+    }
+
+    // 구직자 메인페이지 - 최신공고 3개
+    public List<JobPosting> findTop3RecentJobPostings() {
+        LocalDate today = LocalDate.now();
+
+        Query query = em.createQuery(
+                "SELECT jp FROM JobPosting jp " +
+                        "WHERE jp.deadline >= :today " +
+                        "ORDER BY jp.createdAt DESC"
+        );
+        query.setParameter("today", today);
+        query.setMaxResults(3);
+
+        return query.getResultList();
+    }
 }
