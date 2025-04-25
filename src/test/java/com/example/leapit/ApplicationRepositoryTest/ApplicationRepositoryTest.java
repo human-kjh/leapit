@@ -1,8 +1,11 @@
 package com.example.leapit.ApplicationRepositoryTest;
 
+import com.example.leapit.application.Application;
 import com.example.leapit.application.ApplicationRepository;
 import com.example.leapit.application.ApplicationResponse;
+import com.example.leapit.resume.Resume;
 import com.example.leapit.resume.ResumeRepository;
+import com.example.leapit.user.User;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +35,7 @@ public class ApplicationRepositoryTest {
 
         // when
         List<ApplicationResponse.CompanyeApplicantDto> result =
-                applicationRepository.findAllApplicantsByCompanyUserId(companyUserId, jobPostingId, passStatus, isViewed,isBookmark);
+                applicationRepository.findAllApplicantsByFilter(companyUserId, jobPostingId, passStatus, isViewed,isBookmark);
 
         // then
         System.out.println("=== 지원자 조회 결과 ===");
@@ -50,6 +53,23 @@ public class ApplicationRepositoryTest {
 
         System.out.println("총 " + result.size() + "명 조회됨");
 
+    }
+
+
+    @Test
+    public void applicationRepository_test2() {
+        // given
+        int userId = 2;
+
+        // when
+        ApplicationResponse.ApplicationStatusDto a = applicationRepository.findSummaryByUserId(userId);
+
+        System.out.println("------------------테스트 결과 시작----------------------");
+        System.out.println("==== 지원 현황 요약 ====");
+        System.out.println("총 지원 수: " + a.getTotal());
+        System.out.println("합격 수: " + a.getPassed());
+        System.out.println("불합격 수: " + a.getFailed());
+        System.out.println("------------------테스트 결과 끝----------------------");
     }
 
 

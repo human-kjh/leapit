@@ -17,38 +17,38 @@
                     <div class="myStatus">
                         <div class="myStatusInner">
                             <div class="myStatusTitle">마이 랩핏</div>
+                            <!-- 지원 통계 영역 -->
                             <div class="statusBoxes">
                                 <div class="statusBox">
                                     <h6>지원완료</h6>
-                                    <span class="statusCount">{{model.total}}</span>
+                                    <span class="statusCount">{{models.status.total}}</span>
                                 </div>
                                 <div class="statusBox">
                                     <h6>최종합격</h6>
-                                    <span class="statusCount">{{model.passed}}</span>
+                                    <span class="statusCount">{{models.status.passed}}</span>
                                 </div>
                                 <div class="statusBox">
                                     <h6>불합격</h6>
-                                    <span class="statusCount">{{model.failed}}</span>
+                                    <span class="statusCount">{{models.status.failed}}</span>
                                 </div>
                             </div>
-                        </div>
-                        <!-- 지원현황 목록 -->
-                        <div class="applyContainer">
-                            <h5 class="applyTitle">지원완료 총 {{model.total}}건</h5>
-                            <!-- 반복 가능한 applyItem -->
+
+                            <!-- 지원 완료 건수 -->
+                            <h5 class="applyTitle">지원완료 총 {{models.status.total}}건</h5>
+
+                            <!-- 지원 현황 목록 -->
                             <div class="applyList">
-                                {{#models}}
+                                {{#models.applications}}
                                     <div class="applyItem">
                                         <div class="card mb-3">
-                                            <!--주소첨부 필요-->
-                                            <a href="#" class="card-body text-start rounded border-0 text-decoration-none bg-white">
+                                            <a href="/job/detail/{{jobPostingId}}" class="card-body text-start rounded border-0 text-decoration-none bg-white">
                                                 <h6 class="card-title mb-2">{{companyName}}</h6>
                                                 <h5 class="card-title mb-2">{{jobTitle}}</h5>
                                                 <small>{{appliedDate}} 지원</small>
                                             </a>
                                         </div>
                                     </div>
-                                {{/models}}
+                                {{/models.applications}}
                             </div>
                         </div>
                     </div>

@@ -18,20 +18,16 @@ public class ApplicationController {
     private final ApplicationService applicationService;
     private final HttpSession session;
 
+
     // 개인 지원 현황 관리
     @GetMapping("/personal/mypage/application")
     public String application(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-        // 지원 현황 통계
-        ApplicationResponse.ApplicationStatusDto status = applicationService.statusByUserId(sessionUser.getId());
 
-        // 지원 목록
-        List<ApplicationResponse.ApplicationDto> applications = applicationService.findApplicationsByUserId(sessionUser.getId());
-
-        request.setAttribute("model", status);
-        request.setAttribute("models", applications);
+        ApplicationResponse.ApplicationListViewDTO respDTO = applicationService.내지원현황목록(sessionUser.getId());
+        request.setAttribute("models", respDTO);
 
         return "personal/mypage/application";
     }
@@ -56,10 +52,10 @@ public class ApplicationController {
         Boolean isBookmark = null;
         if ("true".equals(isBookmarkStr)) isBookmark = true;
 
-        ApplicationResponse.ApplicantListPageDTO pageDTO =
+        ApplicationResponse.ApplicantListPageDTO respDTO =
                 applicationService.findApplicantPageWithFilters(sessionUser.getId(), reqDTO.getJobPostingId(),passStatus,isViewed, isBookmark);
 
-        request.setAttribute("models", pageDTO);
+        request.setAttribute("models", respDTO);
 
         return "company/applicant/list";
     }
