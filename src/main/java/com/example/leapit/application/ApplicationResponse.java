@@ -7,6 +7,8 @@ import java.util.List;
 
 public class ApplicationResponse {
 
+
+
     @Data
     public static class ApplicantListPageDTO {
         private List<CompanyeApplicantDto> applicants;
@@ -150,8 +152,5 @@ public class ApplicationResponse {
             this.failed = failed;
         }
     }
-
-
-
 }
 

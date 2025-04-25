@@ -5,6 +5,7 @@ import com.example.leapit.application.bookmark.ApplicationBookmarkRequest;
 import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpSession;
+import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,12 +29,12 @@ public class JobPostingBookmarkController {
     }
 
     // 개인 스크랩 삭제 job_posting_bookmark
-    @DeleteMapping("/api/personal/bookmark/{id}")
+    @PostMapping("/api/personal/bookmark/{id}")
     public Resp<?> deleteBookmark(@PathVariable("id") Integer jobPostingId) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        System.out.println("applicationId = " + jobPostingId + ", sessionUserId = " + sessionUser.getId());
 
         jobPostingBookmarkService.deleteJobPostingBookmarkByBookmarkId(jobPostingId, sessionUser.getId());
+
         return Resp.ok("북마크 삭제");
     }
 }

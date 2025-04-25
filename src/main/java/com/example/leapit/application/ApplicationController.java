@@ -1,5 +1,6 @@
 package com.example.leapit.application;
 
+import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
 import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,9 +24,9 @@ public class ApplicationController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
         ApplicationResponse.ApplicationBookmarkListDTO respDTO = applicationService.내북마크관리페이지(sessionUser.getId());
+
         request.setAttribute("models", respDTO);
         return "personal/mypage/bookmark";
-
     }
 
     // 개인 지원 현황 관리

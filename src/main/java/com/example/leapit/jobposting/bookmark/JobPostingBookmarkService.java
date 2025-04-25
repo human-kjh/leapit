@@ -43,6 +43,7 @@ public class JobPostingBookmarkService {
 
         JobPostingBookmark bookmark = jobPostingBookmarkRepository.findByUserIdAndJobPostingId(sessionUserId, jobPostingId);
 
+
         if (bookmark == null) throw new RuntimeException("해당 스크랩이 존재하지 않습니다.");
         if (!bookmark.getUser().getId().equals(sessionUserId)) throw new RuntimeException("권한이 없습니다.");
 

@@ -35,33 +35,23 @@
                         <div class="scrapedPositionContainer">
                             <h4 class="scrapTitle">나의 스크랩 포지션</h4>
                             <div class="scrapedJobList">
-                                {{#models.bookmarks}}
-                                    <div class="scrapedJobItem card p-3" style="width: 18rem;">
-                                        <div class="d-flex justify-content-between align-items-start">
-                                            <a href="/job/detail/{{jobPostingId}}" class="flex-grow-1 text-decoration-none text-dark me-2">
-                                                <h6 class="mb-0 text-truncate">{{jobPostingTitle}}</h6>
-                                            </a>
-                                            {{#isBookmarked}}
-                                                <i class="bi bi-bookmark-fill fs-5 text-primary"
-                                                   id="bookmark-{{jobPostingId}}"
-                                                   tabindex="-1"
-                                                   style="cursor: pointer;"
-                                                   onmousedown="event.preventDefault()"
-                                                   onclick="deleteBookmark({{jobPostingId}})"></i>
-                                            {{/isBookmarked}}
-                                            {{^isBookmarked}}
-                                                <i class="bi bi-bookmark-fill fs-5 text-primary"
-                                                   id="bookmark-{{jobPostingId}}"
-                                                   tabindex="-1"
-                                                   style="cursor: pointer;"
-                                                   onmousedown="event.preventDefault()"
-                                                   onclick="deleteBookmark({{jobPostingId}})"></i>
-                                            {{/isBookmarked}}
+                                    {{#models.bookmarks}}
+                                        <div class="scrapedJobItem card p-3" style="width: 18rem;">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <a href="/job/detail/{{jobPostingId}}" class="flex-grow-1 text-decoration-none text-dark me-2">
+                                                    <h6 class="mb-0 text-truncate">{{jobPostingTitle}}</h6>
+                                                </a>
+                                                    <i class="bi bi-bookmark-fill fs-5 text-primary"
+                                                       id="bookmark-{{jobPostingId}}"
+                                                       tabindex="-1"
+                                                       style="cursor: pointer;"
+                                                       onmousedown="event.preventDefault()"
+                                                       onclick="deleteBookmark({{jobPostingId}})"></i>
+                                            </div>
+                                            <p class="text-muted mb-1 small">{{companyName}}</p>
+                                            <div class="date text-muted small">마감일: {{DeadLine}}</div>
                                         </div>
-                                        <p class="text-muted mb-1 small">{{companyName}}</p>
-                                        <div class="date text-muted small">마감일: {{DeadLine}}</div>
-                                    </div>
-                                {{/models.bookmarks}}
+                                    {{/models.bookmarks}}
 
                                 {{^models.bookmarks}}
                                     <div class="text-muted">스크랩한 포지션이 없습니다.</div>
@@ -72,64 +62,22 @@
                 </div>
             </div>
             <script>
-                async function saveBookmark(jobPostingId) {
-                    try {
-                        const response = await fetch(`/api/personal/bookmark`, {
-                            method: "POST",
-                            body: JSON.stringify({ applicationId: jobPostingId }),
-                            headers: { "Content-Type": "application/json" }
-                        });
-
-                        const result = await response.json();
-
-                        if (result.status === 200) {
-                            const icon = document.querySelector(`#bookmark-${jobPostingId}`);
-                            icon.classList.remove("fa-star-o");
-                            icon.classList.add("fa-star", "text-warning");
-                            icon.setAttribute("onclick", `deleteBookmark(${jobPostingId})`);
-                        } else {
-                            alert(result.msg);
-                        }
-                    } catch (e) {
-                        console.error("스크랩 등록 중 오류:", e);
-                    }
-                }
-
                 async function deleteBookmark(jobPostingId) {
                     try {
                         const response = await fetch(`/api/personal/bookmark/${jobPostingId}`, {
-                            method: "DELETE"
+                            method: "POST"
                         });
 
                         const result = await response.json();
 
-                        if (result.status === 200) {
                             const icon = document.querySelector(`#bookmark-${jobPostingId}`);
-                            icon.classList.remove("fa-star", "text-warning");
-                            icon.classList.add("fa-star-o");
+                            icon.classList.remove("bi-bookmark-fill");
+                            icon.classList.add("bi-bookmark");
                             icon.setAttribute("onclick", `saveBookmark(${jobPostingId})`);
-                        } else {
-                            alert(result.msg);
-                        }
+                            location.reload();
                     } catch (e) {
                         console.error("스크랩 삭제 중 오류:", e);
                     }
                 }
-                function toggleBookmarkFilter() {
-                    const form = document.getElementById('bookmarkForm');
-                    const input = document.getElementById('isBookmark');
-                    const currentValue = input.value;
-
-
-                    if (currentValue === "true") {
-                        input.value = "";
-                    } else {
-                        input.value = "true";
-                    }
-
-                    form.submit();
-                }
             </script>
-            <!-- 본문 끝 -->
-
 {{> layout/footer}}
