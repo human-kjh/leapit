@@ -1,234 +1,90 @@
 {{> layout/personal-header}}
 
-            <!-- 본문 -->
-            <div class="main container px-3 px-md-4">
-                <!-- Carousel + 옆 영역 (세로폭 완전 일치) -->
-                <div class="row mt-5 mb-4 gx-3">
-                    <!-- Carousel 영역 -->
-                    <div class="col-12 col-md-8" style="height: 300px;">
-                        <div id="mainCarousel" class="carousel slide h-100" data-bs-ride="carousel">
-                            <div class="carousel-indicators">
-                                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"
-                                    aria-current="true" aria-label="Slide 1"></button>
-                                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"
-                                    aria-label="Slide 2"></button>
-                                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"
-                                    aria-label="Slide 3"></button>
-                            </div>
-                            <div class="carousel-inner h-100">
-                                <div class="carousel-item active h-100">
-                                    <img src="/img/jobImg.png" class="d-block w-100 h-100 object-fit-cover"
-                                        alt="Job Image 1">
-                                    <div class="carousel-caption">
-                                        <h3>시니어 백엔드 개발</h3>
-                                        <p>그린 블록체인</p>
-                                    </div>
-                                </div>
-                                <div class="carousel-item h-100">
-                                    <img src="/img/jobImg.png" class="d-block w-100 h-100 object-fit-cover"
-                                        alt="Job Image 2">
-                                    <div class="carousel-caption">
-                                        <h3>시니어 백엔드 개발</h3>
-                                        <p>그린 블록체인</p>
-                                    </div>
-                                </div>
-                                <div class="carousel-item h-100">
-                                    <img src="/img/jobImg.png" class="d-block w-100 h-100 object-fit-cover"
-                                        alt="Job Image 3">
-                                    <div class="carousel-caption">
-                                        <h3>시니어 백엔드 개발</h3>
-                                        <p>그린 블록체인</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel"
-                                data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel"
-                                data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- 오른쪽 영역 -->
-                    <div class="col-12 col-md-4 bg-light d-flex flex-column justify-content-between p-3"
-                        style="height: 300px;">
-                        <!-- 상단 로고 -->
-                        <img src="/img/logo4.png" class="img-fluid" id="logo4"
-                            style="max-height: 210px; max-width: 500px;">
-
-                        <!-- 하단 버튼 -->
-                        <div class="text-center">
-                            <button class="btn btn-primary w-100" id="joinLoginButton">회원가입/로그인</button>
-                        </div>
-                    </div>
+<!-- 본문 -->
+<div class="main container px-3 px-md-4">
+    <!-- Carousel + 옆 영역 (세로폭 완전 일치) -->
+    <div class="row mt-5 mb-4 gx-3">
+        <!-- Carousel 영역 -->
+        <div class="col-12 col-md-8" style="height: 300px;">
+            <div id="mainCarousel" class="carousel slide h-100" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"
+                            aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
                 </div>
 
-                <!-- 아래 영역  -->
-                <div>
-                    <h4 class="fw-bold mt-5 mb-3">이번주 인기 포지션</h4>
-                    <div class="row gx-3 gy-4">
-                        <!-- 카드1 -->
-                        <div class="col-md-3 col-sm-6">
-                            <a href="/상세페이지URL1" class="text-decoration-none text-dark">
-                                <div class="mb-3 position-relative">
-                                    <img src="/img/jobImg.png" class="img-fluid">
-                                    <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-3</span>
-                                </div>
-                                <div>
-                                    <div class="mb-2">그린 블록체인</div>
-                                    <h4 class="mb-2">시니어 백엔드 개발</h4>
-                                    <div class="mb-3">
-                                        <div><small>Java · MySQL · Docker · React · Kotlin</small></div>
-                                        <div><small>서울 영등포구 · 경력 7-10년</small></div>
-                                    </div>
-                                </div>
-                            </a>
-                            <button class="btn btn-outline-primary w-100"><i class="fa fa-bookmark-o me-2"></i>
-                                스크랩하기
-                            </button>
+                <div class="carousel-inner h-100">
+                    {{#model.recentJobPostings}}
+                        <div class="carousel-item {{#isActive}}active{{/isActive}} h-100">
+                            <img src="/img/jobImg.png" class="d-block w-100 h-100 object-fit-cover" alt="{{title}}">
+                            <div class="carousel-caption">
+                                <h3>{{title}}</h3>
+                                <p>{{companyName}}</p>
+                            </div>
                         </div>
-                        <!-- 카드 2~8 -->
-                        <div class="col-md-3 col-sm-6">
-                            <a href="/상세페이지URL1" class="text-decoration-none text-dark">
-                                <div class="mb-3 position-relative">
-                                    <img src="/img/jobImg.png" class="img-fluid">
-                                    <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-3</span>
-                                </div>
-                                <div>
-                                    <div class="mb-2">그린 블록체인</div>
-                                    <h4 class="mb-2">시니어 백엔드 개발</h4>
-                                    <div class="mb-3">
-                                        <div><small>Java · MySQL · Docker · React · Kotlin</small></div>
-                                        <div><small>서울 영등포구 · 경력 7-10년</small></div>
-                                    </div>
-                                </div>
-                            </a>
-                            <button class="btn btn-outline-primary w-100"><i class="fa fa-bookmark-o me-2"></i>
-                                스크랩하기
-                            </button>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <a href="/상세페이지URL1" class="text-decoration-none text-dark">
-                                <div class="mb-3 position-relative">
-                                    <img src="/img/jobImg.png" class="img-fluid">
-                                    <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-3</span>
-                                </div>
-                                <div>
-                                    <div class="mb-2">그린 블록체인</div>
-                                    <h4 class="mb-2">시니어 백엔드 개발</h4>
-                                    <div class="mb-3">
-                                        <div><small>Java · MySQL · Docker · React · Kotlin</small></div>
-                                        <div><small>서울 영등포구 · 경력 7-10년</small></div>
-                                    </div>
-                                </div>
-                            </a>
-                            <button class="btn btn-outline-primary w-100"><i class="fa fa-bookmark-o me-2"></i>
-                                스크랩하기
-                            </button>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <a href="/상세페이지URL1" class="text-decoration-none text-dark">
-                                <div class="mb-3 position-relative">
-                                    <img src="/img/jobImg.png" class="img-fluid">
-                                    <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-3</span>
-                                </div>
-                                <div>
-                                    <div class="mb-2">그린 블록체인</div>
-                                    <h4 class="mb-2">시니어 백엔드 개발</h4>
-                                    <div class="mb-3">
-                                        <div><small>Java · MySQL · Docker · React · Kotlin</small></div>
-                                        <div><small>서울 영등포구 · 경력 7-10년</small></div>
-                                    </div>
-                                </div>
-                            </a>
-                            <button class="btn btn-outline-primary w-100"><i class="fa fa-bookmark-o me-2"></i>
-                                스크랩하기
-                            </button>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <a href="/상세페이지URL1" class="text-decoration-none text-dark">
-                                <div class="mb-3 position-relative">
-                                    <img src="/img/jobImg.png" class="img-fluid">
-                                    <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-3</span>
-                                </div>
-                                <div>
-                                    <div class="mb-2">그린 블록체인</div>
-                                    <h4 class="mb-2">시니어 백엔드 개발</h4>
-                                    <div class="mb-3">
-                                        <div><small>Java · MySQL · Docker · React · Kotlin</small></div>
-                                        <div><small>서울 영등포구 · 경력 7-10년</small></div>
-                                    </div>
-                                </div>
-                            </a>
-                            <button class="btn btn-outline-primary w-100"><i class="fa fa-bookmark-o me-2"></i>
-                                스크랩하기
-                            </button>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <a href="/상세페이지URL1" class="text-decoration-none text-dark">
-                                <div class="mb-3 position-relative">
-                                    <img src="/img/jobImg.png" class="img-fluid">
-                                    <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-3</span>
-                                </div>
-                                <div>
-                                    <div class="mb-2">그린 블록체인</div>
-                                    <h4 class="mb-2">시니어 백엔드 개발</h4>
-                                    <div class="mb-3">
-                                        <div><small>Java · MySQL · Docker · React · Kotlin</small></div>
-                                        <div><small>서울 영등포구 · 경력 7-10년</small></div>
-                                    </div>
-                                </div>
-                            </a>
-                            <button class="btn btn-outline-primary w-100"><i class="fa fa-bookmark-o me-2"></i>
-                                스크랩하기
-                            </button>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <a href="/상세페이지URL1" class="text-decoration-none text-dark">
-                                <div class="mb-3 position-relative">
-                                    <img src="/img/jobImg.png" class="img-fluid">
-                                    <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-3</span>
-                                </div>
-                                <div>
-                                    <div class="mb-2">그린 블록체인</div>
-                                    <h4 class="mb-2">시니어 백엔드 개발</h4>
-                                    <div class="mb-3">
-                                        <div><small>Java · MySQL · Docker · React · Kotlin</small></div>
-                                        <div><small>서울 영등포구 · 경력 7-10년</small></div>
-                                    </div>
-                                </div>
-                            </a>
-                            <button class="btn btn-outline-primary w-100"><i class="fa fa-bookmark-o me-2"></i>
-                                스크랩하기
-                            </button>
-                        </div>
-                        <div class="col-md-3 col-sm-6">
-                            <a href="/상세페이지URL1" class="text-decoration-none text-dark">
-                                <div class="mb-3 position-relative">
-                                    <img src="/img/jobImg.png" class="img-fluid">
-                                    <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-3</span>
-                                </div>
-                                <div>
-                                    <div class="mb-2">그린 블록체인</div>
-                                    <h4 class="mb-2">시니어 백엔드 개발</h4>
-                                    <div class="mb-3">
-                                        <div><small>Java · MySQL · Docker · React · Kotlin</small></div>
-                                        <div><small>서울 영등포구 · 경력 7-10년</small></div>
-                                    </div>
-                                </div>
-                            </a>
-                            <button class="btn btn-outline-primary w-100"><i class="fa fa-bookmark-o me-2"></i>
-                                스크랩하기
-                            </button>
-                        </div>
-
-                    </div>
+                    {{/model.recentJobPostings}}
                 </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <!-- 본문 끝 -->
+        </div>
+        <!-- 오른쪽 영역 -->
+        <div class="col-12 col-md-4 bg-light d-flex flex-column justify-content-between p-3"
+             style="height: 300px;">
+            <!-- 상단 로고 -->
+            <img src="/img/logo4.png" class="img-fluid" id="logo4"
+                 style="max-height: 210px; max-width: 500px;">
+
+            <!-- 하단 버튼 -->
+            <div class="text-center">
+                <button class="btn btn-primary w-100" id="joinLoginButton">회원가입/로그인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 아래 영역  -->
+    <div>
+        <h4 class="fw-bold mt-5 mb-3">이번주 인기 포지션</h4>
+        <div class="row gx-3 gy-4">
+            <!-- 카드1 -->
+            {{#model.popularJobPostings}}
+                <div class="col-md-3 col-sm-6">
+                    <a href="/상세페이지URL1" class="text-decoration-none text-dark">
+                        <div class="mb-3 position-relative">
+                            <img src="/img/jobImg.png" class="img-fluid">
+                            <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-{{dDay}}</span>
+                        </div>
+                        <div>
+                            <div class="mb-2">{{companyName}}</div>
+                            <h4 class="mb-2">{{title}}</h4>
+                            <div class="mb-3">
+                                <div><small>{{#techStacks}}
+                                    {{name}} ·
+                                {{/techStacks}}</small></div>
+                                <div><small>{{address}} · 경력 {{career}}</small></div>
+                            </div>
+                        </div>
+                    </a>
+                    <button class="btn btn-outline-primary w-100"><i class="fa fa-bookmark-o me-2"></i>
+                        스크랩하기
+                    </button>
+                </div>
+            {{/model.popularJobPostings}}
+        </div>
+    </div>
+</div>
+<!-- 본문 끝 -->
 
 {{> layout/footer}}

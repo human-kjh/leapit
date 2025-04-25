@@ -2,7 +2,10 @@ package com.example.leapit.user;
 
 import com.example.leapit._core.util.Resp;
 import com.example.leapit.companyinfo.CompanyInfoService;
+import com.example.leapit.jobposting.JobPostingResponse;
+import com.example.leapit.jobposting.JobPostingService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ public class UserController {
     private final UserService userService;
     private final HttpSession session;
     private final CompanyInfoService companyInfoService;
+    private final JobPostingService jobPostingService;
 
 
     @GetMapping("/company/user/update-form")
@@ -157,4 +162,14 @@ public class UserController {
         return "redirect:/login-form";
     }
 
+    @GetMapping("/")
+    public String index(HttpServletRequest request) {
+        List<JobPostingResponse.MainDTO.MainRecentJobPostingDTO> recent = jobPostingService.getRecentPostings();
+        List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> popular = jobPostingService.getPopularJobPostings();
+
+        JobPostingResponse.MainDTO mainDTO = new JobPostingResponse.MainDTO(recent, popular);
+        
+        request.setAttribute("model", mainDTO);
+        return "personal/main/logout";
+    }
 }
