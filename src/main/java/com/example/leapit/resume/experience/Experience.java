@@ -4,6 +4,7 @@ import com.example.leapit.resume.Resume;
 import com.example.leapit.resume.experience.techstack.ExperienceTechStack;
 import com.example.leapit.resume.training.techstack.TrainingTechStack;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -44,4 +45,19 @@ public class Experience {
 
     @OneToMany(mappedBy = "experience", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExperienceTechStack> experienceTechStacks  = new ArrayList<>();
+
+    @Builder
+    public Experience(Integer id, Resume resume, LocalDate startDate, LocalDate endDate, Boolean isEmployed, String companyName, String summary, String position, String responsibility, Timestamp createdAt, List<ExperienceTechStack> experienceTechStacks) {
+        this.id = id;
+        this.resume = resume;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isEmployed = isEmployed;
+        this.companyName = companyName;
+        this.summary = summary;
+        this.position = position;
+        this.responsibility = responsibility;
+        this.createdAt = createdAt;
+        this.experienceTechStacks = experienceTechStacks;
+    }
 }
