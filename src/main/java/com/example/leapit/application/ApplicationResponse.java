@@ -1,5 +1,6 @@
 package com.example.leapit.application;
 
+import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
 import lombok.Data;
 import java.time.LocalDate;
 import java.util.List;
@@ -92,6 +93,17 @@ public class ApplicationResponse {
             this.isBookmarked = isBookmarked;
             this.evaluationStatus = evaluationStatus;
             this.isViewed = isViewed;
+        }
+    }
+
+    @Data
+    public static class ApplicationBookmarkListDTO {
+        private List<ApplicationBookmarkResponse.JobPostingBookmarkDTO> bookmarks;
+        private ApplicationStatusDto status;
+
+        public ApplicationBookmarkListDTO(List<ApplicationBookmarkResponse.JobPostingBookmarkDTO> bookmarks, ApplicationStatusDto status) {
+            this.bookmarks = bookmarks;
+            this.status = status;
         }
     }
 

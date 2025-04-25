@@ -3,14 +3,13 @@
             <!-- 본문 -->
             <div class="main container mt-5">
                 <div class="content-wrapper">
-                    <div class="myJumpitWrapper">
-                        <div class="myJumpit">
-                            <h5>마이랩핏</h5>
-                            <div class="menuItems">
-                                <a href="/personal/mypage/application" class="menuItem">입사지원 현황</a>
-                                <a href="#" class="menuItem">스크랩 포지션</a>
-                                <hr class="menuDivider">
-                                <a href="#" class="menuItem">계정 정보 설정</a>
+                    <div class="mypageSidebar">
+                        <div class="mypageSidebarBox">
+                            <h5 class="mypageSidebarTitle">마이점핏</h5>
+                            <div class="mypageSidebarMenu">
+                                <a href="/personal/mypage/application" class="mypageSidebarLink">입사지원 현황</a>
+                                <a href="/personal/mypage/bookmark" class="mypageSidebarLink">스크랩 포지션</a>
+                                <a href="#" class="mypageSidebarLink">계정 정보 설정</a>
                             </div>
                         </div>
                     </div>
@@ -32,24 +31,23 @@
                                     <span class="statusCount">{{models.status.failed}}</span>
                                 </div>
                             </div>
+                        </div>
+                        <!-- 지원 완료 건수 -->
+                        <h5 class="applyTitle">지원완료 총 {{models.status.total}}건</h5>
 
-                            <!-- 지원 완료 건수 -->
-                            <h5 class="applyTitle">지원완료 총 {{models.status.total}}건</h5>
-
-                            <!-- 지원 현황 목록 -->
-                            <div class="applyList">
-                                {{#models.applications}}
-                                    <div class="applyItem">
-                                        <div class="card mb-3">
-                                            <a href="/job/detail/{{jobPostingId}}" class="card-body text-start rounded border-0 text-decoration-none bg-white">
-                                                <h6 class="card-title mb-2">{{companyName}}</h6>
-                                                <h5 class="card-title mb-2">{{jobTitle}}</h5>
-                                                <small>{{appliedDate}} 지원</small>
-                                            </a>
-                                        </div>
+                        <!-- 지원 현황 목록 -->
+                        <div class="applyList">
+                            {{#models.applications}}
+                                <div class="applyItem">
+                                    <div class="card mb-3">
+                                        <a href="/job/detail/{{jobPostingId}}" class="card-body text-start rounded border-0 text-decoration-none bg-white">
+                                            <h6 class="card-title mb-2">{{companyName}}</h6>
+                                            <h5 class="card-title mb-2">{{jobTitle}}</h5>
+                                            <small>{{appliedDate}} 지원</small>
+                                        </a>
                                     </div>
-                                {{/models.applications}}
-                            </div>
+                                </div>
+                            {{/models.applications}}
                         </div>
                     </div>
                 </div>

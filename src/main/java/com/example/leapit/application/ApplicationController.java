@@ -18,6 +18,15 @@ public class ApplicationController {
     private final ApplicationService applicationService;
     private final HttpSession session;
 
+    @GetMapping("/personal/mypage/bookmark")
+    public String personalBookmark(HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        ApplicationResponse.ApplicationBookmarkListDTO respDTO = applicationService.내북마크관리페이지(sessionUser.getId());
+        request.setAttribute("models", respDTO);
+        return "personal/mypage/bookmark";
+
+    }
 
     // 개인 지원 현황 관리
     @GetMapping("/personal/mypage/application")

@@ -73,6 +73,12 @@ public class JobPosting {
     @Column(name = "techStack", nullable = false)
     private List<String> techStack;
 
+
+    @Builder
+    public JobPosting(Integer id) {
+        this.id = id;
+    }
+
     @Builder
     public JobPosting(User user, String title, String positionType,
                       Integer minCareerLevel, Integer maxCareerLevel,

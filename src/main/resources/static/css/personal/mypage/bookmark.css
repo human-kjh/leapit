@@ -1,3 +1,44 @@
+.mypageSidebar {
+    width: 180px;
+    padding: 30px 0 0 20px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.mypageSidebarBox {
+    width: 100%;
+}
+
+.mypageSidebarTitle {
+    font-weight: bold;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+    white-space: nowrap;
+    word-break: keep-all;
+    line-height: 1.3;
+}
+
+.mypageSidebarMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: fit-content;
+}
+
+.mypageSidebarLink {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    text-decoration: none;
+    white-space: nowrap;
+    word-break: keep-all;
+}
+
+.mypageSidebarLink:hover {
+    color: #333;
+}
+
 .myJumpitWrapper {
     display: flex;
     flex-direction: column;
@@ -5,6 +46,10 @@
     padding: 20px;
     box-sizing: border-box;
     width: 20%;
+}
+
+.menuItem:hover {
+    color: #333;
 }
 
 .myJumpit {
@@ -221,7 +266,7 @@
     padding: 30px 50px;
     display: flex;
     flex-direction: row;
-    gap: 30px;
+    gap: 20px;
 }
 
 .myStatusInner {

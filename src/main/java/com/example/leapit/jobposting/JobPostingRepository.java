@@ -1,5 +1,6 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit.application.Application;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
@@ -44,4 +45,7 @@ public class JobPostingRepository {
         return (Long) query.getSingleResult();
     }
 
+    public JobPosting findByApplicationId(Integer jobPostingId) {
+        return em.find(JobPosting.class, jobPostingId);
+    }
 }

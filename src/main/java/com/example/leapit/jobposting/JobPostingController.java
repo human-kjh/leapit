@@ -27,7 +27,7 @@ public class JobPostingController {
     public String createJobPosting(JobPostingRequest request,
                                    @SessionAttribute("sessionUser") User sessionUser,
                                    @RequestParam(value = "techStack", required = false) List<String> techStack) {
-        request.setTechStack(techStack); // 폼에서 받은 기술 스택을 request 객체에 설정
+        request.setTechStack(techStack);
         jobPostingService.createJobPosting(request, sessionUser);
         return "redirect:/company/jobposting/list";
     }
@@ -36,6 +36,6 @@ public class JobPostingController {
     @PostMapping("/job-postings/delete")
     public String deleteJobPosting(@RequestParam("id") Integer id) {
         jobPostingService.deleteJobPosting(id);
-        return "redirect:/company/jobposting/list"; // 삭제 후 목록 페이지로 리다이렉트
+        return "redirect:/company/jobposting/list";
     }
 }
