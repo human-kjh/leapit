@@ -322,23 +322,24 @@ VALUES (8, '데이터 엔지니어 채용', 'AI 엔지니어', 3, 5,
         '해외 컨퍼런스 참가 지원', 23, NOW());
 
 -- 3-1. job_posting_tech_stack_tb
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+-- 3-1. job_posting_tech_stack_tb
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (1, 'Python');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (1, 'Java');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (1, 'React');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (2, 'Django');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (2, 'Kotlin');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (2, 'Spring Boot');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (3, 'SQL');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (3, 'Node.js');
-INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack)
+INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (3, 'React');
 
 -- 3-2. job_posting_bookmark_tb

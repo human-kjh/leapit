@@ -17,100 +17,13 @@
                 <div class="mb-3">
                     <label class="form-label">기술 스택 <span class="text-danger">*</span></label>
                     <div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="React" id="tech1"/>
-                            <label class="form-check-label" for="tech1">React</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="JavaScript"
-                                   id="tech2"/>
-                            <label class="form-check-label" for="tech2">JavaScript</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="Vue" id="tech3"/>
-                            <label class="form-check-label" for="tech3">Vue</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="TypeScript"
-                                   id="tech4"/>
-                            <label class="form-check-label" for="tech4">TypeScript</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="Angular"
-                                   id="tech5"/>
-                            <label class="form-check-label" for="tech5">Angular</label>
-                        </div>
-
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="Node.js"
-                                   id="tech6"/>
-                            <label class="form-check-label" for="tech6">Node.js</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="Java" id="tech7"/>
-                            <label class="form-check-label" for="tech7">Java</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="Spring Boot"
-                                   id="tech8"/>
-                            <label class="form-check-label" for="tech8">Spring Boot</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="Python" id="tech9"/>
-                            <label class="form-check-label" for="tech9">Python</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="Django"
-                                   id="tech10"/>
-                            <label class="form-check-label" for="tech10">Django</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="NestJS"
-                                   id="tech11"/>
-                            <label class="form-check-label" for="tech11">NestJS</label>
-                        </div>
-
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="MySQL" id="tech12"/>
-                            <label class="form-check-label" for="tech12">MySQL</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="PostgreSQL"
-                                   id="tech13"/>
-                            <label class="form-check-label" for="tech13">PostgreSQL</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="MongoDB"
-                                   id="tech14"/>
-                            <label class="form-check-label" for="tech14">MongoDB</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="Redis" id="tech15"/>
-                            <label class="form-check-label" for="tech15">Redis</label>
-                        </div>
-
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="Docker"
-                                   id="tech16"/>
-                            <label class="form-check-label" for="tech16">Docker</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="Kubernetes"
-                                   id="tech17"/>
-                            <label class="form-check-label" for="tech17">Kubernetes</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="AWS" id="tech18"/>
-                            <label class="form-check-label" for="tech18">AWS</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="GCP" id="tech19"/>
-                            <label class="form-check-label" for="tech19">GCP</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="techStack" value="Azure" id="tech20"/>
-                            <label class="form-check-label" for="tech20">Azure</label>
-                        </div>
+                        {{#model}}
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="techStack" value="{{code}}"
+                                       id="tech_{{code}}">
+                                <label class="form-check-label" for="tech_{{code}}">{{code}}</label>
+                            </div>
+                        {{/model}}
                     </div>
                     <div class="form-text">
                         원하는 기술 스택을 모두 선택하세요

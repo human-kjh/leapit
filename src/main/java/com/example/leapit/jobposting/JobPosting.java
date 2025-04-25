@@ -1,6 +1,7 @@
 package com.example.leapit.jobposting;
 
 import com.example.leapit.jobposting.bookmark.JobPostingBookmark;
+import com.example.leapit.jobposting.techstack.JobPostingTechStack;
 import com.example.leapit.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -73,10 +74,8 @@ public class JobPosting {
     @OneToMany(mappedBy = "jobPosting", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<JobPostingBookmark> bookmarks;
 
-    @ElementCollection
-    @CollectionTable(name = "job_posting_tech_stack_tb", joinColumns = @JoinColumn(name = "job_posting_id"))
-    @Column(name = "techStack", nullable = false)
-    private List<String> techStack;
+    @OneToMany(mappedBy = "jobPosting", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<JobPostingTechStack> jobPostingTechStacks;
 
     @Builder
     public JobPosting(User user, String title, String positionType,
@@ -101,7 +100,7 @@ public class JobPosting {
         this.preference = preference;
         this.benefit = benefit;
         this.additionalInfo = additionalInfo;
-        this.techStack = techStack;
+        this.jobPostingTechStacks = null; // Builder에서는 null로 초기화
         this.viewCount = 0;
     }
 
