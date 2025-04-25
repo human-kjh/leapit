@@ -138,8 +138,5 @@ public class ApplicationResponse {
             this.failed = failed;
         }
     }
-
-
-
 }
 

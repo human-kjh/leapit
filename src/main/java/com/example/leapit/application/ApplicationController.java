@@ -1,6 +1,5 @@
 package com.example.leapit.application;
 
-import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -8,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -17,7 +15,6 @@ import java.util.List;
 public class ApplicationController {
     private final ApplicationService applicationService;
     private final HttpSession session;
-
 
     // 개인 지원 현황 관리
     @GetMapping("/personal/mypage/application")
@@ -59,6 +56,4 @@ public class ApplicationController {
 
         return "company/applicant/list";
     }
-
-
 }

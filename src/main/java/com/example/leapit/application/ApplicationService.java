@@ -10,15 +10,6 @@ import java.util.List;
 public class ApplicationService {
     private final ApplicationRepository applicationRepository;
 
-    // 지원 현황 통계
-    public ApplicationResponse.ApplicationStatusDto statusByUserId(Integer userId) {
-        return applicationRepository.findSummaryByUserId(userId);
-    }
-
-    // 지원 현황 목록 조회
-    public List<ApplicationResponse.ApplicationDto> findApplicationsByUserId(Integer userId) {
-        return applicationRepository.findApplicationsByUserId(userId);
-    }
 
     public ApplicationResponse.ApplicationListViewDTO 내지원현황목록(Integer userId) {
         // 지원 현황 통계

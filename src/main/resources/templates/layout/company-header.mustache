@@ -15,29 +15,43 @@
 </head>
 
 <body>
-    <div class="siteWrapper">
-        <div class="contentWrapper">
-            <!-- 헤더 -->
-            <header class="header py-2 border-bottom">
-                <div class="container mb-1">
-                    <a href="/" class="logo d-block mb-3 pt-1">
+<div class="siteWrapper">
+    <div class="contentWrapper">
+        <!-- 헤더 -->
+        <header class="header py-2 border-bottom">
+            <div class="container mb-1">
+                {{#companyInfoId}}
+                    <a href="/company/info/{{companyInfoId}}" class="logo d-block mb-3 pt-1">
                         <img src="/img/logo1.png" class="img-fluid">
                     </a>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-4">
-                            <a href="#" class="headerItem text-decoration-none text-dark small"
-                                id="Recruit">기업정보(등록)</a>
-                            <a href="#" class="headerItem text-decoration-none text-dark small" id="Resume">포지션</a>
-                            <a href="#" class="headerItem text-decoration-none text-dark small" id="Community">지원자
-                                관리</a>
-                            <a href="#" class="headerItem text-decoration-none text-dark small" id="MyPage">계정 관리</a>
-                        </div>
-                        <div class="d-flex align-items-center gap-3">
-                            <a href="/login-form" class="headerItem text-decoration-none text-dark small"
-                                id="joinLogin">회원가입/로그인</a>
-                            <a href="#" class="headerItem text-decoration-none text-dark small" id="business">개인 서비스</a>
-                        </div>
+                {{/companyInfoId}}
+                {{^companyInfoId}}
+                    <a href="/company/main" class="logo d-block mb-3 pt-1">
+                        <img src="/img/logo1.png" class="img-fluid">
+                    </a>
+                {{/companyInfoId}}
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-4">
+                        {{#companyInfoId}}
+                            <a href="/company/info/{{companyInfoId}}/update-form"
+                               class="headerItem text-decoration-none text-dark small">기업정보(수정)</a>
+                        {{/companyInfoId}}
+
+                        {{^companyInfoId}}
+                            <a href="/company/info/save-form"
+                               class="headerItem text-decoration-none text-dark small">기업정보(등록)</a>
+                        {{/companyInfoId}}
+                        <a href="#" class="headerItem text-decoration-none text-dark small" id="Resume">포지션</a>
+                        <a href="#" class="headerItem text-decoration-none text-dark small" id="Community">지원자
+                            관리</a>
+                        <a href="#" class="headerItem text-decoration-none text-dark small" id="MyPage">계정 관리</a>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <a href="/login-form" class="headerItem text-decoration-none text-dark small"
+                           id="joinLogin">회원가입/로그인</a>
+                        <a href="#" class="headerItem text-decoration-none text-dark small" id="business">개인 서비스</a>
                     </div>
                 </div>
-            </header>
-            <!-- header 끝 -->
+            </div>
+        </header>
+        <!-- header 끝 -->
