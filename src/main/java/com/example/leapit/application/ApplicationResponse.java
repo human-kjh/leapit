@@ -95,6 +95,17 @@ public class ApplicationResponse {
         }
     }
 
+    // 지원 현황 목록 + 통계
+    @Data
+    public static class ApplicationListViewDTO {
+        private ApplicationStatusDto status;
+        private List<ApplicationDto> applications;
+        public ApplicationListViewDTO(ApplicationStatusDto status, List<ApplicationDto> applications) {
+            this.status = status;
+            this.applications = applications;
+        }
+    }
+
     // 지원 형황 목록
     @Data
     public static class ApplicationDto {
@@ -127,8 +138,5 @@ public class ApplicationResponse {
             this.failed = failed;
         }
     }
-
-
-
 }
 

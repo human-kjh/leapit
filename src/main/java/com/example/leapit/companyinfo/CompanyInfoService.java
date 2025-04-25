@@ -136,4 +136,8 @@ public class CompanyInfoService {
         CompanyInfo companyInfo = companyInfoRepository.findByUserId(userId);
         return companyInfo != null ? companyInfo.getId() : null;
     }
+
+    public CompanyInfo findById(Integer id) {
+        return companyInfoRepository.findById(id);
+    }
 }
