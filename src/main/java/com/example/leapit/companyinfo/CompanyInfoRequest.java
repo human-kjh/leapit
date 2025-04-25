@@ -10,6 +10,7 @@ public class CompanyInfoRequest {
 
     @Data
     public static class SaveDTO {
+        private Integer id;
         private String logoImage;
         private String companyName;
         private LocalDate establishmentDate;
@@ -36,6 +37,21 @@ public class CompanyInfoRequest {
                     .user(user)
                     .build();
         }
+    }
+
+    @Data
+    public static class UpdateDTO {
+        private String logoImage;
+        private String companyName;
+        private LocalDate establishmentDate;
+        private String address;
+        private String mainService;
+        private String introduction;
+        private String image;
+        private String benefit;
+
+        private MultipartFile logoImageFile; // 첨부된 파일
+        private MultipartFile imageFile;     // 이미지들
     }
 
 }

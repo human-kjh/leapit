@@ -54,18 +54,17 @@ VALUES ('Django');
 
 -- 2. resume_tb
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (1, '쌀의 이력서', NULL, '자바 개발자입니다', 'backend', '적극적이고 성실합니다', true, '2025-04-18 12:00:00');
+VALUES (1, '쌀의 이력서', NULL, '자바 개발자입니다', 'backend', '적극적이고 성실합니다', false, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (1, '쌀님의 이력서2', 'file://localhost/c:/image1.png', '프론트엔드 자신 있습니다', 'frontend', '디자인 감각도 좋아요', true,
-        '2025-04-18 12:05:00');
+VALUES (1, '쌀님의 이력서2', 'file://localhost/c:/image1.png', '프론트엔드 자신 있습니다', 'frontend', '디자인 감각도 좋아요', true, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (2, '파이썬 이력서', NULL, 'Django와 FastAPI 경험 있음', 'backend', '데이터 파이프라인 경험', false, '2025-04-18 12:10:00');
+VALUES (2, '파이썬 이력서', NULL, 'Django와 FastAPI 경험 있음', 'backend', '데이터 파이프라인 경험', false, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (3, '풀스택 도전기', NULL, '다양한 프로젝트 수행 경험 있음', 'fullstack', '매일 꾸준히 성장 중', true, '2025-04-18 12:15:00');
+VALUES (3, '풀스택 도전기', NULL, '다양한 프로젝트 수행 경험 있음', 'fullstack', '매일 꾸준히 성장 중', true, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (4, '코틀린 마스터', NULL, '안드로이드 개발 경험 풍부', 'mobile_app', '성능 최적화에 관심 많습니다', true, '2025-04-18 12:20:00');
+VALUES (4, '코틀린 마스터', NULL, '안드로이드 개발 경험 풍부', 'mobile_app', '성능 최적화에 관심 많습니다', true, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (5, '데이터 분석가', NULL, 'SQL과 데이터 시각화 강점', 'data_engineer', '통계에 자신 있습니다', false, '2025-04-18 12:25:00');
+VALUES (5, '데이터 분석가', NULL, 'SQL과 데이터 시각화 강점', 'data_engineer', '통계에 자신 있습니다', false, now());
 
 -- 2.3 resume_tech_stack_tb
 INSERT INTO resume_tech_stack_tb (resume_id, tech_stack)
@@ -356,7 +355,7 @@ VALUES (3, 3, NOW());
 
 -- 5. application_tb
 INSERT INTO application_tb (resume_id, job_posting_id, applied_date, is_passed, is_viewed)
-VALUES (1, 2, '2025-04-18', null, false);
+VALUES (2, 2, '2025-04-18', null, false);
 INSERT INTO application_tb (resume_id, job_posting_id, applied_date, is_passed, is_viewed)
 VALUES (2, 2, '2025-04-19', true, true);
 INSERT INTO application_tb (resume_id, job_posting_id, applied_date, is_passed, is_viewed)
@@ -388,15 +387,16 @@ VALUES (8, 5, NOW());
 -- 6. company_info_tb
 INSERT INTO company_info_tb (user_id, logo_image, company_name, establishment_date, address, main_service, introduction,
                              image, benefit)
-VALUES (6, '/images/company/logo1.png', '점핏 주식회사', '2017-07-01', '서울특별시 강남구 테헤란로 1길 10', '채용 플랫폼, 이력서 관리 등',
-        '우리는 혁신적인 구직 플랫폼입니다.', '/images/company/office.jpg', '유연근무제, 점심 제공, 워케이션 제도');
+VALUES (6, '/images/company/logo1.png', '점핏 주식회사', '2017-07-01', '서울특별시 강남구 테헤란로 1길 10',
+        'https://www.google.co.kr/', '우리는 혁신적인 구직 플랫폼입니다.', '/images/company/office.jpg',
+        '유연근무제, 점심 제공, 워케이션 제도');
 INSERT INTO company_info_tb (user_id, logo_image, company_name, establishment_date, address, main_service, introduction,
                              image, benefit)
-VALUES (7, '/images/company/logo2.png', '랩핏테크', '2019-03-15', '서울시 마포구 백범로 12길 22', 'B2B 솔루션, SaaS 서비스',
+VALUES (7, '/images/company/logo2.png', '랩핏테크', '2019-03-15', '서울시 마포구 백범로 12길 22', 'https://www.nate.com/',
         '랩핏테크는 기업 전용 커뮤니케이션 도구를 개발합니다.', '/images/company/labpit.jpg', '자유복장, 재택근무, 자율출퇴근');
 INSERT INTO company_info_tb (user_id, logo_image, company_name, establishment_date, address, main_service, introduction,
                              image, benefit)
-VALUES (8, '/images/company/logo3.png', '코드몽키', '2018-04-20', '경기도 성남시 분당구 판교로 235', 'IT 교육, 개발자 훈련 프로그램',
+VALUES (8, '/images/company/logo3.png', '코드몽키', '2018-04-20', '경기도 성남시 분당구 판교로 235', 'https://www.daum.net/',
         '우리는 개발자를 위한 온라인 실습 기반 교육 플랫폼입니다.', '/images/company/codeoffice.jpg', '식대 제공, 헬스비 지원, 사내 도서관');
 
 -- 7. board_tb

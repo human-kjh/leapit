@@ -5,6 +5,7 @@ import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.common.techstack.TechStackService;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -98,4 +99,14 @@ public class JobPostingController {
         jobPostingService.delete(id);
         return "redirect:/company/jobposting/list";
     }
+
+    // 구직자 - 채용공고 목록
+    @GetMapping("/personal/jobposting/list")
+    public String list(HttpServletRequest req) {
+        List<JobPostingResponse.JobPostingDTO> jobpostingList = jobPostingService.getAllJobPostings();
+        req.setAttribute("models", jobpostingList);
+        return "personal/jobposting/list";
+    }
+
+
 }

@@ -1,143 +1,239 @@
 {{> layout/company-header}}
 
-            <!-- 본문 -->
-            <div class="bg-light">
-                <div class="main container">
-                    <div class="d-flex">
-                        <!-- 왼쪽 -->
-                        <div class="left-panel bg-white p-3 mt-4 ms-4 mb-4">
-                            <h4 class="fw-bold mb-4">지원자 관리</h4>
-                            <button class="btn btn-sm btn-outline-primary mb-2 w-100 fs-5"><strong>전체
-                                    포지션</strong></button>
+<!-- 본문 -->
+<div class="bg-light">
+    <div class="main container">
+        <div class="d-flex">
+            <!-- 왼쪽 -->
+            <div class="left-panel bg-white p-3 mt-4 ms-4 mb-4">
+                <h4 class="fw-bold mb-4">지원자 관리</h4>
+                <button class="btn btn-sm btn-outline-primary mb-2 w-100 fs-5"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target=".multi-collapse">
+                    <strong>전체 포지션</strong>
+                </button>
 
-                            <div class="card mb-2">
-                                <div class="card-body text-center" data-bs-toggle="collapse"
-                                    data-bs-target="#inProgress" style="cursor: pointer;">
-                                    <strong>진행중 포지션</strong>
-                                </div>
-                            </div>
-                            <div class="collapse" id="inProgress">
-                                <div class="card">
-                                    <ul class="list-group list-group-flush">
-                                        <button class="list-group-item">포지션 1</button>
-                                        <button class="list-group-item">포지션 2</button>
-                                        <button class="list-group-item">포지션 3</button>
-                                    </ul>
-                                </div>
-                            </div>
 
-                            <div class="card mb-2">
-                                <div class="card-body text-center" data-bs-toggle="collapse" data-bs-target="#ended"
-                                    style="cursor: pointer;">
-                                    <strong>마감된 포지션</strong>
-                                </div>
-                            </div>
-                            <div class="collapse" id="ended">
-                                <div class="card">
-                                    <ul class="list-group list-group-flush">
-                                        <button class="list-group-item">포지션 1</button>
-                                        <button class="list-group-item">포지션 2</button>
-                                        <button class="list-group-item">포지션 3</button>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!-- 오른쪽 -->
-                        <div class="right-panel d-flex flex-column mt-4 me-4 ms-3">
-                            <!-- 위쪽 -->
-                            <div class="p-3 bg-white mb-3">
-                                <button class="btn btn-outline-primary">전체</button>
-                                <button class="btn btn-outline-primary">합격</button>
-                                <button class="btn btn-outline-primary">불합격</button>
-                            </div>
+                <div class="card mb-2">
+                    <div class="card-body text-center" data-bs-toggle="collapse"
+                         data-bs-target="#inProgress" style="cursor: pointer;">
+                        <strong>진행중 포지션</strong>
+                    </div>
+                </div>
+                <!-- 진행중 포지션 -->
+                <div class="collapse multi-collapse" id="inProgress">
+                    <div class="card">
+                        <ul class="list-group list-group-flush">
+                            {{#models.positions}}
+                                {{^isClosed}}
+                                    <a href="/company/applicant/list?jobPostingId={{jobPostingId}}" class="list-group-item">
+                                    {{title}}
+                                    </a>
+                                {{/isClosed}}
+                            {{/models.positions}}
+                        </ul>
+                    </div>
+                </div>
 
-                            <!-- 아래쪽  -->
-                            <div class="flex-grow-1 bg-white p-3 mb-4">
-                                <button class="btn btn-outline-primary dropdown-toggle mt-1 mb-3 ms-1 rounded-2"
-                                    type="button" data-bs-toggle="dropdown">
+                <div class="card mb-2">
+                    <div class="card-body text-center" data-bs-toggle="collapse" data-bs-target="#ended"
+                         style="cursor: pointer;">
+                        <strong>마감된 포지션</strong>
+                    </div>
+                </div>
+                <!-- 마감된 포지션 -->
+                <div class="collapse multi-collapse" id="ended">
+                    <div class="card">
+                        <ul class="list-group list-group-flush">
+                            {{#models.positions}}
+                                {{#isClosed}}
+                                    <a href="/company/applicant/list?jobPostingId={{jobPostingId}}" class="list-group-item">
+                                    {{title}}
+                                    </a>
+                                {{/isClosed}}
+                            {{/models.positions}}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 오른쪽 -->
+            <div class="right-panel d-flex flex-column mt-4 me-4 ms-3">
+                <!-- 위쪽 -->
+                <div class="p-3 bg-white mb-3">
+                    <form action="/company/applicant/list" method="get">
+                        {{#models.listView.isViewed}}
+                            <input type="hidden" name="isViewed" value="{{models.listView.isViewed}}">
+                        {{/models.listView.isViewed}}
+
+                        {{^models.listView.isViewed}}
+                            <input type="hidden" name="isViewed" value="">
+                        {{/models.listView.isViewed}}
+                        <button type="submit" name="passStatus" value="전체" class="btn btn-outline-primary">전체</button>
+                        <button type="submit" name="passStatus" value="합격" class="btn btn-outline-primary">합격</button>
+                        <button type="submit" name="passStatus" value="불합격" class="btn btn-outline-primary">불합격</button>
+                    </form>
+                </div>
+
+                <!-- 아래쪽  -->
+                <div class="flex-grow-1 bg-white p-3 mb-4">
+                    <div class="d-flex gap-2 mb-3">
+                        <form method="get" action="/company/applicant/list">
+                            <input type="hidden" name="passStatus" value="{{models.listView.passStatus}}">
+                            <div class="dropdown">
+                                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                     열람여부
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">열람</a></li>
-                                    <li><a class="dropdown-item" href="#">미열람</a></li>
-                                </ul>
-                                <button class="btn btn-outline-primary mt-1 mb-3 ms-1 rounded-2">스크랩 지원자</button>
+                                    <li>
+                                        <button type="submit" name="isViewedStr"  class="dropdown-item">전체</button>
+                                    </li>
+                                    <li>
+                                        <button type="submit" name="isViewedStr" value="열람" class="dropdown-item">열람</button>
+                                    </li>
+                                    <li>
+                                        <button type="submit" name="isViewedStr" value="미열람" class="dropdown-item">미열람</button>
+                                    </li>
 
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>스크랩</th>
-                                            <th>지원일</th>
-                                            <th>지원자</th>
-                                            <th>지원포지션</th>
-                                            <th>지원상태 및 평가</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><i class="fa fa-star-o ms-4"></i></td>
-                                            <td>2025.04.16</td>
-                                            <td>김점핏</td>
-                                            <td>서버/백엔드</td>
-                                            <td>열람</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fa fa-star-o ms-4"></i></td>
-                                            <td>2025.04.16</td>
-                                            <td>김점핏</td>
-                                            <td>서버/백엔드</td>
-                                            <td>열람</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fa fa-star-o ms-4"></i></td>
-                                            <td>2025.04.16</td>
-                                            <td>김점핏</td>
-                                            <td>서버/백엔드</td>
-                                            <td>열람</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fa fa-star-o ms-4"></i></td>
-                                            <td>2025.04.16</td>
-                                            <td>김점핏</td>
-                                            <td>서버/백엔드</td>
-                                            <td>합격</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fa fa-star-o ms-4"></i></td>
-                                            <td>2025.04.16</td>
-                                            <td>김점핏</td>
-                                            <td>서버/백엔드</td>
-                                            <td>미열람</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fa fa-star-o ms-4"></i></td>
-                                            <td>2025.04.16</td>
-                                            <td>김점핏</td>
-                                            <td>서버/백엔드</td>
-                                            <td>열람</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fa fa-star-o ms-4"></i></td>
-                                            <td>2025.04.16</td>
-                                            <td>김점핏</td>
-                                            <td>서버/백엔드</td>
-                                            <td>불합격</td>
-                                        </tr>
-                                        <tr>
-                                            <td><i class="fa fa-star-o ms-4"></i></td>
-                                            <td>2025.04.16</td>
-                                            <td>김점핏</td>
-                                            <td>서버/백엔드</td>
-                                            <td>열람</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                </ul>
                             </div>
-                        </div>
+                        </form>
+
+
+                        <form id="bookmarkForm" method="get" action="/company/applicant/list">
+                        <input type="hidden" name="passStatus" value="{{models.listView.passStatus}}">
+
+                        {{#models.listView.isBookmark}}
+                            <input type="hidden" id="isBookmark" name="isBookmark" value="true">
+                        {{/models.listView.isBookmark}}
+
+                        {{^models.listView.isBookmark}}
+                            <input type="hidden" id="isBookmark" name="isBookmark" value="">
+                        {{/models.listView.isBookmark}}
+
+                        <button type="button" class="btn btn-outline-primary rounded-2" onclick="toggleBookmarkFilter()">
+                                <span id="bookmarkButtonText">
+                                  {{#models.listView.isBookmark}}전체 지원자 보기{{/models.listView.isBookmark}}
+                                    {{^models.listView.isBookmark}}스크랩 지원자{{/models.listView.isBookmark}}
+                                </span>
+                        </button>
+                        </form>
                     </div>
+
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>스크랩</th>
+                            <th>지원일</th>
+                            <th>지원자</th>
+                            <th>지원포지션</th>
+                            <th>지원상태 및 평가</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#models.applicants}}
+                            <tr>
+                                <td>
+                                    {{#isBookmarked}}
+                                        <i class="fa fa-star text-warning ms-4"
+                                           id="bookmark-{{applicationId}}"
+                                           tabindex="-1"
+                                           style="cursor: pointer;"
+                                           onmousedown="event.preventDefault()"
+                                           onclick="deleteBookmark({{applicationId}})"></i>
+                                    {{/isBookmarked}}
+                                    {{^isBookmarked}}
+                                        <i class="fa fa-star-o ms-4"
+                                           id="bookmark-{{applicationId}}"
+                                           tabindex="-1"
+                                           style="cursor: pointer;"
+                                           onmousedown="event.preventDefault()"
+                                           onclick="saveBookmark({{applicationId}})"></i>
+                                    {{/isBookmarked}}
+                                </td>
+                                <td>{{appliedDate}}</td>
+                                <td>{{applicantName}}</a></td>
+                                <td>{{jobTitle}}</td>
+                                <td>{{evaluationStatus}}</td>
+                            </tr>
+                        {{/models.applicants}}
+
+                        {{^models.applicants}}
+                            <tr><td colspan="5" class="text-center text-muted">지원자가 없습니다.</td></tr>
+                        {{/models.applicants}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <!-- 본문 끝 -->
+        </div>
+    </div>
+</div>
+<!-- 본문 끝 -->
+<script>
+
+    async function saveBookmark(applicationId) {
+        try {
+            const response = await fetch(`/api/bookmark`, {
+                method: "POST",
+                body: JSON.stringify({ applicationId: applicationId }),
+                headers: { "Content-Type": "application/json" }
+            });
+
+            const result = await response.json();
+
+            if (result.status === 200) {
+                const icon = document.querySelector(`#bookmark-${applicationId}`);
+                icon.classList.remove("fa-star-o");
+                icon.classList.add("fa-star", "text-warning");
+                icon.setAttribute("onclick", `deleteBookmark(${applicationId})`);
+            } else {
+                alert(result.msg);
+            }
+        } catch (e) {
+            console.error("스크랩 등록 중 오류:", e);
+        }
+    }
+
+    async function deleteBookmark(applicationId) {
+        try {
+            const response = await fetch(`/api/bookmark/${applicationId}`, {
+                method: "DELETE"
+            });
+
+            const result = await response.json();
+
+            if (result.status === 200) {
+                const icon = document.querySelector(`#bookmark-${applicationId}`);
+                icon.classList.remove("fa-star", "text-warning");
+                icon.classList.add("fa-star-o");
+                icon.setAttribute("onclick", `saveBookmark(${applicationId})`);
+            } else {
+                alert(result.msg);
+            }
+        } catch (e) {
+            console.error("스크랩 삭제 중 오류:", e);
+        }
+    }
+    function toggleBookmarkFilter() {
+        const form = document.getElementById('bookmarkForm');
+        const input = document.getElementById('isBookmark');
+        const currentValue = input.value;
+
+
+        if (currentValue === "true") {
+            input.value = "";
+        } else {
+            input.value = "true";
+        }
+
+        form.submit();
+    }
+</script>
+
+
 
 {{> layout/footer}}

@@ -1,6 +1,7 @@
 package com.example.leapit.companyinfo;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +12,25 @@ public class CompanyInfoRepository {
 
     public void save(CompanyInfo companyInfo) {
         em.persist(companyInfo);
+    }
+
+    public CompanyInfo findById(Integer id) {
+        return em.find(CompanyInfo.class, id);
+    }
+
+    public void deleteById(Integer id) {
+        CompanyInfo companyInfo = em.find(CompanyInfo.class, id);
+        em.remove(companyInfo);
+    }
+
+    public CompanyInfo findByUserId(Integer userId) {
+        Query query = em.createQuery("select c from CompanyInfo c where c.user.id = :userId", CompanyInfo.class);
+        query.setParameter("userId", userId);
+        try {
+            return (CompanyInfo) query.getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 }

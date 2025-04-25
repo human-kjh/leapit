@@ -2,7 +2,7 @@ package com.example.leapit.jobposting;
 
 import com.example.leapit.jobposting.techstack.JobPostingTechStack;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
+import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +34,53 @@ public class JobPostingRepository {
         return em.find(JobPosting.class, id);
     }
 
+    // 채용공고 & 해당 채용공고의 기술스택 조회
+    public List<Object[]> findJobPostingsWithTechStacksByUserId(Integer userId) {
+        Query query = em.createQuery(
+                "SELECT j, t FROM JobPosting j " +
+                        "LEFT JOIN JobPostingTechStack t ON t.jobPosting.id = j.id " +
+                        "WHERE j.user.id = :userId"
+        );
+        query.setParameter("userId", userId);
+        return query.getResultList();
+    }
+
+    // 채용중인 포지션 카운트 조회 (마감일이 오늘 이후인)
+    public Long countByUserIdAndDeadlineAfter(Integer userId) {
+        Query query = em.createQuery("SELECT COUNT(j) FROM JobPosting j WHERE j.user.id = :userId AND j.deadline >= CURRENT_DATE");
+        query.setParameter("userId", userId);
+        return (Long) query.getSingleResult();
+    }
+
+    // 주소 - 시 조회
+    public String findByRegion(Integer id) {
+        Query query = em.createNativeQuery("select R.name from job_posting_tb J inner join  region_tb R  on R.id = J.address_region_id where J.id = ?");
+        query.setParameter(1, id);
+
+        return (String) query.getSingleResult();
+    }
+
+    // 주소 - 구 조회
+    public String findBySubRegion(Integer id) {
+        Query query = em.createNativeQuery("select S.name from job_posting_tb J inner join  sub_region_tb S  on S.id = J.address_sub_region_id where J.id = ?");
+        query.setParameter(1, id);
+        return (String) query.getSingleResult();
+
+    }
+
+    // 채용공고 & 해당 채용공고의 기술스택 전체조회
+    public List<Object[]> findAllJobPostingsWithTechStacks() {
+        LocalDate today = LocalDate.now();
+
+        Query query = em.createQuery(
+                "SELECT jp, jpts FROM JobPosting jp " +
+                        "LEFT JOIN JobPostingTechStack jpts ON jp.id = jpts.jobPosting.id where jp.deadline >= :today"
+        );
+        query.setParameter("today", today);
+        return query.getResultList();
+    }
+
+
     // 진행 중인 채용 공고 목록 조회
     public List<JobPosting> findByDeadlineOpen(LocalDate deadline) {
         return em.createQuery("select jp from JobPosting jp where jp.deadline >= :deadline", JobPosting.class)
@@ -53,12 +100,5 @@ public class JobPostingRepository {
         return em.createQuery("SELECT jpts.techStack.code FROM JobPostingTechStack jpts WHERE jpts.jobPosting.id = :jobPostingId", String.class)
                 .setParameter("jobPostingId", jobPostingId)
                 .getResultList();
-    }
-
-    @Transactional
-    public void deleteJobPostingTechStacksByJobPostingId(Integer jobPostingId) {
-        em.createQuery("DELETE FROM JobPostingTechStack jpts WHERE jpts.jobPosting.id = :jobPostingId")
-                .setParameter("jobPostingId", jobPostingId)
-                .executeUpdate();
     }
 }

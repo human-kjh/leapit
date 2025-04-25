@@ -2,23 +2,31 @@ package com.example.leapit.jobposting;
 
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
+import com.example.leapit.companyinfo.CompanyInfo;
+import com.example.leapit.companyinfo.CompanyInfoRepository;
 import com.example.leapit.jobposting.techstack.JobPostingTechStack;
+import com.example.leapit.jobposting.techstack.JobPostingTechStackRepository;
 import com.example.leapit.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
 public class JobPostingService {
     private final JobPostingRepository jobPostingRepository;
     private final TechStackRepository techStackRepository;
+    private final CompanyInfoRepository companyInfoRepository;
+    private final JobPostingTechStackRepository jobPostingTechStackRepository;
 
     // 채용 공고 등록
-    @Transactional
+    @org.springframework.transaction.annotation.Transactional
     public void save(JobPostingRequest.SaveDTO saveDTO, User sessionUser, String[] techStacks) {
         JobPosting jobPosting = saveDTO.toEntity(sessionUser);
         jobPostingRepository.save(jobPosting);
@@ -43,7 +51,7 @@ public class JobPostingService {
     }
 
     // 채용 공고 삭제
-    @Transactional
+    @org.springframework.transaction.annotation.Transactional
     public void delete(Integer id) {
         jobPostingRepository.deleteById(id);
     }
@@ -59,7 +67,7 @@ public class JobPostingService {
         JobPosting jobPosting = jobPostingRepository.findById(id);
         jobPosting.update(updateDTO);
 
-        jobPostingRepository.deleteJobPostingTechStacksByJobPostingId(id);
+        jobPostingTechStackRepository.deleteByJobPostingId(id);
 
         if (techStacks != null) {
             for (String techStackCode : techStacks) {
@@ -82,5 +90,41 @@ public class JobPostingService {
     public List<JobPosting> ClosedJobPostings() {
         LocalDate now = LocalDate.now();
         return jobPostingRepository.findByDeadlineClosed(now);
+    }
+
+    public List<JobPostingResponse.JobPostingDTO> getAllJobPostings() {
+        List<Object[]> results = jobPostingRepository.findAllJobPostingsWithTechStacks();
+
+        // 공고 ID별로 묶기
+        Map<Integer, JobPosting> postingMap = new HashMap<>();
+        Map<Integer, List<JobPostingTechStack>> stackMap = new HashMap<>();
+
+        for (Object[] row : results) {
+            JobPosting jp = (JobPosting) row[0];
+            JobPostingTechStack stack = (JobPostingTechStack) row[1];
+
+            postingMap.putIfAbsent(jp.getId(), jp);
+
+            if (stack != null) {
+                stackMap.computeIfAbsent(jp.getId(), k -> new ArrayList<>()).add(stack);
+            }
+        }
+
+        // 지역 이름 조회 후 DTO 변환
+        List<JobPostingResponse.JobPostingDTO> jobpostingList = new ArrayList<>();
+        for (JobPosting jp : postingMap.values()) {
+            String region = jobPostingRepository.findByRegion(jp.getId());
+            String subRegion = jobPostingRepository.findBySubRegion(jp.getId());
+
+            String address = (region != null ? region : "") + " " + (subRegion != null ? subRegion : "");
+
+            List<JobPostingTechStack> techStacks = stackMap.getOrDefault(jp.getId(), new ArrayList<>());
+
+            CompanyInfo companyInfo = companyInfoRepository.findByUserId(jp.getUser().getId());
+
+            jobpostingList.add(new JobPostingResponse.JobPostingDTO(jp, techStacks, address, companyInfo.getImage(), companyInfo.getCompanyName()));
+        }
+
+        return jobpostingList;
     }
 }

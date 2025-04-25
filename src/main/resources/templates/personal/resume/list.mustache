@@ -20,9 +20,16 @@
                                                     ⋮
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                    <li><a class="dropdown-item" href="#">수정</a></li>
-                                                    <li><a class="dropdown-item" href="#">삭제</a></li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="/resume/{{id}}/edit">수정</a>
+                                                    </li>
+                                                    <li>
+                                                        <form method="post" action="/resume/{{id}}/delete" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                                            <button type="submit" class="dropdown-item text-danger">삭제</button>
+                                                        </form>
+                                                    </li>
                                                 </ul>
+
                                             </div>
                                             <h6>{{title}}</h6>
                                             <small class="mb-5">기본정보 ・ 학력 ・ 프로젝트</small>
