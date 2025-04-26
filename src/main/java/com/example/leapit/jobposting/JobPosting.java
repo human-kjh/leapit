@@ -1,5 +1,7 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit.jobposting.bookmark.JobPostingBookmark;
+import com.example.leapit.jobposting.techstack.JobPostingTechStack;
 import com.example.leapit.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -68,10 +70,12 @@ public class JobPosting {
     @CreationTimestamp
     private Timestamp createdAt;
 
-    @ElementCollection
-    @CollectionTable(name = "job_posting_tech_stack_tb", joinColumns = @JoinColumn(name = "job_posting_id"))
-    @Column(name = "techStack", nullable = false)
-    private List<String> techStack;
+    // 채용 공고 삭제할 때 bookmark에서 참조하고 있어서 같이 지워야 하기 때문에 생성함
+    @OneToMany(mappedBy = "jobPosting", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<JobPostingBookmark> bookmarks;
+
+    @OneToMany(mappedBy = "jobPosting", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<JobPostingTechStack> jobPostingTechStacks;
 
 
     @Builder
@@ -98,7 +102,26 @@ public class JobPosting {
         this.preference = preference;
         this.benefit = benefit;
         this.additionalInfo = additionalInfo;
-        this.techStack = techStack;
+        this.jobPostingTechStacks = null; // Builder에서는 null로 초기화
         this.viewCount = 0;
+    }
+
+    // update 메서드 추가
+    public void update(JobPostingRequest.UpdateDTO updateDTO) {
+        this.title = updateDTO.getTitle();
+        this.positionType = updateDTO.getPositionType();
+        this.minCareerLevel = updateDTO.getMinCareerLevel();
+        this.maxCareerLevel = updateDTO.getMaxCareerLevel();
+        this.educationLevel = updateDTO.getEducationLevel();
+        this.addressRegionId = updateDTO.getAddressRegionId();
+        this.addressSubRegionId = updateDTO.getAddressSubRegionId();
+        this.addressDetail = updateDTO.getAddressDetail();
+        this.serviceIntro = updateDTO.getServiceIntro();
+        this.deadline = updateDTO.getDeadline();
+        this.responsibility = updateDTO.getResponsibility();
+        this.qualification = updateDTO.getQualification();
+        this.preference = updateDTO.getPreference();
+        this.benefit = updateDTO.getBenefit();
+        this.additionalInfo = updateDTO.getAdditionalInfo();
     }
 }

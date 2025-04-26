@@ -22,7 +22,7 @@ public class ApplicationBookmarkController {
         ApplicationBookmarkResponse.SaveDTO respDTO = bookmarkService.saveApplicantBookmarkByUserId(reqDTO, sessionUser.getId());
         return Resp.ok(respDTO);
     }
-    
+
     // 기업 스크랩 삭제 application_bookmark
     @DeleteMapping("/api/company/bookmark/{id}")
     public Resp<?> deleteApplicationBookmark(@PathVariable("id") Integer applicationId) {
@@ -31,4 +31,3 @@ public class ApplicationBookmarkController {
         return Resp.ok("북마크 삭제");
     }
 }
-

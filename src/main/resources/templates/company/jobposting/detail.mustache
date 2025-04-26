@@ -3,81 +3,111 @@
 <div class="main container mt-5">
     <div class="ms-2">
         <h1 class="fs-4 fw-bold mb-2">
-            {{jobPosting.title}}
-            <span class="fs-6 text-primary" style="cursor:pointer;">수정</span>
-            <form action="/job-postings/delete" method="post" class="d-inline ms-2">
-                <input type="hidden" name="id" value="{{jobPosting.id}}">
-                <button type="button" class="fs-6 text-danger" style="cursor:pointer; border: none; background: none;"
-                        onclick="confirmDelete()">삭제
+            {{model.title}}
+            <form action="/jobposting/{{model.id}}/update-form" method="get" class="d-inline">
+                <button type="submit" class="fs-6 text-primary"
+                        style="border: none; background: none; padding: 0;">수정
                 </button>
             </form>
+            <form id="deleteForm{{model.id}}" action="/jobposting/{{model.id}}/delete" method="post"
+                  class="d-inline ms-2">
+                <button type="button"
+                        class="fs-6 text-danger"
+                        style="cursor:pointer; border: none; background: none;"
+                        onclick="confirmDelete({{model.id}})">삭제
+                </button>
+            </form>
+
         </h1>
-        <p class="text-muted small mb-4">{{jobPosting.user.companyName}}</p>
 
         <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">기술스택</h2>
-            {{#jobPosting.techStack}}
+            {{#techStack}}
                 <span class="badge bg-light text-dark">{{.}}</span>
-            {{/jobPosting.techStack}}
+            {{/techStack}}
+            
         </div>
 
         <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">주요업무</h2>
-            <p class="small">{{jobPosting.responsibility}}</p>
+            <p class="small">{{model.responsibility}}</p>
         </div>
 
         <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">자격요건</h2>
             <ul class="small ps-3">
-                {{#jobPosting.qualificationList}}
+                {{#model.qualification}} <!-- qualification이 비어있지 않으면 출력 -->
                     <li>{{.}}</li>
-                {{/jobPosting.qualificationList}}
+                {{/model.qualification}}
+                {{^model.qualification}} <!-- qualification이 비어있으면 이 메시지 출력 -->
+                    <li>자격요건이 없습니다.</li>
+                {{/model.qualification}}
+
+                <!-- 학력 -->
+                <li>학력 :
+                    {{#model.educationLevel}}
+                        {{model.educationLevel}}
+                    {{/model.educationLevel}}
+                    {{^model.educationLevel}} <!-- model.educationLevel이 null이면 -->
+                        무관
+                    {{/model.educationLevel}}
+                </li>
+
+                <!-- 경력 -->
+                <li>
+                    경력 :
+                    {{#model.minCareerLevel}}
+                        {{model.minCareerLevel}}년 ~
+                    {{/model.minCareerLevel}}
+                    {{#model.maxCareerLevel}}
+                        {{model.maxCareerLevel}}년
+                    {{/model.maxCareerLevel}}
+                    {{^model.minCareerLevel}}
+                        {{#model.maxCareerLevel}}
+                            ~ {{model.maxCareerLevel}}년
+                        {{/model.maxCareerLevel}}
+                    {{/model.minCareerLevel}}
+                    {{^model.maxCareerLevel}}
+                        {{#model.minCareerLevel}}
+                            {{model.minCareerLevel}}년 이상
+                        {{/model.minCareerLevel}}
+                    {{/model.maxCareerLevel}}
+                    {{^model.minCareerLevel}}{{^model.maxCareerLevel}}
+                        경력 무관
+                    {{/model.maxCareerLevel}}{{/model.minCareerLevel}}
+                </li>
             </ul>
         </div>
+
 
         <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">우대사항</h2>
             <ul class="small ps-3">
-                {{#jobPosting.preferenceList}}
+                {{#model.preference}}
                     <li>{{.}}</li>
-                {{/jobPosting.preferenceList}}
+                {{/model.preference}}
             </ul>
         </div>
 
         <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">복지 및 혜택</h2>
             <ul class="small ps-3">
-                {{#jobPosting.benefitList}}
+                {{#model.benefit}}
                     <li>{{.}}</li>
-                {{/jobPosting.benefitList}}
+                {{/model.benefit}}
             </ul>
         </div>
 
         <div class="mb-4">
             <div class="small text-dark">
                 <div class="d-flex">
-                    <div class="fw-semibold me-3" style="width: 80px;">경력</div>
-                    <div>{{#jobPosting.minCareerLevel}}{{jobPosting.minCareerLevel}}년
-                        ~ {{/jobPosting.minCareerLevel}}{{#jobPosting.maxCareerLevel}}{{jobPosting.maxCareerLevel}}
-                        년{{/jobPosting.maxCareerLevel}}{{^jobPosting.minCareerLevel}}{{#jobPosting.maxCareerLevel}}
-                        ~ {{jobPosting.maxCareerLevel}}
-                        년{{/jobPosting.maxCareerLevel}}{{/jobPosting.minCareerLevel}}{{^jobPosting.maxCareerLevel}}{{#jobPosting.minCareerLevel}}{{jobPosting.minCareerLevel}}
-                        년
-                        이상{{/jobPosting.minCareerLevel}}{{/jobPosting.maxCareerLevel}}{{^jobPosting.minCareerLevel}}{{^jobPosting.maxCareerLevel}}
-                        무관{{/jobPosting.maxCareerLevel}}{{/jobPosting.minCareerLevel}}</div>
-                </div>
-                <div class="d-flex">
-                    <div class="fw-semibold me-3" style="width: 80px;">학력</div>
-                    <div>{{jobPosting.educationLevel}}</div>
-                </div>
-                <div class="d-flex">
                     <div class="fw-semibold me-3" style="width: 80px;">마감일</div>
-                    <div>{{jobPosting.deadline}}</div>
+                    <div>{{model.deadline}}</div>
                 </div>
                 <div>
                     <div class="d-flex">
                         <div class="fw-semibold me-3" style="width: 80px;">근무지역</div>
-                        <div>{{jobPosting.addressDetail}}</div>
+                        <div>{{model.addressDetail}}</div>
                     </div>
                     <div class="ps-5 pt-1 d-flex gap-2 small text-secondary">
                         <span>◎</span>
@@ -87,27 +117,41 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h2 class="fs-6 fw-semibold">기업/서비스 소개</h2>
-                <a href="#" class="text-primary small text-decoration-none">기업상세 정보로 이동 &gt;</a>
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h2 class="fs-6 fw-semibold">기업/서비스 소개</h2>
+                    <a href="#" class="text-primary small text-decoration-none">기업상세 정보로 이동 &gt;</a>
+                </div>
+                <img src="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80"
+                     alt="회사 이미지" class="img-fluid rounded shadow">
+                <p class="small text-muted mt-2">
+                    {{model.serviceIntro}}
+                </p>
             </div>
-            <img src="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80"
-                 alt="회사 이미지" class="img-fluid rounded shadow">
-            <p class="small text-muted mt-2">
-                {{jobPosting.serviceIntro}}
-            </p>
+            <div>
+                <h2 class="fs-6 fw-semibold">기타</h2>
+                {{#model.additionalInfo}}
+                    {{model.additionalInfo}}
+                {{/model.additionalInfo}}
+                {{^model.additionalInfo}}
+                    기타 사항이 없습니다.
+                {{/model.additionalInfo}}
+            </div>
         </div>
     </div>
-</div>
-<script>
-    function confirmDelete() {
-        if (confirm("삭제하시겠습니까?")) {
-            document.querySelector('form[action="/job-postings/delete"]').submit();
+    <script>
+        function confirmDelete(id) {
+            if (confirm("삭제하시겠습니까?")) {
+                const form = document.getElementById("deleteForm" + id);
+                if (form) {
+                    form.submit();
+                } else {
+                    alert("삭제 폼을 찾을 수 없습니다.");
+                }
+            }
         }
-    }
-</script>
+    </script>
+
 
 {{> layout/footer}}

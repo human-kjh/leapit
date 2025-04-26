@@ -1,11 +1,14 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit.jobposting.techstack.JobPostingTechStack;
 import com.example.leapit.application.Application;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -18,12 +21,40 @@ public class JobPostingRepository {
         em.persist(jobPosting);
     }
 
+    public void saveJobPostingTechStack(JobPostingTechStack jobPostingTechStack) {
+        em.persist(jobPostingTechStack);
+    }
+
     // 삭제
     public void deleteById(Integer id) {
         JobPosting jobPosting = em.find(JobPosting.class, id);
-        if (jobPosting != null) {
-            em.remove(jobPosting);
-        }
+        em.remove(jobPosting);
+    }
+
+    // 단건 조회
+    public JobPosting findById(Integer id) {
+        return em.find(JobPosting.class, id);
+    }
+
+    // 진행 중인 채용 공고 목록 조회
+    public List<JobPosting> findByDeadlineOpen(LocalDate deadline) {
+        return em.createQuery("select jp from JobPosting jp where jp.deadline >= :deadline", JobPosting.class)
+                .setParameter("deadline", deadline)
+                .getResultList();
+    }
+
+    // 마감된 채용 공고 목록 조회
+    public List<JobPosting> findByDeadlineClosed(LocalDate deadline) {
+        return em.createQuery("select jp from JobPosting jp where jp.deadline < :deadline", JobPosting.class)
+                .setParameter("deadline", deadline)
+                .getResultList();
+    }
+
+    // 특정 채용 공고에 등록된 기술 스택 코드 목록 조회 (상세 페이지, 수정 페이지에서 필요)
+    public List<String> findTechStacksByJobPostingId(Integer jobPostingId) {
+        return em.createQuery("SELECT jpts.techStack.code FROM JobPostingTechStack jpts WHERE jpts.jobPosting.id = :jobPostingId", String.class)
+                .setParameter("jobPostingId", jobPostingId)
+                .getResultList();
 
     }
 
@@ -48,4 +79,73 @@ public class JobPostingRepository {
     public JobPosting findByApplicationId(Integer jobPostingId) {
         return em.find(JobPosting.class, jobPostingId);
     }
+
+    // 주소 - 시 조회
+    public String findByRegion(Integer id) {
+        Query query = em.createNativeQuery("select R.name from job_posting_tb J inner join  region_tb R  on R.id = J.address_region_id where J.id = ?");
+        query.setParameter(1, id);
+
+        return (String) query.getSingleResult();
+    }
+
+    // 주소 - 구 조회
+    public String findBySubRegion(Integer id) {
+        Query query = em.createNativeQuery("select S.name from job_posting_tb J inner join  sub_region_tb S  on S.id = J.address_sub_region_id where J.id = ?");
+        query.setParameter(1, id);
+        return (String) query.getSingleResult();
+
+    }
+
+    // 채용공고 & 해당 채용공고의 기술스택 전체조회
+    public List<Object[]> findAllJobPostingsWithTechStacks() {
+        LocalDate today = LocalDate.now();
+
+        Query query = em.createQuery(
+                "SELECT jp, jpts FROM JobPosting jp " +
+                        "LEFT JOIN JobPostingTechStack jpts ON jp.id = jpts.jobPosting.id where jp.deadline >= :today"
+        );
+        query.setParameter("today", today);
+        return query.getResultList();
+    }
+
+
+    // 구직자 메인페이지 - 인기공고 8개
+    public List<Object[]> findTop8PopularJobPostingsWithTechStacks() {
+        LocalDate today = LocalDate.now();
+
+        // 1. 마감일 이후 + viewCount 기준 상위 8개 채용공고 ID 조회
+        List<Integer> top8Ids = em.createQuery(
+                        "SELECT jp.id FROM JobPosting jp " +
+                                "WHERE jp.deadline >= :today " +
+                                "ORDER BY jp.viewCount DESC", Integer.class)
+                .setParameter("today", today)
+                .setMaxResults(8)
+                .getResultList();
+
+        if (top8Ids.isEmpty()) return new ArrayList<>();
+
+        // 2. 해당 ID들 기준으로 기술스택 조인 포함 재조회
+        return em.createQuery(
+                        "SELECT jp, jpts FROM JobPosting jp " +
+                                "LEFT JOIN JobPostingTechStack jpts ON jp.id = jpts.jobPosting.id " +
+                                "WHERE jp.id IN :ids", Object[].class)
+                .setParameter("ids", top8Ids)
+                .getResultList();
+    }
+
+    // 구직자 메인페이지 - 최신공고 3개
+    public List<JobPosting> findTop3RecentJobPostings() {
+        LocalDate today = LocalDate.now();
+
+        Query query = em.createQuery(
+                "SELECT jp FROM JobPosting jp " +
+                        "WHERE jp.deadline >= :today " +
+                        "ORDER BY jp.createdAt DESC"
+        );
+        query.setParameter("today", today);
+        query.setMaxResults(3);
+
+        return query.getResultList();
+    }
+
 }

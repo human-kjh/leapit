@@ -35,6 +35,8 @@ public class ApplicationController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
+        // 지원 현황 통계
+        ApplicationResponse.ApplicationStatusDto status = applicationService.statusByUserId(sessionUser.getId());
 
         ApplicationResponse.ApplicationListViewDTO respDTO = applicationService.내지원현황목록(sessionUser.getId());
         request.setAttribute("models", respDTO);
