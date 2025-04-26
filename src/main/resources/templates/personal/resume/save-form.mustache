@@ -149,90 +149,47 @@
                     placeholder="간결하게 요점만 요약해서 3-5줄 내로 읽기 쉬운 내용으로 작성해보세요" />
                 </div>
 
-                <!-- 개발 직무 -->
-                <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                  <label class="form-label fw-bold"><span class="text-danger"">*</span> 개발직무</label>
-                  <hr class=" mt-1 mb-3" />
-                    <div class="bg-light rounded-2 px-3 py-2 d-flex align-items-center">
-                      <select class="form-select border-0 bg-light" style="box-shadow: none">
-                        <option selected disabled>직무를 선택해주세요</option>
-                        <option>프론트엔드</option>
-                        <option>백엔드</option>
-                        <option>풀스택</option>
-                      </select>
-                    </div>
-                </div>
-                <!-- 기술스택 -->
-                <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                  <label class="form-label fw-bold"><span class="text-danger">*</span> 기술스택(업무
-                    툴/스킬)</label>
-                  <hr class="mt-1 mb-3" />
-                  <div class="dropdown">
-                    <button class="form-select text-start border-0 bg-light" type="button" data-bs-toggle="dropdown"
-                      aria-expanded="false">
-                      선택하세요
-                    </button>
-                    <ul class="dropdown-menu p-3" style="min-width: 250px">
-                      <li>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="React" id="tech1" />
-                          <label class="form-check-label" for="tech1">React</label>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="JavaScript" id="tech2" />
-                          <label class="form-check-label" for="tech2">JavaScript</label>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="Vue" id="tech3" />
-                          <label class="form-check-label" for="tech3">Vue</label>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="TypeScript" id="tech4" />
-                          <label class="form-check-label" for="tech4">TypeScript</label>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" value="Node.js" id="tech5" />
-                          <label class="form-check-label" for="tech5">Node.js</label>
-                        </div>
-                      </li>
-                    </ul>
+                  <!-- 개발 직무 -->
+                  <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                      <label class="form-label fw-bold"><span class="text-danger">*</span> 개발직무</label>
+                      <hr class="mt-1 mb-3" />
+                      <div class="bg-light rounded-2 px-3 py-2 d-flex align-items-center">
+                          <select name="positionType" class="form-select border-0 bg-light" style="box-shadow: none">
+                              <option disabled selected>직무를 선택해주세요</option>
+                              {{#positionTypeList}}
+                                  <option value="{{code}}">{{code}}</option>
+                              {{/positionTypeList}}
+                          </select>
+                      </div>
                   </div>
-                </div>
+
+                  <!-- 기술스택 -->
+                  <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                      <label class="form-label fw-bold"><span class="text-danger">*</span> 기술스택(업무 툴/스킬)</label>
+                      <hr class="mt-1 mb-3" />
+                      <div class="dropdown">
+                          <button class="form-select text-start border-0 bg-light px-3 py-2" type="button" data-bs-toggle="dropdown"
+                                  aria-expanded="false" id="selectedTechStacksBtn">
+                              기술스택을 등록해주세요.
+                          </button>
+                          <ul class="dropdown-menu p-3" style="min-width: 250px">
+                              {{#techStackList}}
+                                  <li>
+                                      <div class="form-check">
+                                          <input class="form-check-input tech-checkbox" type="checkbox" name="techStacks" value="{{code}}" id="tech-{{code}}" />
+                                          <label class="form-check-label" for="tech-{{code}}" checked>{{code}}</label>
+                                      </div>
+                                  </li>
+                              {{/techStackList}}
+                          </ul>
+                      </div>
+                  </div>
+
                 <!-- 링크 -->
                 <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
                   <label class="form-label fw-bold">링크</label>
                   <hr class="mt-1 mb-3" />
                   <div>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                      <div class="d-flex align-items-start gap-2">
-                        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="24" height="24" />
-                        <div>
-                          <strong>Github</strong><br />
-                          <a href="https://github.com" target="_blank"
-                            class="text-decoration-none text-muted">https://github.com</a>
-                        </div>
-                      </div>
-                      <i class="bi bi-box-arrow-up-right"></i>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                      <div class="d-flex align-items-start gap-2">
-                        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png" width="24" height="24" />
-                        <div>
-                          <strong>Notion</strong><br />
-                          <a href="https://notion.so" target="_blank"
-                            class="text-decoration-none text-muted">https://notion.so</a>
-                        </div>
-                      </div>
-                      <i class="bi bi-box-arrow-up-right"></i>
-                    </div>
                     <div class="d-flex justify-content-between align-items-center mb-3">
                       <div class="d-flex align-items-start gap-2">
                         <img src="https://cdn-icons-png.flaticon.com/512/888/888879.png" width="24" height="24" />
@@ -244,7 +201,7 @@
                       </div>
                       <i class="bi bi-box-arrow-up-right"></i>
                     </div>
-                    <div class="d-flex gap-2 align-items-center mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3 ">
                       <i class="bi bi-link-45deg fs-5"></i>
                       <input type="text" class="form-control" placeholder="링크 제목을 입력해주세요" />
                       <input type="text" class="form-control" placeholder="http://, https://를 포함해 작성해주세요" />
@@ -358,36 +315,14 @@
                             기술스택을 등록해주세요
                           </button>
                           <ul class="dropdown-menu p-3" style="min-width: 250px">
-                            <li>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="React" id="tech1" />
-                                <label class="form-check-label" for="tech1">React</label>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="JavaScript" id="tech2" />
-                                <label class="form-check-label" for="tech2">JavaScript</label>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="Vue" id="tech3" />
-                                <label class="form-check-label" for="tech3">Vue</label>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="TypeScript" id="tech4" />
-                                <label class="form-check-label" for="tech4">TypeScript</label>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="Node.js" id="tech5" />
-                                <label class="form-check-label" for="tech5">Node.js</label>
-                              </div>
-                            </li>
+                              {{#techStackList}}
+                                  <li>
+                                      <div class="form-check">
+                                          <input class="form-check-input tech-checkbox" type="checkbox" name="projectTechStacks" value="{{code}}" id="project-tech-{{code}}" />
+                                          <label class="form-check-label" for="project-tech-{{code}}" checked>{{code}}</label>
+                                      </div>
+                                  </li>
+                              {{/techStackList}}
                           </ul>
                         </div>
                       </div>
@@ -406,7 +341,7 @@
                 <!--프로젝트 부분-->
                 <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
                   <label class="form-label fw-bold mb-2">
-                    <span class="text-danger"">*</span> 프로젝트
+                    <span class="text-danger">*</span> 프로젝트
                   </label>
                   <hr class=" mt-1 mb-3" />
 
@@ -448,36 +383,14 @@
                               기술스택을 등록해주세요
                             </button>
                             <ul class="dropdown-menu p-3" style="min-width: 250px">
-                              <li>
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="React" id="tech1" />
-                                  <label class="form-check-label" for="tech1">React</label>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="JavaScript" id="tech2" />
-                                  <label class="form-check-label" for="tech2">JavaScript</label>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="Vue" id="tech3" />
-                                  <label class="form-check-label" for="tech3">Vue</label>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="TypeScript" id="tech4" />
-                                  <label class="form-check-label" for="tech4">TypeScript</label>
-                                </div>
-                              </li>
-                              <li>
-                                <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" value="Node.js" id="tech5" />
-                                  <label class="form-check-label" for="tech5">Node.js</label>
-                                </div>
-                              </li>
+                                {{#techStackList}}
+                                    <li>
+                                        <div class="form-check">
+                                            <input class="form-check-input tech-checkbox" type="checkbox" name="techStacks" value="{{code}}" id="tech-{{code}}" />
+                                            <label class="form-check-label" for="tech-{{code}}" checked>{{code}}</label>
+                                        </div>
+                                    </li>
+                                {{/techStackList}}
                             </ul>
                           </div>
                         </div>
@@ -549,36 +462,14 @@
                             기술스택을 등록해주세요
                           </button>
                           <ul class="dropdown-menu p-3" style="min-width: 250px">
-                            <li>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="React" id="tech1" />
-                                <label class="form-check-label" for="tech1">React</label>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="JavaScript" id="tech2" />
-                                <label class="form-check-label" for="tech2">JavaScript</label>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="Vue" id="tech3" />
-                                <label class="form-check-label" for="tech3">Vue</label>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="TypeScript" id="tech4" />
-                                <label class="form-check-label" for="tech4">TypeScript</label>
-                              </div>
-                            </li>
-                            <li>
-                              <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="Node.js" id="tech5" />
-                                <label class="form-check-label" for="tech5">Node.js</label>
-                              </div>
-                            </li>
+                              {{#techStackList}}
+                                  <li>
+                                      <div class="form-check">
+                                          <input class="form-check-input tech-checkbox" type="checkbox" name="techStacks" value="{{code}}" id="tech-{{code}}" />
+                                          <label class="form-check-label" for="tech-{{code}}" checked>{{code}}</label>
+                                      </div>
+                                  </li>
+                              {{/techStackList}}
                           </ul>
                         </div>
                       </div>
@@ -675,5 +566,19 @@
         </div>
       </div>
       <!-- 본문 끝 -->
+    <script>
+        // 기술스택 체크박스 전체 가져오기
+        let checkboxes = document.querySelectorAll('.tech-checkbox');
+        let displayBtn = document.getElementById('selectedTechStacksBtn');
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                let selected = Array.from(checkboxes)
+                        .filter(box => box.checked)
+                        .map(box => box.nextElementSibling.innerText); // label 내용 가져오기
+                displayBtn.innerText = selected.length > 0 ? selected.join(', ') : '선택하세요';
+            });
+        });
+    </script>
 
 {{> layout/footer}}

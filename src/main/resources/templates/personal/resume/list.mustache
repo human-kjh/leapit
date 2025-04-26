@@ -21,10 +21,10 @@
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                     <li>
-                                                        <a class="dropdown-item" href="/resume/{{id}}/edit">수정</a>
+                                                        <a class="dropdown-item" href="/resume/{{id}}/update">수정</a>
                                                     </li>
                                                     <li>
-                                                        <form method="post" action="/resume/{{id}}/delete" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                                        <form class="deleteForm" action="/resume/1/delete" method="post">
                                                             <button type="submit" class="dropdown-item text-danger">삭제</button>
                                                         </form>
                                                     </li>
@@ -48,10 +48,10 @@
                                     <!-- 새로운 이력서 등록 버튼 -->
                                     <div class="resumeItem d-flex align-items-center justify-content-center"
                                         id="resumeWrite">
-                                        <button class="btn p-0 border-0 bg-transparent">
+                                        <a href="/resume/save-form" class="btn p-0 border-0 bg-transparent d-flex flex-column align-items-center">
                                             <i class="bi bi-plus-circle text-primary fs-3"></i>
-                                        </button>
-                                        <small>새로운 이력서를 추가해보세요!</small>
+                                            <small>새로운 이력서를 추가해보세요!</small>
+                                        </a>
                                     </div>
 
 
@@ -62,6 +62,18 @@
                 </div>
             </div>
             <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelectorAll('.deleteForm').forEach(form => {
+                        form.addEventListener('submit', function (e) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            if (confirm('정말 삭제하시겠습니까?')) {
+                                form.submit();
+                            }
+                        });
+                    });
+                });
+
                 document.addEventListener('DOMContentLoaded', function () {
                     const toggleSwitches = document.querySelectorAll('.toggleSwitch');
 

@@ -48,7 +48,7 @@ public class ResumeResponse {
 
 
 
-        public DetailDTO(Resume resume, String label, List<ResumeTechStack> techStacks, List<Link> links,
+        public DetailDTO(Resume resume, List<ResumeTechStack> techStacks, List<Link> links,
                          List<Education> educations, List<ExperienceResponse.DetailDTO> experiences, List<ProjectResponse.DetailDTO> projects,
                          List<TrainingResponse.DetailDTO> trainings, List<Etc> etcs) {
             this.title = resume.getTitle();
@@ -58,7 +58,7 @@ public class ResumeResponse {
             this.birthDate = resume.getUser().getEmail();
             this.contactNumber = resume.getUser().getContactNumber();
             this.isPublic = resume.getIsPublic();
-            this.positionType = label;
+            this.positionType = resume.getPositionType();
             this.selfIntroduction = resume.getSelfIntroduction();
             this.techStackList = techStacks;
             this.links = links;
