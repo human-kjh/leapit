@@ -127,4 +127,9 @@ public class JobPostingService {
 
         return jobpostingList;
     }
+
+    // JobPosting의 주소 정보를 반환하는 메서드
+    public JobPostingResponse.AddressDTO getJobPostingAddress(Integer id) {
+        return jobPostingRepository.findJobPostingAddressById(id);
+    }
 }
