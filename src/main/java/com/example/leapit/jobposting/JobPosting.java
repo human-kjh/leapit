@@ -75,17 +75,13 @@ public class JobPosting {
 
 
     @Builder
-    public JobPosting(Integer id) {
-        this.id = id;
-    }
-
-    @Builder
-    public JobPosting(User user, String title, String positionType,
+    public JobPosting(Integer id, User user, String title, String positionType,
                       Integer minCareerLevel, Integer maxCareerLevel,
                       String educationLevel, Integer addressRegionId, Integer addressSubRegionId,
                       String addressDetail, String serviceIntro, LocalDate deadline,
                       String responsibility, String qualification, String preference,
                       String benefit, String additionalInfo, List<String> techStack) {
+        this.id = id;
         this.user = user;
         this.title = title;
         this.positionType = positionType;

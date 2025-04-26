@@ -1,9 +1,6 @@
 package com.example.leapit.jobposting.bookmark;
 
-import com.example.leapit.application.Application;
-import com.example.leapit.application.bookmark.ApplicationBookmark;
 import com.example.leapit.application.bookmark.ApplicationBookmarkRequest;
-import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
 import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.jobposting.JobPostingRepository;
 import com.example.leapit.user.User;
@@ -27,7 +24,7 @@ public class JobPostingBookmarkService {
 
         JobPosting jobPosting = jobPostingRepository.findByApplicationId(reqDTO.getApplicationId());
         if (jobPosting == null) throw new RuntimeException("지원 정보가 존재하지 않습니다");
-
+        System.out.println(jobPosting.getId());
         JobPostingBookmark bookmark = JobPostingBookmark.builder()
                 .user(companyUser)
                 .jobPosting(jobPosting)
