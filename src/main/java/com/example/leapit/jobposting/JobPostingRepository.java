@@ -77,7 +77,7 @@ public class JobPostingRepository {
         return (Long) query.getSingleResult();
     }
 
-    public JobPosting findByApplicationId(Integer jobPostingId) {
+    public JobPosting findByJobPostingId(Integer jobPostingId) {
         return em.find(JobPosting.class, jobPostingId);
     }
 
@@ -109,7 +109,7 @@ public class JobPostingRepository {
         return query.getResultList();
     }
 
-    // TODO 지금 하는 거 << 김정원
+
     public List<JobPostingResponse.JobPostingDTO> findAllJobPostingsWithTechStacksByFilter(
             Integer regionId, Integer subRegionId, Integer career, String techStackCode, String selectedLabel,
             boolean isPopular, boolean isLatest) {

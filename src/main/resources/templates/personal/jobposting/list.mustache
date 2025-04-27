@@ -440,8 +440,9 @@
                             </div>
                         </div>
                     </a>
-                    <button class="btn btn-outline-primary w-100">
-                        <i class="fa fa-bookmark-o me-2"></i> 스크랩하기
+                    <button class="btn btn-outline-primary w-100" id="bookmark-btn-{{id}}"
+                            onclick="saveBookmark({{id}})">
+                        <i class="fa fa-bookmark-o me-2" id="bookmark-icon-{{id}}"></i> 스크랩하기
                     </button>
                 </div>
             {{/models.jobPostingList}}
@@ -449,5 +450,59 @@
 
     </div>
 </div>
+<script>
+    async function saveBookmark(jobPostingId) {
+        try {
+            const response = await fetch("/api/personal/bookmark", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({jobPostingId: jobPostingId})
+            });
 
+            const result = await response.json();
+            console.log(result);  // 서버에서 받은 응답 확인
+
+            if (response.status === 200) {
+                const icon = document.querySelector(`#bookmark-icon-${jobPostingId}`);
+                const button = document.querySelector(`#bookmark-btn-${jobPostingId}`);
+                icon.classList.remove("fa-bookmark-o");
+                icon.classList.add("fa-bookmark");
+                button.setAttribute("onclick", `deleteBookmark(${jobPostingId})`);
+                button.classList.remove("btn-outline-primary");
+                button.classList.add("btn-primary");
+                console.log("북마크가 저장되었습니다.");
+            } else {
+                alert(result.msg || "북마크 저장 실패");
+            }
+        } catch (e) {
+            console.error("북마크 저장 중 오류:", e);
+        }
+    }
+
+    async function deleteBookmark(jobPostingId) {
+        try {
+            const response = await fetch(`/api/personal/bookmark/${jobPostingId}`, {
+                method: "DELETE"
+            });
+
+            const result = await response.json();
+
+            if (response.status === 200) {
+                // 성공적으로 북마크가 삭제된 경우 버튼 상태 변경
+                const icon = document.querySelector(`#bookmark-icon-${jobPostingId}`);
+                const button = document.querySelector(`#bookmark-btn-${jobPostingId}`);
+                icon.classList.remove("fa-bookmark");
+                icon.classList.add("fa-bookmark-o");
+                button.setAttribute("onclick", `saveBookmark(${jobPostingId})`);
+                button.classList.remove("btn-primary");
+                button.classList.add("btn-outline-primary");
+                console.log("북마크가 삭제되었습니다.");
+            } else {
+                alert(result.msg || "북마크 삭제 실패");
+            }
+        } catch (e) {
+            console.error("북마크 삭제 중 오류:", e);
+        }
+    }
+</script>
 {{> layout/footer}}

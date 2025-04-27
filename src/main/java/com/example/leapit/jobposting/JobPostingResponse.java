@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 
 public class JobPostingResponse {
 
+
+    // TODO IsBookmark 넣어야 함
     // 구직자 - 채용공고 목록
     @Data
     public static class JobPostingDTO {
@@ -126,6 +128,8 @@ public class JobPostingResponse {
         }
     }
 
+
+    // TODO 통합 DTO
     // 공고 목록 DTO (with 필터)
     // Name이 붙은 값들은 서버에 선택된 값 유지
     @Data
@@ -146,7 +150,7 @@ public class JobPostingResponse {
         private List<TechStack> techStacks;
         private List<RegionResponse.RegionDTO> regions;
         private List<RegionResponse.SubRegionDTO> subRegions;
-        private List<JobPostingResponse.JobPostingDTO> jobPostingList;
+        private List<JobPostingResponse.JobPostingDTO> jobPostingList; // TODO 이 안에 IsBookmark 넣어야 함
 
         public JobPostingListFilterDTO(
                 List<PositionTypeResponse.PositionTypeDTO> positions,

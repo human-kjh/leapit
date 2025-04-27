@@ -101,7 +101,7 @@ public class JobPostingService {
     }
 
 
-    // TODO 지금하는거 < 김정원
+    // TODO 수정 필요 <기존에 등록되어 있는 북마크를 뿌려야합니다.>
     public JobPostingResponse.JobPostingListFilterDTO 공고목록페이지(Integer regionId, Integer subRegionId, Integer career, String techStackCode, String selectedLabel, Boolean isPopular, Boolean isLatest) {
 
         // 직무 조회
