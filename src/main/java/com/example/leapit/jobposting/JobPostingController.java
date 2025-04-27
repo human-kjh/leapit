@@ -102,6 +102,7 @@ public class JobPostingController {
     // 구직자 - 채용공고 목록
     @GetMapping("/personal/jobposting/list")
     public String personalList(HttpServletRequest req, JobPostingRequest.JobPostingListRequestDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
 
 
         if (Boolean.TRUE.equals(reqDTO.getIsPopular())) {
@@ -112,7 +113,7 @@ public class JobPostingController {
             reqDTO.setIsPopular(false);
             reqDTO.setIsLatest(true);
         }
-        
+
         // reqDTO에 담아놨습니다~
         Integer regionId = reqDTO.getRegionIdAsInteger();
         Integer subRegionId = reqDTO.getSubRegionIdAsInteger();
@@ -130,7 +131,8 @@ public class JobPostingController {
                         techStackCode,
                         selectedLabel,
                         isPopular,
-                        isLatest
+                        isLatest,
+                        sessionUser.getId()
                 );
 
         req.setAttribute("models", respDTO);

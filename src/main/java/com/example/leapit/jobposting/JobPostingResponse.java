@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class JobPostingResponse {
 
 
-    // TODO IsBookmark 넣어야 함
     // 구직자 - 채용공고 목록
     @Data
     public static class JobPostingDTO {
@@ -27,9 +26,26 @@ public class JobPostingResponse {
         private String career;
         private String address; // ← 외부에서 주입
         private String image;
+        private boolean isBookmarked;
         private List<CompanyInfoResponse.DetailDTO.TechStackDTO> techStacks;
 
         // address는 외부에서 전달받음
+        public JobPostingDTO(JobPosting jobPostings, List<JobPostingTechStack> techStacks, String address, String image, String companyName, boolean isBookmarked) {
+            this.id = jobPostings.getId();
+            this.title = jobPostings.getTitle();
+            this.deadline = jobPostings.getDeadline();
+            this.dDay = calculateDDay(deadline);
+            this.career = formatCareer(jobPostings.getMinCareerLevel(), jobPostings.getMaxCareerLevel());
+            this.address = address;
+            this.image = image;
+            this.companyName = companyName;
+            this.techStacks = techStacks.stream()
+                    .map(stack -> new CompanyInfoResponse.DetailDTO.TechStackDTO(stack.getTechStack().getCode()))
+                    .collect(Collectors.toList());
+
+            this.isBookmarked = isBookmarked;
+        }
+
         public JobPostingDTO(JobPosting jobPostings, List<JobPostingTechStack> techStacks, String address, String image, String companyName) {
             this.id = jobPostings.getId();
             this.title = jobPostings.getTitle();
@@ -129,7 +145,6 @@ public class JobPostingResponse {
     }
 
 
-    // TODO 통합 DTO
     // 공고 목록 DTO (with 필터)
     // Name이 붙은 값들은 서버에 선택된 값 유지
     @Data
@@ -150,7 +165,7 @@ public class JobPostingResponse {
         private List<TechStack> techStacks;
         private List<RegionResponse.RegionDTO> regions;
         private List<RegionResponse.SubRegionDTO> subRegions;
-        private List<JobPostingResponse.JobPostingDTO> jobPostingList; // TODO 이 안에 IsBookmark 넣어야 함
+        private List<JobPostingResponse.JobPostingDTO> jobPostingList;
 
         public JobPostingListFilterDTO(
                 List<PositionTypeResponse.PositionTypeDTO> positions,

@@ -8,6 +8,7 @@ import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.companyinfo.CompanyInfo;
 import com.example.leapit.companyinfo.CompanyInfoRepository;
+import com.example.leapit.jobposting.bookmark.JobPostingBookmarkRepository;
 import com.example.leapit.jobposting.techstack.JobPostingTechStack;
 import com.example.leapit.jobposting.techstack.JobPostingTechStackRepository;
 import com.example.leapit.user.User;
@@ -32,6 +33,7 @@ public class JobPostingService {
     private final JobPostingTechStackRepository jobPostingTechStackRepository;
     private final PositionTypeRepository positionTypeRepository;
     private final RegionRepository regionRepository;
+    private final JobPostingBookmarkRepository jobPostingBookmarkRepository;
 
     // 채용 공고 등록
     @org.springframework.transaction.annotation.Transactional
@@ -101,8 +103,15 @@ public class JobPostingService {
     }
 
 
-    // TODO 수정 필요 <기존에 등록되어 있는 북마크를 뿌려야합니다.>
-    public JobPostingResponse.JobPostingListFilterDTO 공고목록페이지(Integer regionId, Integer subRegionId, Integer career, String techStackCode, String selectedLabel, Boolean isPopular, Boolean isLatest) {
+    public JobPostingResponse.JobPostingListFilterDTO 공고목록페이지(
+            Integer regionId,
+            Integer subRegionId,
+            Integer career,
+            String techStackCode,
+            String selectedLabel,
+            Boolean isPopular,
+            Boolean isLatest,
+            Integer sessionUserId) {
 
         // 직무 조회
         List<PositionTypeResponse.PositionTypeDTO> positions = positionTypeRepository.findAllLabelAndSelectedLabel(selectedLabel);
@@ -133,7 +142,6 @@ public class JobPostingService {
         boolean hasAnyParam = (regionId != null || subRegionId != null || career != null || techStackCode != null || selectedLabel != null);
 
         if (techStackCode != null) {
-            System.out.println("[DEBUG] 선택된 기술스택 코드: " + techStackCode);
 
             for (TechStack stack : techStacks) {
                 if (stack.getCode().equals(techStackCode)) {
@@ -175,8 +183,14 @@ public class JobPostingService {
                 techStackCode,
                 selectedLabel,
                 Boolean.TRUE.equals(isPopular),
-                Boolean.TRUE.equals(isLatest)
+                Boolean.TRUE.equals(isLatest),
+                sessionUserId
         );
+
+
+        // 북마크 조회
+//        JobPostingBookmark bookmark = jobPostingBookmarkRepository.findByUserIdAndJobPostingId(sessionUserId, jobPostingId);
+
 
         JobPostingResponse.JobPostingListFilterDTO respDTO =
                 new JobPostingResponse.JobPostingListFilterDTO(
@@ -203,7 +217,6 @@ public class JobPostingService {
     }
 
 
-    // TODO
     // 구직자 - 채용공고 목록
     public List<JobPostingResponse.JobPostingDTO> getAllJobPostings() {
         List<Object[]> results = jobPostingRepository.findAllJobPostingsWithTechStacks();

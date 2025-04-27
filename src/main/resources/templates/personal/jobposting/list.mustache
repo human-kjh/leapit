@@ -440,9 +440,12 @@
                             </div>
                         </div>
                     </a>
-                    <button class="btn btn-outline-primary w-100" id="bookmark-btn-{{id}}"
-                            onclick="saveBookmark({{id}})">
-                        <i class="fa fa-bookmark-o me-2" id="bookmark-icon-{{id}}"></i> 스크랩하기
+                    <button class="btn {{#isBookmarked}}btn-primary{{/isBookmarked}}{{^isBookmarked}}btn-outline-primary{{/isBookmarked}} w-100"
+                            id="bookmark-btn-{{id}}"
+                            onclick="{{#isBookmarked}}deleteBookmark{{/isBookmarked}}{{^isBookmarked}}saveBookmark{{/isBookmarked}}({{id}})">
+                        <i class="fa {{#isBookmarked}}fa-bookmark{{/isBookmarked}}{{^isBookmarked}}fa-bookmark-o{{/isBookmarked}} me-2"
+                           id="bookmark-icon-{{id}}"></i>
+                        {{#isBookmarked}}스크랩됨{{/isBookmarked}}{{^isBookmarked}}스크랩하기{{/isBookmarked}}
                     </button>
                 </div>
             {{/models.jobPostingList}}
@@ -460,7 +463,7 @@
             });
 
             const result = await response.json();
-            console.log(result);  // 서버에서 받은 응답 확인
+            console.log(result);
 
             if (response.status === 200) {
                 const icon = document.querySelector(`#bookmark-icon-${jobPostingId}`);
@@ -488,7 +491,6 @@
             const result = await response.json();
 
             if (response.status === 200) {
-                // 성공적으로 북마크가 삭제된 경우 버튼 상태 변경
                 const icon = document.querySelector(`#bookmark-icon-${jobPostingId}`);
                 const button = document.querySelector(`#bookmark-btn-${jobPostingId}`);
                 icon.classList.remove("fa-bookmark");
@@ -504,5 +506,6 @@
             console.error("북마크 삭제 중 오류:", e);
         }
     }
+
 </script>
 {{> layout/footer}}
