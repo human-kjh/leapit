@@ -46,17 +46,45 @@
             </ul>
         </div>
 
-        <!-- 지역 드롭다운 -->
+        <!-- 지역(시) 드롭다운 -->
         <div class="dropdown d-inline-block">
-            <button class="btn btn-outline-primary dropdown-toggle rounded-5" type="button" data-bs-toggle="dropdown">
-                지역
+            <button class="btn {{#models.selectedRegionId}}btn-primary{{/models.selectedRegionId}} {{^models.selectedRegionId}}btn-outline-primary{{/models.selectedRegionId}} dropdown-toggle rounded-5"
+                    type="button" data-bs-toggle="dropdown">
+                {{#models.selectedRegionName}}{{models.selectedRegionName}}{{/models.selectedRegionName}}
+                {{^models.selectedRegionName}}지역(시){{/models.selectedRegionName}}
             </button>
             <ul class="dropdown-menu">
                 {{#models.regions}}
-                    <li><a class="dropdown-item" href="#">{{region}}</a></li>
+                    <li>
+                        <form method="get" action="/personal/jobposting/list">
+                            <input type="hidden" name="regionId" value="{{regionId}}">
+                            <button class="dropdown-item" type="submit">{{region}}</button>
+                        </form>
+                    </li>
                 {{/models.regions}}
             </ul>
         </div>
+
+        <!-- 지역(군/구) 드롭다운 -->
+        <div class="dropdown d-inline-block">
+            <button class="btn {{#models.selectedSubRegionId}}btn-primary{{/models.selectedSubRegionId}} {{^models.selectedSubRegionId}}btn-outline-primary{{/models.selectedSubRegionId}} dropdown-toggle rounded-5"
+                    type="button" data-bs-toggle="dropdown">
+                {{#models.selectedSubRegionName}}{{models.selectedSubRegionName}}{{/models.selectedSubRegionName}}
+                {{^models.selectedSubRegionName}}지역(군/구){{/models.selectedSubRegionName}}
+            </button>
+            <ul class="dropdown-menu">
+                {{#models.subRegions}}
+                    <li>
+                        <form method="get" action="/personal/jobposting/list">
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                            <input type="hidden" name="subRegionId" value="{{subRegionId}}">
+                            <button class="dropdown-item" type="submit">{{subRegion}}</button>
+                        </form>
+                    </li>
+                {{/models.subRegions}}
+            </ul>
+        </div>
+
 
         <!-- 인기순/최신순 버튼 -->
         <div class="d-flex flex-row-reverse mt-3 mb-2">
@@ -103,5 +131,6 @@
     </div>
 </div>
 <!-- 본문 끝 -->
+
 
 {{> layout/footer}}

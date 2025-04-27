@@ -101,16 +101,21 @@ public class JobPostingController {
 
     // 구직자 - 채용공고 목록
     @GetMapping("/personal/jobposting/list")
-    public String personalList(HttpServletRequest req) {
+    public String personalList(HttpServletRequest req,
+                               @RequestParam(value = "regionId", required = false) Integer regionId,
+                               @RequestParam(value = "subRegionId", required = false) Integer subRegionId) {
+        System.out.println("============ [Controller 디버깅] ============");
+        System.out.println("[DEBUG] regionId 요청 파라미터 = " + regionId);
+        System.out.println("[DEBUG] subRegionId 요청 파라미터 = " + subRegionId);
 
-        JobPostingResponse.JobPostingListFilterDTO respDTO = jobPostingService.공고목록페이지();
+        JobPostingResponse.JobPostingListFilterDTO respDTO = jobPostingService.공고목록페이지(regionId, subRegionId);
 
-        System.out.println("============컨트롤러 디벋깅======================");
-        System.out.println("[DEBUG] models.positions size = " + (respDTO.getPositions() != null ? respDTO.getPositions().size() : 0));
-        System.out.println("[DEBUG] models.techStacks size = " + (respDTO.getTechStacks() != null ? respDTO.getTechStacks().size() : 0));
-        System.out.println("[DEBUG] models.regions size = " + (respDTO.getRegions() != null ? respDTO.getRegions().size() : 0));
-        System.out.println("[DEBUG] models.subRegions size = " + (respDTO.getSubRegions() != null ? respDTO.getSubRegions().size() : 0));
-        System.out.println("[DEBUG] models.jobPostingList size = " + (respDTO.getJobPostingList() != null ? respDTO.getJobPostingList().size() : 0));
+
+        System.out.println("[DEBUG] respDTO.selectedRegionId = " + respDTO.getSelectedRegionId());
+        System.out.println("[DEBUG] respDTO.selectedSubRegionId = " + respDTO.getSelectedSubRegionId());
+        System.out.println("[DEBUG] respDTO.regions 사이즈 = " + respDTO.getRegions().size());
+        System.out.println("[DEBUG] respDTO.subRegions 사이즈 = " + respDTO.getSubRegions().size());
+        System.out.println("==============================================");
 
         req.setAttribute("models", respDTO);
         return "personal/jobposting/list";

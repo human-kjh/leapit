@@ -129,18 +129,26 @@ public class JobPostingResponse {
     // 공고 목록 DTO (with 필터)
     @Data
     public static class JobPostingListFilterDTO {
+        private Integer selectedRegionId;
+        private Integer selectedSubRegionId;
+        private String selectedRegionName;
+        private String selectedSubRegionName;
         private List<PositionTypeResponse.PositionTypeDTO> positions;
         private List<TechStack> techStacks;
         private List<RegionResponse.RegionDTO> regions;
         private List<RegionResponse.SubRegionDTO> subRegions;
         private List<JobPostingResponse.JobPostingDTO> jobPostingList;
 
-        public JobPostingListFilterDTO(List<PositionTypeResponse.PositionTypeDTO> positions, List<TechStack> techStacks, List<RegionResponse.RegionDTO> regions, List<RegionResponse.SubRegionDTO> subRegions, List<JobPostingDTO> jobPostingList) {
+        public JobPostingListFilterDTO(List<PositionTypeResponse.PositionTypeDTO> positions, List<TechStack> techStacks, List<RegionResponse.RegionDTO> regions, List<RegionResponse.SubRegionDTO> subRegions, List<JobPostingDTO> jobPostingList, Integer selectedRegionId, Integer selectedSubRegionId, String selectedRegionName, String selectedSubRegionName) {
             this.positions = positions;
             this.techStacks = techStacks;
             this.regions = regions;
             this.subRegions = subRegions;
             this.jobPostingList = jobPostingList;
+            this.selectedRegionId = selectedRegionId;
+            this.selectedSubRegionId = selectedSubRegionId;
+            this.selectedRegionName = selectedRegionName;
+            this.selectedSubRegionName = selectedSubRegionName;
         }
     }
 

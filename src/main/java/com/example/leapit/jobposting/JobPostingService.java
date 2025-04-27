@@ -102,7 +102,7 @@ public class JobPostingService {
 
 
     // TODO 지금하는거 < 김정원
-    public JobPostingResponse.JobPostingListFilterDTO 공고목록페이지() {
+    public JobPostingResponse.JobPostingListFilterDTO 공고목록페이지(Integer regionId, Integer subRegionId) {
 
         // 직무 조회
         List<PositionTypeResponse.PositionTypeDTO> positions = positionTypeRepository.findAllLabel();
@@ -113,15 +113,37 @@ public class JobPostingService {
         // 지역 조회
         List<RegionResponse.RegionDTO> regions = regionRepository.findAllRegions();
 
+
         // 서브 지역 조회
-        // given
-        Integer regionId = 1;
         List<RegionResponse.SubRegionDTO> subRegions = regionRepository.findAllSubRegions(regionId);
+        if (subRegions == null || subRegions.isEmpty()) {
+            subRegions = new ArrayList<>();
+        }
+
+        // 지역 이름 가져옴
+        String selectedSubRegionName = null;
+        String selectedRegionName = null;
+
+        if (regionId != null) {
+            for (RegionResponse.RegionDTO region : regions) {
+                if (region.getRegionId().equals(regionId)) {
+                    selectedRegionName = region.getRegion();
+                }
+            }
+        }
+
+        if (subRegionId != null) {
+            for (RegionResponse.SubRegionDTO subRegion : subRegions) {
+                if (subRegion.getSubRegionId().equals(subRegionId)) {
+                    selectedSubRegionName = subRegion.getSubRegion();
+                }
+            }
+        }
 
         // 전체 공고목록 조회
         List<JobPostingResponse.JobPostingDTO> jobPostingList = jobPostingRepository.findAllJobPostingsWithTechStacksByFilter();
 
-        JobPostingResponse.JobPostingListFilterDTO respDTO = new JobPostingResponse.JobPostingListFilterDTO(positions, techStacks, regions, subRegions, jobPostingList);
+        JobPostingResponse.JobPostingListFilterDTO respDTO = new JobPostingResponse.JobPostingListFilterDTO(positions, techStacks, regions, subRegions, jobPostingList, regionId, subRegionId, selectedRegionName, selectedSubRegionName);
 
         return respDTO;
     }

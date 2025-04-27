@@ -18,14 +18,16 @@ public class RegionRepositoryTest {
     private RegionRepository regionRepository;
 
     @Test
-    public void findAllRegions_test() {
+    public void findAllRegions_테스트() {
         // when
-        List<RegionResponse.RegionDTO> results = regionRepository.findAllRegions();
+        List<RegionResponse.RegionDTO> regions = regionRepository.findAllRegions();
 
         // eye
-        for (RegionResponse.RegionDTO r : results) {
-            System.out.println(r);
+        System.out.println("============ Region 리스트 ============");
+        for (RegionResponse.RegionDTO region : regions) {
+            System.out.println("ID: " + region.getRegionId() + " / 이름: " + region.getRegion());
         }
+        System.out.println("총 개수: " + regions.size());
     }
 
     @Test
