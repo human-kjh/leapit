@@ -17,6 +17,13 @@
                         onclick="confirmDelete({{model.id}})">삭제
                 </button>
             </form>
+            <div class="mb-4">
+                <a
+                        href="#"
+                        class="text-muted small mb-4 fw-normal text-decoration-none"
+                >{{company.companyName}}</a
+                >
+            </div>
 
         </h1>
 
@@ -107,13 +114,16 @@
                 <div>
                     <div class="d-flex">
                         <div class="fw-semibold me-3" style="width: 80px;">근무지역</div>
-                        <div>{{model.addressDetail}}</div>
+                        <div>{{address.regionName}} {{address.subRegionName}} {{address.addressDetail}}</div>
                     </div>
                     <div class="ps-5 pt-1 d-flex gap-2 small text-secondary">
                         <span>◎</span>
-                        <a href="#" class="text-decoration-none">지도보기</a>
+                        <a href="https://map.naver.com/search?query={{address.regionName}} {{address.subRegionName}} {{address.addressDetail}}" class="text-decoration-none" target="_blank">지도보기</a>
                         <span class="text-muted">·</span>
-                        <a href="#" class="text-primary text-decoration-none">주소복사</a>
+                        <a href="#" id="copyAddressButton" class="text-primary text-decoration-none">주소복사</a>
+
+                        <!-- 복사할 주소를 숨겨서 추가 -->
+                        <input type="text" id="hiddenAddress" value="{{address.regionName}} {{address.subRegionName}} {{address.addressDetail}}" readonly style="position:absolute; left:-9999px;">
                     </div>
                 </div>
             </div>
@@ -151,6 +161,25 @@
                 }
             }
         }
+
+         document.getElementById('copyAddressButton').addEventListener('click', function(event) {
+            event.preventDefault(); // a태그 기본 동작(페이지 튕김) 막기
+            const hiddenInput = document.getElementById('hiddenAddress');
+            hiddenInput.select();
+            hiddenInput.setSelectionRange(0, 99999); // 모바일 대응
+
+            try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+            alert('주소가 복사되었습니다!');
+        } else {
+            alert('복사에 실패했습니다.');
+        }
+        } catch (err) {
+            alert('복사 중 오류가 발생했습니다.');
+        }
+        });
+
     </script>
 
 

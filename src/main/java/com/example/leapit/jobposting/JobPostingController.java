@@ -41,8 +41,14 @@
         public String companyDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
             JobPosting jobPosting = jobPostingService.findById(id);
             List<String> techStack = jobPostingService.getTechStacksByJobPostingId(id); // 기술 스택 목록 조회
+            CompanyInfo companyInfo = companyInfoRepository.findByUserId(jobPosting.getUser().getId());  // 회사 정보 조회
+            JobPostingResponse.AddressDTO addressDTO = jobPostingService.getJobPostingAddress(id);  // 주소 정보 조회
+
             request.setAttribute("model", jobPosting);
             request.setAttribute("techStack", techStack);
+            request.setAttribute("company", companyInfo);  // 회사 정보
+            request.setAttribute("address", addressDTO);  // 주소 정보
+
             return "company/jobposting/detail";
         }
 
