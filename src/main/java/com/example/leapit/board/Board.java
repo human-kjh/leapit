@@ -41,4 +41,10 @@ public class Board {
         this.user = user;
         this.createdAt = createdAt;
     }
+
+    // 게시글 수정 Setter
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

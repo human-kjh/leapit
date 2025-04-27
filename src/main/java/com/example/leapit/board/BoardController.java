@@ -63,4 +63,27 @@ public class BoardController {
 
         return "redirect:/community/list";
     }
+
+    @GetMapping("/community/{id}/update-form")
+    public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+
+        Board board = boardService.updateCheck(id, sessionUser.getId());
+        request.setAttribute("model", board);
+        return "personal/board/update-form";
+    }
+
+
+    @PostMapping("/community/{id}/update")
+    public String update(@PathVariable("id") Integer id, BoardRequest.UpdateDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+
+        boardService.update(reqDTO, id, sessionUser.getId());
+
+        return "redirect:/community/" + id;
+    }
+
+
 }

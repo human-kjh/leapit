@@ -58,4 +58,25 @@ public class BoardService {
         boardRepository.save(board);
     }
 
+    public Board updateCheck(Integer id, Integer sessionUserId) {
+        Board board = boardRepository.findById(id);
+        if (board == null) throw new RuntimeException("게시글을 찾을 수 없습니다.");
+
+        if (!board.getUser().getId().equals(sessionUserId)) throw new RuntimeException("권한이 없습니다.");
+
+        return board;
+    }
+
+
+    @Transactional
+    public Board update(BoardRequest.UpdateDTO reqDTO, Integer id, Integer sessionUserId) {
+        Board board = boardRepository.findById(id);
+        if (board == null) throw new RuntimeException("게시글을 찾을 수 없습니다");
+
+        if (!board.getUser().getId().equals(sessionUserId)) throw new RuntimeException("권한이 없습니다.");
+
+        board.update(reqDTO.getTitle(), reqDTO.getContent());
+
+        return board;
+    }
 }
