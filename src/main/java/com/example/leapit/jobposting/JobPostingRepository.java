@@ -151,7 +151,9 @@ public class JobPostingRepository {
         }
 
         // 정렬
-        if (isPopular) {
+        if (isPopular && isLatest) {
+            jpql.append(" ORDER BY jp.viewCount DESC, jp.createdAt DESC");
+        } else if (isPopular) {
             jpql.append(" ORDER BY jp.viewCount DESC");
         } else if (isLatest) {
             jpql.append(" ORDER BY jp.createdAt DESC");

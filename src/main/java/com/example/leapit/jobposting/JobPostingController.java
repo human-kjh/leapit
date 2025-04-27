@@ -103,6 +103,16 @@ public class JobPostingController {
     @GetMapping("/personal/jobposting/list")
     public String personalList(HttpServletRequest req, JobPostingRequest.JobPostingListRequestDTO reqDTO) {
 
+
+        if (Boolean.TRUE.equals(reqDTO.getIsPopular())) {
+            reqDTO.setIsLatest(false);
+        } else if (Boolean.TRUE.equals(reqDTO.getIsLatest())) {
+            reqDTO.setIsPopular(false);
+        } else {
+            reqDTO.setIsPopular(false);
+            reqDTO.setIsLatest(true);
+        }
+        
         // reqDTO에 담아놨습니다~
         Integer regionId = reqDTO.getRegionIdAsInteger();
         Integer subRegionId = reqDTO.getSubRegionIdAsInteger();

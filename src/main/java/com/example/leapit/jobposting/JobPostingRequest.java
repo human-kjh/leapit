@@ -16,7 +16,7 @@ public class JobPostingRequest {
         private String subRegionId;
         private String career;
         private String techStackCode;
-        private String selectedLabel;
+        private String positionLabel;
         private Boolean isPopular;
         private Boolean isLatest;
 
@@ -50,8 +50,8 @@ public class JobPostingRequest {
         }
 
         public String getSelectedLabelOrNull() {
-            if (selectedLabel != null && !selectedLabel.isBlank()) {
-                return selectedLabel.trim();
+            if (positionLabel != null && !positionLabel.isBlank()) {
+                return positionLabel.trim();
             }
             return null;
         }

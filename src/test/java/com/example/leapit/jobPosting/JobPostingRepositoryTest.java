@@ -11,12 +11,80 @@ import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @Import(JobPostingRepository.class)
 @DataJpaTest
 public class JobPostingRepositoryTest {
 
     @Autowired
     private JobPostingRepository jobPostingRepository;
+
+    @Test
+    void 공고목록_전체조회_테스트() {
+        // given
+        Integer regionId = null;
+        Integer subRegionId = null;
+        Integer career = null;
+        String techStackCode = null;
+        String selectedLabel = null;
+        boolean isPopular = false;
+        boolean isLatest = true;
+
+        // when
+        List<JobPostingResponse.JobPostingDTO> result = jobPostingRepository.findAllJobPostingsWithTechStacksByFilter(
+                regionId, subRegionId, career, techStackCode, selectedLabel, isPopular, isLatest
+        );
+
+        // then
+        assertNotNull(result);
+        assertTrue(result.size() >= 0); // 공고가 0개 이상이면 통과
+        System.out.println("[DEBUG] 전체 조회 결과 수: " + result.size());
+    }
+
+    @Test
+    void 지역별_조회_테스트() {
+        // given
+        Integer regionId = 1; // 예시 (존재하는 지역 ID)
+        Integer subRegionId = null;
+        Integer career = null;
+        String techStackCode = null;
+        String selectedLabel = null;
+        boolean isPopular = false;
+        boolean isLatest = true;
+
+        // when
+        List<JobPostingResponse.JobPostingDTO> result = jobPostingRepository.findAllJobPostingsWithTechStacksByFilter(
+                regionId, subRegionId, career, techStackCode, selectedLabel, isPopular, isLatest
+        );
+
+        // then
+        assertNotNull(result);
+        System.out.println("[DEBUG] 지역 필터 결과 수: " + result.size());
+    }
+
+    @Test
+    void 기술스택별_조회_테스트() {
+        // given
+        Integer regionId = null;
+        Integer subRegionId = null;
+        Integer career = null;
+        String techStackCode = "JAVA"; // 예시 (존재하는 스택 코드)
+        String selectedLabel = null;
+        boolean isPopular = false;
+        boolean isLatest = true;
+
+        // when
+        List<JobPostingResponse.JobPostingDTO> result = jobPostingRepository.findAllJobPostingsWithTechStacksByFilter(
+                regionId, subRegionId, career, techStackCode, selectedLabel, isPopular, isLatest
+        );
+
+        // then
+        assertNotNull(result);
+        System.out.println("[DEBUG] 기술스택 필터 결과 수: " + result.size());
+    }
+
 
     @Test
     void findAllJobPostingsWithTechStacksByFilter_test() {
