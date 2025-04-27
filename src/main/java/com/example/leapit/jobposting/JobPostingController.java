@@ -102,10 +102,17 @@ public class JobPostingController {
     // 구직자 - 채용공고 목록
     @GetMapping("/personal/jobposting/list")
     public String personalList(HttpServletRequest req) {
-//
-        //
-        List<JobPostingResponse.JobPostingDTO> jobpostingList = jobPostingService.공고목록페이지();
-        req.setAttribute("models", jobpostingList);
+
+        JobPostingResponse.JobPostingListFilterDTO respDTO = jobPostingService.공고목록페이지();
+
+        System.out.println("============컨트롤러 디벋깅======================");
+        System.out.println("[DEBUG] models.positions size = " + (respDTO.getPositions() != null ? respDTO.getPositions().size() : 0));
+        System.out.println("[DEBUG] models.techStacks size = " + (respDTO.getTechStacks() != null ? respDTO.getTechStacks().size() : 0));
+        System.out.println("[DEBUG] models.regions size = " + (respDTO.getRegions() != null ? respDTO.getRegions().size() : 0));
+        System.out.println("[DEBUG] models.subRegions size = " + (respDTO.getSubRegions() != null ? respDTO.getSubRegions().size() : 0));
+        System.out.println("[DEBUG] models.jobPostingList size = " + (respDTO.getJobPostingList() != null ? respDTO.getJobPostingList().size() : 0));
+
+        req.setAttribute("models", respDTO);
         return "personal/jobposting/list";
 
     }

@@ -1,7 +1,8 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit.companyinfo.CompanyInfo;
+import com.example.leapit.companyinfo.CompanyInfoResponse;
 import com.example.leapit.jobposting.techstack.JobPostingTechStack;
-import com.example.leapit.application.Application;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
@@ -106,6 +107,60 @@ public class JobPostingRepository {
         );
         query.setParameter("today", today);
         return query.getResultList();
+    }
+
+    // TODO 지금 하는 거 << 김정원
+    public List<JobPostingResponse.JobPostingDTO> findAllJobPostingsWithTechStacksByFilter() {
+        LocalDate today = LocalDate.now();
+
+        Query query = em.createQuery(
+                "SELECT jp, jpts, ci " +
+                        "FROM JobPosting jp " +
+                        "LEFT JOIN JobPostingTechStack jpts ON jp.id = jpts.jobPosting.id " +
+                        "LEFT JOIN CompanyInfo ci ON jp.user.id = ci.user.id " +
+                        "WHERE jp.deadline >= :today", Object[].class
+        );
+        query.setParameter("today", today);
+
+        List<Object[]> results = query.getResultList();
+        List<JobPostingResponse.JobPostingDTO> dtos = new ArrayList<>();
+
+        Integer lastJobPostingId = null;
+        JobPostingResponse.JobPostingDTO currentDTO = null;
+
+        for (Object[] result : results) {
+            JobPosting jobPosting = (JobPosting) result[0];
+            JobPostingTechStack techStack = (JobPostingTechStack) result[1];
+            CompanyInfo companyInfo = (CompanyInfo) result[2];
+
+            // 이전 공고랑 ID 비교해서 ID 다르면 새로 DTO를 생성함 << 카드 생성
+            if (!jobPosting.getId().equals(lastJobPostingId)) {
+                String address = companyInfo != null ? companyInfo.getAddress() : "주소 없음";
+                String image = companyInfo != null ? companyInfo.getImage() : "이미지 없음";
+                String companyName = companyInfo != null ? companyInfo.getCompanyName() : "회사명 없음";
+
+                List<JobPostingTechStack> techStacks = new ArrayList<>();
+                if (techStack != null) {
+                    techStacks.add(techStack);
+                }
+
+                currentDTO = new JobPostingResponse.JobPostingDTO(
+                        jobPosting, techStacks, address, image, companyName
+                );
+                dtos.add(currentDTO);
+
+                lastJobPostingId = jobPosting.getId(); // 현재 공고 id 가져감
+            } else {
+                // 이전 공고랑 ID 비교해서 ID 같으면 기술스택 추가함 << 같은 카드 안에서 기술스택 칸만 추가함
+                if (techStack != null && currentDTO != null) {
+                    currentDTO.getTechStacks().add(new CompanyInfoResponse.DetailDTO.TechStackDTO(
+                            techStack.getTechStack().getCode()
+                    ));
+                }
+            }
+        }
+
+        return dtos;
     }
 
 

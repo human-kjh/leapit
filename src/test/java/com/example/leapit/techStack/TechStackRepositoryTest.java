@@ -1,4 +1,4 @@
-package com.example.leapit.TechStack;
+package com.example.leapit.techStack;
 
 
 import com.example.leapit.common.techstack.TechStack;

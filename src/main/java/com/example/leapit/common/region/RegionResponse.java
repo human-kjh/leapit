@@ -12,4 +12,13 @@ public class RegionResponse {
             this.region = region;
         }
     }
+
+    @Data
+    public static class SubRegionDTO {
+        private String subRegion;
+
+        public SubRegionDTO(String subRegion) {
+            this.subRegion = subRegion;
+        }
+    }
 }

@@ -102,11 +102,11 @@ public class JobPostingService {
 
 
     // TODO 지금하는거 < 김정원
-    public List<JobPostingResponse.JobPostingDTO> 공고목록페이지() {
+    public JobPostingResponse.JobPostingListFilterDTO 공고목록페이지() {
 
         // 직무 조회
         List<PositionTypeResponse.PositionTypeDTO> positions = positionTypeRepository.findAllLabel();
-
+        System.out.println("[DEBUG] 직무 목록 개수: " + positions.size());
         // 기술 스택 조회
         List<TechStack> techStacks = techStackRepository.findAll();
 
@@ -114,12 +114,16 @@ public class JobPostingService {
         List<RegionResponse.RegionDTO> regions = regionRepository.findAllRegions();
 
         // 서브 지역 조회
-        
+        // given
+        Integer regionId = 1;
+        List<RegionResponse.SubRegionDTO> subRegions = regionRepository.findAllSubRegions(regionId);
 
         // 전체 공고목록 조회
-        jobPostingRepository.findAllJobPostingsWithTechStacks();
+        List<JobPostingResponse.JobPostingDTO> jobPostingList = jobPostingRepository.findAllJobPostingsWithTechStacksByFilter();
 
-        return null;
+        JobPostingResponse.JobPostingListFilterDTO respDTO = new JobPostingResponse.JobPostingListFilterDTO(positions, techStacks, regions, subRegions, jobPostingList);
+
+        return respDTO;
     }
 
     // TODO

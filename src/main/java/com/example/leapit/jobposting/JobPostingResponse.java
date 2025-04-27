@@ -1,5 +1,8 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit.common.positiontype.PositionTypeResponse;
+import com.example.leapit.common.region.RegionResponse;
+import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.companyinfo.CompanyInfo;
 import com.example.leapit.companyinfo.CompanyInfoResponse;
 import com.example.leapit.jobposting.techstack.JobPostingTechStack;
@@ -120,6 +123,24 @@ public class JobPostingResponse {
         public MainDTO(List<MainRecentJobPostingDTO> recent, List<MainPopularJobPostingDTO> popular) {
             this.recentJobPostings = recent;
             this.popularJobPostings = popular;
+        }
+    }
+
+    // 공고 목록 DTO (with 필터)
+    @Data
+    public static class JobPostingListFilterDTO {
+        private List<PositionTypeResponse.PositionTypeDTO> positions;
+        private List<TechStack> techStacks;
+        private List<RegionResponse.RegionDTO> regions;
+        private List<RegionResponse.SubRegionDTO> subRegions;
+        private List<JobPostingResponse.JobPostingDTO> jobPostingList;
+
+        public JobPostingListFilterDTO(List<PositionTypeResponse.PositionTypeDTO> positions, List<TechStack> techStacks, List<RegionResponse.RegionDTO> regions, List<RegionResponse.SubRegionDTO> subRegions, List<JobPostingDTO> jobPostingList) {
+            this.positions = positions;
+            this.techStacks = techStacks;
+            this.regions = regions;
+            this.subRegions = subRegions;
+            this.jobPostingList = jobPostingList;
         }
     }
 
