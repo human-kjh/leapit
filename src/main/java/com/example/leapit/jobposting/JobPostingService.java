@@ -1,5 +1,9 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit.common.positiontype.PositionTypeRepository;
+import com.example.leapit.common.positiontype.PositionTypeResponse;
+import com.example.leapit.common.region.RegionRepository;
+import com.example.leapit.common.region.RegionResponse;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.companyinfo.CompanyInfo;
@@ -26,6 +30,8 @@ public class JobPostingService {
     private final TechStackRepository techStackRepository;
     private final CompanyInfoRepository companyInfoRepository;
     private final JobPostingTechStackRepository jobPostingTechStackRepository;
+    private final PositionTypeRepository positionTypeRepository;
+    private final RegionRepository regionRepository;
 
     // 채용 공고 등록
     @org.springframework.transaction.annotation.Transactional
@@ -95,6 +101,28 @@ public class JobPostingService {
     }
 
 
+    // TODO 지금하는거 < 김정원
+    public List<JobPostingResponse.JobPostingDTO> 공고목록페이지() {
+
+        // 직무 조회
+        List<PositionTypeResponse.PositionTypeDTO> positions = positionTypeRepository.findAllLabel();
+
+        // 기술 스택 조회
+        List<TechStack> techStacks = techStackRepository.findAll();
+
+        // 지역 조회
+        List<RegionResponse.RegionDTO> regions = regionRepository.findAllRegions();
+
+        // 서브 지역 조회
+        
+
+        // 전체 공고목록 조회
+        jobPostingRepository.findAllJobPostingsWithTechStacks();
+
+        return null;
+    }
+
+    // TODO
     // 구직자 - 채용공고 목록
     public List<JobPostingResponse.JobPostingDTO> getAllJobPostings() {
         List<Object[]> results = jobPostingRepository.findAllJobPostingsWithTechStacks();
@@ -186,5 +214,6 @@ public class JobPostingService {
 
         return popularList;
     }
+
 
 }

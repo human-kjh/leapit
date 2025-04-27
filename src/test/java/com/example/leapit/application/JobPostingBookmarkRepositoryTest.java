@@ -1,20 +1,12 @@
-package com.example.leapit.ApplicationRepositoryTest;
+package com.example.leapit.application;
 
-import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
-import com.example.leapit.jobposting.JobPosting;
-import com.example.leapit.jobposting.JobPostingRepository;
 import com.example.leapit.jobposting.bookmark.JobPostingBookmark;
-import com.example.leapit.jobposting.bookmark.JobPostingBookmarkController;
 import com.example.leapit.jobposting.bookmark.JobPostingBookmarkRepository;
-import com.example.leapit.jobposting.bookmark.JobPostingBookmarkService;
-import com.example.leapit.user.User;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-
-import java.util.List;
 
 @Import(JobPostingBookmarkRepository.class)
 @DataJpaTest
@@ -25,9 +17,6 @@ public class JobPostingBookmarkRepositoryTest {
 
     @Autowired
     private EntityManager em;
-
-
-
 
 
     @Test

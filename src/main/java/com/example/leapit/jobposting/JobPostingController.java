@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -101,8 +102,11 @@ public class JobPostingController {
     // 구직자 - 채용공고 목록
     @GetMapping("/personal/jobposting/list")
     public String personalList(HttpServletRequest req) {
-        List<JobPostingResponse.JobPostingDTO> jobpostingList = jobPostingService.getAllJobPostings();
+//
+        //
+        List<JobPostingResponse.JobPostingDTO> jobpostingList = jobPostingService.공고목록페이지();
         req.setAttribute("models", jobpostingList);
         return "personal/jobposting/list";
+
     }
 }
