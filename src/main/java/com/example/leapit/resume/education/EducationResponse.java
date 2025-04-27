@@ -13,7 +13,7 @@ public class EducationResponse {
 
         private Boolean isDropout;
 
-        private Integer educationLevel;
+        private String educationLevel;
 
         private String schoolName;
         private String major;

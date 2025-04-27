@@ -2,7 +2,11 @@ package com.example.leapit.resume;
 
 import com.example.leapit.application.Application;
 import com.example.leapit.application.ApplicationRepository;
+import com.example.leapit.common.positiontype.PositionType;
+import com.example.leapit.common.positiontype.PositionTypeRepository;
 import com.example.leapit.common.positiontype.PositionTypeService;
+import com.example.leapit.common.techstack.TechStack;
+import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.resume.education.Education;
 import com.example.leapit.resume.education.EducationRepository;
 import com.example.leapit.resume.etc.Etc;
@@ -18,6 +22,7 @@ import com.example.leapit.resume.techstack.ResumeTechStackRepository;
 import com.example.leapit.resume.training.TrainingResponse;
 import com.example.leapit.resume.training.TrainingService;
 import com.example.leapit.user.User;
+import com.example.leapit.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +32,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class ResumeService {
+    private final UserRepository userRepository;
     private final ResumeRepository resumeRepository;
-    private final PositionTypeService positionTypeService;
+    private final PositionTypeRepository positionTypeRepository;
+    private final TechStackRepository techStackRepository;
     private final ResumeTechStackRepository resumeTechStackRepository;
     private final LinkRepository linkRepository;
     private final EducationRepository educationRepository;
@@ -89,6 +96,13 @@ public class ResumeService {
 
         // 3. 이력서 삭제
         resumeRepository.deleteById(resumeId);
+    }
+
+    public ResumeResponse.SaveDTO getSaveForm(Integer sessionUserId){
+        User user = userRepository.findById(sessionUserId);
+        List<PositionType> positionTypes = positionTypeRepository.findAll();
+        List<TechStack> techStacks = techStackRepository.findAll();
+        return new ResumeResponse.SaveDTO(user, positionTypes, techStacks);
     }
 
     @Transactional

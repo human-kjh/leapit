@@ -46,7 +46,7 @@ public class Education {
     private Timestamp createdAt;
 
     @Builder
-    public Education(Integer id, Resume resume, LocalDate graduationDate, Boolean isDropout, Integer educationLevel, String schoolName, String major, BigDecimal gpa, BigDecimal gpaScale, Timestamp createdAt) {
+    public Education(Integer id, Resume resume, LocalDate graduationDate, Boolean isDropout, String educationLevel, String schoolName, String major, BigDecimal gpa, BigDecimal gpaScale, Timestamp createdAt) {
         this.id = id;
         this.resume = resume;
         this.graduationDate = graduationDate;

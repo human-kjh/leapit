@@ -250,19 +250,19 @@ VALUES (5, 'Node.js');
 -- 2.12 etc_tb
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description,
                     created_at)
-VALUES (1, '2024-01-01', '2024-03-01', true, '토익', 0, 'YBM', '850점', '2025-04-18 12:00:00');
+VALUES (1, '2024-01-01', '2024-03-01', true, '토익', '어학', 'YBM', '850점', '2025-04-18 12:00:00');
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description,
                     created_at)
-VALUES (2, '2023-06-01', NULL, false, '정보처리기사', 1, 'HRD', '필기합격', '2025-04-18 12:05:00');
+VALUES (2, '2023-06-01', NULL, false, '정보처리기사', '자격증', 'HRD', '필기합격', '2025-04-18 12:05:00');
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description,
                     created_at)
-VALUES (3, '2023-10-01', '2023-12-01', true, '오픈소스 컨트리뷰션', 2, 'OSS Korea', '3건 PR 기여', '2025-04-18 12:10:00');
+VALUES (3, '2023-10-01', '2023-12-01', true, '오픈소스 컨트리뷰션', '대외활동', 'OSS Korea', '3건 PR 기여', '2025-04-18 12:10:00');
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description,
                     created_at)
-VALUES (4, '2023-01-01', NULL, false, '멋쟁이사자처럼', 2, 'LIKELION', '프론트엔드 팀장', '2025-04-18 12:15:00');
+VALUES (4, '2023-01-01', NULL, false, '멋쟁이사자처럼', '대외활동', 'LIKELION', '프론트엔드 팀장', '2025-04-18 12:15:00');
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description,
                     created_at)
-VALUES (5, '2023-03-01', '2023-05-01', true, '교내 알고리즘 대회', 3, 'OO대학교', '3위 수상', '2025-04-18 12:20:00');
+VALUES (5, '2023-03-01', '2023-05-01', true, '교내 알고리즘 대회', '수상이력', 'OO대학교', '3위 수상', '2025-04-18 12:20:00');
 
 -- 4-1. region_tb
 INSERT INTO region_tb (name)

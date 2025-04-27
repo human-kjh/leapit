@@ -60,6 +60,7 @@ public class Project {
         this.description = description;
         this.repositoryUrl = repositoryUrl;
         this.createdAt = createdAt;
-        this.projectTechStacks = projectTechStacks;
+        this.projectTechStacks = projectTechStacks != null ? projectTechStacks : new ArrayList<>();
     }
+
 }

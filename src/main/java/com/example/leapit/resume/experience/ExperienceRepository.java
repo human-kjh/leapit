@@ -13,7 +13,7 @@ public class ExperienceRepository {
     private final EntityManager em;
 
     public List<Experience> findAllByResumeId(int resumeId) {
-        Query query = em.createQuery("SELECT e FROM Experience e WHERE e.resume.id = :resumeId");
+        Query query = em.createQuery("SELECT e FROM Experience e WHERE e.resume.id = :resumeId", Experience.class);
         query.setParameter("resumeId", resumeId);
         return query.getResultList();
     }

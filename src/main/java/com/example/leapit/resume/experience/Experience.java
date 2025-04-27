@@ -58,6 +58,6 @@ public class Experience {
         this.position = position;
         this.responsibility = responsibility;
         this.createdAt = createdAt;
-        this.experienceTechStacks = experienceTechStacks;
+        this.experienceTechStacks = experienceTechStacks != null ? experienceTechStacks : new ArrayList<>();
     }
 }

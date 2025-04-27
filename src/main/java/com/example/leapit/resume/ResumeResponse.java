@@ -1,5 +1,7 @@
 package com.example.leapit.resume;
 
+import com.example.leapit.common.positiontype.PositionType;
+import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.resume.education.Education;
 import com.example.leapit.resume.etc.Etc;
 import com.example.leapit.resume.link.Link;
@@ -12,6 +14,7 @@ import com.example.leapit.resume.techstack.ResumeTechStackResponse;
 import com.example.leapit.resume.training.TrainingResponse;
 import com.example.leapit.resume.etc.EtcResponse;
 
+import com.example.leapit.user.User;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -27,13 +30,14 @@ public class ResumeResponse {
         // 유저 정보
         private String name;
         private String email;
-        private String birthDate; // 생년월일 중 생년만 받아야 됨
+        private Integer birthDate; // 생년월일 중 생년만 받아야 됨
         private String contactNumber;
 
         // 공개 여부
         private Boolean isPublic;
 
         private String positionType; // code -> label로 전환 필요
+        private String summary;
         private String selfIntroduction;
 
         private List<ResumeTechStack> techStackList;
@@ -55,10 +59,11 @@ public class ResumeResponse {
             this.photoUrl = resume.getPhotoUrl();
             this.name = resume.getUser().getName();
             this.email = resume.getUser().getEmail();
-            this.birthDate = resume.getUser().getEmail();
+            this.birthDate = resume.getUser().getBirthDate().getYear();
             this.contactNumber = resume.getUser().getContactNumber();
             this.isPublic = resume.getIsPublic();
             this.positionType = resume.getPositionType();
+            this.summary = resume.getSummary();
             this.selfIntroduction = resume.getSelfIntroduction();
             this.techStackList = techStacks;
             this.links = links;
@@ -67,6 +72,25 @@ public class ResumeResponse {
             this.projects = projects;
             this.trainings = trainings;
             this.etcs = etcs;
+        }
+    }
+
+    @Data
+    public static class SaveDTO{
+        private String name;
+        private String email;
+        private Integer birthDate; // 생년월일 중 생년만 받아야 됨
+        private String contactNumber;
+        private List<PositionType> positionTypeList;
+        private List<TechStack> techStackList;
+
+        public SaveDTO(User user, List<PositionType> positionTypeList, List<TechStack> techStackList) {
+            this.name = user.getName();
+            this.email = user.getEmail();
+            this.birthDate = user.getBirthDate().getYear();
+            this.contactNumber = user.getContactNumber();
+            this.positionTypeList = positionTypeList;
+            this.techStackList = techStackList;
         }
     }
 }

@@ -53,6 +53,6 @@ public class Training {
         this.institutionName = institutionName;
         this.description = description;
         this.createdAt = createdAt;
-        this.trainingTechStacks = trainingTechStacks;
+        this.trainingTechStacks = trainingTechStacks!= null ? trainingTechStacks : new ArrayList<>();
     }
 }

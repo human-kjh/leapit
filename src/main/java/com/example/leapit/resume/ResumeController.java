@@ -1,10 +1,6 @@
 package com.example.leapit.resume;
 
 import com.example.leapit._core.util.Resp;
-import com.example.leapit.common.positiontype.PositionType;
-import com.example.leapit.common.positiontype.PositionTypeService;
-import com.example.leapit.common.techstack.TechStack;
-import com.example.leapit.common.techstack.TechStackService;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -21,8 +17,6 @@ import static com.example.leapit._core.util.Resp.ok;
 public class ResumeController {
     private final ResumeService resumeService;
     private final HttpSession session;
-    private final TechStackService techStackService;
-    private final PositionTypeService positionTypeService;
 
     @GetMapping("/resume")
     public String list(HttpServletRequest request) {
@@ -55,12 +49,10 @@ public class ResumeController {
 
     @GetMapping("/resume/save-form")
     public String saveForm(HttpServletRequest request) {
-
-        List<PositionType> positionTypeList = positionTypeService.list();
-        List<TechStack> techStackList = techStackService.getAllTechStacks();
-
-        request.setAttribute("positionTypeList", positionTypeList);
-        request.setAttribute("techStackList", techStackList);
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        ResumeResponse.SaveDTO saveDTO = resumeService.getSaveForm(sessionUser.getId());
+        request.setAttribute("model", saveDTO);
 
         return "personal/resume/save-form";
     }

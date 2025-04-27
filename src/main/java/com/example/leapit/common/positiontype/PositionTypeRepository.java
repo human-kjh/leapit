@@ -17,7 +17,7 @@ public class PositionTypeRepository {
     }
 
     public List<PositionType> findAll() {
-        Query query = em.createQuery("SELECT pt FROM PositionType pt");
+        Query query = em.createQuery("SELECT pt FROM PositionType pt", PositionType.class);
         return query.getResultList();
     }
 }

@@ -40,10 +40,10 @@ public class ResumeRequest {
         private List<EtcDTO> etcs;
 
         @Data
-        public class EducationDTO{
+        public static class EducationDTO{
             private LocalDate graduationDate;
             private Boolean isDropout;
-            private Integer educationLevel;
+            private String educationLevel;
             private String schoolName;
             private String major;
             private BigDecimal gpa;
@@ -51,7 +51,7 @@ public class ResumeRequest {
         }
 
         @Data
-        public class ProjectDTO{
+        public static class ProjectDTO{
             private LocalDate startDate;
             private LocalDate endDate;
             private Boolean isOngoing;
@@ -63,7 +63,7 @@ public class ResumeRequest {
         }
 
         @Data
-        public class ExperienceDTO{
+        public static class ExperienceDTO{
             private LocalDate startDate;
             private LocalDate endDate;
             private Boolean isEmployed;
@@ -75,13 +75,13 @@ public class ResumeRequest {
         }
 
         @Data
-        public class LinkDTO{
+        public static class LinkDTO{
             private String title;
             private String url;
         }
 
         @Data
-        public class TrainingDTO{
+        public static class TrainingDTO{
             private LocalDate startDate;
             private LocalDate endDate;
             private Boolean isOngoing;
@@ -93,12 +93,12 @@ public class ResumeRequest {
         }
 
         @Data
-        public class EtcDTO{
+        public static class EtcDTO{
             private LocalDate startDate;
             private LocalDate endDate;
             private Boolean hasEndDate;
             private String title;
-            private Integer etcType;
+            private String etcType;
             private String institutionName;
             private String description;
 

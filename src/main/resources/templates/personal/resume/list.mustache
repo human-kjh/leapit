@@ -21,15 +21,17 @@
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                     <li>
-                                                        <a class="dropdown-item" href="/resume/{{id}}/update">수정</a>
+                                                        <a class="dropdown-item" href="/resume/{{id}}">상세보기</a>
                                                     </li>
                                                     <li>
-                                                        <form class="deleteForm" action="/resume/1/delete" method="post">
+                                                        <a class="dropdown-item" href="/resume/{{id}}/update-form">수정</a>
+                                                    </li>
+                                                    <li>
+                                                        <form class="deleteForm" action="/resume/{{id}}/delete" method="post">
                                                             <button type="submit" class="dropdown-item text-danger">삭제</button>
                                                         </form>
                                                     </li>
                                                 </ul>
-
                                             </div>
                                             <h6>{{title}}</h6>
                                             <small class="mb-5">기본정보 ・ 학력 ・ 프로젝트</small>
@@ -75,7 +77,7 @@
                 });
 
                 document.addEventListener('DOMContentLoaded', function () {
-                    const toggleSwitches = document.querySelectorAll('.toggleSwitch');
+                    let toggleSwitches = document.querySelectorAll('.toggleSwitch');
 
                     toggleSwitches.forEach(toggleSwitch => {
                         toggleSwitch.addEventListener('click', function () {

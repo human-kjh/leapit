@@ -85,15 +85,15 @@ public class Resume {
         this.photoUrl = photoUrl;
         this.summary = summary;
         this.positionType = positionType;
-        this.resumeTechStacks = resumeTechStacks;
-        this.educations = educations;
-        this.projects = projects;
-        this.experiences = experiences;
-        this.links = links;
-        this.trainings = trainings;
-        this.etcs = etcs;
+        this.resumeTechStacks = resumeTechStacks != null ? resumeTechStacks : new ArrayList<>();
+        this.educations = educations != null ? educations : new ArrayList<>();
+        this.projects = projects != null ? projects : new ArrayList<>();
+        this.experiences = experiences != null ? experiences : new ArrayList<>();
+        this.links = links != null ? links : new ArrayList<>();
+        this.trainings = trainings != null ? trainings : new ArrayList<>();
+        this.etcs = etcs != null ? etcs : new ArrayList<>();
         this.selfIntroduction = selfIntroduction;
-        this.isPublic = isPublic;
+        this.isPublic = isPublic != null ? isPublic : true;
         this.createdAt = createdAt;
     }
 }

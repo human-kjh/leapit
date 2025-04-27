@@ -28,7 +28,7 @@ public class Etc {
     //hasEndDate = true : 종료일 있음
     private Boolean hasEndDate = true;
     private String title;
-    private Integer etcType;
+    private String etcType;
     private String institutionName;
 
     @Lob
@@ -38,7 +38,7 @@ public class Etc {
     private Timestamp createdAt;
 
     @Builder
-    public Etc(Integer id, Resume resume, LocalDate startDate, LocalDate endDate, Boolean hasEndDate, String title, Integer etcType, String institutionName, String description, Timestamp createdAt) {
+    public Etc(Integer id, Resume resume, LocalDate startDate, LocalDate endDate, Boolean hasEndDate, String title, String etcType, String institutionName, String description, Timestamp createdAt) {
         this.id = id;
         this.resume = resume;
         this.startDate = startDate;
