@@ -8,7 +8,7 @@
             <div>
                 <div class="d-flex align-items-center gap-2">
                     <h1 class="fs-4 fw-bold mb-0">
-                        결제/인증 솔루션 개발 및 운영
+                        {{model.title}}
                     </h1>
                 </div>
                 <div class="mb-4">
@@ -131,8 +131,8 @@
                             class="d-flex justify-content-between align-items-center mb-2"
                     >
                         <h2 class="fs-6 fw-semibold">기업/서비스 소개</h2>
-                        <a href="#" class="text-primary small text-decoration-none"
-                        >기업상세 정보로 이동 &gt;</a
+                        <a href="/personal/companyinfo/{{model.id}}" class="text-primary small text-decoration-none"
+                        >기업상세 정보로 이동</a
                         >
                     </div>
                     <img
@@ -140,11 +140,18 @@
                             alt="회사 이미지"
                             class="img-fluid rounded shadow"
                     />
-                    <p class="small text-muted mt-2">
-                        주식회사 에스와이폴라리스는 안전한 온라인 결제를 위한
-                        안심결제 인증서비스와 다양한 SNS채널에서 상품을 판매/관리 할
-                        수 있는 SNS 통합 솔루션을 제공합니다.
+                    <p class="small text-muted mt-2">                    {{model.serviceIntro}}
+
                     </p>
+                </div>
+                <div>
+                    <h2 class="fs-6 fw-semibold">기타</h2>
+                    {{#model.additionalInfo}}
+                        {{model.additionalInfo}}
+                    {{/model.additionalInfo}}
+                    {{^model.additionalInfo}}
+                        기타 사항이 없습니다.
+                    {{/model.additionalInfo}}
                 </div>
             </div>
         </div>
@@ -155,16 +162,16 @@
             <!-- 기업 정보 상단 -->
             <div class="d-flex align-items-center mb-4">
                 <img
-                        src="/img/companyLogo.png"
+                        src="/img/{{company.logoImage}}"
                         alt="기업 로고"
                         class="me-3 rounded-circle object-fit-cover"
                         width="48"
                         height="48"
                 />
                 <div>
-                    <h5 class="mb-0 fw-bold">에스와이폴라리스</h5>
-                    <a href="#" class="text-decoration-none text-secondary small"
-                    >기업정보 보기 &gt;</a
+                    <h5 class="mb-0 fw-bold">{{company.companyName}}</h5>
+                    <a href="/personal/companyinfo/{{model.id}}" class="text-decoration-none text-secondary small"
+                    >기업정보 보기</a
                     >
                 </div>
             </div>
@@ -173,17 +180,17 @@
             <div class="mb-4">
                 <div class="row g-1 mb-2">
                     <div class="col-3 text-muted">업력</div>
-                    <div class="col">5년차 (2021년 7월 설립)</div>
+                    <div class="col">{{company.establishmentDate}} 설립</div>
                 </div>
                 <div class="row g-1">
                     <div class="col-3 text-muted">홈페이지</div>
                     <div class="col">
                         <a
-                                href="https://sypolaris.co.kr"
+                                href="{{company.mainService}}"
                                 class="text-primary text-decoration-none"
                                 target="_blank"
                         >
-                            https://sypolaris.co.kr/
+                            {{company.mainService}}
                             <i class="fa fa-external-link" aria-hidden="true"></i>
                         </a>
                     </div>
