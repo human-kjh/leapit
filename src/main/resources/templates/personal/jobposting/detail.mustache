@@ -130,8 +130,8 @@
                             class="d-flex justify-content-between align-items-center mb-2"
                     >
                         <h2 class="fs-6 fw-semibold">기업/서비스 소개</h2>
-                        <a href="#" class="text-primary small text-decoration-none"
-                        >기업상세 정보로 이동 &gt;</a
+                        <a href="/personal/companyinfo/{{model.id}}" class="text-primary small text-decoration-none"
+                        >기업상세 정보로 이동</a
                         >
                     </div>
                     <img
@@ -139,9 +139,18 @@
                             alt="회사 이미지"
                             class="img-fluid rounded shadow"
                     />
-                    <p class="small text-muted mt-2">
-                        {{company.introduction}}
+                    <p class="small text-muted mt-2">                    {{model.serviceIntro}}
+
                     </p>
+                </div>
+                <div>
+                    <h2 class="fs-6 fw-semibold">기타</h2>
+                    {{#model.additionalInfo}}
+                        {{model.additionalInfo}}
+                    {{/model.additionalInfo}}
+                    {{^model.additionalInfo}}
+                        기타 사항이 없습니다.
+                    {{/model.additionalInfo}}
                 </div>
             </div>
         </div>
@@ -160,8 +169,8 @@
                 />
                 <div>
                     <h5 class="mb-0 fw-bold">{{company.companyName}}</h5>
-                    <a href="#" class="text-decoration-none text-secondary small"
-                    >기업정보 보기 &gt;</a
+                    <a href="/personal/companyinfo/{{model.id}}" class="text-decoration-none text-secondary small"
+                    >기업정보 보기</a
                     >
                 </div>
             </div>
