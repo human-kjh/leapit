@@ -25,6 +25,7 @@ public class ResumeResponse {
 
     @Data
     public static class DetailDTO {
+        private Integer id;
         private String title;
         private String photoUrl;
         // 유저 정보
@@ -55,6 +56,7 @@ public class ResumeResponse {
         public DetailDTO(Resume resume, List<ResumeTechStack> techStacks, List<Link> links,
                          List<Education> educations, List<ExperienceResponse.DetailDTO> experiences, List<ProjectResponse.DetailDTO> projects,
                          List<TrainingResponse.DetailDTO> trainings, List<Etc> etcs) {
+            this.id = resume.getId();
             this.title = resume.getTitle();
             this.photoUrl = resume.getPhotoUrl();
             this.name = resume.getUser().getName();
