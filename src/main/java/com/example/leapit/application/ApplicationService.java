@@ -1,5 +1,7 @@
 package com.example.leapit.application;
 
+import com.example.leapit.application.bookmark.ApplicationBookmarkRepository;
+import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,14 +11,28 @@ import java.util.List;
 @Service
 public class ApplicationService {
     private final ApplicationRepository applicationRepository;
+    private final ApplicationBookmarkRepository applicationBookmarkRepository;
+
+    public ApplicationResponse.ApplicationBookmarkListDTO 내북마크관리페이지(Integer userId) {
+        // 지원 현황 통계
+        ApplicationResponse.ApplicationStatusDto statusDto = applicationRepository.findSummaryByUserId(userId);
+
+        // 스크랩한 공고 목록 조회
+        List<ApplicationBookmarkResponse.JobPostingBookmarkDTO> bookmarkListDTO =  applicationBookmarkRepository.findAllJobPostingBookmarkByuserId(userId);
+
+        // respDTO에 담기
+        ApplicationResponse.ApplicationBookmarkListDTO respDTO = new ApplicationResponse.ApplicationBookmarkListDTO(bookmarkListDTO,statusDto);
+
+        return respDTO;
+    }
 
 
-    public ApplicationResponse.ApplicationListViewDTO findApplicationListByUserId(Integer userId) {
+    public ApplicationResponse.ApplicationListViewDTO 내지원현황목록(Integer userId) {
         // 지원 현황 통계
         ApplicationResponse.ApplicationStatusDto statusDto = applicationRepository.findSummaryByUserId(userId);
         // 지원 현황 목록 조회
         List<ApplicationResponse.ApplicationDto> applicationDtos = applicationRepository.findApplicationsByUserId(userId);
-        // viewDTO에 담기
+        // respDTO에 담기
         ApplicationResponse.ApplicationListViewDTO respDTO = new ApplicationResponse.ApplicationListViewDTO(statusDto, applicationDtos);
         return respDTO;
     }
@@ -39,4 +55,5 @@ public class ApplicationService {
 
         return respDTO;
     }
+
 }

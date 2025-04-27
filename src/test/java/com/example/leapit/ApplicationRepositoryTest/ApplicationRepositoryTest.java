@@ -37,7 +37,7 @@ public class ApplicationRepositoryTest {
         List<ApplicationResponse.CompanyeApplicantDto> result =
                 applicationRepository.findAllApplicantsByFilter(companyUserId, jobPostingId, passStatus, isViewed,isBookmark);
 
-        // then
+        // eye
         System.out.println("=== 지원자 조회 결과 ===");
         for (ApplicationResponse.CompanyeApplicantDto dto : result) {
             System.out.println("지원자 이름: " + dto.getApplicantName());

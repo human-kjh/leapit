@@ -1,6 +1,7 @@
 package com.example.leapit.jobposting;
 
 import com.example.leapit.jobposting.techstack.JobPostingTechStack;
+import com.example.leapit.application.Application;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
@@ -73,6 +74,10 @@ public class JobPostingRepository {
         Query query = em.createQuery("SELECT COUNT(j) FROM JobPosting j WHERE j.user.id = :userId AND j.deadline >= CURRENT_DATE");
         query.setParameter("userId", userId);
         return (Long) query.getSingleResult();
+    }
+
+    public JobPosting findByApplicationId(Integer jobPostingId) {
+        return em.find(JobPosting.class, jobPostingId);
     }
 
     // 주소 - 시 조회
