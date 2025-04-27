@@ -2,8 +2,8 @@
 <template id="linkTemplate">
     <div class="linkItem d-flex align-items-center gap-2 mb-2">
         <i class="bi bi-link-45deg fs-5"></i>
-        <input type="text" class="form-control form-control-sm" placeholder="링크 제목" value="GitHub" />
-        <input type="text" class="form-control form-control-sm" placeholder="http://, https://를 포함해 작성해주세요" value="https://github.com/example" />
+        <input type="text" class="form-control form-control-sm" placeholder="* 링크 제목" value="GitHub" />
+        <input type="text" class="form-control form-control-sm" placeholder="* http://, https://를 포함해 작성해주세요" value="https://github.com/example" />
         <button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center removeItemBtn" style="white-space: nowrap;">
             삭제
         </button>
@@ -16,7 +16,7 @@
     <div class="educationItem bg-white rounded-3 p-3 shadow-sm mb-3">
         <div class="d-flex flex-wrap gap-3">
             <div style="min-width: 180px">
-                <label class="form-label fw-bold">졸업(예정)</label>
+                <label class="form-label fw-bold"><span class="text-danger">*</span> 졸업(예정)</label>
                 <input type="month" class="form-control form-control-sm mb-2" value="2025-02" />
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" /> 중퇴
@@ -26,7 +26,7 @@
                 <div class="row gx-2 mb-2">
                     <div class="col-4">
                         <select class="form-select form-select-sm">
-                            <option selected disabled>학력 구분</option>
+                            <option selected disabled>* 학력 구분</option>
                             <option>고등학교</option>
                             <option>전문학사</option>
                             <option>학사</option>
@@ -35,7 +35,7 @@
                         </select>
                     </div>
                     <div class="col-8">
-                        <input type="text" class="form-control form-control-sm" placeholder="학교명" value="더미대학교" />
+                        <input type="text" class="form-control form-control-sm" placeholder="* 학교명" value="더미대학교" />
                     </div>
                 </div>
                 <div class="mb-2">
@@ -62,7 +62,7 @@
     <div class="experienceItem bg-white rounded-3 p-3 shadow-sm mb-3">
         <div class="d-flex flex-wrap gap-3">
             <div style="min-width: 200px">
-                <label class="form-label fw-bold">근무기간</label>
+                <label class="form-label fw-bold"><span class="text-danger">*</span> 근무기간</label>
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <input type="date" class="form-control form-control-sm w-auto" value="2022-01-01" />
                     ~
@@ -73,13 +73,13 @@
                 </div>
             </div>
             <div class="flex-grow-1">
-                <input type="text" class="form-control form-control-sm mb-2" placeholder="회사명" value="더미컴퍼니" />
+                <input type="text" class="form-control form-control-sm mb-2" placeholder="* 회사명" value="더미컴퍼니" />
                 <input type="text" class="form-control form-control-sm mb-2" placeholder="회사 요약" value="IT 스타트업" />
                 <input type="text" class="form-control form-control-sm mb-2" placeholder="포지션/부서" value="백엔드팀" />
                 <div class="bg-light px-2 py-1 rounded mb-2">
                     <div class="dropdown">
                         <button class="form-select text-start border-0 bg-light" type="button" data-bs-toggle="dropdown">
-                            기술스택을 선택해주세요
+                            * 기술스택을 선택해주세요
                         </button>
                         <ul class="dropdown-menu p-3" style="min-width: 250px;">
                             {{#model.techStackList}}
@@ -94,7 +94,7 @@
                     </div>
                 </div>
 
-                <textarea class="form-control form-control-sm" rows="2" placeholder="주요 업무">API 서버 개발</textarea>
+                <textarea class="form-control form-control-sm" rows="2" placeholder="* 주요 업무">API 서버 개발</textarea>
             </div>
         </div>
         <button type="button" class="btn btn-outline-danger btn-sm mt-2 removeItemBtn">삭제</button>
@@ -106,7 +106,7 @@
     <div class="projectItem bg-white rounded-3 p-3 shadow-sm mb-3">
         <div class="d-flex flex-wrap gap-3">
             <div style="min-width: 200px">
-                <label class="form-label fw-bold">프로젝트 기간</label>
+                <label class="form-label fw-bold"><span class="text-danger">*</span> 프로젝트 기간</label>
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <input type="date" class="form-control form-control-sm w-auto" value="2023-01-01" />
                     ~
@@ -117,12 +117,12 @@
                 </div>
             </div>
             <div class="flex-grow-1">
-                <input type="text" class="form-control form-control-sm mb-2" placeholder="프로젝트명" value="더미 프로젝트" />
+                <input type="text" class="form-control form-control-sm mb-2" placeholder="* 프로젝트명" value="더미 프로젝트" />
                 <input type="text" class="form-control form-control-sm mb-2" placeholder="프로젝트 요약" value="ERP 개발" />
                 <div class="bg-light px-2 py-1 rounded mb-2">
                     <div class="dropdown">
                         <button class="form-select text-start border-0 bg-light" type="button" data-bs-toggle="dropdown">
-                            기술스택을 선택해주세요
+                            * 기술스택을 선택해주세요
                         </button>
                         <ul class="dropdown-menu p-3" style="min-width: 250px;">
                             {{#model.techStackList}}
@@ -137,7 +137,7 @@
                     </div>
                 </div>
 
-                <textarea class="form-control form-control-sm" rows="2" placeholder="상세 설명">ERP 시스템 구축</textarea>
+                <textarea class="form-control form-control-sm" rows="2" placeholder="* 상세 설명">ERP 시스템 구축</textarea>
                 <input type="text" class="form-control form-control-sm mt-2" placeholder="저장소 URL" value="https://github.com/example/project" />
             </div>
         </div>
@@ -150,7 +150,7 @@
     <div class="trainingItem bg-white rounded-3 p-3 shadow-sm mb-3">
         <div class="d-flex flex-wrap gap-3">
             <div style="min-width: 200px">
-                <label class="form-label fw-bold">교육 기간</label>
+                <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <input type="date" class="form-control form-control-sm w-auto" value="2021-09-01" />
                     ~
@@ -161,12 +161,12 @@
                 </div>
             </div>
             <div class="flex-grow-1">
-                <input type="text" class="form-control form-control-sm mb-2" placeholder="교육 과정명" value="웹개발 부트캠프" />
-                <input type="text" class="form-control form-control-sm mb-2" placeholder="기관명" value="코드스쿼드" />
+                <input type="text" class="form-control form-control-sm mb-2" placeholder="* 교육 과정명" value="웹개발 부트캠프" />
+                <input type="text" class="form-control form-control-sm mb-2" placeholder="* 기관명" value="코드스쿼드" />
                 <div class="bg-light px-2 py-1 rounded mb-2">
                     <div class="dropdown">
                         <button class="form-select text-start border-0 bg-light" type="button" data-bs-toggle="dropdown">
-                            기술스택을 선택해주세요
+                            * 기술스택을 선택해주세요
                         </button>
                         <ul class="dropdown-menu p-3" style="min-width: 250px;">
                             {{#model.techStackList}}
@@ -180,7 +180,7 @@
                         </ul>
                     </div>
                 </div>
-                <textarea class="form-control form-control-sm" rows="2" placeholder="상세 설명">풀스택 과정 수료</textarea>
+                <textarea class="form-control form-control-sm" rows="2" placeholder="* 상세 설명">풀스택 과정 수료</textarea>
             </div>
         </div>
         <button type="button" class="btn btn-outline-danger btn-sm mt-2 removeItemBtn">삭제</button>
@@ -192,7 +192,7 @@
     <div class="etcItem bg-white rounded-3 p-3 shadow-sm mb-3">
         <div class="d-flex flex-wrap gap-3">
             <div style="min-width: 200px">
-                <label class="form-label fw-bold">활동 기간</label>
+                <label class="form-label fw-bold"><span class="text-danger">*</span> 활동 기간</label>
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <input type="date" class="form-control form-control-sm w-auto" value="2021-03-01" />
                     ~
@@ -203,15 +203,15 @@
                 </div>
             </div>
             <div class="flex-grow-1">
-                <input type="text" class="form-control form-control-sm mb-2" placeholder="활동명/제목" value="정보처리기사 자격증" />
+                <input type="text" class="form-control form-control-sm mb-2" placeholder="* 활동명/제목" value="정보처리기사 자격증" />
                 <select class="form-select form-select-sm mb-2">
-                    <option selected>자격증</option>
+                    <option selected>* 자격증</option>
                     <option>어학</option>
                     <option>수상</option>
                     <option>기타</option>
                 </select>
-                <input type="text" class="form-control form-control-sm mb-2" placeholder="기관명" value="한국산업인력공단" />
-                <textarea class="form-control form-control-sm" rows="2" placeholder="상세 내용/점수">자격증 취득</textarea>
+                <input type="text" class="form-control form-control-sm mb-2" placeholder="* 기관명" value="한국산업인력공단" />
+                <textarea class="form-control form-control-sm" rows="2" placeholder="* 상세 내용/점수">자격증 취득</textarea>
             </div>
         </div>
         <button type="button" class="btn btn-outline-danger btn-sm mt-2 removeItemBtn">삭제</button>
