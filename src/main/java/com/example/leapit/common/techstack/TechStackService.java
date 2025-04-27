@@ -5,10 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class TechStackService {
-
     private final TechStackRepository techStackRepository;
 
     public List<TechStack> getAllTechStacks() {

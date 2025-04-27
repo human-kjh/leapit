@@ -1,6 +1,7 @@
 package com.example.leapit.resume.project.techstack;
 import com.example.leapit.resume.project.Project;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,4 +19,11 @@ public class ProjectTechStack {
 
     @Column(nullable = false)
     private String techStack;
+
+    @Builder
+    public ProjectTechStack(Integer id, Project project, String techStack) {
+        this.id = id;
+        this.project = project;
+        this.techStack = techStack;
+    }
 }

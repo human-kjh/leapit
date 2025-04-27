@@ -27,4 +27,8 @@ public class ResumeRepository {
     public void deleteById(Integer resumeId) {
         em.remove(em.find(Resume.class, resumeId));
     }
+
+    public void save(Resume resume) {
+        em.persist(resume);
+    }
 }

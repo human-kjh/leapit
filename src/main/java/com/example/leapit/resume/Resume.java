@@ -10,6 +10,7 @@ import com.example.leapit.resume.techstack.ResumeTechStack;
 import com.example.leapit.resume.training.Training;
 import com.example.leapit.user.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -72,4 +73,27 @@ public class Resume {
 
     @CreationTimestamp
     private Timestamp createdAt;
+
+    @Builder
+    public Resume(Integer id, User user, String title, String photoUrl, String summary, String positionType,
+                  List<ResumeTechStack> resumeTechStacks, List<Education> educations, List<Project> projects,
+                  List<Experience> experiences, List<Link> links, List<Training> trainings, List<Etc> etcs,
+                  String selfIntroduction, Boolean isPublic, Timestamp createdAt) {
+        this.id = id;
+        this.user = user;
+        this.title = title;
+        this.photoUrl = photoUrl;
+        this.summary = summary;
+        this.positionType = positionType;
+        this.resumeTechStacks = resumeTechStacks != null ? resumeTechStacks : new ArrayList<>();
+        this.educations = educations != null ? educations : new ArrayList<>();
+        this.projects = projects != null ? projects : new ArrayList<>();
+        this.experiences = experiences != null ? experiences : new ArrayList<>();
+        this.links = links != null ? links : new ArrayList<>();
+        this.trainings = trainings != null ? trainings : new ArrayList<>();
+        this.etcs = etcs != null ? etcs : new ArrayList<>();
+        this.selfIntroduction = selfIntroduction;
+        this.isPublic = isPublic != null ? isPublic : true;
+        this.createdAt = createdAt;
+    }
 }

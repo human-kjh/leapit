@@ -1,448 +1,490 @@
 {{> layout/personal-header}}
 
-      <!-- 본문 -->
-      <div class="main container mt-5">
-        <div class="container py-4">
-          <div class="row justify-content-center gx-5">
+<!-- 본문 -->
+<div class="main container mt-5">
+    <div class="container py-4">
+        <div class="row justify-content-center gx-5">
             <!-- 사이드바 -->
             <div class="col-md-3">
-              <div class="card p-3">
-                <h5 class="fw-bold mb-1">항목편집</h5>
-                <div class="d-flex align-items-center gap-2 mt-1">
-                  <span style="font-size: 14px; color: #999999">필수 항목<span class="text-danger">*</span></span>
-                </div>
-                <hr class="mt-1 mb-3" />
+                <div class="card p-3">
+                    <h5 class="fw-bold mb-1">항목</h5>
+                    <div class="d-flex align-items-center gap-2 mt-1">
+                        <span style="font-size: 14px; color: #999999">필수 항목<span class="text-danger">*</span></span>
+                    </div>
+                    <hr class="mt-1 mb-3" />
 
-                <!-- 항목 목록 -->
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                  <span>기본정보 <span class="text-danger">*</span></span>
+                    <!-- 기본정보는 항상 표시 -->
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
+                        <span>기본정보 <span class="text-danger">*</span></span>
+                    </div>
+
+                    <!-- 사진 -->
+                    {{#model.photoUrl}}
+                        <div class="mb-2 d-flex justify-content-between align-items-center">
+                            <span>사진</span>
+                        </div>
+                    {{/model.photoUrl}}
+
+                    <!-- 간단소개 -->
+                    {{#model.summary}}
+                        <div class="mb-2 d-flex justify-content-between align-items-center">
+                            <span>간단소개</span>
+                        </div>
+                    {{/model.summary}}
+
+                    <!-- 개발직무 -->
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
+                        <span>개발직무 <span class="text-danger">*</span></span>
+                    </div>
+
+                    <!-- 기술스택 -->
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
+                        <span>기술스택 <span class="text-danger">*</span></span>
+                    </div>
+
+                    <!-- 링크 -->
+                    {{#model.links.0}}
+                        <div class="mb-2 d-flex justify-content-between align-items-center">
+                            <span>링크</span>
+                        </div>
+                    {{/model.links.0}}
+
+                    <!-- 학력 -->
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
+                        <span>학력 <span class="text-danger">*</span></span>
+                    </div>
+
+                    <!-- 경력 -->
+                    {{#model.experiences.0}}
+                        <div class="mb-2 d-flex justify-content-between align-items-center">
+                            <span>경력</span>
+                        </div>
+                    {{/model.experiences.0}}
+
+                    <!-- 프로젝트 -->
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
+                        <span>프로젝트 <span class="text-danger">*</span></span>
+                    </div>
+
+                    <!-- 교육이력 -->
+                    {{#model.trainings.0}}
+                        <div class="mb-2 d-flex justify-content-between align-items-center">
+                            <span>교육이력</span>
+                        </div>
+                    {{/model.trainings.0}}
+
+                    <!-- 기타사항 -->
+                    {{#model.etcs.0}}
+                        <div class="mb-2 d-flex justify-content-between align-items-center">
+                            <span>기타사항</span>
+                        </div>
+                    {{/model.etcs.0}}
+
+                    <!-- 자기소개서 -->
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
+                        <span>자기소개서 <span class="text-danger">*</span></span>
+                    </div>
                 </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                  <span>사진</span>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" />
-                  </div>
-                </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                  <span>간단소개</span>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" />
-                  </div>
-                </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                  <span>개발직무 <span class="text-danger">*</span></span>
-                </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                  <span>기술스택 <span class="text-danger">*</span></span>
-                </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                  <span>링크</span>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" checked />
-                  </div>
-                </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                  <span>학력 <span class="text-danger">*</span></span>
-                </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                  <span>경력</span>
-                </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                  <span>프로젝트 <span class="text-danger">*</span></span>
-                </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                  <span>교육이력</span>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" />
-                  </div>
-                </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                  <span>기타사항</span>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" />
-                  </div>
-                </div>
-                <div class="mb-2 d-flex justify-content-between align-items-center">
-                  <span>자기소개서</span>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" />
-                  </div>
-                </div>
-              </div>
             </div>
+
 
             <!-- 본문 영역 -->
             <div class="col-md-9">
-              <div class="resume-section">
-                <!-- 이력서 제목 -->
-                <div
-                  class="bg-white rounded-3 px-4 py-3 d-flex justify-content-between align-items-center mb-4 shadow-sm">
-                  <h5 class="mb-0 fw-semibold">{{model.title}}</h5>
-                </div>
-
-                <!-- 기본정보 박스 -->
-                <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                  <h5 class="fw-bold mb-3">{{model.name}}</h5>
-                  <hr class="mt-1 mb-3" />
-                  <div class="rounded-3 p-3">
-                    <div class="d-flex flex-wrap align-items-center gap-3" style="border: none">
-                      <div class="d-flex align-items-center">
-                        <i class="bi bi-envelope me-2"></i>
-                        <span>{{model.email}}</span>
-                      </div>
-                      <div class="d-flex align-items-center">
-                        <i class="bi bi-briefcase me-2"></i>
-                        <div>신입</div>
-                      </div>
+                <div class="resume-section">
+                    <!-- 이력서 제목 -->
+                    <div
+                            class="bg-white rounded-3 px-4 py-3 d-flex justify-content-between align-items-center mb-4 shadow-sm">
+                        <h5 class="mb-0 fw-semibold">{{model.title}}</h5>
                     </div>
 
-                    <div class="d-flex flex-wrap align-items-center mb-2 gap-3">
-                      <div class="d-flex align-items-center">
-                        <i class="bi bi-calendar3 me-2"></i><span>{{model.birthDate}}년생</span>
-                      </div>
-                      <div class="d-flex align-items-center">
-                        <i class="bi bi-telephone me-2"></i><span>{{model.contactNumber}}</span>
-                      </div>
-                      <div class="d-flex align-items-center">
-                        <label class="form-check-label ms-2 me-1" for="resumeToggle" style="font-size: 14px">
-                            {{#model.isPublic}}이력서 공개{{/model.isPublic}}
-                            {{^model.isPublic}}이력서 비공개{{/model.isPublic}}
+                    <!-- 기본정보 (수정된 구조) -->
+                    <div class="row g-4 align-items-stretch mb-4">
+                        {{#model.photoUrl}}
+                            <!-- 사진 영역 -->
+                            <div class="col-md-3">
+                                <div class="h-100 d-flex flex-column justify-content-center align-items-center bg-light rounded-3 shadow-sm"
+                                     style="width: 100%; aspect-ratio: 1 / 1; min-height: 100%;">
+                                    <img src="{{model.photoUrl}}" alt="프로필 사진" class="img-fluid rounded-3" style="object-fit: cover; width: 100%; height: 100%;">
+                                </div>
+                            </div>
+                        {{/model.photoUrl}}
+                        <!-- 기본정보 영역 -->
+                        <div class="col-md-9">
+                            <div class="bg-white rounded-3 p-4 shadow-sm h-100">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <h5 class="fw-bold mb-0">{{model.name}}</h5>
+                                    <a href="/" class="btn btn-outline-secondary btn-sm">계정 정보 설정</a>
+                                </div>
+
+                                <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-envelope me-2"></i>{{model.email}}
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-briefcase me-2"></i>신입
+                                    </div>
+                                </div>
+
+                                <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-calendar3 me-2"></i>{{model.birthDate}}년생
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-telephone me-2"></i>{{model.contactNumber}}
+                                    </div>
+                                    <div class="form-check form-switch d-flex align-items-center mb-0">
+                                        <input class="form-check-input" type="checkbox" id="resumeToggle" {{#model.isPublic}}checked{{/model.isPublic}} />
+                                        <label class="form-check-label ms-2 me-1" for="resumeToggle" style="font-size: 14px">
+                                            {{#model.isPublic}}이력서 공개{{/model.isPublic}}{{^model.isPublic}}이력서 비공개{{/model.isPublic}}
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <small class="text-muted">
+                                    · 지원 현황에 대한 정보 및 포지션 추천정보를 받아볼 연락처를 입력해주세요
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 간단소개 (선택항목) -->
+                    {{#model.summary}}
+                        <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                            <label class="form-label fw-bold">간단소개</label>
+                            <hr class="mt-1 mb-3" />
+                            <div class="bg-light rounded-2 px-3 py-2">
+                                {{model.summary}}
+                            </div>
+                        </div>
+                    {{/model.summary}}
+
+                    <!-- 개발 직무 -->
+                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                        <label class="form-label fw-bold"><span class="text-danger">*</span> 개발 직무</label>
+                        <hr class="mt-1 mb-3" />
+                        <div class="bg-light rounded-2 px-3 py-2 d-flex align-items-center">
+                            <div>{{model.positionType}}</div>
+                        </div>
+                    </div>
+
+                    <!-- 기술스택 -->
+                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                        <label class="form-label fw-bold"><span class="text-danger">*</span> 기술스택(업무
+                            툴/스킬)</label>
+                        <hr class="mt-1 mb-3" />
+                        <div class="mb-2 d-flex flex-wrap gap-2 fs-5">
+                            {{#model.techStackList}}
+                                <span class="badge bg-secondary">{{techStack}}</span>
+                            {{/model.techStackList}}
+                        </div>
+                    </div>
+
+                    <!-- 링크 (선택항목) -->
+                    {{#model.links.0}}
+                        <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                            <label class="form-label fw-bold">링크</label>
+                            <hr class="mt-1 mb-3" />
+                            <div>
+                                {{#model.links}}
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div class="d-flex align-items-start gap-2">
+                                            <div>
+                                                <strong>{{title}}</strong><br /><a href="{{url}}" target="_blank"
+                                                                                   class="text-decoration-none text-muted">{{url}} <i class="bi bi-box-arrow-up-right"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/model.links}}
+                            </div>
+                        </div>
+                    {{/model.links.0}}
+
+                    <!-- 학력 -->
+                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                        <label class="form-label fw-bold">
+                            <span class="text-danger">*</span> 학력
                         </label>
-                      </div>
+                        <hr class="mt-1 mb-3" />
+
+                        {{#model.educations}}
+                            <div class="d-flex flex-wrap education-wrapper gap-3 mb-3">
+                                <!-- 왼쪽: 졸업예정/중퇴 -->
+                                <div class="left-edu-box" style="min-width: 180px;">
+                                    <label for="graduateMonth" class="form-label fw-bold"><span class="text-danger">*</span> 졸업(예정)</label>
+                                    <div class="mb-2">{{graduationDate}}</div>
+                                    {{#isDropOut}}
+                                        <div class="form-check mt-1 ps-0">
+                                            <span class="badge bg-primary mb-2">중퇴</span>
+                                        </div>
+                                    {{/isDropOut}}
+                                </div>
+
+                                <!-- 오른쪽: 학력구분 ~ 학점 -->
+                                <div class="right-edu-box flex-grow-1">
+                                    <div class="row gx-2 mb-2">
+                                        <div class="col-4">
+                                            <div><span class="text-danger">*</span><span class="fw-semibold me-2"> 학력 구분 : </span><span>{{educationLevel}}</span></div>
+                                        </div>
+                                        <div class="col-8">
+                                            <span class="fw-semibold me-2"><span class="text-danger">*</span> 대학명 : </span><span>{{schoolName}}</span>
+                                        </div>
+                                    </div>
+                                    {{#major}}
+                                        <div class="mb-2">
+                                            <span class="fw-semibold me-2">학과명 : </span><span>{{major}}</span>
+                                        </div>
+                                    {{/major}}
+                                    {{#gpa}}
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="fw-semibold me-2">학점 : </span><span>{{gpa}} / {{gpaScale}}</span>
+                                        </div>
+                                    {{/gpa}}
+                                </div>
+                            </div>
+                        {{/model.educations}}
                     </div>
 
-                    <div>
-                      <small class="text-muted">· 지원 현황에 대한 정보 및 포지션 추천정보를 받아볼
-                        연락처를 입력해주세요</small>
+                    <!-- 경력(업무경험) 입력 폼 (선택항목) -->
+                    {{#model.experiences.0}}
+                        <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                            <label class="form-label fw-bold mb-2 fw-bold">경력(업무경험)</label>
+                            <hr class="mt-1 mb-3" />
+                            {{#model.experiences}}
+                                <div class="row mb-3">
+                                    <!-- 좌측: 근무기간 -->
+                                    <div class="col-md-4 mb-2">
+                                        <div class="fw-semibold mb-1"><span class="text-danger">*</span> 근무기간</div>
+                                        {{#isEmployed}}
+                                            <div>{{startDate}} ~ </div>
+                                            <span class="badge bg-primary mt-1">재직중</span>
+                                        {{/isEmployed}}
+                                        {{^isEmployed}}
+                                            <div>{{startDate}} ~ {{endDate}}</div>
+                                        {{/isEmployed}}
+                                    </div>
+
+                                    <!-- 우측: 상세내용 -->
+                                    <div class="col-md-8">
+                                        <div><strong><span class="text-danger">*</span> 회사명 : </strong>{{companyName}}</div>
+                                        {{#summary}}
+                                            <div><strong>회사 소개 : </strong>{{summary}}</div>
+                                        {{/summary}}
+                                        {{#position}}
+                                            <div><strong>부서명/직책 : </strong> {{position}}</div>
+                                        {{/position}}
+                                        <div class="mt-2">
+                                            {{#techStackList}}
+                                                <span class="badge bg-secondary me-1">{{techStack}}</span>
+                                            {{/techStackList}}
+                                        </div>
+                                        <div class="bg-light rounded mt-2 p-2"><span class="text-danger">*</span>
+                                            {{responsibility}}
+                                        </div>
+                                    </div>
+                                </div>
+                            {{/model.experiences}}
+                        </div>
+                    {{/model.experiences.0}}
+
+                    <!--프로젝트 부분-->
+                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                        <label class="form-label fw-bold"><span class="text-danger">*</span> 프로젝트</label>
+                        <hr class="mt-1 mb-3" />
+                        {{#model.projects}}
+                            <div class="row mb-3">
+                                <!-- 좌측: 프로젝트 기간 -->
+                                <div class="col-md-4 mb-2">
+                                    <div class="fw-semibold text mb-1"><span class="text-danger">*</span>프로젝트 기간</div>
+                                    {{#isOngoing}}
+                                        <div>{{startDate}} ~ </div>
+                                        <span class="badge bg-primary mt-1">진행중</span>
+                                    {{/isOngoing}}
+                                    {{^isOngoing}}
+                                        <div>{{startDate}} ~ {{endDate}}</div>
+                                    {{/isOngoing}}
+                                </div>
+
+                                <!-- 우측: 프로젝트 상세 -->
+                                <div class="col-md-8">
+                                    <div><span class="text-danger">*</span><strong> 프로젝트명 :</strong>{{title}}</div>
+                                    {{#summary}}
+                                        <div><strong>프로젝트 소개 :</strong> {{summary}}</div>
+                                    {{/summary}}
+                                    <div class="mt-2">
+                                        {{#techStackList}}
+                                            <span class="badge bg-secondary me-1">{{techStack}}</span>
+                                        {{/techStackList}}
+                                    </div>
+                                    <div class="bg-light rounded mt-2 p-2">
+                                        <span class="text-danger">*</span>
+                                        {{description}}
+                                    </div>
+                                    {{#repositoryUrl}}
+                                        <div class="mt-2">
+                                            <div><strong>저장소 링크</strong></div>
+                                            <div class="bg-light p-2 rounded text-muted">{{repositoryUrl}}</div>
+                                        </div>
+                                    {{/repositoryUrl}}
+                                </div>
+                            </div>
+                        {{/model.projects}}
                     </div>
-                  </div>
-                </div>
 
-                <!-- 개발 직무 -->
-                <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                  <label class="form-label fw-bold"><span class ="text-danger">*</span> 개발 직무</label>
-                  <hr class="mt-1 mb-3" />
-                  <div class="bg-light rounded-2 px-3 py-2 d-flex align-items-center">
-                    <div>{{model.positionType}}</div>
-                  </div>
-                </div>
+                    <!--교육이력 부분 (선택항목)-->
+                    {{#model.trainings.0}}
+                        <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                            <label class="form-label fw-bold mb-2">
+                                교육이력
+                            </label>
+                            <hr class="mt-1 mb-3" />
 
-                <!-- 기술스택 -->
-                <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                  <label class="form-label fw-bold"><span class="text-danger">*</span> 기술스택(업무
-                    툴/스킬)</label>
-                  <hr class="mt-1 mb-3" />
-                  <div class="mb-2 d-flex flex-wrap gap-2 fs-5">
-                      {{#model.techStackList}}
-                          <span class="badge bg-secondary">{{techStack}}</span>
-                      {{/model.techStackList}}
-                  </div>
-                </div>
+                            <!-- 전체 wrapper -->
+                            {{#model.trainings}}
+                                <div class="d-flex flex-wrap gap-3 mb-3">
+                                    <!-- 날짜 및 진행 중 -->
+                                    <div class="d-flex flex-column" style="min-width: 200px">
+                                        {{#isOngoing}}
+                                            <div class="mb-2">
+                                                <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <!-- 시작일 -->
+                                                    <div>{{startDate}}</div>
+                                                    ~
+                                                </div>
+                                            </div>
+                                            <div class="form-check ps-0">
+                                                <span class="badge bg-primary mb-2">진행중</span>
+                                            </div>
+                                        {{/isOngoing}}
+                                        {{^isOngoing}}
+                                            <div class="mb-2">
+                                                <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <!-- 시작일 -->
+                                                    <div>{{startDate}}</div>
+                                                    ~
+                                                    <!-- 종료일 -->
+                                                    <div>{{endDate}}</div>
+                                                </div>
+                                            </div>
+                                        {{/isOngoing}}
+                                    </div>
+                                    <!-- 교육이력 정보 영역 -->
+                                    <div class="flex-grow-1">
+                                        <div class="mb-2">
+                                            <span class="fw-semibold me-2"><span class="text-danger">*</span> 교육명 : </span><span>{{courseName}}</span>
+                                        </div>
 
-                <!-- 링크 -->
-                <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                  <label class="form-label fw-bold">링크</label>
-                  <hr class="mt-1 mb-3" />
-                  <div>
-                    {{#model.links}}
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="d-flex align-items-start gap-2">
+                                        <div class="row gx-2 mb-2">
+                                            <div>
+                                                <span class="fw-semibold me-2"><span class="text-danger">*</span> 교육기관 : </span><span>{{institutionName}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2 d-flex flex-wrap gap-2">
+                                            {{#techStackList}}
+                                                <span class="badge bg-secondary me-1">{{techStack}}</span>
+                                            {{/techStackList}}
+                                        </div>
+                                        <div class="mb-2 bg-light p-2">
+                                            <span><span class="text-danger">*</span> {{description}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{/model.trainings}}
+                        </div>
+                    {{/model.trainings.0}}
 
-                                <div>
-                                    <strong>{{title}}</strong><br /><a href="{{url}}" target="_blank"
-                                                                    class="text-decoration-none text-muted">{{url}} <i class="bi bi-box-arrow-up-right"></i></a>
+                    <!--기타 사항 부분 (선택항목)-->
+                    {{#model.etcs.0}}
+                        <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                            <label class="form-label fw-bold mb-2">
+                                기타사항
+                            </label>
+                            <hr class="mt-1 mb-3" />
+                            <div class="text-muted mb-3" style="font-size: 14px;">
+                                자격증, 대외활동, 어학, 수상이력 등을 추가하여 풍부한 이력서를 완성해보세요!
+                            </div>
+                            <!-- 전체 wrapper -->
+                            {{#model.etcs}}
+                                <div class="d-flex flex-wrap gap-3 mb-3">
+                                    <!-- 교육기간 및 종료일 유무 -->
+                                    <div class="d-flex flex-column" style="min-width: 200px">
+                                        <div class="mb-2">
+                                            <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
+                                            {{#hasEndDate}}
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <!-- 시작일 -->
+                                                    <div>{{startDate}}</div>
+                                                    ~
+                                                    <!-- 종료일 -->
+                                                    <div>{{endDate}}</div>
+                                                </div>
+                                            {{/hasEndDate}}
+                                            {{^hasEndDate}}
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <!-- 시작일 -->
+                                                    <div>{{startDate}}</div>
+                                                </div>
+                                                <div class="form-check ps-0">
+                                                    <span class="badge bg-primary mb-2">종료일 없음</span>
+                                                </div>
+                                            {{/hasEndDate}}
+                                        </div>
+                                    </div>
+
+                                    <div class="flex-grow-1">
+                                        <div class="mb-2">
+                                            <span class="fw-semibold me-2"><span class="text-danger">*</span> 활동명/이력제목 : </span><span>{{title}}</span>
+                                        </div>
+
+                                        <div class="row gx-2 mb-2">
+                                            <div class="col-md-4">
+                                                <span class="text-danger">*</span> {{etcType}}
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div>
+                                                    <span class="fw-semibold me-2"><span class="text-danger">*</span> 교육기관 : </span><span>{{institutionName}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-2">
+                                            <div class="mb-2 bg-light p-2">
+                                                <span><span class="text-danger">*</span> {{description}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{/model.etcs}}
+                        </div>
+                    {{/model.etcs.0}}
+
+                    <!-- 자기소개서 (선택항목) -->
+                    {{#model.selfIntroduction}}
+                        <div class="form-section bg-white rounded-3 p-4 mb-4 shadow-sm">
+                            <label class="form-label fw-bold mb-1 text-dark">
+                                <span class="text-danger">*</span> 자기소개서
+                            </label>
+                            <hr class="my-2" />
+                            <div>
+                                <div class="mb-2 bg-light p-2">
+                                    <div>{{model.selfIntroduction}}</div>
                                 </div>
                             </div>
                         </div>
-                    {{/model.links}}
-                  </div>
-                </div>
-
-                <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                  <label class="form-label fw-bold">
-                    <span class="text-danger">*</span> 학력
-                  </label>
-                  <hr class="mt-1 mb-3" />
-
-                  {{#model.educations}}
-                      <div class="d-flex flex-wrap education-wrapper gap-3 mb-3">
-                          <!-- 왼쪽: 졸업예정/중퇴 -->
-                          <div class="left-edu-box" style="min-width: 180px;">
-                              <label for="graduateMonth" class="form-label fw-bold"><span class ="text-danger">*</span> 졸업(예정)</label>
-                              <div class="mb-2">{{graduationDate}}</div>
-                              {{#isDropOut}}
-                                  <div class="form-check mt-1 ps-0">
-                                      <span class="badge bg-primary mb-2">중퇴</span>
-                                  </div>
-                              {{/isDropOut}}
-                          </div>
-
-                          <!-- 오른쪽: 학력구분 ~ 학점 -->
-                          <div class="right-edu-box flex-grow-1">
-                              <div class="row gx-2 mb-2">
-                                  <div class="col-4">
-                                      <div><span class ="text-danger">*</span><span class="fw-semibold me-2"> 학력 구분 : </span><span>{{educationLevel}}</span></div>
-                                  </div>
-                                  <div class="col-8">
-                                      <span class="fw-semibold me-2">대학명 : </span><span>{{schoolName}}</span>
-                                  </div>
-                              </div>
-                              <div class="mb-2">
-                                  <span class="fw-semibold me-2">학과명 : </span><span>{{major}}</span>
-                              </div>
-                              <div class="d-flex align-items-center gap-2">
-                                  <span class="fw-semibold me-2">학점 : </span><span>{{gpa}} / {{gpaScale}}</span>
-                              </div>
-                          </div>
-                      </div>
-
-                  {{/model.educations}}
-                </div>
-
-
-                <!-- 경력(업무경험) 입력 폼 -->
-                <!-- 경력 -->
-                <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                  <label class="form-label fw-bold= mb-2 fw-bold">경력(업무경험)</label>
-                  <hr class="mt-1 mb-3" />
-                  {{#model.experiences}}
-                      <div class="row mb-3">
-                          <!-- 좌측: 근무기간 -->
-                          <div class="col-md-4 mb-2">
-                              <div class="fw-semibold mb-1"><span class="text-danger">*</span> 근무기간</div>
-                              {{#isEmployed}}
-                                  <div>{{startDate}} ~ </div>
-                                  <span class="badge bg-primary mt-1">재직중</span>
-                              {{/isEmployed}}
-                              {{^isEmployed}}
-                                  <div>{{startDate}} ~ {{endDate}}</div>
-                              {{/isEmployed}}
-
-                          </div>
-
-                          <!-- 우측: 상세내용 -->
-                          <div class="col-md-8">
-                              <div><strong><span class ="text-danger">*</span> 회사명 : </strong>{{companyName}}</div>
-                              <div><strong>회사 소개 : </strong>{{summary}}</div>
-                              <div><strong>부서명/직책 : </strong> {{position}}</div>
-                              <div class="mt-2">
-                                  {{#techStackList}}
-                                      <span class="badge bg-secondary me-1">{{techStack}}</span>
-                                  {{/techStackList}}
-                              </div>
-
-                              <div class="bg-light rounded mt-2 p-2"><span class ="text-danger">*</span>
-                                  {{responsibility}}
-                              </div>
-                          </div>
-                      </div>
-                  {{/model.experiences}}
-                </div>
-
-
-
-
-                <!--프로젝트 부분-->
-                <!-- 프로젝트 -->
-                <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                  <label class="form-label fw-bold"><span class ="text-danger">*</span> 프로젝트</label>
-                  <hr class="mt-1 mb-3" />
-                  {{#model.projects}}
-                      <div class="row mb-3">
-                          <!-- 좌측: 프로젝트 기간 -->
-                          <div class="col-md-4 mb-2">
-                              <div class="fw-semibold text mb-1"><span class ="text-danger">*</span>프로젝트 기간</div>
-                              {{#isOngoing}}
-                                  <div>{{startDate}} ~ </div>
-                                  <span class="badge bg-primary mt-1">진행중</span>
-                              {{/isOngoing}}
-                              {{^isOngoing}}
-                                  <div>{{startDate}} ~ {{endDate}}</div>
-                              {{/isOngoing}}
-                          </div>
-
-                          <!-- 우측: 프로젝트 상세 -->
-                          <div class="col-md-8">
-                              <div><span class ="text-danger">*</span><strong> 프로젝트명 :</strong>{{title}}</div>
-                              <div><strong>프로젝트 소개 :</strong> {{summary}}</div>
-                              <div class="mt-2">
-                                  <span class="badge bg-secondary me-1">JavaScript</span>
-                                  <span class="badge bg-secondary me-1">React</span>
-                                  <span class="badge bg-secondary me-1">Node.js</span>
-                              </div>
-                              <div class="bg-light rounded mt-2 p-2">
-                                  <span class ="text-danger">*</span>
-                                  {{description}}
-                              </div>
-                              {{#repositoryUrl}}
-                                  <div class="mt-2">
-                                      <div><strong>저장소 링크</strong></div>
-                                      <div class="bg-light p-2 rounded text-muted">{{repositoryUrl}}</div>
-                                  </div>
-                              {{/repositoryUrl}}
-                          </div>
-                      </div>
-                  {{/model.projects}}
-                </div>
-
-
-                <!--교육이력 부분-->
-                <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                  <label class="form-label fw-bold mb-2">
-                    교육이력
-                  </label>
-                  <hr class="mt-1 mb-3" />
-
-                  <!-- 전체 wrapper -->
-                  {{#model.trainings}}
-                      <div class="d-flex flex-wrap gap-3 mb-3">
-
-                          <!-- 날짜 및 진행 중 -->
-                          <div class="d-flex flex-column" style="min-width: 200px">
-                              {{#isOngoing}}
-                                  <div class="mb-2">
-                                      <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
-                                      <div class="d-flex align-items-center gap-2">
-                                          <!-- 시작일 -->
-                                          <div>{{startDate}}</div>
-                                          ~
-                                      </div>
-                                  </div>
-
-                                  <div class="form-check ps-0">
-                                      <span class="badge bg-primary mb-2">진행중</span>
-                                  </div>
-                              {{/isOngoing}}
-                              {{^isOngoing}}
-                                  <div class="mb-2">
-                                      <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
-                                      <div class="d-flex align-items-center gap-2">
-                                          <!-- 시작일 -->
-                                          <div>{{startDate}}</div>
-                                          ~
-                                          <!-- 종료일 -->
-                                          <div>{{endDate}}</div>
-                                      </div>
-                                  </div>
-                              {{/isOngoing}}
-                          </div>
-
-                          <!-- 회사 정보 영역 -->
-                          <div class="flex-grow-1">
-                              <div class="mb-2">
-                                  <span class="fw-semibold me-2">교육명 : </span><span>{{courseName}}</span>
-                              </div>
-
-
-                              <div class="row gx-2 mb-2">
-
-                                  <div>
-                          <span class="fw-semibold me-2">교육기관 :
-                          </span> <span>{{institutionName}}</span>
-                                  </div>
-                              </div>
-                              <div class="mb-2 d-flex flex-wrap gap-2">
-                                  {{#techStackList}}
-                                      <span class="badge bg-secondary me-1">{{techStack}}</span>
-                                  {{/techStackList}}
-                              </div>
-                              <div class="mb-2 bg-light p-2">
-                                  <span>{{description}}</span>
-                              </div>
-                          </div>
-                      </div>
-                  {{/model.trainings}}
+                    {{/model.selfIntroduction}}
 
                 </div>
 
-                <!--기타 사항 부분-->
-                <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                  <label class="form-label fw-bold mb-2">
-                    기타사항
-                  </label>
-                  <hr class="mt-1 mb-3" />
-                    <div class="text-muted mb-3" style="font-size: 14px;">
-                        자격증, 대외활동, 어학, 수상이력 등을 추가하여 풍부한 이력서를 완성해보세요!
-                    </div>
-                  <!-- 전체 wrapper -->
-                  {{#model.etcs}}
-
-                      <div class="d-flex flex-wrap gap-3 mb-3">
-
-                          <!-- 교육기간 및 종료일 유무 -->
-                          <div class="d-flex flex-column" style="min-width: 200px">
-                              <div class="mb-2">
-                                  <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
-                                  {{#hasEndDate}}
-                                      <div class="d-flex align-items-center gap-2">
-                                          <!-- 시작일 -->
-                                          <div>{{startDate}}</div>
-                                          ~
-                                          <!-- 종료일 -->
-                                          <div>{{endDate}}</div>
-                                      </div>
-                                  {{/hasEndDate}}
-                                  {{^hasEndDate}}
-                                      <div class="d-flex align-items-center gap-2">
-                                          <!-- 시작일 -->
-                                          <div>{{startDate}}</div>
-
-                                      </div>
-                                      <div class="form-check ps-0">
-                                          <span class="badge bg-primary mb-2">종료일 없음</span>
-                                      </div>
-                                  {{/hasEndDate}}
-                              </div>
-                          </div>
-
-                          <div class="flex-grow-1">
-                              <div class="mb-2">
-                                  <span class="fw-semibold me-2">활동명/이력제목 : </span><span>{{title}}</span>
-                              </div>
-
-
-                              <div class="row gx-2 mb-2">
-                                  <div class="col-md-4">
-                                      {{etcType}}
-                                  </div>
-                                  <div class="col-md-8">
-                                      <div>
-                            <span class="fw-semibold me-2">교육기관 :
-                            </span> <span>{{institutionName}}</span>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="mb-2">
-                                  <div class="mb-2 bg-light p-2">
-                                      <span>{{description}}</span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-
-                  {{/model.etcs}}
+                <!-- 등록하기 버튼 -->
+                <div class="mt-4">
+                    <a href="/resume/{{model.id}}/update-form" class="btn btn-primary w-100 py-2 fw-semibold">수정하기</a>
                 </div>
-
-                <div class="form-section bg-white rounded-3 p-4 mb-4 shadow-sm">
-                  <label class="form-label fw-bold mb-1 text-dark">
-                    자기소개서
-                  </label>
-                  <hr class="my-2" />
-                  <div>
-                    <div class="mb-2 bg-light p-2">
-                      <div>{{model.selfIntroduction}}</div>
-                    </div>
-                  </div>
-                </div>
-
-
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-  <!-- 본문 끝 -->
+</div>
+</div>
+</div>
+<!-- 본문 끝 -->
 
 {{> layout/footer}}

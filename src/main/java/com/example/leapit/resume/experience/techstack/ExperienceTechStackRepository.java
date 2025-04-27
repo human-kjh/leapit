@@ -13,7 +13,7 @@ public class ExperienceTechStackRepository {
     private final EntityManager em;
 
     public List<ExperienceTechStack> findAllByExperienceId(Integer id) {
-        Query query = em.createQuery("SELECT e FROM ExperienceTechStack e WHERE e.experience.id = :id");
+        Query query = em.createQuery("SELECT e FROM ExperienceTechStack e WHERE e.experience.id = :id",ExperienceTechStack.class);
         query.setParameter("id", id);
         return query.getResultList();
     }
