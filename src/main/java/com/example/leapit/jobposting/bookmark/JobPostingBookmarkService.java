@@ -1,6 +1,5 @@
 package com.example.leapit.jobposting.bookmark;
 
-import com.example.leapit.application.bookmark.ApplicationBookmarkRequest;
 import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.jobposting.JobPostingRepository;
 import com.example.leapit.user.User;
@@ -17,16 +16,16 @@ public class JobPostingBookmarkService {
     private final JobPostingRepository jobPostingRepository;
 
     @Transactional
-    public JobPostingBookmarkResponse.SaveDTO saveJobPostingBookmarkByUserId(ApplicationBookmarkRequest.SaveDTO reqDTO, Integer sessionUserId) {
+    public JobPostingBookmarkResponse.SaveDTO saveJobPostingBookmarkByUserId(JobPostingBookmarkRequest.SaveDTO reqDTO, Integer sessionUserId) {
 
-        User companyUser = userRepository.findById(sessionUserId);
-        if (companyUser == null) throw new RuntimeException("유저가 존재하지 않습니다");
+        User personalUser = userRepository.findById(sessionUserId);
+        if (personalUser == null) throw new RuntimeException("유저가 존재하지 않습니다");
 
-        JobPosting jobPosting = jobPostingRepository.findByApplicationId(reqDTO.getApplicationId());
+        JobPosting jobPosting = jobPostingRepository.findByApplicationId(reqDTO.getJobPostingId());
         if (jobPosting == null) throw new RuntimeException("지원 정보가 존재하지 않습니다");
         System.out.println(jobPosting.getId());
         JobPostingBookmark bookmark = JobPostingBookmark.builder()
-                .user(companyUser)
+                .user(personalUser)
                 .jobPosting(jobPosting)
                 .build();
 
