@@ -2,6 +2,7 @@ package com.example.leapit.resume.experience.techstack;
 
 import com.example.leapit.resume.experience.Experience;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,4 +20,11 @@ public class ExperienceTechStack {
 
     @Column(nullable = false)
     private String techStack;
+
+    @Builder
+    public ExperienceTechStack(Integer id, Experience experience, String techStack) {
+        this.id = id;
+        this.experience = experience;
+        this.techStack = techStack;
+    }
 }

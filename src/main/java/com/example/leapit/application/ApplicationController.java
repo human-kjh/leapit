@@ -64,6 +64,4 @@ public class ApplicationController {
 
         return "company/applicant/list";
     }
-
-
 }

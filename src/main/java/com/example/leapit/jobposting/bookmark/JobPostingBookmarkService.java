@@ -15,7 +15,7 @@ public class JobPostingBookmarkService {
     private final UserRepository userRepository;
     private final JobPostingRepository jobPostingRepository;
 
-    
+
     @Transactional
     public JobPostingBookmarkResponse.SaveDTO saveJobPostingBookmarkByUserId(JobPostingBookmarkRequest.SaveDTO reqDTO, Integer sessionUserId) {
 

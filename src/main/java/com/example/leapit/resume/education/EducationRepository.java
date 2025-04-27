@@ -13,7 +13,7 @@ public class EducationRepository {
     private final EntityManager em;
 
     public List<Education> findAllByResumeId(int resumeId) {
-        Query query = em.createQuery("SELECT e FROM Education e WHERE e.resume.id = :resumeId");
+        Query query = em.createQuery("SELECT e FROM Education e WHERE e.resume.id = :resumeId", Education.class);
         query.setParameter("resumeId", resumeId);
         return query.getResultList();
     }

@@ -3,8 +3,19 @@ package com.example.leapit.jobposting.bookmark;
 import com.example.leapit._core.util.Resp;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpSession;
+import com.example.leapit._core.util.Resp;
+import com.example.leapit.application.bookmark.ApplicationBookmarkRequest;
+import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
+import com.example.leapit.user.User;
+import jakarta.servlet.http.HttpSession;
+import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RequiredArgsConstructor
 @RestController

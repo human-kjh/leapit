@@ -1,6 +1,8 @@
 package com.example.leapit.common.positiontype;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +29,9 @@ public class PositionTypeRepository {
             dtos.add(new PositionTypeResponse.PositionTypeDTO(label, isSelected));
         }
         return dtos;
+    }
+    public List<PositionType> findAll() {
+        Query query = em.createQuery("SELECT pt FROM PositionType pt", PositionType.class);
+        return query.getResultList();
     }
 }
