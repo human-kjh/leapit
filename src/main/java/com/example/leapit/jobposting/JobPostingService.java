@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -92,6 +94,8 @@ public class JobPostingService {
         return jobPostingRepository.findByDeadlineClosed(now);
     }
 
+
+    // 구직자 - 채용공고 목록
     public List<JobPostingResponse.JobPostingDTO> getAllJobPostings() {
         List<Object[]> results = jobPostingRepository.findAllJobPostingsWithTechStacks();
 
@@ -132,4 +136,60 @@ public class JobPostingService {
     public JobPostingResponse.AddressDTO getJobPostingAddress(Integer id) {
         return jobPostingRepository.findJobPostingAddressById(id);
     }
+
+
+    // 구직자 - 메인페이지 최신공고 3개
+    public List<JobPostingResponse.MainDTO.MainRecentJobPostingDTO> getRecentPostings() {
+        List<JobPosting> recentPostings = jobPostingRepository.findTop3RecentJobPostings();
+        AtomicInteger index = new AtomicInteger(0);
+
+        return recentPostings.stream()
+                .map(jp -> {
+                    int i = index.getAndIncrement();
+                    CompanyInfo ci = companyInfoRepository.findByUserId(jp.getUser().getId());
+                    return new JobPostingResponse.MainDTO.MainRecentJobPostingDTO(jp, ci, i == 0);
+                })
+                .collect(Collectors.toList());
+    }
+
+
+    // 구직자 - 메인페이지 인기 공고 8개
+    public List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> getPopularJobPostings() {
+        List<Object[]> results = jobPostingRepository.findTop8PopularJobPostingsWithTechStacks();
+
+        Map<Integer, JobPosting> postingMap = new HashMap<>();
+        Map<Integer, List<JobPostingTechStack>> stackMap = new HashMap<>();
+
+        for (Object[] row : results) {
+            JobPosting jp = (JobPosting) row[0];
+            JobPostingTechStack stack = (JobPostingTechStack) row[1];
+
+            postingMap.putIfAbsent(jp.getId(), jp);
+
+            if (stack != null) {
+                stackMap.computeIfAbsent(jp.getId(), k -> new ArrayList<>()).add(stack);
+            }
+        }
+
+        List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> popularList = new ArrayList<>();
+        for (JobPosting jp : postingMap.values()) {
+            String region = jobPostingRepository.findByRegion(jp.getId());
+            String subRegion = jobPostingRepository.findBySubRegion(jp.getId());
+            String address = (region != null ? region : "") + " " + (subRegion != null ? subRegion : "");
+
+            List<JobPostingTechStack> techStacks = stackMap.getOrDefault(jp.getId(), new ArrayList<>());
+            CompanyInfo companyInfo = companyInfoRepository.findByUserId(jp.getUser().getId());
+
+            popularList.add(new JobPostingResponse.MainDTO.MainPopularJobPostingDTO(
+                    jp,
+                    companyInfo.getCompanyName(),
+                    companyInfo.getImage(),
+                    address,
+                    techStacks
+            ));
+        }
+
+        return popularList;
+    }
+
 }

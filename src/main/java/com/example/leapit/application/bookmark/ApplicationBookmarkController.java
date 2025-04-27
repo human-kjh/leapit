@@ -14,23 +14,20 @@ public class ApplicationBookmarkController {
     private final HttpSession session;
     private final ApplicationBookmarkService bookmarkService;
 
-    // 스크랩 등록
-    @PostMapping("/api/bookmark")
-    public Resp<?> saveBookmark(@RequestBody ApplicationBookmarkRequest.SaveDTO reqDTO) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        ApplicationBookmarkResponse.SaveDTO respDTO = bookmarkService.saveBookmark(reqDTO, sessionUser.getId());
 
+    // 기업 스크랩 등록 application_bookmark
+    @PostMapping("/api/company/bookmark")
+    public Resp<?> saveApplicationBookmark(@RequestBody ApplicationBookmarkRequest.SaveDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        ApplicationBookmarkResponse.SaveDTO respDTO = bookmarkService.saveApplicantBookmarkByUserId(reqDTO, sessionUser.getId());
         return Resp.ok(respDTO);
     }
 
-    // 스크랩 삭제
-    @DeleteMapping("/api/bookmark/{id}")
-    public Resp<?> deleteBookmark(@PathVariable("id") Integer applicationId) {
+    // 기업 스크랩 삭제 application_bookmark
+    @DeleteMapping("/api/company/bookmark/{id}")
+    public Resp<?> deleteApplicationBookmark(@PathVariable("id") Integer applicationId) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        System.out.println("applicationId = " + applicationId + ", sessionUserId = " + sessionUser.getId());
-
-        bookmarkService.deleteBookmark(applicationId, sessionUser.getId());
+        bookmarkService.deleteApplicationBookmarkByApplicationId(applicationId, sessionUser.getId());
         return Resp.ok("북마크 삭제");
     }
 }
-

@@ -3,6 +3,7 @@ package com.example.leapit.resume.training;
 import com.example.leapit.resume.Resume;
 import com.example.leapit.resume.training.techstack.TrainingTechStack;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,4 +41,18 @@ public class Training {
 
     @OneToMany(mappedBy = "training", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TrainingTechStack> trainingTechStacks  = new ArrayList<>();
+
+    @Builder
+    public Training(Integer id, Resume resume, LocalDate startDate, LocalDate endDate, Boolean isOngoing, String courseName, String institutionName, String description, Timestamp createdAt, List<TrainingTechStack> trainingTechStacks) {
+        this.id = id;
+        this.resume = resume;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isOngoing = isOngoing;
+        this.courseName = courseName;
+        this.institutionName = institutionName;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.trainingTechStacks = trainingTechStacks!= null ? trainingTechStacks : new ArrayList<>();
+    }
 }

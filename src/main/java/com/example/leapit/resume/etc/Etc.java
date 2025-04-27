@@ -2,6 +2,7 @@ package com.example.leapit.resume.etc;
 
 import com.example.leapit.resume.Resume;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -27,7 +28,7 @@ public class Etc {
     //hasEndDate = true : 종료일 있음
     private Boolean hasEndDate = true;
     private String title;
-    private Integer etcType;
+    private String etcType;
     private String institutionName;
 
     @Lob
@@ -35,4 +36,18 @@ public class Etc {
 
     @CreationTimestamp
     private Timestamp createdAt;
+
+    @Builder
+    public Etc(Integer id, Resume resume, LocalDate startDate, LocalDate endDate, Boolean hasEndDate, String title, String etcType, String institutionName, String description, Timestamp createdAt) {
+        this.id = id;
+        this.resume = resume;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.hasEndDate = hasEndDate;
+        this.title = title;
+        this.etcType = etcType;
+        this.institutionName = institutionName;
+        this.description = description;
+        this.createdAt = createdAt;
+    }
 }
