@@ -47,5 +47,11 @@ public class BoardRepository {
     public Board findById(Integer id) {
         return em.find(Board.class, id);
     }
+
+    public void deleteById(Integer id) {
+        Board board = em.find(Board.class, id);
+        em.remove(board);
+    }
+
 }
 
