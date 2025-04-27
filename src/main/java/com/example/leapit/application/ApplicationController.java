@@ -1,7 +1,5 @@
 package com.example.leapit.application;
 
-import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
-import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -9,9 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -35,9 +30,6 @@ public class ApplicationController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-        // 지원 현황 통계
-        ApplicationResponse.ApplicationStatusDto status = applicationService.statusByUserId(sessionUser.getId());
-
         ApplicationResponse.ApplicationListViewDTO respDTO = applicationService.내지원현황목록(sessionUser.getId());
         request.setAttribute("models", respDTO);
 
@@ -45,7 +37,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/company/applicant/list")
-    public String applicantList(ApplicationRequest.ApplicantListReqDTO reqDTO ,
+    public String applicantList(ApplicationRequest.ApplicantListReqDTO reqDTO,
                                 HttpServletRequest request,
                                 @RequestParam(required = false, value = "passStatus", defaultValue = "전체") String passStatus,
                                 @RequestParam(required = false, value = "isViewedStr") String isViewedStr,
@@ -65,7 +57,7 @@ public class ApplicationController {
         if ("true".equals(isBookmarkStr)) isBookmark = true;
 
         ApplicationResponse.ApplicantListPageDTO respDTO =
-                applicationService.findApplicantPageWithFilters(sessionUser.getId(), reqDTO.getJobPostingId(),passStatus,isViewed, isBookmark);
+                applicationService.findApplicantPageWithFilters(sessionUser.getId(), reqDTO.getJobPostingId(), passStatus, isViewed, isBookmark);
 
         request.setAttribute("models", respDTO);
 
