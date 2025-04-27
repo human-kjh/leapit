@@ -171,4 +171,6 @@ public class ApplicationRepository {
         query.setParameter("resumeId", resumeId);
         return query.getResultList();
     }
+
+
 }
