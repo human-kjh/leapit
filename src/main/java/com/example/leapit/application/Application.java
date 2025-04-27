@@ -34,4 +34,8 @@ public class Application {
     public Application(Integer id) {
         this.id = id;
     }
+
+    public void update(Boolean isPassed) {
+        this.isPassed = isPassed;
+    }
 }

@@ -26,6 +26,9 @@ public class ApplicationBookmarkService {
         Application application = applicationRepository.findByApplicationId(reqDTO.getApplicationId());
         if (application == null) throw new RuntimeException("지원 정보가 존재하지 않습니다");
 
+        ApplicationBookmark applicationBookmark = applicationBookmarkRepository.findByUserIdAndApplicationId(sessionUserId, application.getId());
+        if (applicationBookmark != null) throw new RuntimeException("이미 스크랩된 지원서 입니다.");
+
         ApplicationBookmark bookmark = ApplicationBookmark.builder()
                 .user(companyUser)
                 .application(application)
