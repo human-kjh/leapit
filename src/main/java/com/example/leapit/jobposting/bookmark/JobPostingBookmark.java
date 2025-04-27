@@ -1,8 +1,10 @@
 package com.example.leapit.jobposting.bookmark;
 
+import com.example.leapit.application.Application;
 import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.user.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,4 +28,12 @@ public class JobPostingBookmark {
 
     @CreationTimestamp
     private Timestamp createdAt;
+
+    @Builder
+    public JobPostingBookmark(Integer id, User user, JobPosting jobPosting, Timestamp createdAt) {
+        this.id = id;
+        this.user = user;
+        this.jobPosting = jobPosting;
+        this.createdAt = createdAt;
+    }
 }

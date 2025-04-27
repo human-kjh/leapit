@@ -177,7 +177,7 @@
 
     async function saveBookmark(applicationId) {
         try {
-            const response = await fetch(`/api/bookmark`, {
+            const response = await fetch(`/api/company/bookmark`, {
                 method: "POST",
                 body: JSON.stringify({ applicationId: applicationId }),
                 headers: { "Content-Type": "application/json" }
@@ -200,7 +200,7 @@
 
     async function deleteBookmark(applicationId) {
         try {
-            const response = await fetch(`/api/bookmark/${applicationId}`, {
+            const response = await fetch(`/api/company/bookmark/${applicationId}`, {
                 method: "DELETE"
             });
 
@@ -218,6 +218,8 @@
             console.error("스크랩 삭제 중 오류:", e);
         }
     }
+
+
     function toggleBookmarkFilter() {
         const form = document.getElementById('bookmarkForm');
         const input = document.getElementById('isBookmark');

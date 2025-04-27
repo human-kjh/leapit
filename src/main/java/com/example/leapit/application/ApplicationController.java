@@ -8,13 +8,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Controller
 public class ApplicationController {
     private final ApplicationService applicationService;
     private final HttpSession session;
+
+    @GetMapping("/personal/mypage/bookmark")
+    public String personalBookmark(HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        ApplicationResponse.ApplicationBookmarkListDTO respDTO = applicationService.내북마크관리페이지(sessionUser.getId());
+
+        request.setAttribute("models", respDTO);
+        return "personal/mypage/bookmark";
+    }
 
     // 개인 지원 현황 관리
     @GetMapping("/personal/mypage/application")
@@ -22,15 +30,14 @@ public class ApplicationController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-
-        ApplicationResponse.ApplicationListViewDTO respDTO = applicationService.findApplicationListByUserId(sessionUser.getId());
+        ApplicationResponse.ApplicationListViewDTO respDTO = applicationService.내지원현황목록(sessionUser.getId());
         request.setAttribute("models", respDTO);
 
         return "personal/mypage/application";
     }
 
     @GetMapping("/company/applicant/list")
-    public String applicantList(ApplicationRequest.ApplicantListReqDTO reqDTO ,
+    public String applicantList(ApplicationRequest.ApplicantListReqDTO reqDTO,
                                 HttpServletRequest request,
                                 @RequestParam(required = false, value = "passStatus", defaultValue = "전체") String passStatus,
                                 @RequestParam(required = false, value = "isViewedStr") String isViewedStr,
@@ -50,10 +57,12 @@ public class ApplicationController {
         if ("true".equals(isBookmarkStr)) isBookmark = true;
 
         ApplicationResponse.ApplicantListPageDTO respDTO =
-                applicationService.findApplicantPageWithFilters(sessionUser.getId(), reqDTO.getJobPostingId(),passStatus,isViewed, isBookmark);
+                applicationService.findApplicantPageWithFilters(sessionUser.getId(), reqDTO.getJobPostingId(), passStatus, isViewed, isBookmark);
 
         request.setAttribute("models", respDTO);
 
         return "company/applicant/list";
     }
+
+
 }
