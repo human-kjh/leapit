@@ -132,14 +132,12 @@ public class JobPostingService {
         String selectedTechStackName = null;
         boolean hasAnyParam = (regionId != null || subRegionId != null || career != null || techStackCode != null || selectedLabel != null);
 
-        System.out.println("================================================");
         if (techStackCode != null) {
             System.out.println("[DEBUG] 선택된 기술스택 코드: " + techStackCode);
 
             for (TechStack stack : techStacks) {
                 if (stack.getCode().equals(techStackCode)) {
                     selectedTechStackName = stack.getCode(); // (네 목표는 코드 넣기)
-                    System.out.println("[DEBUG] 매칭된 기술스택 코드: " + selectedTechStackName);
                 }
             }
         }
