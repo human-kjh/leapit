@@ -103,19 +103,13 @@ public class JobPostingController {
     @GetMapping("/personal/jobposting/list")
     public String personalList(HttpServletRequest req,
                                @RequestParam(value = "regionId", required = false) Integer regionId,
-                               @RequestParam(value = "subRegionId", required = false) Integer subRegionId) {
-        System.out.println("============ [Controller 디버깅] ============");
-        System.out.println("[DEBUG] regionId 요청 파라미터 = " + regionId);
-        System.out.println("[DEBUG] subRegionId 요청 파라미터 = " + subRegionId);
+                               @RequestParam(value = "subRegionId", required = false) Integer subRegionId,
+                               @RequestParam(value = "career", required = false) Integer career,
+                               @RequestParam(value = "techStack", required = false) String techStackCode,
+                               @RequestParam(value = "label", required = false) String selectedLabel) {
 
-        JobPostingResponse.JobPostingListFilterDTO respDTO = jobPostingService.공고목록페이지(regionId, subRegionId);
+        JobPostingResponse.JobPostingListFilterDTO respDTO = jobPostingService.공고목록페이지(regionId, subRegionId, career, techStackCode, selectedLabel);
 
-
-        System.out.println("[DEBUG] respDTO.selectedRegionId = " + respDTO.getSelectedRegionId());
-        System.out.println("[DEBUG] respDTO.selectedSubRegionId = " + respDTO.getSelectedSubRegionId());
-        System.out.println("[DEBUG] respDTO.regions 사이즈 = " + respDTO.getRegions().size());
-        System.out.println("[DEBUG] respDTO.subRegions 사이즈 = " + respDTO.getSubRegions().size());
-        System.out.println("==============================================");
 
         req.setAttribute("models", respDTO);
         return "personal/jobposting/list";

@@ -127,19 +127,40 @@ public class JobPostingResponse {
     }
 
     // 공고 목록 DTO (with 필터)
+    // Name이 붙은 값들은 서버에 선택된 값 유지
     @Data
     public static class JobPostingListFilterDTO {
         private Integer selectedRegionId;
         private Integer selectedSubRegionId;
         private String selectedRegionName;
         private String selectedSubRegionName;
+        private Integer selectedCareer;
+        private String selectedCareerName;
+        private String selectedTechStackCode;
+        private String selectedTechStackName;
+        private boolean hasAnyParam;
+        private String selectedLabel;
         private List<PositionTypeResponse.PositionTypeDTO> positions;
         private List<TechStack> techStacks;
         private List<RegionResponse.RegionDTO> regions;
         private List<RegionResponse.SubRegionDTO> subRegions;
         private List<JobPostingResponse.JobPostingDTO> jobPostingList;
 
-        public JobPostingListFilterDTO(List<PositionTypeResponse.PositionTypeDTO> positions, List<TechStack> techStacks, List<RegionResponse.RegionDTO> regions, List<RegionResponse.SubRegionDTO> subRegions, List<JobPostingDTO> jobPostingList, Integer selectedRegionId, Integer selectedSubRegionId, String selectedRegionName, String selectedSubRegionName) {
+        public JobPostingListFilterDTO(
+                List<PositionTypeResponse.PositionTypeDTO> positions,
+                List<TechStack> techStacks, List<RegionResponse.RegionDTO> regions,
+                List<RegionResponse.SubRegionDTO> subRegions,
+                List<JobPostingDTO> jobPostingList,
+                Integer selectedRegionId,
+                Integer selectedSubRegionId,
+                String selectedRegionName,
+                String selectedSubRegionName,
+                Integer selectedCareer,
+                String selectedCareerName,
+                String selectedTechStackCode,
+                String selectedTechStackName,
+                boolean hasAnyParam,
+                String selectedLabel) {
             this.positions = positions;
             this.techStacks = techStacks;
             this.regions = regions;
@@ -149,6 +170,12 @@ public class JobPostingResponse {
             this.selectedSubRegionId = selectedSubRegionId;
             this.selectedRegionName = selectedRegionName;
             this.selectedSubRegionName = selectedSubRegionName;
+            this.selectedCareer = selectedCareer;
+            this.selectedCareerName = selectedCareerName;
+            this.selectedTechStackCode = selectedTechStackCode;
+            this.selectedTechStackName = selectedTechStackName;
+            this.hasAnyParam = hasAnyParam;
+            this.selectedLabel = selectedLabel;
         }
     }
 

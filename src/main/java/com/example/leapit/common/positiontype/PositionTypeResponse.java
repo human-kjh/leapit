@@ -7,9 +7,11 @@ public class PositionTypeResponse {
     @Data
     public static class PositionTypeDTO {
         private String label;
+        private boolean selected;
 
-        public PositionTypeDTO(String label) {
+        public PositionTypeDTO(String label, boolean selected) {
             this.label = label;
+            this.selected = false;
         }
     }
 

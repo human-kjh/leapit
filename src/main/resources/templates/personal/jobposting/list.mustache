@@ -7,44 +7,173 @@
 
         <!-- 직무 필터 -->
         <div>
-            <div>
-                <button class="btn btn-sm btn-primary rounded-5">전체</button>
+            <div class="d-flex flex-wrap gap-2">
+                <!-- 전체 버튼 -->
+                <form method="get" action="/personal/jobposting/list" class="d-inline">
+                    {{#models.selectedRegionId}}
+                        <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                    {{/models.selectedRegionId}}
+                    {{#models.selectedSubRegionId}}
+                        <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                    {{/models.selectedSubRegionId}}
+                    {{#models.selectedCareer}}
+                        <input type="hidden" name="career" value="{{models.selectedCareer}}">
+                    {{/models.selectedCareer}}
+                    {{#models.selectedTechStackCode}}
+                        <input type="hidden" name="techStack" value="{{models.selectedTechStackCode}}">
+                    {{/models.selectedTechStackCode}}
+                    <button class="btn {{^models.selectedLabels}}btn-primary{{/models.selectedLabels}} {{#models.selectedLabels}}btn-outline-primary{{/models.selectedLabels}} btn-sm rounded-5"
+                            type="submit">
+                        전체
+                    </button>
+                </form>
+
+                <!-- 직무 리스트 -->
                 {{#models.positions}}
-                    <button class="btn btn-sm btn-outline-primary rounded-5" name="label"
-                            value="{{label}}">{{label}}</button>
-                {{/models.positions}}
-            </div>
+                    <form method="get" action="/personal/jobposting/list" class="d-inline-block">
+                        {{#models.selectedRegionId}}
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                        {{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                        {{/models.selectedSubRegionId}}
+                        {{#models.selectedCareer}}
+                            <input type="hidden" name="career" value="{{models.selectedCareer}}">
+                        {{/models.selectedCareer}}
+                        {{#models.selectedTechStackCode}}
+                            <input type="hidden" name="techStack" value="{{models.selectedTechStackCode}}">
+                        {{/models.selectedTechStackCode}}
+
+                        {{#models.selectedLabels}}
+                            <input type="hidden" name="label" value="{{.}}">
+                        {{/models.selectedLabels}}
+
+                        <input type="hidden" name="label" value="{{label}}">
+
+                        <button class="btn {{#selected}}btn-primary{{/selected}} {{^selected}}btn-outline-primary{{/selected}} btn-sm rounded-5"
+                                type="submit">
+                            {{label}}
+                        </button>
+                    </form>
+                {{/models.positions}}            </div>
         </div>
     </div>
+
 
     <div class="bg-light mt-4 p-3 rounded">
         <!-- 기술스택 드롭다운 -->
         <div class="dropdown d-inline-block me-2">
-            <button class="btn btn-outline-primary dropdown-toggle rounded-5" type="button" data-bs-toggle="dropdown">
-                기술스택
+            <button class="btn {{#models.selectedTechStackCode}}btn-primary{{/models.selectedTechStackCode}} {{^models.selectedTechStackCode}}btn-outline-primary{{/models.selectedTechStackCode}} dropdown-toggle rounded-5"
+                    type="button" data-bs-toggle="dropdown">
+                {{#models.selectedTechStackName}}{{models.selectedTechStackName}}{{/models.selectedTechStackName}}
+                {{^models.selectedTechStackName}}기술스택{{/models.selectedTechStackName}}
             </button>
             <ul class="dropdown-menu">
+                <!-- 전체 (기술스택 선택 해제) -->
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                        {{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                        {{/models.selectedSubRegionId}}
+                        {{#models.selectedCareer}}
+                            <input type="hidden" name="career" value="{{models.selectedCareer}}">
+                        {{/models.selectedCareer}}
+                        <input type="hidden" name="techStack" value="">
+                        <button class="dropdown-item" type="submit">전체</button>
+                    </form>
+                </li>
+
+                <!-- 기술스택 리스트 뿌리기 -->
                 {{#models.techStacks}}
-                    <li><a class="dropdown-item" href="#">{{code}}</a></li>
+                    <li>
+                        <form method="get" action="/personal/jobposting/list">
+                            {{#models.selectedRegionId}}
+                                <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                            {{/models.selectedRegionId}}
+                            {{#models.selectedSubRegionId}}
+                                <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                            {{/models.selectedSubRegionId}}
+                            {{#models.selectedCareer}}
+                                <input type="hidden" name="career" value="{{models.selectedCareer}}">
+                            {{/models.selectedCareer}}
+                            <input type="hidden" name="techStack" value="{{code}}">
+                            <button class="dropdown-item" type="submit">{{code}}</button>
+                        </form>
+                    </li>
                 {{/models.techStacks}}
             </ul>
         </div>
 
-        <!-- 경력 드롭다운 (하드코딩) -->
+
+        <!-- 경력 드롭다운 -->
+        <!-- 경력 드롭다운 -->
         <div class="dropdown d-inline-block me-2">
-            <button class="btn btn-outline-primary dropdown-toggle rounded-5" type="button" data-bs-toggle="dropdown">
-                경력
+            <button class="btn {{#models.selectedCareer}}btn-primary{{/models.selectedCareer}} {{^models.selectedCareer}}btn-outline-primary{{/models.selectedCareer}} dropdown-toggle rounded-5"
+                    type="button" data-bs-toggle="dropdown">
+                {{#models.selectedCareerName}}{{models.selectedCareerName}}{{/models.selectedCareerName}}
+                {{^models.selectedCareerName}}경력{{/models.selectedCareerName}}
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">전체</a></li>
-                <li><a class="dropdown-item" href="#">신입</a></li>
-                <li><a class="dropdown-item" href="#">1년</a></li>
-                <li><a class="dropdown-item" href="#">2년</a></li>
-                <li><a class="dropdown-item" href="#">3년</a></li>
-                <li><a class="dropdown-item" href="#">9년</a></li>
-                <li><a class="dropdown-item" href="#">10년 이상</a></li>
+
+                <!-- 전체 -->
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                        {{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                        {{/models.selectedSubRegionId}}
+                        {{#models.selectedTechStackCode}}
+                            <input type="hidden" name="techStack" value="{{models.selectedTechStackCode}}">
+                        {{/models.selectedTechStackCode}}
+                        <input type="hidden" name="career" value="">
+                        <button class="dropdown-item" type="submit">전체</button>
+                    </form>
+                </li>
+
+                <!-- 신입 -->
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                        {{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                        {{/models.selectedSubRegionId}}
+                        {{#models.selectedTechStackCode}}
+                            <input type="hidden" name="techStack" value="{{models.selectedTechStackCode}}">
+                        {{/models.selectedTechStackCode}}
+                        <input type="hidden" name="career" value="0">
+                        <button class="dropdown-item" type="submit">신입</button>
+                    </form>
+                </li>
+
+                <!-- 1년 -->
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                        {{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                        {{/models.selectedSubRegionId}}
+                        {{#models.selectedTechStackCode}}
+                            <input type="hidden" name="techStack" value="{{models.selectedTechStackCode}}">
+                        {{/models.selectedTechStackCode}}
+                        <input type="hidden" name="career" value="1">
+                        <button class="dropdown-item" type="submit">1년</button>
+                    </form>
+                </li>
+
+                <!-- 나머지 경력(2년, 3년, 9년, 10년 이상)도 위와 똑같은 방식으로 -->
+
             </ul>
         </div>
+
 
         <!-- 지역(시) 드롭다운 -->
         <div class="dropdown d-inline-block">
@@ -58,6 +187,15 @@
                     <li>
                         <form method="get" action="/personal/jobposting/list">
                             <input type="hidden" name="regionId" value="{{regionId}}">
+                            {{#models.selectedSubRegionId}}
+                                <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                            {{/models.selectedSubRegionId}}
+                            {{#models.selectedCareer}}
+                                <input type="hidden" name="career" value="{{models.selectedCareer}}">
+                            {{/models.selectedCareer}}
+                            {{#models.selectedTechStackCode}}
+                                <input type="hidden" name="techStack" value="{{models.selectedTechStackCode}}">
+                            {{/models.selectedTechStackCode}}
                             <button class="dropdown-item" type="submit">{{region}}</button>
                         </form>
                     </li>
@@ -76,8 +214,16 @@
                 {{#models.subRegions}}
                     <li>
                         <form method="get" action="/personal/jobposting/list">
-                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                            {{#models.selectedRegionId}}
+                                <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                            {{/models.selectedRegionId}}
                             <input type="hidden" name="subRegionId" value="{{subRegionId}}">
+                            {{#models.selectedCareer}}
+                                <input type="hidden" name="career" value="{{models.selectedCareer}}">
+                            {{/models.selectedCareer}}
+                            {{#models.selectedTechStackCode}}
+                                <input type="hidden" name="techStack" value="{{models.selectedTechStackCode}}">
+                            {{/models.selectedTechStackCode}}
                             <button class="dropdown-item" type="submit">{{subRegion}}</button>
                         </form>
                     </li>

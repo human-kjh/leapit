@@ -16,14 +16,15 @@ public class PositionTypeRepository {
         return em.find(PositionType.class, code);
     }
 
-    public List<PositionTypeResponse.PositionTypeDTO> findAllLabel() {
+    public List<PositionTypeResponse.PositionTypeDTO> findAllLabel(String selectedLabel) {
         String jpql = "SELECT p.label FROM PositionType p";
         List<String> labels = em.createQuery(jpql, String.class)
                 .getResultList();
 
         List<PositionTypeResponse.PositionTypeDTO> dtos = new ArrayList<>();
         for (String label : labels) {
-            dtos.add(new PositionTypeResponse.PositionTypeDTO(label));
+            boolean isSelected = label.equals(selectedLabel);
+            dtos.add(new PositionTypeResponse.PositionTypeDTO(label, isSelected));
         }
         return dtos;
     }

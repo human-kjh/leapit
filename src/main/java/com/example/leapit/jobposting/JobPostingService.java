@@ -102,17 +102,23 @@ public class JobPostingService {
 
 
     // TODO 지금하는거 < 김정원
-    public JobPostingResponse.JobPostingListFilterDTO 공고목록페이지(Integer regionId, Integer subRegionId) {
+    public JobPostingResponse.JobPostingListFilterDTO 공고목록페이지(Integer regionId, Integer subRegionId, Integer career, String techStackCode, String selectedLabel) {
 
         // 직무 조회
-        List<PositionTypeResponse.PositionTypeDTO> positions = positionTypeRepository.findAllLabel();
+        List<PositionTypeResponse.PositionTypeDTO> positions = positionTypeRepository.findAllLabel(selectedLabel);
         System.out.println("[DEBUG] 직무 목록 개수: " + positions.size());
+
+        // 🔥 여기서 selected 처리
+        for (PositionTypeResponse.PositionTypeDTO position : positions) {
+            boolean isSelected = selectedLabel != null && position.getLabel().equals(selectedLabel);
+            position.setSelected(isSelected);
+        }
+
         // 기술 스택 조회
         List<TechStack> techStacks = techStackRepository.findAll();
 
         // 지역 조회
         List<RegionResponse.RegionDTO> regions = regionRepository.findAllRegions();
-
 
         // 서브 지역 조회
         List<RegionResponse.SubRegionDTO> subRegions = regionRepository.findAllSubRegions(regionId);
@@ -123,6 +129,26 @@ public class JobPostingService {
         // 지역 이름 가져옴
         String selectedSubRegionName = null;
         String selectedRegionName = null;
+        String selectedCareerName = null;
+        String selectedTechStackName = null;
+        boolean hasAnyParam = (regionId != null || subRegionId != null || career != null || techStackCode != null || selectedLabel != null);
+
+        if (techStackCode != null) {
+            for (TechStack stack : techStacks) {
+                if (stack.getCode().equals(techStackCode)) {
+                    selectedTechStackName = stack.getCode();
+                }
+            }
+        }
+
+        if (career != null) {
+            if (career == 0) selectedCareerName = "신입";
+            else if (career == 1) selectedCareerName = "1년";
+            else if (career == 2) selectedCareerName = "2년";
+            else if (career == 3) selectedCareerName = "3년";
+            else if (career == 9) selectedCareerName = "9년";
+            else if (career == 10) selectedCareerName = "10년 이상";
+        }
 
         if (regionId != null) {
             for (RegionResponse.RegionDTO region : regions) {
@@ -143,10 +169,28 @@ public class JobPostingService {
         // 전체 공고목록 조회
         List<JobPostingResponse.JobPostingDTO> jobPostingList = jobPostingRepository.findAllJobPostingsWithTechStacksByFilter();
 
-        JobPostingResponse.JobPostingListFilterDTO respDTO = new JobPostingResponse.JobPostingListFilterDTO(positions, techStacks, regions, subRegions, jobPostingList, regionId, subRegionId, selectedRegionName, selectedSubRegionName);
+        JobPostingResponse.JobPostingListFilterDTO respDTO =
+                new JobPostingResponse.JobPostingListFilterDTO(
+                        positions,
+                        techStacks,
+                        regions,
+                        subRegions,
+                        jobPostingList,
+                        regionId,
+                        subRegionId,
+                        selectedRegionName,
+                        selectedSubRegionName,
+                        career,
+                        selectedCareerName,
+                        techStackCode,
+                        selectedTechStackName,
+                        hasAnyParam,
+                        selectedLabel
+                );
 
         return respDTO;
     }
+
 
     // TODO
     // 구직자 - 채용공고 목록
