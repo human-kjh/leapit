@@ -3,10 +3,12 @@ package com.example.leapit.board;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.Generated;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -42,5 +44,23 @@ public class BoardController {
         BoardResponse.DetailDTO detailDTO = boardService.detail(id, sessionUserId);
         request.setAttribute("model", detailDTO);
         return "personal/board/detail";
+    }
+
+    @GetMapping("/community/save-form")
+    public String saveForm() {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+
+        return "personal/board/save-form";
+    }
+
+    @PostMapping("/community/save")
+    public String save(BoardRequest.SaveDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+
+        boardService.save(reqDTO, sessionUser);
+
+        return "redirect:/community/list";
     }
 }
