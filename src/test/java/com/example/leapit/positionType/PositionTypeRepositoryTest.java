@@ -19,8 +19,11 @@ public class PositionTypeRepositoryTest {
 
     @Test
     public void findAllLabel() {
+        // given
+        String selectedLabel = "백엔드";
+        
         // when
-        List<PositionTypeResponse.PositionTypeDTO> labels = positionTypeRepository.findAllLabel();
+        List<PositionTypeResponse.PositionTypeDTO> labels = positionTypeRepository.findAllLabelAndSelectedLabel(selectedLabel);
 
         // eye
         for (PositionTypeResponse.PositionTypeDTO labelDto : labels) {

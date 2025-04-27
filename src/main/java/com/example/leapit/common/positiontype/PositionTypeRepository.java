@@ -16,7 +16,7 @@ public class PositionTypeRepository {
         return em.find(PositionType.class, code);
     }
 
-    public List<PositionTypeResponse.PositionTypeDTO> findAllLabel(String selectedLabel) {
+    public List<PositionTypeResponse.PositionTypeDTO> findAllLabelAndSelectedLabel(String selectedLabel) {
         String jpql = "SELECT p.label FROM PositionType p";
         List<String> labels = em.createQuery(jpql, String.class)
                 .getResultList();

@@ -102,13 +102,13 @@ public class JobPostingService {
 
 
     // TODO 지금하는거 < 김정원
-    public JobPostingResponse.JobPostingListFilterDTO 공고목록페이지(Integer regionId, Integer subRegionId, Integer career, String techStackCode, String selectedLabel) {
+    public JobPostingResponse.JobPostingListFilterDTO 공고목록페이지(Integer regionId, Integer subRegionId, Integer career, String techStackCode, String selectedLabel, Boolean isPopular, Boolean isLatest) {
 
         // 직무 조회
-        List<PositionTypeResponse.PositionTypeDTO> positions = positionTypeRepository.findAllLabel(selectedLabel);
+        List<PositionTypeResponse.PositionTypeDTO> positions = positionTypeRepository.findAllLabelAndSelectedLabel(selectedLabel);
         System.out.println("[DEBUG] 직무 목록 개수: " + positions.size());
 
-        // 🔥 여기서 selected 처리
+
         for (PositionTypeResponse.PositionTypeDTO position : positions) {
             boolean isSelected = selectedLabel != null && position.getLabel().equals(selectedLabel);
             position.setSelected(isSelected);
@@ -167,7 +167,15 @@ public class JobPostingService {
         }
 
         // 전체 공고목록 조회
-        List<JobPostingResponse.JobPostingDTO> jobPostingList = jobPostingRepository.findAllJobPostingsWithTechStacksByFilter();
+        List<JobPostingResponse.JobPostingDTO> jobPostingList = jobPostingRepository.findAllJobPostingsWithTechStacksByFilter(
+                regionId,
+                subRegionId,
+                career,
+                techStackCode,
+                selectedLabel,
+                Boolean.TRUE.equals(isPopular),
+                Boolean.TRUE.equals(isLatest)
+        );
 
         JobPostingResponse.JobPostingListFilterDTO respDTO =
                 new JobPostingResponse.JobPostingListFilterDTO(
@@ -185,7 +193,9 @@ public class JobPostingService {
                         techStackCode,
                         selectedTechStackName,
                         hasAnyParam,
-                        selectedLabel
+                        selectedLabel,
+                        Boolean.TRUE.equals(isPopular),
+                        Boolean.TRUE.equals(isLatest)
                 );
 
         return respDTO;

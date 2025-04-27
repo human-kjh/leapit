@@ -11,7 +11,7 @@ public class PositionTypeResponse {
 
         public PositionTypeDTO(String label, boolean selected) {
             this.label = label;
-            this.selected = false;
+            this.selected = selected;
         }
     }
 

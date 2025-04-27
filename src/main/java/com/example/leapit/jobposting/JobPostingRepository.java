@@ -110,17 +110,63 @@ public class JobPostingRepository {
     }
 
     // TODO 지금 하는 거 << 김정원
-    public List<JobPostingResponse.JobPostingDTO> findAllJobPostingsWithTechStacksByFilter() {
+    public List<JobPostingResponse.JobPostingDTO> findAllJobPostingsWithTechStacksByFilter(
+            Integer regionId, Integer subRegionId, Integer career, String techStackCode, String selectedLabel,
+            boolean isPopular, boolean isLatest) {
+
         LocalDate today = LocalDate.now();
 
-        Query query = em.createQuery(
+        StringBuilder jpql = new StringBuilder(
                 "SELECT jp, jpts, ci " +
                         "FROM JobPosting jp " +
                         "LEFT JOIN JobPostingTechStack jpts ON jp.id = jpts.jobPosting.id " +
                         "LEFT JOIN CompanyInfo ci ON jp.user.id = ci.user.id " +
-                        "WHERE jp.deadline >= :today", Object[].class
+                        "WHERE jp.deadline >= :today"
         );
+
+        if (regionId != null) {
+            jpql.append(" AND jp.addressRegionId = :regionId");
+        }
+        if (subRegionId != null) {
+            jpql.append(" AND jp.addressSubRegionId = :subRegionId");
+        }
+
+        // 3년차
+//        if (career != null) {
+//            jpql.append(" AND jp.minCareerLevel <= :career");
+//        }
+        // 3년차 이하인 거 다 띄움
+        if (career != null) {
+            jpql.append(" AND :career >= jp.minCareerLevel");
+        }
+        if (selectedLabel != null) {
+            jpql.append(" AND jp.positionType = :selectedLabel");
+        }
+        if (techStackCode != null) {
+            jpql.append(" AND EXISTS (" +
+                    "SELECT 1 FROM JobPostingTechStack jpts2 " +
+                    "WHERE jpts2.jobPosting.id = jp.id " +
+                    "AND jpts2.techStack.code = :techStackCode" +
+                    ")");
+        }
+
+        // 정렬
+        if (isPopular) {
+            jpql.append(" ORDER BY jp.viewCount DESC");
+        } else if (isLatest) {
+            jpql.append(" ORDER BY jp.createdAt DESC");
+        } else {
+            jpql.append(" ORDER BY jp.id DESC");
+        }
+
+        Query query = em.createQuery(jpql.toString(), Object[].class);
         query.setParameter("today", today);
+
+        if (regionId != null) query.setParameter("regionId", regionId);
+        if (subRegionId != null) query.setParameter("subRegionId", subRegionId);
+        if (career != null) query.setParameter("career", career);
+        if (techStackCode != null) query.setParameter("techStackCode", techStackCode);
+        if (selectedLabel != null) query.setParameter("selectedLabel", selectedLabel);
 
         List<Object[]> results = query.getResultList();
         List<JobPostingResponse.JobPostingDTO> dtos = new ArrayList<>();
@@ -133,7 +179,6 @@ public class JobPostingRepository {
             JobPostingTechStack techStack = (JobPostingTechStack) result[1];
             CompanyInfo companyInfo = (CompanyInfo) result[2];
 
-            // 이전 공고랑 ID 비교해서 ID 다르면 새로 DTO를 생성함 << 카드 생성
             if (!jobPosting.getId().equals(lastJobPostingId)) {
                 String address = companyInfo != null ? companyInfo.getAddress() : "주소 없음";
                 String image = companyInfo != null ? companyInfo.getImage() : "이미지 없음";
@@ -149,9 +194,8 @@ public class JobPostingRepository {
                 );
                 dtos.add(currentDTO);
 
-                lastJobPostingId = jobPosting.getId(); // 현재 공고 id 가져감
+                lastJobPostingId = jobPosting.getId();
             } else {
-                // 이전 공고랑 ID 비교해서 ID 같으면 기술스택 추가함 << 같은 카드 안에서 기술스택 칸만 추가함
                 if (techStack != null && currentDTO != null) {
                     currentDTO.getTechStacks().add(new CompanyInfoResponse.DetailDTO.TechStackDTO(
                             techStack.getTechStack().getCode()

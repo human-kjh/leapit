@@ -140,6 +140,8 @@ public class JobPostingResponse {
         private String selectedTechStackName;
         private boolean hasAnyParam;
         private String selectedLabel;
+        private boolean isPopular;
+        private boolean isLatest;
         private List<PositionTypeResponse.PositionTypeDTO> positions;
         private List<TechStack> techStacks;
         private List<RegionResponse.RegionDTO> regions;
@@ -160,7 +162,9 @@ public class JobPostingResponse {
                 String selectedTechStackCode,
                 String selectedTechStackName,
                 boolean hasAnyParam,
-                String selectedLabel) {
+                String selectedLabel,
+                boolean isPopular,
+                boolean isLatest) {
             this.positions = positions;
             this.techStacks = techStacks;
             this.regions = regions;
@@ -176,6 +180,8 @@ public class JobPostingResponse {
             this.selectedTechStackName = selectedTechStackName;
             this.hasAnyParam = hasAnyParam;
             this.selectedLabel = selectedLabel;
+            this.isPopular = isPopular;
+            this.isLatest = isLatest;
         }
     }
 
