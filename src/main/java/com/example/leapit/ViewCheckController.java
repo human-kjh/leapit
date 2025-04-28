@@ -151,5 +151,9 @@ public class ViewCheckController {
         return "personal/user/update-form";
     }
 
+    @GetMapping("/t30")
+    public String t30() {
+        return "personal/jobposting/apply";
+    }
 
 }
