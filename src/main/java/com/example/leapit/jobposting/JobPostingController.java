@@ -123,6 +123,8 @@ public class JobPostingController {
         boolean isPopular = reqDTO.isPopularTrue();
         boolean isLatest = reqDTO.isLatestTrue();
 
+        Integer sessionUserId = (sessionUser != null) ? sessionUser.getId() : null;
+
         JobPostingResponse.JobPostingListFilterDTO respDTO =
                 jobPostingService.공고목록페이지(
                         regionId,
@@ -132,7 +134,7 @@ public class JobPostingController {
                         selectedLabel,
                         isPopular,
                         isLatest,
-                        sessionUser.getId()
+                        sessionUserId
                 );
 
         req.setAttribute("models", respDTO);

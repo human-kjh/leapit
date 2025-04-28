@@ -118,7 +118,7 @@ public class JobPostingService {
 
 
         for (PositionTypeResponse.PositionTypeDTO position : positions) {
-            boolean isSelected = selectedLabel != null && position.getLabel().equals(selectedLabel);
+            boolean isSelected = selectedLabel != null && position.getCode().equals(selectedLabel);
             position.setSelected(isSelected);
         }
 

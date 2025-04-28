@@ -39,9 +39,9 @@
                                                                 value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
                         {{#models.isPopular}}<input type="hidden" name="isPopular" value="true">{{/models.isPopular}}
                         {{#models.isLatest}}<input type="hidden" name="isLatest" value="true">{{/models.isLatest}}
-                        <input type="hidden" name="positionLabel" value="{{label}}">
+                        <input type="hidden" name="positionLabel" value="{{code}}">
                         <button class="btn {{#selected}}btn-primary{{/selected}} {{^selected}}btn-outline-primary{{/selected}} btn-sm rounded-5"
-                                type="submit">{{label}}</button>
+                                type="submit">{{code}}</button>
                     </form>
                 {{/models.positions}}
             </div>

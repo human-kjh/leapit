@@ -6,11 +6,11 @@ public class PositionTypeResponse {
 
     @Data
     public static class PositionTypeDTO {
-        private String label;
+        private String code;
         private boolean selected;
 
-        public PositionTypeDTO(String label, boolean selected) {
-            this.label = label;
+        public PositionTypeDTO(String code, boolean selected) {
+            this.code = code;
             this.selected = selected;
         }
     }

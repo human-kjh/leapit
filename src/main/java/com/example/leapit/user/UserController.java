@@ -11,10 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -77,7 +74,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(UserRequest.LoginDTO loginDTO, HttpServletResponse response) {
+    public String login(UserRequest.LoginDTO loginDTO, HttpServletResponse response, @RequestParam(required = false) String redirect) {
 
         User sessionUser = userService.login(loginDTO);
         session.setAttribute("sessionUser", sessionUser);
@@ -91,6 +88,12 @@ public class UserController {
             cookie.setMaxAge(60 * 60 * 24 * 7);
             response.addCookie(cookie);
         }
+
+        // 1. redirect 파라미터가 있으면 우선 처리
+        if (redirect != null && !redirect.isEmpty()) {
+            return "redirect:" + redirect;
+        }
+
         // 사용자 역할에 따라 리다이렉트 분기
         if (loginDTO.getRole() == Role.personal) {
             return "redirect:/";
@@ -169,7 +172,7 @@ public class UserController {
         List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> popular = jobPostingService.getPopularJobPostings();
 
         JobPostingResponse.MainDTO mainDTO = new JobPostingResponse.MainDTO(recent, popular);
-        
+
         request.setAttribute("model", mainDTO);
         return "personal/main/logout";
     }
