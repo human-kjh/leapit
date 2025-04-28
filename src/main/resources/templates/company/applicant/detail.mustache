@@ -6,34 +6,37 @@
                     <div class="d-flex bg-light">
                         <!-- 왼쪽 -->
                         <div class="left-panel bg-white p-3 mt-4 ms-4 mb-4">
-                            <div class="text-secondary fs-5 mt-1 mb-4 ms-1">지원번호 : 4567</div>
+                            <div class="text-secondary fs-5 mt-1 mb-4 ms-1">지원번호 : {{model.id}}</div>
                             <div class="d-flex align-items-center gap-2 mt-4 mb-5 ">
-                                <h1 class="fw-bold">김점핏</h1>
+                                <h1 class="fw-bold">{{model.detailDTO.name}}</h1>
                             </div>
 
 
                             <!-- 버튼 그룹 영역 -->
                             <div class="mt-auto">
+                                <div id="passStatusText" class="text-center fw-bold mb-2">
+                                    <!-- 여기에 합격/불합격 상태 텍스트가 들어갈 예정 -->
+                                </div>
                                 <div class="mb-3 w-100">
-                                    <a href="#"
+                                    <button id="scrapButton" onclick="scrapApplication()"
                                         class="btn btn-primary w-100 fs-5 d-flex align-items-center justify-content-center gap-2">
                                         <i class="fa fa-bookmark-o me-2"></i>
                                         스크랩하기
-                                    </a>
+                                    </button>
                                 </div>
                                 <div class="mb-3 w-100">
-                                    <a href="#"
+                                    <button id="passButton" onclick="passButtonClick()"
                                         class="btn btn-outline-primary w-100 fs-5 d-flex align-items-center justify-content-center gap-2">
                                         <i class="fa fa-thumbs-up"></i>
                                         합격
-                                    </a>
+                                    </button>
                                 </div>
                                 <div class="w-100">
-                                    <a href="#"
+                                    <button id="failButton" onclick="failButtonClick()"
                                         class="btn btn-outline-danger w-100 fs-5 d-flex align-items-center justify-content-center gap-2">
                                         <i class="fa fa-thumbs-down"></i>
                                         불합격
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -42,57 +45,69 @@
                         <div class="right-panel d-flex flex-column mt-4 me-4 ms-3">
                             <div class="bg-white p-3 mb-4">
                                 <!-- 이력서 상세 페이지 가져오기 -->
-                                <!-- 본문 영역 -->
                                 <div class="resume-section">
                                     <!-- 이력서 제목 -->
                                     <div
-                                        class="bg-white rounded-3 px-4 py-3 d-flex justify-content-between align-items-center mb-4 shadow-sm">
-                                        <h5 class="mb-0 fw-semibold">김점핏이력서_250414</h5>
+                                            class="bg-white rounded-3 px-4 py-3 d-flex justify-content-between align-items-center mb-4 shadow-sm">
+                                        <h5 class="mb-0 fw-semibold">{{model.detailDTO.title}}</h5>
                                     </div>
 
-                                    <!-- 기본정보 박스 -->
-                                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                                        <h5 class="fw-bold mb-3">김점핏</h5>
-                                        <hr class="mt-1 mb-3" />
-                                        <div class="rounded-3 p-3">
-                                            <div class="d-flex flex-wrap align-items-center gap-3" style="border: none">
-                                                <div class="d-flex align-items-center">
-                                                    <i class="bi bi-envelope me-2"></i>
-                                                    <span>dlapdl0615@gmail.com</span>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <i class="bi bi-briefcase me-2"></i>
-                                                    <div>신입</div>
+                                    <!-- 기본정보 (수정된 구조) -->
+                                    <div class="row g-4 align-items-stretch mb-4">
+                                        {{#model.detailDTO.photoUrl}}
+                                            <!-- 사진 영역 -->
+                                            <div class="col-md-3">
+                                                <div class="h-100 d-flex flex-column justify-content-center align-items-center bg-light rounded-3 shadow-sm"
+                                                     style="width: 100%; aspect-ratio: 1 / 1; min-height: 100%;">
+                                                    <img src="{{model.detailDTO.photoUrl}}" alt="프로필 사진" class="img-fluid rounded-3" style="object-fit: cover; width: 100%; height: 100%;">
                                                 </div>
                                             </div>
+                                        {{/model.detailDTO.photoUrl}}
+                                        <!-- 기본정보 영역 -->
+                                        <div class="col-md-9">
+                                            <div class="bg-white rounded-3 p-4 shadow-sm h-100">
+                                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                                    <h5 class="fw-bold mb-0">{{model.detailDTO.name}}</h5>
+                                                </div>
 
-                                            <div class="d-flex flex-wrap align-items-center mb-2 gap-3">
-                                                <div class="d-flex align-items-center">
-                                                    <i class="bi bi-calendar3 me-2"></i><span>2000년생</span>
+                                                <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-envelope me-2"></i>{{model.detailDTO.email}}
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-briefcase me-2"></i>신입
+                                                    </div>
                                                 </div>
-                                                <div class="d-flex align-items-center">
-                                                    <i class="bi bi-telephone me-2"></i><span>01033612868</span>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <label class="form-check-label ms-2 me-1" for="resumeToggle"
-                                                        style="font-size: 14px">이력서
-                                                        공개</label>
-                                                </div>
-                                            </div>
 
-                                            <div>
-                                                <small class="text-muted">· 지원 현황에 대한 정보 및 포지션 추천정보를 받아볼
-                                                    연락처를 입력해주세요</small>
+                                                <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-calendar3 me-2"></i>{{model.detailDTO.birthDate}}년생
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="bi bi-telephone me-2"></i>{{model.detailDTO.contactNumber}}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
+                                    <!-- 간단소개 (선택항목) -->
+                                    {{#model.detailDTO.summary}}
+                                        <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                                            <label class="form-label fw-bold">간단소개</label>
+                                            <hr class="mt-1 mb-3" />
+                                            <div class="bg-light rounded-2 px-3 py-2">
+                                                {{model.detailDTO.summary}}
+                                            </div>
+                                        </div>
+                                    {{/model.detailDTO.summary}}
+
                                     <!-- 개발 직무 -->
                                     <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                                        <label class="form-label fw-bold">개발 직무</label>
+                                        <label class="form-label fw-bold"><span class="text-danger">*</span> 개발 직무</label>
                                         <hr class="mt-1 mb-3" />
                                         <div class="bg-light rounded-2 px-3 py-2 d-flex align-items-center">
-                                            <div>프론트엔드</div>
+                                            <div>{{model.detailDTO.positionType}}</div>
                                         </div>
                                     </div>
 
@@ -102,316 +117,301 @@
                                             툴/스킬)</label>
                                         <hr class="mt-1 mb-3" />
                                         <div class="mb-2 d-flex flex-wrap gap-2 fs-5">
-                                            <span class="badge bg-secondary">JavaScript</span>
-                                            <span class="badge bg-secondary">React</span>
-                                            <span class="badge bg-secondary">Node.js</span>
+                                            {{#model.detailDTO.techStackList}}
+                                                <span class="badge bg-secondary">{{techStack}}</span>
+                                            {{/model.detailDTO.techStackList}}
                                         </div>
                                     </div>
 
-                                    <!-- 링크 -->
-                                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                                        <label class="form-label fw-bold">링크</label>
-                                        <hr class="mt-1 mb-3" />
-                                        <div>
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <div class="d-flex align-items-start gap-2">
-                                                    <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png"
-                                                        width="24" height="24" />
-                                                    <div>
-                                                        <strong>Github</strong><br /><a href="https://github.com"
-                                                            target="_blank"
-                                                            class="text-decoration-none text-muted">https://github.com</a>
+                                    <!-- 링크 (선택항목) -->
+                                    {{#model.detailDTO.links.0}}
+                                        <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                                            <label class="form-label fw-bold">링크</label>
+                                            <hr class="mt-1 mb-3" />
+                                            <div>
+                                                {{#model.detailDTO.links}}
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <div class="d-flex align-items-start gap-2">
+                                                            <div>
+                                                                <strong>{{title}}</strong><br /><a href="{{url}}" target="_blank"
+                                                                                                   class="text-decoration-none text-muted">{{url}} <i class="bi bi-box-arrow-up-right"></i></a>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <i class="bi bi-box-arrow-up-right"></i>
+                                                {{/model.detailDTO.links}}
                                             </div>
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <div class="d-flex align-items-start gap-2">
-                                                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"
-                                                        width="24" height="24" />
-                                                    <div>
-                                                        <strong>Notion</strong><br /><a href="https://notion.so"
-                                                            target="_blank"
-                                                            class="text-decoration-none text-muted">https://notion.so</a>
-                                                    </div>
-                                                </div>
-                                                <i class="bi bi-box-arrow-up-right"></i>
-                                            </div>
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <div class="d-flex align-items-start gap-2">
-                                                    <img src="https://cdn-icons-png.flaticon.com/512/888/888879.png"
-                                                        width="24" height="24" />
-                                                    <div>
-                                                        <strong>Blog</strong><br /><a href="https://blog.jumpit.co.kr"
-                                                            target="_blank"
-                                                            class="text-decoration-none text-muted">https://blog.jumpit.co.kr</a>
-                                                    </div>
-                                                </div>
-                                                <i class="bi bi-box-arrow-up-right"></i>
-                                            </div>
-
-
                                         </div>
-                                    </div>
+                                    {{/model.detailDTO.links.0}}
 
+                                    <!-- 학력 -->
                                     <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
                                         <label class="form-label fw-bold">
                                             <span class="text-danger">*</span> 학력
                                         </label>
                                         <hr class="mt-1 mb-3" />
 
-                                        <div class="d-flex flex-wrap education-wrapper gap-3">
-                                            <!-- 왼쪽: 졸업예정/중퇴 -->
-                                            <div class="left-edu-box" style="min-width: 180px;">
-                                                <label for="graduateMonth" class="form-label fw-bold">졸업예정</label>
-                                                <div class="mb-2">2025년 02월</div>
-                                                <div class="form-check mt-1 ps-0">
-                                                    <span class="badge bg-primary mb-2">중퇴</span>
+                                        {{#model.detailDTO.educations}}
+                                            <div class="d-flex flex-wrap education-wrapper gap-3 mb-3">
+                                                <!-- 왼쪽: 졸업예정/중퇴 -->
+                                                <div class="left-edu-box" style="min-width: 180px;">
+                                                    <label for="graduateMonth" class="form-label fw-bold"><span class="text-danger">*</span> 졸업(예정)</label>
+                                                    <div class="mb-2">{{graduationDate}}</div>
+                                                    {{#isDropOut}}
+                                                        <div class="form-check mt-1 ps-0">
+                                                            <span class="badge bg-primary mb-2">중퇴</span>
+                                                        </div>
+                                                    {{/isDropOut}}
+                                                </div>
+
+                                                <!-- 오른쪽: 학력구분 ~ 학점 -->
+                                                <div class="right-edu-box flex-grow-1">
+                                                    <div class="row gx-2 mb-2">
+                                                        <div class="col-4">
+                                                            <div><span class="text-danger">*</span><span class="fw-semibold me-2"> 학력 구분 : </span><span>{{educationLevel}}</span></div>
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <span class="fw-semibold me-2"><span class="text-danger">*</span> 대학명 : </span><span>{{schoolName}}</span>
+                                                        </div>
+                                                    </div>
+                                                    {{#major}}
+                                                        <div class="mb-2">
+                                                            <span class="fw-semibold me-2">학과명 : </span><span>{{major}}</span>
+                                                        </div>
+                                                    {{/major}}
+                                                    {{#gpa}}
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <span class="fw-semibold me-2">학점 : </span><span>{{gpa}} / {{gpaScale}}</span>
+                                                        </div>
+                                                    {{/gpa}}
                                                 </div>
                                             </div>
-
-                                            <!-- 오른쪽: 학력구분 ~ 학점 -->
-                                            <div class="right-edu-box flex-grow-1">
-                                                <div class="row gx-2 mb-2">
-                                                    <div class="col-4">
-                                                        <div><span class="fw-semibold me-2">학력 구분 :
-                                                            </span><span>고등학교</span></div>
-                                                    </div>
-                                                    <div class="col-8">
-                                                        <span class="fw-semibold me-2">대학명 : </span><span>가나다라
-                                                            대학교</span>
-                                                    </div>
-                                                </div>
-                                                <div class="mb-2">
-                                                    <span class="fw-semibold me-2">학과명 : </span><span>학과명</span>
-                                                </div>
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <span class="fw-semibold">학점 /</span>
-                                                    <div>4.5</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
+                                        {{/model.detailDTO.educations}}
                                     </div>
 
-                                    <!-- 경력(업무경험) 입력 폼 -->
-                                    <!-- 경력 -->
-                                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                                        <label class="form-label fw-bold= mb-2 fw-bold"><span
-                                                style="color: #999999">*</span> 경력(업무경험)</label>
-                                        <hr class="mt-1 mb-3" />
-                                        <div class="row">
-                                            <!-- 좌측: 근무기간 -->
-                                            <div class="col-md-4 mb-2">
-                                                <div class="fw-semibold mb-1"><span class="text-danger">*</span>근무기간
-                                                </div>
-                                                <div>2025년 04월 17일 ~ 2025년 04월 17일</div>
-                                                <span class="badge bg-primary mt-1">재직중</span>
-                                            </div>
-
-                                            <!-- 우측: 상세내용 -->
-                                            <div class="col-md-8">
-                                                <div><strong>회사명 :</strong> 가나다라 회사</div>
-                                                <div><strong>회사 소개 :</strong> 간단한 회사 소개입니다.</div>
-                                                <div><strong>부서명/직책 :</strong> 부서명입니다./직책입니다</div>
-                                                <div class="mt-2">
-                                                    <span class="badge bg-secondary me-1">JavaScript</span>
-                                                    <span class="badge bg-secondary me-1">React</span>
-                                                    <span class="badge bg-secondary me-1">Node.js</span>
-                                                </div>
-                                                <div class="bg-light rounded mt-2 p-2">
-                                                    상세내용입니다.상세내용입니다.상세내용입니다.상세내용입니다.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-
-                                    <!--프로젝트 부분-->
-                                    <!-- 프로젝트 -->
-                                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                                        <label class="form-label fw-bold"><span style="color: #999999">*</span>
-                                            프로젝트</label>
-                                        <hr class="mt-1 mb-3" />
-                                        <div class="row">
-                                            <!-- 좌측: 프로젝트 기간 -->
-                                            <div class="col-md-4 mb-2">
-                                                <div class="fw-semibold text mb-1"><span class="text-danger">*</span>
-                                                    프로젝트 기간</div>
-                                                <div>2025년 04월 17일 ~ 2025년 04월 17일</div>
-                                                <span class="badge bg-primary mt-1">진행중</span>
-                                            </div>
-
-                                            <!-- 우측: 프로젝트 상세 -->
-                                            <div class="col-md-8">
-                                                <div><strong>프로젝트명 :</strong> 프로젝트명 입니다.</div>
-                                                <div><strong>프로젝트 소개 :</strong> 프로젝트 소개입니다.</div>
-                                                <div class="mt-2">
-                                                    <span class="badge bg-secondary me-1">JavaScript</span>
-                                                    <span class="badge bg-secondary me-1">React</span>
-                                                    <span class="badge bg-secondary me-1">Node.js</span>
-                                                </div>
-                                                <div class="bg-light rounded mt-2 p-2">
-                                                    상세내용입니다.상세내용입니다.상세내용입니다.상세내용입니다.
-                                                </div>
-                                                <div class="mt-2">
-                                                    <div class="text-muted mb-1">
-                                                        프로젝트가 웹 or 마켓/스토어에 오픈
+                                    <!-- 경력(업무경험) 입력 폼 (선택항목) -->
+                                    {{#model.detailDTO.experiences.0}}
+                                        <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                                            <label class="form-label fw-bold mb-2 fw-bold">경력(업무경험)</label>
+                                            <hr class="mt-1 mb-3" />
+                                            {{#model.detailDTO.experiences}}
+                                                <div class="row mb-3">
+                                                    <!-- 좌측: 근무기간 -->
+                                                    <div class="col-md-4 mb-2">
+                                                        <div class="fw-semibold mb-1"><span class="text-danger">*</span> 근무기간</div>
+                                                        {{#isEmployed}}
+                                                            <div>{{startDate}} ~ </div>
+                                                            <span class="badge bg-primary mt-1">재직중</span>
+                                                        {{/isEmployed}}
+                                                        {{^isEmployed}}
+                                                            <div>{{startDate}} ~ {{endDate}}</div>
+                                                        {{/isEmployed}}
                                                     </div>
-                                                </div>
-                                                <div class="mt-2">
-                                                    <div><strong>저장소 링크</strong></div>
-                                                    <div class="bg-light p-2 rounded text-muted">
-                                                        https://www.naver.com/</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
-
-                                    <!--교육이력 부분-->
-                                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                                        <label class="form-label fw-bold mb-2">
-                                            교육이력
-                                        </label>
-                                        <hr class="mt-1 mb-3" />
-
-                                        <!-- 전체 wrapper -->
-
-                                        <div class="d-flex flex-wrap gap-3">
-
-                                            <!-- 날짜 및 재직 중 -->
-                                            <div class="d-flex flex-column" style="min-width: 200px">
-                                                <div class="mb-2">
-                                                    <label class="form-label fw-bold"><span class="text-danger">*</span>
-                                                        교육 기간</label>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <!-- 시작일 -->
-                                                        <div>2025년 04월 17일</div>
-                                                        ~
-                                                        <!-- 종료일 -->
-                                                        <div>2025년 04월 17일</div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-check ps-0">
-                                                    <span class="badge bg-primary mb-2">진행중</span>
-                                                </div>
-                                            </div>
-
-                                            <!-- 회사 정보 영역 -->
-                                            <div class="flex-grow-1">
-                                                <div class="mb-2">
-                                                    <span class="fw-semibold me-2">교육명 :
-                                                    </span><span>교육과정입니다.</span>
-                                                </div>
-
-
-                                                <div class="row gx-2 mb-2">
-                                                    <div class="col-md-4">
-                                                        <span class="fw-semibold me-2">
-                                                            자격증 :</span><span>자격증입니다.</span>
-                                                    </div>
-                                                    <div>
-                                                        <span class="fw-semibold me-2">교육기관 :
-                                                        </span> <span>교육기관입니다.</span>
-                                                    </div>
-                                                </div>
-                                                <div class="mb-2 d-flex flex-wrap gap-2">
-                                                    <span class="badge bg-secondary">JavaScript</span>
-                                                    <span class="badge bg-secondary">React</span>
-                                                    <span class="badge bg-secondary">Node.js</span>
-                                                </div>
-                                                <div class="mb-2 bg-light p-2">
-                                                    <span>상세내용입니다.</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!--기타 사항 부분-->
-                                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
-                                        <label class="form-label fw-bold mb-2">
-                                            기타사항
-                                        </label>
-                                        <hr class="mt-1 mb-3" />
-
-                                        <!-- 전체 wrapper -->
-                                        <div class="text-muted mb-3" style="font-size: 14px;">
-                                            자격증, 대외활동, 어학, 수상이력 등을 추가하여 풍부한 이력서를 완성해보세요!
-                                        </div>
-                                        <div class="d-flex flex-wrap gap-3">
-
-                                            <!-- 날짜 및 재직 중 -->
-                                            <div class="d-flex flex-column" style="min-width: 200px">
-                                                <div class="mb-2">
-                                                    <label class="form-label fw-bold"><span class="text-danger">*</span>
-                                                        교육 기간</label>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <!-- 시작일 -->
-                                                        <div>2025년 04월 17일</div>
-                                                        ~
-                                                        <!-- 종료일 -->
-                                                        <div>2025년 04월 17일</div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-check ps-0">
-                                                    <span class="badge bg-primary mb-2">종료일 없음</span>
-                                                </div>
-                                            </div>
-
-                                            <!-- 회사 정보 영역 -->
-                                            <div class="flex-grow-1">
-                                                <div class="mb-2">
-                                                    <span class="fw-semibold me-2">활동명/이력제목 :
-                                                    </span><span>활동명입니다.</span>
-                                                </div>
-
-
-                                                <div class="row gx-2 mb-2">
-                                                    <div class="col-md-4">
-                                                        <span class="fw-semibold me-2">
-                                                            자격증 :</span><span>자격증입니다.</span>
-                                                    </div>
+                                                    <!-- 우측: 상세내용 -->
                                                     <div class="col-md-8">
-                                                        <div>
-                                                            <span class="fw-semibold me-2">교육기관 :
-                                                            </span> <span>교육기관입니다.</span>
+                                                        <div><strong><span class="text-danger">*</span> 회사명 : </strong>{{companyName}}</div>
+                                                        {{#summary}}
+                                                            <div><strong>회사 소개 : </strong>{{summary}}</div>
+                                                        {{/summary}}
+                                                        {{#position}}
+                                                            <div><strong>부서명/직책 : </strong> {{position}}</div>
+                                                        {{/position}}
+                                                        <div class="mt-2">
+                                                            {{#techStackList}}
+                                                                <span class="badge bg-secondary me-1">{{techStack}}</span>
+                                                            {{/techStackList}}
+                                                        </div>
+                                                        <div class="bg-light rounded mt-2 p-2"><span class="text-danger">*</span>
+                                                            {{responsibility}}
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="mb-2">
-                                                    <div class="mb-2 bg-light p-2">
-                                                        <span>상세 내용/점수 및 수준입니다.</span>
+                                            {{/model.detailDTO.experiences}}
+                                        </div>
+                                    {{/model.detailDTO.experiences.0}}
+
+                                    <!--프로젝트 부분-->
+                                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                                        <label class="form-label fw-bold"><span class="text-danger">*</span> 프로젝트</label>
+                                        <hr class="mt-1 mb-3" />
+                                        {{#model.detailDTO.projects}}
+                                            <div class="d-flex flex-wrap gap-3 mb-3">
+                                                <!-- 좌측: 프로젝트 기간 -->
+                                                <div style="min-width: 180px;">
+                                                    <div class="fw-semibold mb-1"><span class="text-danger">*</span> 프로젝트 기간</div>
+                                                    {{#isOngoing}}
+                                                        <div>{{startDate}} ~ </div>
+                                                        <span class="badge bg-primary mt-1">진행중</span>
+                                                    {{/isOngoing}}
+                                                    {{^isOngoing}}
+                                                        <div>{{startDate}} ~ {{endDate}}</div>
+                                                    {{/isOngoing}}
+                                                </div>
+
+                                                <!-- 우측: 프로젝트 상세 -->
+                                                <div class="flex-grow-1">
+                                                    <div><span class="text-danger">*</span><strong> 프로젝트명 :</strong> {{title}}</div>
+                                                    {{#summary}}
+                                                        <div><strong>프로젝트 소개 :</strong> {{summary}}</div>
+                                                    {{/summary}}
+                                                    <div class="mt-2">
+                                                        {{#techStackList}}
+                                                            <span class="badge bg-secondary me-1">{{techStack}}</span>
+                                                        {{/techStackList}}
                                                     </div>
+                                                    <div class="bg-light rounded mt-2 p-2">
+                                                        <span class="text-danger">*</span> {{description}}
+                                                    </div>
+                                                    {{#repositoryUrl}}
+                                                        <div class="mt-2">
+                                                            <div><strong>저장소 링크</strong></div>
+                                                            <div class="bg-light p-2 rounded text-muted">{{repositoryUrl}}</div>
+                                                        </div>
+                                                    {{/repositoryUrl}}
+                                                </div>
+                                            </div>
+                                        {{/model.detailDTO.projects}}
+                                    </div>
+
+                                    <!--교육이력 부분 (선택항목)-->
+                                    {{#model.detailDTO.trainings.0}}
+                                        <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                                            <label class="form-label fw-bold mb-2">
+                                                교육이력
+                                            </label>
+                                            <hr class="mt-1 mb-3" />
+
+                                            <!-- 전체 wrapper -->
+                                            {{#model.detailDTO.trainings}}
+                                                <div class="d-flex flex-wrap gap-3 mb-3">
+                                                    <!-- 날짜 및 진행 중 -->
+                                                    <div class="d-flex flex-column" style="min-width: 200px">
+                                                        {{#isOngoing}}
+                                                            <div class="mb-2">
+                                                                <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
+                                                                <div class="d-flex align-items-center gap-2">
+                                                                    <!-- 시작일 -->
+                                                                    <div>{{startDate}}</div>
+                                                                    ~
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-check ps-0">
+                                                                <span class="badge bg-primary mb-2">진행중</span>
+                                                            </div>
+                                                        {{/isOngoing}}
+                                                        {{^isOngoing}}
+                                                            <div class="mb-2">
+                                                                <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
+                                                                <div class="d-flex align-items-center gap-2">
+                                                                    <!-- 시작일 -->
+                                                                    <div>{{startDate}}</div>
+                                                                    ~
+                                                                    <!-- 종료일 -->
+                                                                    <div>{{endDate}}</div>
+                                                                </div>
+                                                            </div>
+                                                        {{/isOngoing}}
+                                                    </div>
+                                                    <!-- 교육이력 정보 영역 -->
+                                                    <div class="flex-grow-1">
+                                                        <div class="mb-2">
+                                                            <span class="fw-semibold me-2"><span class="text-danger">*</span> 교육명 : </span><span>{{courseName}}</span>
+                                                        </div>
+
+                                                        <div class="row gx-2 mb-2">
+                                                            <div>
+                                                                <span class="fw-semibold me-2"><span class="text-danger">*</span> 교육기관 : </span><span>{{institutionName}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-2 d-flex flex-wrap gap-2">
+                                                            {{#techStackList}}
+                                                                <span class="badge bg-secondary me-1">{{techStack}}</span>
+                                                            {{/techStackList}}
+                                                        </div>
+                                                        <div class="mb-2 bg-light p-2">
+                                                            <span><span class="text-danger">*</span> {{description}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {{/model.detailDTO.trainings}}
+                                        </div>
+                                    {{/model.detailDTO.trainings.0}}
+
+                                    <!--기타 사항 부분 (선택항목)-->
+                                    {{#model.detailDTO.etcs.0}}
+                                        <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                                            <label class="form-label fw-bold mb-2">
+                                                기타사항
+                                            </label>
+                                            <hr class="mt-1 mb-3" />
+                                            <!-- 전체 wrapper -->
+                                            {{#model.detailDTO.etcs}}
+                                                <div class="d-flex flex-wrap gap-3 mb-3">
+                                                    <!-- 교육기간 및 종료일 유무 -->
+                                                    <div class="d-flex flex-column" style="min-width: 200px">
+                                                        <div class="mb-2">
+                                                            <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
+                                                            {{#hasEndDate}}
+                                                                <div class="d-flex align-items-center gap-2">
+                                                                    <!-- 시작일 -->
+                                                                    <div>{{startDate}}</div>
+                                                                    ~
+                                                                    <!-- 종료일 -->
+                                                                    <div>{{endDate}}</div>
+                                                                </div>
+                                                            {{/hasEndDate}}
+                                                            {{^hasEndDate}}
+                                                                <div class="d-flex align-items-center gap-2">
+                                                                    <!-- 시작일 -->
+                                                                    <div>{{startDate}}</div>
+                                                                </div>
+                                                                <div class="form-check ps-0">
+                                                                    <span class="badge bg-primary mb-2">종료일 없음</span>
+                                                                </div>
+                                                            {{/hasEndDate}}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="flex-grow-1">
+                                                        <div class="mb-2">
+                                                            <span class="fw-semibold me-2"><span class="text-danger">*</span> 활동명/이력제목 : </span><span>{{title}}</span>
+                                                        </div>
+
+                                                        <div class="row gx-2 mb-2">
+                                                            <div class="col-md-4">
+                                                                <span class="text-danger">*</span> {{etcType}}
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <div>
+                                                                    <span class="fw-semibold me-2"><span class="text-danger">*</span> 교육기관 : </span><span>{{institutionName}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <div class="mb-2 bg-light p-2">
+                                                                <span><span class="text-danger">*</span> {{description}}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {{/model.detailDTO.etcs}}
+                                        </div>
+                                    {{/model.detailDTO.etcs.0}}
+
+                                    <!-- 자기소개서 (선택항목) -->
+                                    {{#model.detailDTO.selfIntroduction}}
+                                        <div class="form-section bg-white rounded-3 p-4 mb-4 shadow-sm">
+                                            <label class="form-label fw-bold mb-1 text-dark">
+                                                <span class="text-danger">*</span> 자기소개서
+                                            </label>
+                                            <hr class="my-2" />
+                                            <div>
+                                                <div class="mb-2 bg-light p-2">
+                                                    <div>{{model.detailDTO.selfIntroduction}}</div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-
-
-                                    <div class="form-section bg-white rounded-3 p-4 mb-4 shadow-sm">
-                                        <label class="form-label fw-bold mb-1 text-dark">
-                                            자기소개서
-                                        </label>
-                                        <hr class="my-2" />
-
-                                        <div class="mb-2">
-                                            <div class="fw-semibold fs-6">소제목입니다.</div>
-                                        </div>
-                                        <div>
-                                            <div class="mb-2 bg-light p-2">
-                                                <div>자기소개서 내용입니다.자기소개서 내용입니다.자기소개서 내용입니다.자기소개서 내용입니다.자기소개서
-                                                    내용입니다.자기소개서 내용입니다.자기소개서 내용입니다.</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    {{/model.detailDTO.selfIntroduction}}
 
                                 </div>
                             </div>
@@ -420,5 +420,132 @@
                 </div>
             </div>
             <!-- 본문 끝 -->
+            <script>
+                let isBookmarked = {{model.isBookmarked}};
 
+                // 버튼 텍스트 초기화
+                let scrapButton = document.querySelector('#scrapButton');
+                if (isBookmarked) {
+                    scrapButton.innerHTML = `<i class="fa fa-bookmark-o me-2"></i> 스크랩 취소`;
+                } else {
+                    scrapButton.innerHTML = `<i class="fa fa-bookmark-o me-2"></i> 스크랩하기`;
+                }
+
+                async function scrapApplication() {
+                    let requestBody = {
+                        applicationId: {{model.id}}
+                    };
+
+                    try {
+                        if (!isBookmarked) {
+                            let response = await fetch("/api/company/bookmark", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(requestBody)
+                            });
+
+                            let responseBody = await response.json();
+
+                            if (responseBody.status === 200) {
+                                alert("스크랩되었습니다");
+                                isBookmarked = true;
+                                scrapButton.innerHTML = `<i class="fa fa-bookmark-o me-2"></i> 스크랩 취소`;
+                            } else {
+                                alert(responseBody.msg || "스크랩 실패");
+                            }
+
+                        } else {
+                            let response = await fetch(`/api/company/bookmark/{{model.id}}`, {
+                                method: "DELETE"
+                            });
+
+                            let responseBody = await response.json();
+
+                            if (responseBody.status === 200) {
+                                alert("스크랩이 취소되었습니다");
+                                isBookmarked = false;
+                                scrapButton.innerHTML = `<i class="fa fa-bookmark-o me-2"></i> 스크랩하기`;
+                            } else {
+                                alert(responseBody.msg || "스크랩 취소 실패");
+                            }
+                        }
+
+                    } catch (error) {
+                        console.error("스크랩 처리 중 오류:", error);
+                        alert(error.message || "스크랩 요청 중 오류가 발생했습니다.");
+                    }
+                }
+
+                let isPassed = {{#model.isPassed}}"{{model.isPassed}}"{{/model.isPassed}}{{^model.isPassed}}null{{/model.isPassed}};
+
+                let passButton = document.querySelector('#passButton');
+                let failButton = document.querySelector('#failButton');
+                let passStatusText = document.querySelector('#passStatusText');
+
+                // 버튼 텍스트 초기화
+                updateButtons();
+
+                function passButtonClick() {
+                    if (isPassed === true) {
+                        updateApplicationPassStatus(null); // 합격 취소
+                    } else {
+                        updateApplicationPassStatus(true); // 합격
+                    }
+                }
+
+                function failButtonClick() {
+                    if (isPassed === false) {
+                        updateApplicationPassStatus(null); // 불합격 취소
+                    } else {
+                        updateApplicationPassStatus(false); // 불합격
+                    }
+                }
+
+                async function updateApplicationPassStatus(newStatus) {
+                    try {
+                        let requestBody = {
+                            isPassed: newStatus
+                        };
+
+                        let response = await fetch(`/company/applicant/{{model.id}}/pass`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(requestBody)
+                        });
+
+                        let responseBody = await response.json();
+
+                        if (responseBody.status === 200) {
+                            isPassed = newStatus;
+                            updateButtons();
+                        } else {
+                            alert(responseBody.message || "상태 변경 실패");
+                        }
+
+                    } catch (error) {
+                        console.error("합격/불합격 상태 변경 중 오류:", error);
+                        alert(error.message || "요청 중 오류가 발생했습니다.");
+                    }
+                }
+
+                function updateButtons() {
+                    if (isPassed === true) {
+                        passButton.innerHTML = `<i class="fa fa-thumbs-up"></i> 합격 취소`;
+                        failButton.innerHTML = `<i class="fa fa-thumbs-down"></i> 불합격`;
+                        passStatusText.innerHTML = `<span class="text-primary">[상태] : 합격</span>`;
+                    } else if (isPassed === false) {
+                        passButton.innerHTML = `<i class="fa fa-thumbs-up"></i> 합격`;
+                        failButton.innerHTML = `<i class="fa fa-thumbs-down"></i> 불합격 취소`;
+                        passStatusText.innerHTML = `<span class="text-danger">[상태] : 불합격</span>`;
+                    } else {
+                        passButton.innerHTML = `<i class="fa fa-thumbs-up"></i> 합격`;
+                        failButton.innerHTML = `<i class="fa fa-thumbs-down"></i> 불합격`;
+                        passStatusText.innerHTML = `[상태] : 대기`;
+                    }
+                }
+            </script>
 {{> layout/footer}}

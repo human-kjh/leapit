@@ -1,18 +1,21 @@
 package com.example.leapit.application;
 
+import com.example.leapit._core.util.Resp;
+import com.example.leapit.resume.ResumeResponse;
+import com.example.leapit.resume.ResumeService;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
 public class ApplicationController {
     private final ApplicationService applicationService;
     private final HttpSession session;
+    private final ResumeService resumeService;
 
     @GetMapping("/personal/mypage/bookmark")
     public String personalBookmark(HttpServletRequest request) {
@@ -64,4 +67,19 @@ public class ApplicationController {
 
         return "company/applicant/list";
     }
+
+    @GetMapping("/company/applicant/{id}")
+    public String applicationDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
+        ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id); // TODO : sessionUser.getId() 인수 추가
+        request.setAttribute("model",detailDTO);
+        return "/company/applicant/detail";
+    }
+
+    @ResponseBody
+    @PutMapping("/company/applicant/{id}/pass")
+    public Resp<?> isPassedUpdate(@PathVariable("id") Integer id, @RequestBody ApplicationRequest.UpdateDTO updateDTO){
+        applicationService.update(id,updateDTO);
+        return Resp.ok(null);
+    }
+
 }

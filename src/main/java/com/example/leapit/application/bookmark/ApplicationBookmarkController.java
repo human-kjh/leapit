@@ -18,9 +18,13 @@ public class ApplicationBookmarkController {
     // 기업 스크랩 등록 application_bookmark
     @PostMapping("/api/company/bookmark")
     public Resp<?> saveApplicationBookmark(@RequestBody ApplicationBookmarkRequest.SaveDTO reqDTO) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        ApplicationBookmarkResponse.SaveDTO respDTO = bookmarkService.saveApplicantBookmarkByUserId(reqDTO, sessionUser.getId());
-        return Resp.ok(respDTO);
+        try {
+            User sessionUser = (User) session.getAttribute("sessionUser");
+            ApplicationBookmarkResponse.SaveDTO respDTO = bookmarkService.saveApplicantBookmarkByUserId(reqDTO, sessionUser.getId());
+            return Resp.ok(respDTO);
+        } catch (RuntimeException e) {
+            return Resp.fail(400, e.getMessage());
+        }
     }
 
     // 기업 스크랩 삭제 application_bookmark
