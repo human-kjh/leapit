@@ -38,4 +38,17 @@ public class LikeRepository {
                 .setParameter("id", id)
                 .executeUpdate();
     }
+
+
+    public Like save(Like like) {
+        em.persist(like);
+        return like;
+    }
+
+    public void deleteById(Integer id) {
+        em.createQuery("delete from Like li where li.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
+    }
+    
 }

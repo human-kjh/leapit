@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ReplyController {
     private final ReplyService replyService;
     private final HttpSession session;
-  
+
     @PostMapping("/reply/save")
     public String save(ReplyRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -33,4 +33,5 @@ public class ReplyController {
         replyService.delete(id, sessionUser.getId());
         return "redirect:/community/" + boardId;
     }
+
 }

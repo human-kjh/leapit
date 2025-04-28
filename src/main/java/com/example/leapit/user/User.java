@@ -44,8 +44,9 @@ public class User {
     private LocalDate birthDate;
 
     @Builder
-    public User(String username, String password, String email, String contactNumber,
+    public User(Integer id, String username, String password, String email, String contactNumber,
                 Role role, String name, LocalDate birthDate) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -55,7 +56,7 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public void PersonalUpdate(String name,String password, String email,  String contactNumber) {
+    public void PersonalUpdate(String name, String password, String email, String contactNumber) {
         this.name = name;
         this.password = password;
         this.email = email;
