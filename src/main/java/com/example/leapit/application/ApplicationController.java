@@ -6,9 +6,8 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -30,7 +29,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/company/applicant/list")
-    public String applicantList(ApplicationRequest.ApplicantListReqDTO reqDTO ,
+    public String applicantList(ApplicationRequest.ApplicantListReqDTO reqDTO,
                                 HttpServletRequest request,
                                 @RequestParam(required = false, value = "passStatus", defaultValue = "전체") String passStatus,
                                 @RequestParam(required = false, value = "isViewedStr") String isViewedStr,
@@ -50,10 +49,24 @@ public class ApplicationController {
         if ("true".equals(isBookmarkStr)) isBookmark = true;
 
         ApplicationResponse.ApplicantListPageDTO respDTO =
-                applicationService.findApplicantPageWithFilters(sessionUser.getId(), reqDTO.getJobPostingId(),passStatus,isViewed, isBookmark);
+                applicationService.findApplicantPageWithFilters(sessionUser.getId(), reqDTO.getJobPostingId(), passStatus, isViewed, isBookmark);
 
         request.setAttribute("models", respDTO);
 
         return "company/applicant/list";
+    }
+
+    @GetMapping("/apply-form-all/{jobPostingId}")
+    public String getApplyFormAll(@PathVariable Integer jobPostingId, HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
+        ApplicationRequest.ApplyFormDTO applyFormDTO = applicationService.getApplyForm(jobPostingId, sessionUser.getId());
+        if (applyFormDTO != null) {
+            request.setAttribute("applyFormAll", applyFormDTO);
+            return "personal/application/apply-form"; // 지원 폼 페이지
+        } else {
+            return "error/not-found"; // 또는 다른 에러 처리
+        }
     }
 }

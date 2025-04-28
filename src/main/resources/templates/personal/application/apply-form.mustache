@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>입사지원</title>
+    <style>
+        /* ... (기존 CSS) ... */
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>{{applyFormAll.jobpostingName}}</h1>
+    <h2>{{applyFormAll.companyName}}</h2>
+
+    <form action="/api/applications/apply" method="post">
+        <div class="personal-info-box">
+            <div class="personal-info-field">
+                <label for="name">이름</label>
+                <div id="name" class="info-value">{{applyFormAll.userName}}</div>
+            </div>
+            <div class="personal-info-field">
+                <label for="email">이메일</label>
+                <div id="email" class="info-value">{{applyFormAll.userEmail}}</div>
+            </div>
+            <div class="personal-info-field">
+                <label for="phone">연락처</label>
+                <div id="phone" class="info-value">{{applyFormAll.phoneNumber}}</div>
+            </div>
+            <div class="personal-info-field">
+                <label for="birthYear">출생년도</label>
+                <div id="birthYear" class="info-value">{{applyFormAll.birthDate}}</div>
+            </div>
+        </div>
+
+        <div class="resume-section">
+            <h3>지원 이력서</h3>
+            {{#applyFormAll.availableResumes}}
+                <div class="resume-option">
+                    <input type="radio" id="resume{{resumeId}}" name="resumeId" value="{{resumeId}}" required>
+                    <div class="resume-details">
+                        <div class="resume-title">{{resumeTitle}}</div>
+                        <div class="resume-info">기술스택: {{skills}}</div>
+                        <div class="resume-info">학력: {{education}}</div>
+                        <div class="resume-info">경력: {{experience}}</div>
+                        <div class="resume-date">등록일: {{registeredDate}}</div>
+                    </div>
+                </div>
+            {{/applyFormAll.availableResumes}}
+        </div>
+
+        <button type="submit" class="submit-btn">지원하기</button>
+        <input type="hidden" name="jobPostingId" value="{{applyFormAll.jobPostingId}}">
+    </form>
+</div>
+</body>
+</html>

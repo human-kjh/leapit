@@ -42,7 +42,7 @@ public class CompanyInfoResponse {
                 this.deadline = jobPostings.getDeadline();
                 this.dDay = calculateDDay(deadline);
                 this.techStacks = techStacks.stream()
-                        .map(stack -> new TechStackDTO(stack.getTechStack()))
+                        .map(stack -> new TechStackDTO(stack.getTechStack().getCode()))
                         .collect(Collectors.toList());
             }
 
