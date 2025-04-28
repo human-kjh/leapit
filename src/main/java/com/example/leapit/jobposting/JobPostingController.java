@@ -31,7 +31,8 @@ public class JobPostingController {
     // 채용 공고 목록 보기
     @GetMapping("/company/jobposting/list")
     public String companyList(HttpServletRequest request) {
-        // TODO: session 인증코드 필요
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
 
         request.setAttribute("openJobPostings", jobPostingService.OpenJobPostings());
@@ -42,7 +43,8 @@ public class JobPostingController {
     // 채용 공고 상세보기
     @GetMapping("/company/jobposting/{id}")
     public String companyDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
-        // TODO: session 인증코드 필요
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
 
         JobPosting jobPosting = jobPostingService.findById(id);
@@ -61,7 +63,8 @@ public class JobPostingController {
     // 채용 공고 등록 폼
     @GetMapping("/jobposting/save-form")
     public String saveForm(HttpServletRequest request) {
-        // TODO: session 인증코드 필요
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
         
         List<TechStack> techStacks = techStackService.getAllTechStacks();
         request.setAttribute("model", techStacks);
@@ -71,10 +74,9 @@ public class JobPostingController {
     // 채용 공고 등록
     @PostMapping("/jobposting/save")
     public String save(JobPostingRequest.SaveDTO saveDTO, String[] techStack) {
-        // TODO: session 인증코드 필요
-
-
         User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
 
         jobPostingService.save(saveDTO, sessionUser, techStack);
         return "redirect:/company/jobposting/list";
@@ -83,7 +85,8 @@ public class JobPostingController {
     // 채용 공고 수정 폼
     @GetMapping("/jobposting/{id}/update-form")
     public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
-        // TODO: session 인증코드 필요
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         JobPosting jobPosting = jobPostingRepository.findById(id);
         List<String> techStackList = jobPostingService.getTechStacksByJobPostingId(id);
@@ -110,7 +113,8 @@ public class JobPostingController {
     @PostMapping("/jobposting/{id}/update")
     public String update(@PathVariable("id") Integer id, JobPostingRequest.UpdateDTO updateDTO,
                          @RequestParam(value = "techStacks", required = false) String[] techStacks) {
-        // TODO: session 인증코드 필요
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         jobPostingService.update(id, updateDTO, techStacks);
         return "redirect:/company/jobposting/" + id;
@@ -119,8 +123,8 @@ public class JobPostingController {
     // 채용 공고 삭제
     @PostMapping("/jobposting/{id}/delete")
     public String delete(@PathVariable("id") Integer id) {
-
-        // TODO: session 인증코드 필요
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         jobPostingService.delete(id);
         return "redirect:/company/jobposting/list";

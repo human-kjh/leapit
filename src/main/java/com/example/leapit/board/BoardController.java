@@ -48,7 +48,7 @@ public class BoardController {
     @GetMapping("/community/save-form")
     public String saveForm() {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         return "personal/board/save-form";
     }
@@ -56,7 +56,7 @@ public class BoardController {
     @PostMapping("/community/save")
     public String save(BoardRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         boardService.save(reqDTO, sessionUser);
 
@@ -66,7 +66,7 @@ public class BoardController {
     @GetMapping("/community/{id}/update-form")
     public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         Board board = boardService.updateCheck(id, sessionUser.getId());
         request.setAttribute("model", board);
@@ -77,7 +77,7 @@ public class BoardController {
     @PostMapping("/community/{id}/update")
     public String update(@PathVariable("id") Integer id, BoardRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         boardService.update(reqDTO, id, sessionUser.getId());
 
@@ -87,7 +87,7 @@ public class BoardController {
     @PostMapping("/community/{id}/delete")
     public String delete(@PathVariable("id") Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         boardService.delete(id, sessionUser.getId());
 

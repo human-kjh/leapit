@@ -27,7 +27,8 @@ public class UserController {
 
     @GetMapping("/company/user/update-form")
     public String companyUpdateForm() {
-        // TODO: session 인증코드 필요
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         return "company/user/update-form";
     }
@@ -49,7 +50,8 @@ public class UserController {
 
     @GetMapping("/personal/user/update-form")
     public String personalUpdateForm() {
-        // TODO: session 인증코드 필요
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         return "personal/user/update-form";
     }
@@ -123,7 +125,8 @@ public class UserController {
 
     @GetMapping("/company/main")
     public String companyMain() {
-        // TODO: session 인증코드 필요
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         return "company/main";
     }

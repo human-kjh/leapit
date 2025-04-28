@@ -15,7 +15,7 @@ public class LikeController {
     @PostMapping("/like")
     public Resp<?> saveLike(@RequestBody LikeRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         LikeResponse.SaveDTO respDTO = likeService.save(reqDTO, sessionUser.getId());
 
@@ -26,7 +26,7 @@ public class LikeController {
     public Resp<?> deleteLike(@PathVariable("id") Integer id) {
         // 인증로직
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         LikeResponse.DeleteDTO respDTO = likeService.delete(id);   // likeId
 

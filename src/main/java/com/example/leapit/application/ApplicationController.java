@@ -69,6 +69,9 @@ public class ApplicationController {
 
     @GetMapping("/company/applicant/{id}")
     public String applicationDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
         ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id); // TODO : sessionUser.getId() 인수 추가
         request.setAttribute("model", detailDTO);
         return "/company/applicant/detail";
@@ -77,6 +80,9 @@ public class ApplicationController {
     @ResponseBody
     @PutMapping("/company/applicant/{id}/pass")
     public Resp<?> isPassedUpdate(@PathVariable("id") Integer id, @RequestBody ApplicationRequest.UpdateDTO updateDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
         applicationService.update(id, updateDTO);
         return Resp.ok(null);
     }
