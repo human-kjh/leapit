@@ -2,6 +2,7 @@ package com.example.leapit.resume.techstack;
 
 import com.example.leapit.resume.Resume;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,4 +21,11 @@ public class ResumeTechStack {
 
     @Column(nullable = false)
     private String techStack;
+
+    @Builder
+    public ResumeTechStack(Integer id, Resume resume, String techStack) {
+        this.id = id;
+        this.resume = resume;
+        this.techStack = techStack;
+    }
 }

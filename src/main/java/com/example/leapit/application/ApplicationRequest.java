@@ -76,54 +76,59 @@ public class ApplicationRequest {
             this.skills = new ArrayList<>();
             for (ResumeTechStack techStackEntry : resume.getResumeTechStacks()) {
                 this.skills.add(techStackEntry.getTechStack());
-            }
-
-            // 학력 추출
-            this.education = "";
-            List<Education> educations = resume.getEducations();
-            Education latestEducation = null;
-            for (Education education : educations) {
-                if (latestEducation == null || (education.getGraduationDate() != null &&
-                        (latestEducation.getGraduationDate() == null || education.getGraduationDate().isAfter(latestEducation.getGraduationDate())))) {
-                    latestEducation = education;
-                } else if (latestEducation == null && education.getGraduationDate() != null) {
-                    latestEducation = education;
-                }
-            }
-            if (latestEducation != null) {
-                this.education = latestEducation.getSchoolName() + " " + latestEducation.getMajor() + " (" + latestEducation.getEducationLevel() + ")";
-            } else if (!educations.isEmpty()) {
-                Education latestEnrollment = null;
+                // 학력 추출
+                this.education = "";
+                List<Education> educations = resume.getEducations();
+                Education latestEducation = null;
                 for (Education education : educations) {
-                    if (latestEnrollment == null || education.getCreatedAt().after(latestEnrollment.getCreatedAt())) {
-                        latestEnrollment = education;
+                    if (latestEducation == null || (education.getGraduationDate() != null &&
+                            (latestEducation.getGraduationDate() == null || education.getGraduationDate().isAfter(latestEducation.getGraduationDate())))) {
+                        latestEducation = education;
+                    } else if (latestEducation == null && education.getGraduationDate() != null) {
+                        latestEducation = education;
                     }
                 }
-                if (latestEnrollment != null) {
-                    this.education = latestEnrollment.getSchoolName() + " " + latestEnrollment.getMajor() + " (" + latestEnrollment.getEducationLevel() + ")";
+                if (latestEducation != null) {
+                    this.education = latestEducation.getSchoolName() + " " + latestEducation.getMajor() + " (" + latestEducation.getEducationLevel() + ")";
+                } else if (!educations.isEmpty()) {
+                    Education latestEnrollment = null;
+                    for (Education education : educations) {
+                        if (latestEnrollment == null || education.getCreatedAt().after(latestEnrollment.getCreatedAt())) {
+                            latestEnrollment = education;
+                        }
+                    }
+                    if (latestEnrollment != null) {
+                        this.education = latestEnrollment.getSchoolName() + " " + latestEnrollment.getMajor() + " (" + latestEnrollment.getEducationLevel() + ")";
+                    }
+                }
+
+                // 경력 추출
+                this.experience = resume.getExperiences().isEmpty() ? "" : resume.getExperiences().get(0).getCompanyName();
+            }
+        }
+
+        @Data
+        public static class JobPostingInfoDto {
+            private Integer jobPostingId;
+            private String title;
+            private String companyName;
+            private List<String> techStacks;
+
+            public JobPostingInfoDto(JobPosting jobPosting) {
+                this.jobPostingId = jobPosting.getId();
+                this.title = jobPosting.getTitle();
+                this.companyName = jobPosting.getUser().getName();
+                this.techStacks = new ArrayList<>();
+                for (JobPostingTechStack techStackEntry : jobPosting.getJobPostingTechStacks()) {
+                    this.techStacks.add(techStackEntry.getTechStack().getCode());
                 }
             }
+            }
 
-            // 경력 추출
-            this.experience = resume.getExperiences().isEmpty() ? "" : resume.getExperiences().get(0).getCompanyName();
-        }
     }
 
     @Data
-    public static class JobPostingInfoDto {
-        private Integer jobPostingId;
-        private String title;
-        private String companyName;
-        private List<String> techStacks;
-
-        public JobPostingInfoDto(JobPosting jobPosting) {
-            this.jobPostingId = jobPosting.getId();
-            this.title = jobPosting.getTitle();
-            this.companyName = jobPosting.getUser().getName();
-            this.techStacks = new ArrayList<>();
-            for (JobPostingTechStack techStackEntry : jobPosting.getJobPostingTechStacks()) {
-                this.techStacks.add(techStackEntry.getTechStack().getCode());
-            }
-        }
+    public static class UpdateDTO{
+        private Boolean isPassed;
     }
 }

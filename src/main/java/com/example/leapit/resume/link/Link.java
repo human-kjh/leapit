@@ -2,6 +2,7 @@ package com.example.leapit.resume.link;
 
 import com.example.leapit.resume.Resume;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,12 @@ public class Link {
 
     @Column(nullable = false)
     private String url;
+
+    @Builder
+    public Link(Integer id, Resume resume, String title, String url) {
+        this.id = id;
+        this.resume = resume;
+        this.title = title;
+        this.url = url;
+    }
 }

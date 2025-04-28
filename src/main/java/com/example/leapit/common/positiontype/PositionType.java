@@ -11,8 +11,5 @@ import lombok.NoArgsConstructor;
 public class PositionType {
 
     @Id
-    private String code; // 예: backend
-
-    @Column(nullable = false)
-    private String label; // 예: 서버/백엔드 개발자
+    private String code; // 예: 서버/백엔드 개발자
 }

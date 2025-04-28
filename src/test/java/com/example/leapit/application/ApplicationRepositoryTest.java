@@ -1,11 +1,5 @@
-package com.example.leapit.ApplicationRepositoryTest;
+package com.example.leapit.application;
 
-import com.example.leapit.application.Application;
-import com.example.leapit.application.ApplicationRepository;
-import com.example.leapit.application.ApplicationResponse;
-import com.example.leapit.resume.Resume;
-import com.example.leapit.resume.ResumeRepository;
-import com.example.leapit.user.User;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +25,13 @@ public class ApplicationRepositoryTest {
         Integer jobPostingId = null; // 전체 공고 대상으로 조회
         String passStatus = "합격";
         Boolean isViewed = true;
-        Boolean isBookmark = null   ;
+        Boolean isBookmark = null;
 
         // when
         List<ApplicationResponse.CompanyeApplicantDto> result =
-                applicationRepository.findAllApplicantsByFilter(companyUserId, jobPostingId, passStatus, isViewed,isBookmark);
+                applicationRepository.findAllApplicantsByFilter(companyUserId, jobPostingId, passStatus, isViewed, isBookmark);
 
-        // then
+        // eye
         System.out.println("=== 지원자 조회 결과 ===");
         for (ApplicationResponse.CompanyeApplicantDto dto : result) {
             System.out.println("지원자 이름: " + dto.getApplicantName());
@@ -46,8 +40,8 @@ public class ApplicationRepositoryTest {
             System.out.println("지원일: " + dto.getAppliedDate());
             System.out.println("스크랩 여부: " + dto.getIsBookmarked());
             System.out.println("평가 상태: " + dto.getEvaluationStatus());
-            System.out.println("열람 여부: "+ dto.getIsViewed());
-            System.out.println("북마크 여부: "+ dto.getIsBookmarked());
+            System.out.println("열람 여부: " + dto.getIsViewed());
+            System.out.println("북마크 여부: " + dto.getIsBookmarked());
             System.out.println("-------------------------------");
         }
 

@@ -13,7 +13,7 @@ public class LinkRepository {
     private final EntityManager em;
 
     public List<Link> findAllByResumeId(Integer resumeId) {
-        Query query = em.createQuery("select l from Link l where l.resume.id = :resumeId");
+        Query query = em.createQuery("select l from Link l where l.resume.id = :resumeId", Link.class);
         query.setParameter("resumeId", resumeId);
         return query.getResultList();
     }

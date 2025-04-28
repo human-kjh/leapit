@@ -2,7 +2,11 @@ package com.example.leapit.resume;
 
 import com.example.leapit.application.Application;
 import com.example.leapit.application.ApplicationRepository;
+import com.example.leapit.common.positiontype.PositionType;
+import com.example.leapit.common.positiontype.PositionTypeRepository;
 import com.example.leapit.common.positiontype.PositionTypeService;
+import com.example.leapit.common.techstack.TechStack;
+import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.resume.education.Education;
 import com.example.leapit.resume.education.EducationRepository;
 import com.example.leapit.resume.etc.Etc;
@@ -17,6 +21,8 @@ import com.example.leapit.resume.techstack.ResumeTechStack;
 import com.example.leapit.resume.techstack.ResumeTechStackRepository;
 import com.example.leapit.resume.training.TrainingResponse;
 import com.example.leapit.resume.training.TrainingService;
+import com.example.leapit.user.User;
+import com.example.leapit.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +32,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class ResumeService {
+    private final UserRepository userRepository;
     private final ResumeRepository resumeRepository;
-    private final PositionTypeService positionTypeService;
+    private final PositionTypeRepository positionTypeRepository;
+    private final TechStackRepository techStackRepository;
     private final ResumeTechStackRepository resumeTechStackRepository;
     private final LinkRepository linkRepository;
     private final EducationRepository educationRepository;
@@ -39,24 +47,22 @@ public class ResumeService {
 
     private final ApplicationRepository applicationRepository;
 
-    public List<Resume> list(int userId) {
+    public List<Resume> list(Integer sessionUserId) {
         // 자신의 userId로 된 모든 resume을 찾아서 return
-        return resumeRepository.findAllByUserId(userId);
+        return resumeRepository.findAllByUserId(sessionUserId);
     }
 
-    public ResumeResponse.DetailDTO detail(int resumeId, Integer sessionUserId) {
+    public ResumeResponse.DetailDTO detail(int resumeId) { // TODO : Integer sessionUserId 매개변수 추가
         // 1. 이력서 존재 확인
         Resume resume =  resumeRepository.findByIdJoinUser(resumeId);
         if (resume == null) throw new RuntimeException("이력서가 존재하지 않습니다.");
 
         // 2. 이력서 주인 (권한) 확인
-        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
-            throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
-        }
+//        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
+//            throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
+//        }
 
         // 3. 이력서 DTO 조립
-        String code = resume.getPositionType(); // 직무 : code -> label
-        String label = positionTypeService.codeToLabel(code);
         List<ResumeTechStack> techStacks  = resumeTechStackRepository.findAllByResumeId(resumeId);
         List<Link> links = linkRepository.findAllByResumeId(resumeId);
         List<Education> educations = educationRepository.findAllByResumeId(resumeId) ;
@@ -65,13 +71,13 @@ public class ResumeService {
         List<TrainingResponse.DetailDTO> trainings = trainingService.getDTOsByResumeId(resumeId);
         List<Etc> etcs = etcRepository.findAllByResumeId(resumeId);
 
-        ResumeResponse.DetailDTO detailDTO = new ResumeResponse.DetailDTO(resume, label, techStacks, links, educations, experiences, projects, trainings, etcs);
+        ResumeResponse.DetailDTO detailDTO = new ResumeResponse.DetailDTO(resume, techStacks, links, educations, experiences, projects, trainings, etcs);
 
         return detailDTO;
     }
 
     @Transactional
-    public void delete(int resumeId, Integer sessionUserId) {
+    public void delete(int resumeId) { // TODO : Integer sessionUserId 매개변수 추가
         // 1. 이력서 존재 확인
         Resume resume =  resumeRepository.findByIdJoinUser(resumeId);
         if (resume == null) throw new RuntimeException("이력서가 존재하지 않습니다.");
@@ -84,11 +90,24 @@ public class ResumeService {
         }
 
         // 2. 이력서 주인 (권한) 확인
-        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
-            throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
-        }
+//        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
+//            throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
+//        }
 
         // 3. 이력서 삭제
         resumeRepository.deleteById(resumeId);
+    }
+
+    public ResumeResponse.SaveDTO getSaveForm(Integer sessionUserId){
+        User user = userRepository.findById(sessionUserId);
+        List<PositionType> positionTypes = positionTypeRepository.findAll();
+        List<TechStack> techStacks = techStackRepository.findAll();
+        return new ResumeResponse.SaveDTO(user, positionTypes, techStacks);
+    }
+
+    @Transactional
+    public void save(ResumeRequest.SaveDTO saveDTO, User sessionUser) {
+        Resume resume = saveDTO.toEntity(sessionUser);
+        resumeRepository.save(resume);
     }
 }

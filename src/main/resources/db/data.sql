@@ -17,18 +17,18 @@ INSERT INTO user_tb (username, password, email, contact_number, role, created_at
 VALUES ('company03', '1234', 'company03@nate.com', '02-3456-7890', 'COMPANY', NOW());
 
 -- 2.1 position_type_tb
-INSERT INTO position_type_tb (code, label)
-VALUES ('backend', '백엔드');
-INSERT INTO position_type_tb (code, label)
-VALUES ('frontend', '프론트엔드');
-INSERT INTO position_type_tb (code, label)
-VALUES ('fullstack', '풀스택');
-INSERT INTO position_type_tb (code, label)
-VALUES ('data_engineer', '데이터 엔지니어');
-INSERT INTO position_type_tb (code, label)
-VALUES ('mobile_app', '모바일 앱 개발자');
-INSERT INTO position_type_tb (code, label)
-VALUES ('ai_engineer', 'AI 엔지니어');
+INSERT INTO position_type_tb (code)
+VALUES ('백엔드');
+INSERT INTO position_type_tb (code)
+VALUES ('프론트엔드');
+INSERT INTO position_type_tb (code)
+VALUES ('풀스택');
+INSERT INTO position_type_tb (code)
+VALUES ('데이터 엔지니어');
+INSERT INTO position_type_tb (code)
+VALUES ('모바일 앱 개발자');
+INSERT INTO position_type_tb (code)
+VALUES ('AI 엔지니어');
 
 -- 2.2 tech_stack_tb
 INSERT INTO tech_stack_tb (code)
@@ -54,17 +54,17 @@ VALUES ('Django');
 
 -- 2. resume_tb
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (1, '쌀의 이력서', NULL, '자바 개발자입니다', 'backend', '적극적이고 성실합니다', false, now());
+VALUES (1, '쌀의 이력서', NULL, '자바 개발자입니다', '백엔드', '적극적이고 성실합니다', false, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (1, '쌀님의 이력서2', 'file://localhost/c:/image1.png', '프론트엔드 자신 있습니다', 'frontend', '디자인 감각도 좋아요', true, now());
+VALUES (1, '쌀님의 이력서2', 'file://localhost/c:/image1.png', '프론트엔드 자신 있습니다', '프론트엔드', '디자인 감각도 좋아요', true, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (2, '파이썬 이력서', NULL, 'Django와 FastAPI 경험 있음', 'backend', '데이터 파이프라인 경험', false, now());
+VALUES (2, '파이썬 이력서', NULL, 'Django와 FastAPI 경험 있음', '백엔드', '데이터 파이프라인 경험', false, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (3, '풀스택 도전기', NULL, '다양한 프로젝트 수행 경험 있음', 'fullstack', '매일 꾸준히 성장 중', true, now());
+VALUES (3, '풀스택 도전기', NULL, '다양한 프로젝트 수행 경험 있음', '풀스택', '매일 꾸준히 성장 중', true, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (4, '코틀린 마스터', NULL, '안드로이드 개발 경험 풍부', 'mobile_app', '성능 최적화에 관심 많습니다', true, now());
+VALUES (4, '코틀린 마스터', NULL, '안드로이드 개발 경험 풍부', '모바일 앱 개발자', '성능 최적화에 관심 많습니다', true, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (5, '데이터 분석가', NULL, 'SQL과 데이터 시각화 강점', 'data_engineer', '통계에 자신 있습니다', false, now());
+VALUES (5, '데이터 분석가', NULL, 'SQL과 데이터 시각화 강점', 'AI 엔지니어', '통계에 자신 있습니다', false, now());
 
 -- 2.3 resume_tech_stack_tb
 INSERT INTO resume_tech_stack_tb (resume_id, tech_stack)
@@ -250,19 +250,19 @@ VALUES (5, 'Node.js');
 -- 2.12 etc_tb
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description,
                     created_at)
-VALUES (1, '2024-01-01', '2024-03-01', true, '토익', 0, 'YBM', '850점', '2025-04-18 12:00:00');
+VALUES (1, '2024-01-01', '2024-03-01', true, '토익', '어학', 'YBM', '850점', '2025-04-18 12:00:00');
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description,
                     created_at)
-VALUES (2, '2023-06-01', NULL, false, '정보처리기사', 1, 'HRD', '필기합격', '2025-04-18 12:05:00');
+VALUES (2, '2023-06-01', NULL, false, '정보처리기사', '자격증', 'HRD', '필기합격', '2025-04-18 12:05:00');
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description,
                     created_at)
-VALUES (3, '2023-10-01', '2023-12-01', true, '오픈소스 컨트리뷰션', 2, 'OSS Korea', '3건 PR 기여', '2025-04-18 12:10:00');
+VALUES (3, '2023-10-01', '2023-12-01', true, '오픈소스 컨트리뷰션', '대외활동', 'OSS Korea', '3건 PR 기여', '2025-04-18 12:10:00');
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description,
                     created_at)
-VALUES (4, '2023-01-01', NULL, false, '멋쟁이사자처럼', 2, 'LIKELION', '프론트엔드 팀장', '2025-04-18 12:15:00');
+VALUES (4, '2023-01-01', NULL, false, '멋쟁이사자처럼', '대외활동', 'LIKELION', '프론트엔드 팀장', '2025-04-18 12:15:00');
 INSERT INTO etc_tb (resume_id, start_date, end_date, has_end_date, title, etc_type, institution_name, description,
                     created_at)
-VALUES (5, '2023-03-01', '2023-05-01', true, '교내 알고리즘 대회', 3, 'OO대학교', '3위 수상', '2025-04-18 12:20:00');
+VALUES (5, '2023-03-01', '2023-05-01', true, '교내 알고리즘 대회', '수상이력', 'OO대학교', '3위 수상', '2025-04-18 12:20:00');
 
 -- 4-1. region_tb
 INSERT INTO region_tb (name)
@@ -285,7 +285,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (6, '시니어 백엔드 개발자 채용', '백엔드', 5, 10,
+VALUES (6, '시니어 백엔드 개발자 채용', 'backend', 5, 10,
         '전문학사', 1, 1, '강남대로 123',
         '대용량 트래픽 처리 기반 백엔드 플랫폼 개발',
         '2025-06-30', '마이크로서비스 아키텍처 기반 시스템 설계 및 운영',
@@ -298,7 +298,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (7, '프론트엔드 개발자 모집', '프론트엔드', 0, 2,
+VALUES (7, '프론트엔드 개발자 모집', 'frontend', 0, 2,
         NULL, 1, 2, '서초대로 77',
         'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
         '2025-05-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
@@ -311,16 +311,64 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (8, '데이터 엔지니어 채용', 'AI 엔지니어', 3, 5,
-        '학사', 2, 3, '해운대로 456',
-        'AI 데이터 파이프라인 구축 기업입니다.',
-        '2025-04-15', 'ETL 파이프라인 설계 및 데이터 웨어하우스 운영',
-        'Python, SQL, AWS Redshift 경험',
-        '빅데이터 처리 경험 우대',
-        '성과급, 복지포인트',
-        '해외 컨퍼런스 참가 지원', 23, NOW());
+VALUES (7, '백엔드 개발자 모집', 'backend', 0, 2,
+        NULL, 1, 2, '서초대로 77',
+        'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
+        '2025-07-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
+        'React, TypeScript 기반 개발 경험',
+        'Figma 연동 경험자 우대',
+        '재택 가능, 장비 지원',
+        NULL, 13, NOW());
 
--- 3-1. job_posting_tech_stack_tb
+INSERT INTO job_posting_tb (
+    user_id, title, position_type, min_career_level, max_career_level,
+    education_level, address_region_id, address_sub_region_id, address_detail,
+    service_intro, deadline, responsibility, qualification, preference,
+    benefit, additional_info, view_count, created_at
+) VALUES (
+             7, '백엔드 개발자 모집', 'frontend', 0, 2,
+             NULL, 1, 2, '서초대로 77',
+             'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
+             '2025-05-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
+             'React, TypeScript 기반 개발 경험',
+             'Figma 연동 경험자 우대',
+             '재택 가능, 장비 지원',
+             NULL, 13, NOW()
+         );
+
+INSERT INTO job_posting_tb (
+    user_id, title, position_type, min_career_level, max_career_level,
+    education_level, address_region_id, address_sub_region_id, address_detail,
+    service_intro, deadline, responsibility, qualification, preference,
+    benefit, additional_info, view_count, created_at
+) VALUES (
+             7, '마감된 개발자 모집', 'frontend', 0, 2,
+             NULL, 1, 2, '서초대로 77',
+             'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
+             '2025-03-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
+             'React, TypeScript 기반 개발 경험',
+             'Figma 연동 경험자 우대',
+             '재택 가능, 장비 지원',
+             NULL, 13, NOW()
+         );
+
+INSERT INTO job_posting_tb (
+    user_id, title, position_type, min_career_level, max_career_level,
+    education_level, address_region_id, address_sub_region_id, address_detail,
+    service_intro, deadline, responsibility, qualification, preference,
+    benefit, additional_info, view_count, created_at
+) VALUES (
+             8, '데이터 엔지니어 채용', 'data_engineer', 3, 5,
+             3, 2, 3, '해운대로 456',
+             'AI 데이터 파이프라인 구축 기업입니다.',
+             '2025-04-15', 'ETL 파이프라인 설계 및 데이터 웨어하우스 운영',
+             'Python, SQL, AWS Redshift 경험',
+             '빅데이터 처리 경험 우대',
+             '성과급, 복지포인트',
+             '해외 컨퍼런스 참가 지원', 23, NOW()
+         );
+
+
 -- 3-1. job_posting_tech_stack_tb
 INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (1, 'Python');
@@ -340,6 +388,7 @@ INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (3, 'Node.js');
 INSERT INTO job_posting_tech_stack_tb (job_posting_id, tech_stack_code)
 VALUES (3, 'React');
+
 
 -- 3-2. job_posting_bookmark_tb
 INSERT INTO job_posting_bookmark_tb (user_id, job_posting_id, created_at)
@@ -411,7 +460,7 @@ VALUES (3, '구직사이트 추천', '저는 랩핏이 제일 좋은 것 같아�
 
 -- 8. reply_tb
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
-VALUES (1, 1, '정말 유익한 글입니다.', NOW());
+VALUES (1, 1, '좋아요 부탁드려요 ~', NOW());
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
 VALUES (1, 2, '질문이 하나 있습니다.', NOW());
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
@@ -419,7 +468,7 @@ VALUES (1, 3, '좋아요 누르고 갑니다.', NOW());
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
 VALUES (2, 1, '감사합니다. 도움됐어요.', NOW());
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
-VALUES (2, 2, '정리 감사합니다!', NOW());
+VALUES (2, 2, '오늘도 화이팅!', NOW());
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
 VALUES (3, 1, '재밌게 잘 읽었습니다.', NOW());
 

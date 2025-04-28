@@ -101,9 +101,43 @@ public class JobPostingController {
 
     // 구직자 - 채용공고 목록
     @GetMapping("/personal/jobposting/list")
-    public String personalList(HttpServletRequest req) {
-        List<JobPostingResponse.JobPostingDTO> jobpostingList = jobPostingService.getAllJobPostings();
-        req.setAttribute("models", jobpostingList);
+    public String personalList(HttpServletRequest req, JobPostingRequest.JobPostingListRequestDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+
+        if (Boolean.TRUE.equals(reqDTO.getIsPopular())) {
+            reqDTO.setIsLatest(false);
+        } else if (Boolean.TRUE.equals(reqDTO.getIsLatest())) {
+            reqDTO.setIsPopular(false);
+        } else {
+            reqDTO.setIsPopular(false);
+            reqDTO.setIsLatest(true);
+        }
+
+        // reqDTO에 담아놨습니다~
+        Integer regionId = reqDTO.getRegionIdAsInteger();
+        Integer subRegionId = reqDTO.getSubRegionIdAsInteger();
+        Integer career = reqDTO.getCareerAsInteger();
+        String techStackCode = reqDTO.getTechStackCodeOrNull();
+        String selectedLabel = reqDTO.getSelectedLabelOrNull();
+        boolean isPopular = reqDTO.isPopularTrue();
+        boolean isLatest = reqDTO.isLatestTrue();
+
+        Integer sessionUserId = (sessionUser != null) ? sessionUser.getId() : null;
+
+        JobPostingResponse.JobPostingListFilterDTO respDTO =
+                jobPostingService.공고목록페이지(
+                        regionId,
+                        subRegionId,
+                        career,
+                        techStackCode,
+                        selectedLabel,
+                        isPopular,
+                        isLatest,
+                        sessionUserId
+                );
+
+        req.setAttribute("models", respDTO);
         return "personal/jobposting/list";
     }
 }

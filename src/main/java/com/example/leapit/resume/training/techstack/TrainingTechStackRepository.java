@@ -13,7 +13,7 @@ public class TrainingTechStackRepository {
     private final EntityManager em;
 
     public List<TrainingTechStack> findAllByTrainingId(Integer id) {
-        Query query = em.createQuery("SELECT t FROM TrainingTechStack t WHERE t.training.id = :id");
+        Query query = em.createQuery("SELECT t FROM TrainingTechStack t WHERE t.training.id = :id", TrainingTechStack.class);
         query.setParameter("id", id);
         return query.getResultList();
     }

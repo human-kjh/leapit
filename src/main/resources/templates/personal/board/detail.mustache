@@ -1,126 +1,165 @@
 {{> layout/personal-header}}
 
-      <!-- 본문 -->
-      <div class="bg-light p-4">
-        <div class="container bg-white p-3 border">
-          <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
+<input type="hidden" id="boardId" value="{{model.id}}">
+<!-- 본문 -->
+<div class="bg-light p-4">
+    <div class="container bg-white p-3 border">
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-2">
             <div type="text" class="form-control border-0 p-0 fw-bold fs-4">
-              제목
+                {{model.title}}
             </div>
             <div class="dropdown">
-              <button class="btn btn-sm btn-light border-0" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                &#8942;
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#">수정</a></li>
-                <li><a class="dropdown-item text-danger" href="#">삭제</a></li>
-              </ul>
-            </div>
-          </div>
+                {{#model.isOwner}}
+                    <button class="btn btn-sm btn-light border-0" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        &#8942;
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/community/{{id}}/update-form">수정</a></li>
+                        <li>
+                            <form action="/community/{{id}}/delete" method="post"
+                                  onsubmit="return confirm('정말 삭제하시겠습니까?')" style="display: inline;">
+                                <button type="submit" class="dropdown-item text-danger"
+                                        style="all: unset; padding: 8px 16px; width: 100%; text-align: left; color: #dc3545; cursor: pointer;">
+                                    삭제
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                {{/model.isOwner}}
 
-          <div class="d-flex justify-content-between align-items-center mb-2">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
             <div class="d-flex align-items-center gap-2">
-              <span class="fw-semibold">김점핏</span>
+                <span class="fw-semibold">{{model.name}}</span>
             </div>
-            <small class="text-muted">2025.04.15</small>
-          </div>
+            <small class="text-muted">{{model.createdAtFormatted}}</small>
+        </div>
 
-          <div class="border p-3 mb-3" style="min-height: 200px">
+        <div class="border p-3 mb-3" style="min-height: 200px">
             <div class="form-control" style="resize: none; border: none" rows="6">
-              게시글 내용
+                {{model.content}}
             </div>
-          </div>
-          <div class="text-center border p-2 mb-4">
-            <button class="btn btn-outline-primary btn-sm rounded-circle p-3" ">
-                <div>1</div>
-                <div>좋아요</div>
-              </button>
-          </div>
-    
-          <div class=" bg-light border p-3 mb-3">
-              <form class="row g-2 align-items-center">
+        </div>
+        <div class="text-center border p-2 mb-4">
+            {{#model.isLike}}
+                <button id="likeButton" class="btn btn-primary btn-sm rounded-circle p-3"
+                        onclick="deleteLike({{model.likeId}})">
+                    <div id="likeCount">{{model.likeCount}}</div>
+                    <div>좋아요</div>
+                </button>
+            {{/model.isLike}}
+            {{^model.isLike}}
+                <button id="likeButton" class="btn btn-outline-primary btn-sm rounded-circle p-3" onclick="saveLike()">
+                    <div id="likeCount">{{model.likeCount}}</div>
+                    <div>좋아요</div>
+                </button>
+            {{/model.isLike}}
+        </div>
+
+        <div class=" bg-light border p-3 mb-3">
+            <form action="/reply/save" method="post" class="row g-2 align-items-center">
+                <input type="hidden" name="boardId" value="{{model.id}}">
                 <div class="col">
-                  <input type="text" class="form-control" placeholder="댓글 작성하기..." />
+                    <input type="text" class="form-control" placeholder="댓글 작성하기..." name="content"/>
                 </div>
                 <div class="col-auto">
-                  <button type="submit" class="btn btn-outline-primary">
-                    댓글 등록
-                  </button>
+                    <button type="submit" class="btn btn-outline-primary">
+                        댓글 등록
+                    </button>
                 </div>
-              </form>
-          </div>
-
-          <div class="bg-light border p-2">
-            <div class="d-flex align-items-center justify-content-between bg-white p-3 mb-2 rounded">
-              <div class="d-flex align-items-center" style="min-width: 160px">
-                <strong>김유저1</strong>
-
-                <div class="border-start border-dark ms-2" style="height: 30px"></div>
-              </div>
-
-              <div class="d-flex justify-content-between align-items-center w-100">
-                <div class="text-muted small">김유저1이 쓴 댓글 내용~~~</div>
-
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light border-0" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    &#8942;
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">수정</a></li>
-                    <li><a class="dropdown-item text-danger" href="#">삭제</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="d-flex align-items-center justify-content-between bg-white p-3 mb-2 rounded">
-              <div class="d-flex align-items-center" style="min-width: 160px">
-                <strong>김유저2</strong>
-
-                <div class="border-start border-dark ms-2" style="height: 30px"></div>
-              </div>
-
-              <div class="d-flex justify-content-between align-items-center w-100">
-                <div class="text-muted small">김유저2이 쓴 댓글 내용~~~</div>
-
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light border-0" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    &#8942;
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">수정</a></li>
-                    <li><a class="dropdown-item text-danger" href="#">삭제</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="d-flex align-items-center justify-content-between bg-white p-3 mb-2 rounded">
-              <div class="d-flex align-items-center" style="min-width: 160px">
-                <strong>김유저3</strong>
-
-                <div class="border-start border-dark ms-2" style="height: 30px"></div>
-              </div>
-
-              <div class="d-flex justify-content-between align-items-center w-100">
-                <div class="text-muted small">김유저3이 쓴 댓글 내용~~~</div>
-
-                <div class="dropdown">
-                  <button class="btn btn-sm btn-light border-0" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    &#8942;
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="#">수정</a></li>
-                    <li><a class="dropdown-item text-danger" href="#">삭제</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+            </form>
         </div>
-      </div>
-      <!-- 본문 끝 -->
+
+        <div class="bg-light border p-2">
+            {{#model.replies}}
+                <div class="d-flex align-items-center justify-content-between bg-white p-3 mb-2 rounded">
+                    <div class="d-flex align-items-center" style="min-width: 160px">
+                        <strong>{{name}}</strong>
+
+                        <div class="border-start border-dark ms-2" style="height: 30px"></div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <div class="text-muted small">{{content}}</div>
+
+                        <div class="dropdown">
+                            {{#isOwner}}
+                                <button class="btn btn-sm btn-light border-0" type="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                    &#8942;
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="/reply/{{id}}/update-form">수정</a></li>
+                                    <li>
+                                        <form action="/reply/{{id}}/delete" method="post"
+                                              onsubmit="return confirm('정말 삭제하시겠습니까?')" style="display: inline;">
+                                            <button type="submit" class="dropdown-item text-danger"
+                                                    style="all: unset; padding: 8px 16px; width: 100%; text-align: left; color: #dc3545; cursor: pointer;">
+                                                삭제
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            {{/isOwner}}
+
+                        </div>
+                    </div>
+                </div>
+            {{/model.replies}}
+            <!-- 본문 끝 -->
+
+            <script>
+                let boardId = document.querySelector("#boardId").value;
+
+                async function saveLike() {
+                    try {
+                        let requestBody = {boardId: boardId};
+                        let response = await fetch(`/like`, {
+                            method: "POST",
+                            body: JSON.stringify(requestBody),
+                            headers: {"Content-Type": "application/json"}
+                        });
+                        let responseBody = await response.json(); // { body: { loveId, loveCount } }
+                        console.log(responseBody);
+
+                        // DOM 업데이트
+                        let likeButton = document.querySelector('#likeButton');
+                        let likeCount = document.querySelector('#likeCount');
+
+                        likeButton.classList.remove('btn-outline-primary');
+                        likeButton.classList.add('btn-primary');
+                        likeButton.setAttribute('onclick', `deleteLike(${responseBody.body.likeId})`);
+
+                        likeCount.innerHTML = responseBody.body.likeCount;
+                    } catch (error) {
+                        console.error('saveLike 실패', error);
+                    }
+                }
+
+                async function deleteLike(likeId) {
+                    try {
+                        let response = await fetch(`/like/${likeId}`, {
+                            method: "DELETE"
+                        });
+                        let responseBody = await response.json();
+                        console.log(responseBody);
+
+                        // DOM 업데이트
+                        let likeButton = document.querySelector('#likeButton');
+                        let likeCount = document.querySelector('#likeCount');
+
+                        likeButton.classList.remove('btn-primary');
+                        likeButton.classList.add('btn-outline-primary');
+                        likeButton.setAttribute('onclick', `saveLike()`);
+
+                        likeCount.innerHTML = responseBody.body.likeCount;
+                    } catch (error) {
+                        console.error('deleteLike 실패', error);
+                    }
+                }
+            </script>
 
 {{> layout/footer}}

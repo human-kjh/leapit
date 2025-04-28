@@ -5,112 +5,507 @@
     <div>
         <h4 class="fw-bold mt-5 mb-4 fs-2">직무 탐색</h4>
 
+        <!-- 직무 필터 -->
         <div>
-            <div>
-                <button class="btn btn-sm btn-primary rounded-5">전체</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">서버/백엔드</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">프론트엔드</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">웹 풀스택</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">안드로이드</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">iOS</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">크로스플랫폼</button>
-            </div>
-            <div class="mt-2">
-                <button class="btn btn-sm btn-outline-primary rounded-5">게임 클라이언트</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">게임 서버</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">DBA</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">빅데이터 엔지니어</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">인공지능/머신러닝</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">devops/시스템 엔지니어</button>
-            </div>
-            <div class="mt-2 mb-5">
-                <button class="btn btn-sm btn-outline-primary rounded-5">정보보안 담당자</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">QA 엔지니어</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">개발 PM</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">HW/임베디드</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">SW/솔루션</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">웹 퍼블리셔</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">VR/AR/3D</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">블록체인</button>
-                <button class="btn btn-sm btn-outline-primary rounded-5">기술지원</button>
+            <div class="d-flex flex-wrap gap-2">
+                <!-- 전체 버튼 -->
+                <form method="get" action="/personal/jobposting/list" class="d-inline">
+                    {{#models.selectedRegionId}}<input type="hidden" name="regionId"
+                                                       value="{{models.selectedRegionId}}">{{/models.selectedRegionId}}
+                    {{#models.selectedSubRegionId}}<input type="hidden" name="subRegionId"
+                                                          value="{{models.selectedSubRegionId}}">{{/models.selectedSubRegionId}}
+                    {{#models.selectedCareer}}
+                        <input type="hidden" name="career" value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                    {{#models.selectedTechStackCode}}<input type="hidden" name="techStackCode"
+                                                            value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
+                    {{#models.isPopular}}<input type="hidden" name="isPopular" value="true">{{/models.isPopular}}
+                    {{#models.isLatest}}<input type="hidden" name="isLatest" value="true">{{/models.isLatest}}
+                    <button class="btn {{^models.selectedLabel}}btn-primary{{/models.selectedLabel}} {{#models.selectedLabel}}btn-outline-primary{{/models.selectedLabel}} btn-sm rounded-5"
+                            type="submit">
+                        전체
+                    </button>
+                </form>
+
+                <!-- 직무 리스트 -->
+                {{#models.positions}}
+                    <form method="get" action="/personal/jobposting/list" class="d-inline-block">
+                        {{#models.selectedRegionId}}<input type="hidden" name="regionId"
+                                                           value="{{models.selectedRegionId}}">{{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}<input type="hidden" name="subRegionId"
+                                                              value="{{models.selectedSubRegionId}}">{{/models.selectedSubRegionId}}
+                        {{#models.selectedCareer}}<input type="hidden" name="career"
+                                                         value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                        {{#models.selectedTechStackCode}}<input type="hidden" name="techStackCode"
+                                                                value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
+                        {{#models.isPopular}}<input type="hidden" name="isPopular" value="true">{{/models.isPopular}}
+                        {{#models.isLatest}}<input type="hidden" name="isLatest" value="true">{{/models.isLatest}}
+                        <input type="hidden" name="positionLabel" value="{{code}}">
+                        <button class="btn {{#selected}}btn-primary{{/selected}} {{^selected}}btn-outline-primary{{/selected}} btn-sm rounded-5"
+                                type="submit">{{code}}</button>
+                    </form>
+                {{/models.positions}}
             </div>
         </div>
     </div>
 
-    <div class="bg-light">
-        <div class="dropdown">
-            <button class="btn btn-outline-primary dropdown-toggle mt-3 ms-3 rounded-5" type="button"
-                    data-bs-toggle="dropdown">
-                기술스택
+    <!-- 기술스택 드롭다운 -->
+    <div class="bg-light mt-4 p-3 rounded">
+        <div class="dropdown d-inline-block me-2">
+            <button class="btn {{#models.selectedTechStackCode}}btn-primary{{/models.selectedTechStackCode}} {{^models.selectedTechStackCode}}btn-outline-primary{{/models.selectedTechStackCode}} dropdown-toggle rounded-5"
+                    type="button" data-bs-toggle="dropdown">
+                {{#models.selectedTechStackName}}{{models.selectedTechStackName}}{{/models.selectedTechStackName}}
+                {{^models.selectedTechStackName}}기술스택{{/models.selectedTechStackName}}
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Java</a></li>
-                <li><a class="dropdown-item" href="#">C++</a></li>
-                <li><a class="dropdown-item" href="#">Linux</a></li>
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}<input type="hidden" name="regionId"
+                                                           value="{{models.selectedRegionId}}">{{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}<input type="hidden" name="subRegionId"
+                                                              value="{{models.selectedSubRegionId}}">{{/models.selectedSubRegionId}}
+                        {{#models.selectedCareer}}<input type="hidden" name="career"
+                                                         value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                        {{#models.selectedLabel}}
+                            <input type="hidden" name="label" value="{{models.selectedLabel}}">{{/models.selectedLabel}}
+                        {{#models.isPopular}}<input type="hidden" name="isPopular" value="true">{{/models.isPopular}}
+                        {{#models.isLatest}}<input type="hidden" name="isLatest" value="true">{{/models.isLatest}}
+                        <input type="hidden" name="techStackCode" value="">
+                        <button class="dropdown-item" type="submit">전체</button>
+                    </form>
+                </li>
+
+                {{#models.techStacks}}
+                    <li>
+                        <form method="get" action="/personal/jobposting/list">
+                            {{#models.selectedRegionId}}<input type="hidden" name="regionId"
+                                                               value="{{models.selectedRegionId}}">{{/models.selectedRegionId}}
+                            {{#models.selectedSubRegionId}}<input type="hidden" name="subRegionId"
+                                                                  value="{{models.selectedSubRegionId}}">{{/models.selectedSubRegionId}}
+                            {{#models.selectedCareer}}<input type="hidden" name="career"
+                                                             value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                            {{#models.selectedLabel}}<input type="hidden" name="label"
+                                                            value="{{models.selectedLabel}}">{{/models.selectedLabel}}
+                            {{#models.isPopular}}
+                                <input type="hidden" name="isPopular" value="true">{{/models.isPopular}}
+                            {{#models.isLatest}}<input type="hidden" name="isLatest" value="true">{{/models.isLatest}}
+                            <input type="hidden" name="techStackCode" value="{{code}}">
+                            <button class="dropdown-item" type="submit">{{code}}</button>
+                        </form>
+                    </li>
+                {{/models.techStacks}}
             </ul>
-
-            <button class="btn btn-outline-primary dropdown-toggle mt-3 ms-3 rounded-5" type="button"
-                    data-bs-toggle="dropdown">
-                경력
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">전체</a></li>
-                <li><a class="dropdown-item" href="#">신입</a></li>
-                <li><a class="dropdown-item" href="#">1년</a></li>
-                <li><a class="dropdown-item" href="#">2년</a></li>
-                <li><a class="dropdown-item" href="#">3년</a></li>
-                <li><a class="dropdown-item" href="#">9년</a></li>
-                <li><a class="dropdown-item" href="#">10년 이상</a></li>
-            </ul>
-
-            <button class="btn btn-outline-primary dropdown-toggle mt-3 ms-3 rounded-5" type="button"
-                    data-bs-toggle="dropdown">
-                지역
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">서울</a></li>
-                <li><a class="dropdown-item" href="#">경기도</a></li>
-                <li><a class="dropdown-item" href="#">부산</a></li>
-            </ul>
-            <div class="d-flex flex-row-reverse mb-2">
-                <button class="btn btn-outline-light text-dark me-3">인기순</button>
-                <button class="btn btn-outline-light text-dark">최신순</button>
-            </div>
-
-
-            <div>
-                <div class="row gx-3 gy-4 ms-2 me-2">
-                    {{#models}}
-                        <div class="col-md-3 col-sm-6">
-                            <a href="/상세페이지URL1" class="text-decoration-none text-dark">
-                                <div class="mb-3 position-relative">
-                                    <img src="/img/{{image}}" class="img-fluid">
-                                    <span
-                                            class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-{{dDay}}</span>
-                                </div>
-                                <div>
-                                    <div class="position-relative">
-                                        <div class="mb-2">{{companyName}}</div>
-                                    </div>
-                                    <h4 class="mb-2">{{title}}</h4>
-                                    <div class="mb-3">
-                                        <div><small>{{#techStacks}}
-                                            {{name}} ·
-                                        {{/techStacks}}</small></div>
-                                        <div><small>{{address}} · 경력 {{career}}</small></div>
-                                    </div>
-                                </div>
-                            </a>
-                            <button class="btn btn-outline-primary w-100"><i class="fa fa-bookmark-o me-2"></i>
-                                스크랩하기
-                            </button>
-                        </div>
-                    {{/models}}
-                </div>
-            </div>
         </div>
+
+        <!-- 경력 드롭다운 -->
+        <div class="dropdown d-inline-block me-2">
+            <button class="btn {{#models.selectedCareer}}btn-primary{{/models.selectedCareer}} {{^models.selectedCareer}}btn-outline-primary{{/models.selectedCareer}} dropdown-toggle rounded-5"
+                    type="button" data-bs-toggle="dropdown">
+                {{#models.selectedCareerName}}{{models.selectedCareerName}}{{/models.selectedCareerName}}
+                {{^models.selectedCareerName}}경력{{/models.selectedCareerName}}
+            </button>
+            <ul class="dropdown-menu">
+
+                <!-- 전체 -->
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                        {{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                        {{/models.selectedSubRegionId}}
+                        {{#models.selectedTechStackCode}}
+                            <input type="hidden" name="techStackCode" value="{{models.selectedTechStackCode}}">
+                        {{/models.selectedTechStackCode}}
+                        {{#models.selectedLabels}}
+                            <input type="hidden" name="label" value="{{.}}">
+                        {{/models.selectedLabels}}
+                        <input type="hidden" name="career" value="">
+                        <button class="dropdown-item" type="submit">전체</button>
+                    </form>
+                </li>
+
+                <!-- 신입 -->
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                        {{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                        {{/models.selectedSubRegionId}}
+                        {{#models.selectedTechStackCode}}
+                            <input type="hidden" name="techStackCode" value="{{models.selectedTechStackCode}}">
+                        {{/models.selectedTechStackCode}}
+                        {{#models.selectedLabels}}
+                            <input type="hidden" name="label" value="{{.}}">
+                        {{/models.selectedLabels}}
+                        <input type="hidden" name="career" value="0">
+                        <button class="dropdown-item" type="submit">신입</button>
+                    </form>
+                </li>
+
+                <!-- 1년 -->
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                        {{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                        {{/models.selectedSubRegionId}}
+                        {{#models.selectedTechStackCode}}
+                            <input type="hidden" name="techStackCode" value="{{models.selectedTechStackCode}}">
+                        {{/models.selectedTechStackCode}}
+                        {{#models.selectedLabels}}
+                            <input type="hidden" name="label" value="{{.}}">
+                        {{/models.selectedLabels}}
+                        <input type="hidden" name="career" value="1">
+                        <button class="dropdown-item" type="submit">1년</button>
+                    </form>
+                </li>
+
+                <!-- 2년 -->
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                        {{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                        {{/models.selectedSubRegionId}}
+                        {{#models.selectedTechStackCode}}
+                            <input type="hidden" name="techStackCode" value="{{models.selectedTechStackCode}}">
+                        {{/models.selectedTechStackCode}}
+                        {{#models.selectedLabels}}
+                            <input type="hidden" name="label" value="{{.}}">
+                        {{/models.selectedLabels}}
+                        <input type="hidden" name="career" value="2">
+                        <button class="dropdown-item" type="submit">2년</button>
+                    </form>
+                </li>
+
+                <!-- 3년 -->
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                        {{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                        {{/models.selectedSubRegionId}}
+                        {{#models.selectedTechStackCode}}
+                            <input type="hidden" name="techStackCode" value="{{models.selectedTechStackCode}}">
+                        {{/models.selectedTechStackCode}}
+                        {{#models.selectedLabels}}
+                            <input type="hidden" name="label" value="{{.}}">
+                        {{/models.selectedLabels}}
+                        <input type="hidden" name="career" value="3">
+                        <button class="dropdown-item" type="submit">3년</button>
+                    </form>
+                </li>
+
+                <!-- 9년 -->
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                        {{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                        {{/models.selectedSubRegionId}}
+                        {{#models.selectedTechStackCode}}
+                            <input type="hidden" name="techStackCode" value="{{models.selectedTechStackCode}}">
+                        {{/models.selectedTechStackCode}}
+                        {{#models.selectedLabels}}
+                            <input type="hidden" name="label" value="{{.}}">
+                        {{/models.selectedLabels}}
+                        <input type="hidden" name="career" value="9">
+                        <button class="dropdown-item" type="submit">9년</button>
+                    </form>
+                </li>
+
+                <!-- 10년 이상 -->
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}
+                            <input type="hidden" name="regionId" value="{{models.selectedRegionId}}">
+                        {{/models.selectedRegionId}}
+                        {{#models.selectedSubRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{models.selectedSubRegionId}}">
+                        {{/models.selectedSubRegionId}}
+                        {{#models.selectedTechStackCode}}
+                            <input type="hidden" name="techStackCode" value="{{models.selectedTechStackCode}}">
+                        {{/models.selectedTechStackCode}}
+                        {{#models.selectedLabels}}
+                            <input type="hidden" name="label" value="{{.}}">
+                        {{/models.selectedLabels}}
+                        <input type="hidden" name="career" value="10">
+                        <button class="dropdown-item" type="submit">10년 이상</button>
+                    </form>
+                </li>
+
+            </ul>
+        </div>
+        <!-- 지역(시) 드롭다운 -->
+        <div class="dropdown d-inline-block">
+            <button class="btn {{#models.selectedRegionId}}btn-primary{{/models.selectedRegionId}} {{^models.selectedRegionId}}btn-outline-primary{{/models.selectedRegionId}} dropdown-toggle rounded-5"
+                    type="button" data-bs-toggle="dropdown">
+                {{#models.selectedRegionName}}{{models.selectedRegionName}}{{/models.selectedRegionName}}
+                {{^models.selectedRegionName}}지역(시){{/models.selectedRegionName}}
+            </button>
+            <ul class="dropdown-menu">
+
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedSubRegionId}}<input type="hidden" name="subRegionId"
+                                                              value="{{models.selectedSubRegionId}}">{{/models.selectedSubRegionId}}
+                        {{#models.selectedCareer}}<input type="hidden" name="career"
+                                                         value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                        {{#models.selectedTechStackCode}}<input type="hidden" name="techStackCode"
+                                                                value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
+                        {{#models.selectedLabel}}
+                            <input type="hidden" name="label" value="{{models.selectedLabel}}">{{/models.selectedLabel}}
+                        {{#models.isPopular}}<input type="hidden" name="isPopular" value="true">{{/models.isPopular}}
+                        {{#models.isLatest}}<input type="hidden" name="isLatest" value="true">{{/models.isLatest}}
+                        <input type="hidden" name="regionId" value="">
+                        <button class="dropdown-item" type="submit">전체</button>
+                    </form>
+                </li>
+
+                {{#models.regions}}
+                    <li>
+                        <form method="get" action="/personal/jobposting/list">
+                            <input type="hidden" name="regionId" value="{{regionId}}">
+                            {{#models.selectedSubRegionId}}<input type="hidden" name="subRegionId"
+                                                                  value="{{models.selectedSubRegionId}}">{{/models.selectedSubRegionId}}
+                            {{#models.selectedCareer}}<input type="hidden" name="career"
+                                                             value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                            {{#models.selectedTechStackCode}}<input type="hidden" name="techStackCode"
+                                                                    value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
+                            {{#models.selectedLabel}}<input type="hidden" name="label"
+                                                            value="{{models.selectedLabel}}">{{/models.selectedLabel}}
+                            {{#models.isPopular}}
+                                <input type="hidden" name="isPopular" value="true">{{/models.isPopular}}
+                            {{#models.isLatest}}<input type="hidden" name="isLatest" value="true">{{/models.isLatest}}
+                            <button class="dropdown-item" type="submit">{{region}}</button>
+                        </form>
+                    </li>
+                {{/models.regions}}
+            </ul>
+        </div>
+
+
+        <!-- 지역(군구) 드롭다운 -->
+        <div class="dropdown d-inline-block">
+            <button class="btn {{#models.selectedSubRegionId}}btn-primary{{/models.selectedSubRegionId}} {{^models.selectedSubRegionId}}btn-outline-primary{{/models.selectedSubRegionId}} dropdown-toggle rounded-5"
+                    type="button" data-bs-toggle="dropdown">
+                {{#models.selectedSubRegionName}}{{models.selectedSubRegionName}}{{/models.selectedSubRegionName}}
+                {{^models.selectedSubRegionName}}지역(군/구){{/models.selectedSubRegionName}}
+            </button>
+            <ul class="dropdown-menu">
+
+                <li>
+                    <form method="get" action="/personal/jobposting/list">
+                        {{#models.selectedRegionId}}<input type="hidden" name="regionId"
+                                                           value="{{models.selectedRegionId}}">{{/models.selectedRegionId}}
+                        {{#models.selectedCareer}}<input type="hidden" name="career"
+                                                         value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                        {{#models.selectedTechStackCode}}<input type="hidden" name="techStackCode"
+                                                                value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
+                        {{#models.selectedLabel}}
+                            <input type="hidden" name="label" value="{{models.selectedLabel}}">{{/models.selectedLabel}}
+                        {{#models.isPopular}}<input type="hidden" name="isPopular" value="true">{{/models.isPopular}}
+                        {{#models.isLatest}}<input type="hidden" name="isLatest" value="true">{{/models.isLatest}}
+                        <input type="hidden" name="subRegionId" value="">
+                        <button class="dropdown-item" type="submit">전체</button>
+                    </form>
+                </li>
+
+                {{#models.subRegions}}
+                    <li>
+                        <form method="get" action="/personal/jobposting/list">
+                            {{#models.selectedRegionId}}<input type="hidden" name="regionId"
+                                                               value="{{models.selectedRegionId}}">{{/models.selectedRegionId}}
+                            <input type="hidden" name="subRegionId" value="{{subRegionId}}">
+                            {{#models.selectedCareer}}<input type="hidden" name="career"
+                                                             value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                            {{#models.selectedTechStackCode}}<input type="hidden" name="techStackCode"
+                                                                    value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
+                            {{#models.selectedLabel}}<input type="hidden" name="label"
+                                                            value="{{models.selectedLabel}}">{{/models.selectedLabel}}
+                            {{#models.isPopular}}
+                                <input type="hidden" name="isPopular" value="true">{{/models.isPopular}}
+                            {{#models.isLatest}}<input type="hidden" name="isLatest" value="true">{{/models.isLatest}}
+                            <button class="dropdown-item" type="submit">{{subRegion}}</button>
+                        </form>
+                    </li>
+                {{/models.subRegions}}
+            </ul>
+        </div>
+
+        <!-- 인기순/최신순 버튼 -->
+        <div class="d-flex flex-row-reverse mt-3 mb-2">
+            {{#models.isPopular}}
+                <form method="get" action="/personal/jobposting/list">
+                    {{#models.selectedRegionId}}<input type="hidden" name="regionId"
+                                                       value="{{models.selectedRegionId}}">{{/models.selectedRegionId}}
+                    {{#models.selectedSubRegionId}}<input type="hidden" name="subRegionId"
+                                                          value="{{models.selectedSubRegionId}}">{{/models.selectedSubRegionId}}
+                    {{#models.selectedCareer}}
+                        <input type="hidden" name="career" value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                    {{#models.selectedTechStackCode}}<input type="hidden" name="techStackCode"
+                                                            value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
+                    {{#models.selectedLabel}}
+                        <input type="hidden" name="label" value="{{models.selectedLabel}}">{{/models.selectedLabel}}
+
+                    <!-- 인기순 끄고 최신순 켬 -->
+                    <input type="hidden" name="isPopular" value="false">
+                    <input type="hidden" name="isLatest" value="true">
+                    <button class="btn btn-primary me-3" type="submit">인기순</button>
+                </form>
+            {{/models.isPopular}}
+
+            {{^models.isPopular}}
+                <form method="get" action="/personal/jobposting/list">
+                    {{#models.selectedRegionId}}<input type="hidden" name="regionId"
+                                                       value="{{models.selectedRegionId}}">{{/models.selectedRegionId}}
+                    {{#models.selectedSubRegionId}}<input type="hidden" name="subRegionId"
+                                                          value="{{models.selectedSubRegionId}}">{{/models.selectedSubRegionId}}
+                    {{#models.selectedCareer}}
+                        <input type="hidden" name="career" value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                    {{#models.selectedTechStackCode}}<input type="hidden" name="techStackCode"
+                                                            value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
+                    {{#models.selectedLabel}}
+                        <input type="hidden" name="label" value="{{models.selectedLabel}}">{{/models.selectedLabel}}
+
+                    <!-- 인기순 켬, 최신순 끔 -->
+                    <input type="hidden" name="isPopular" value="true">
+                    <input type="hidden" name="isLatest" value="false">
+                    <button class="btn btn-outline-light text-dark me-3" type="submit">인기순</button>
+                </form>
+            {{/models.isPopular}}
+
+            {{#models.isLatest}}
+                <form method="get" action="/personal/jobposting/list">
+                    {{#models.selectedRegionId}}<input type="hidden" name="regionId"
+                                                       value="{{models.selectedRegionId}}">{{/models.selectedRegionId}}
+                    {{#models.selectedSubRegionId}}<input type="hidden" name="subRegionId"
+                                                          value="{{models.selectedSubRegionId}}">{{/models.selectedSubRegionId}}
+                    {{#models.selectedCareer}}
+                        <input type="hidden" name="career" value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                    {{#models.selectedTechStackCode}}<input type="hidden" name="techStackCode"
+                                                            value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
+
+                    <input type="hidden" name="isPopular" value="false">
+                    <input type="hidden" name="isLatest" value="false">
+                    <button class="btn btn-primary" type="submit">최신순</button>
+                </form>
+            {{/models.isLatest}}
+
+            {{^models.isLatest}}
+                <form method="get" action="/personal/jobposting/list">
+                    {{#models.selectedRegionId}}<input type="hidden" name="regionId"
+                                                       value="{{models.selectedRegionId}}">{{/models.selectedRegionId}}
+                    {{#models.selectedSubRegionId}}<input type="hidden" name="subRegionId"
+                                                          value="{{models.selectedSubRegionId}}">{{/models.selectedSubRegionId}}
+                    {{#models.selectedCareer}}
+                        <input type="hidden" name="career" value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                    {{#models.selectedTechStackCode}}<input type="hidden" name="techStackCode"
+                                                            value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
+                    <input type="hidden" name="isPopular" value="false">
+                    <input type="hidden" name="isLatest" value="true">
+                    <button class="btn btn-outline-light text-dark" type="submit">최신순</button>
+                </form>
+            {{/models.isLatest}}
+        </div>
+
+        <!-- 공고 카드 리스트 -->
+        <div class="row gx-3 gy-4 ms-2 me-2">
+            {{#models.jobPostingList}}
+                <div class="col-md-3 col-sm-6">
+                    <a href="/상세페이지URL1" class="text-decoration-none text-dark">
+                        <div class="mb-3 position-relative">
+                            <img src="/img/{{image}}" class="img-fluid rounded">
+                            <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">
+                            D-{{dDay}}
+                        </span>
+                        </div>
+                        <div>
+                            <div class="position-relative mb-2">{{companyName}}</div>
+                            <h4 class="mb-2">{{title}}</h4>
+                            <div class="mb-3">
+                                <small>{{#techStacks}}{{name}} · {{/techStacks}}</small><br>
+                                <small>{{address}} · 경력 {{career}}</small>
+                            </div>
+                        </div>
+                    </a>
+                    <button class="btn {{#isBookmarked}}btn-primary{{/isBookmarked}}{{^isBookmarked}}btn-outline-primary{{/isBookmarked}} w-100"
+                            id="bookmark-btn-{{id}}"
+                            onclick="{{#isBookmarked}}deleteBookmark{{/isBookmarked}}{{^isBookmarked}}saveBookmark{{/isBookmarked}}({{id}})">
+                        <i class="fa {{#isBookmarked}}fa-bookmark{{/isBookmarked}}{{^isBookmarked}}fa-bookmark-o{{/isBookmarked}} me-2"
+                           id="bookmark-icon-{{id}}"></i>
+                        {{#isBookmarked}}스크랩됨{{/isBookmarked}}{{^isBookmarked}}스크랩하기{{/isBookmarked}}
+                    </button>
+                </div>
+            {{/models.jobPostingList}}
+        </div>
+
     </div>
 </div>
-<!-- 본문 끝 -->
+<script>
+    async function saveBookmark(jobPostingId) {
+        try {
+            const response = await fetch("/api/personal/bookmark", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({jobPostingId: jobPostingId})
+            });
 
+            const result = await response.json();
+            console.log(result);
+
+            if (response.status === 200) {
+                const icon = document.querySelector(`#bookmark-icon-${jobPostingId}`);
+                const button = document.querySelector(`#bookmark-btn-${jobPostingId}`);
+                icon.classList.remove("fa-bookmark-o");
+                icon.classList.add("fa-bookmark");
+                button.setAttribute("onclick", `deleteBookmark(${jobPostingId})`);
+                button.classList.remove("btn-outline-primary");
+                button.classList.add("btn-primary");
+                console.log("북마크가 저장되었습니다.");
+            } else {
+                alert(result.msg || "북마크 저장 실패");
+            }
+        } catch (e) {
+            console.error("북마크 저장 중 오류:", e);
+        }
+    }
+
+    async function deleteBookmark(jobPostingId) {
+        try {
+            const response = await fetch(`/api/personal/bookmark/${jobPostingId}`, {
+                method: "DELETE"
+            });
+
+            const result = await response.json();
+
+            if (response.status === 200) {
+                const icon = document.querySelector(`#bookmark-icon-${jobPostingId}`);
+                const button = document.querySelector(`#bookmark-btn-${jobPostingId}`);
+                icon.classList.remove("fa-bookmark");
+                icon.classList.add("fa-bookmark-o");
+                button.setAttribute("onclick", `saveBookmark(${jobPostingId})`);
+                button.classList.remove("btn-primary");
+                button.classList.add("btn-outline-primary");
+                console.log("북마크가 삭제되었습니다.");
+            } else {
+                alert(result.msg || "북마크 삭제 실패");
+            }
+        } catch (e) {
+            console.error("북마크 삭제 중 오류:", e);
+        }
+    }
+
+</script>
 {{> layout/footer}}
