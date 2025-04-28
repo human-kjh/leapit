@@ -41,10 +41,13 @@
                             <a href="/company/info/save-form"
                                class="headerItem text-decoration-none text-dark small">기업정보(등록)</a>
                         {{/companyInfoId}}
-                        <a href="#" class="headerItem text-decoration-none text-dark small" id="Resume">포지션</a>
-                        <a href="#" class="headerItem text-decoration-none text-dark small" id="Community">지원자
+                        <a href="/company/jobposting/list" class="headerItem text-decoration-none text-dark small"
+                           id="Resume">포지션</a>
+                        <a href="/company/applicant/list" class="headerItem text-decoration-none text-dark small"
+                           id="Community">지원자
                             관리</a>
-                        <a href="#" class="headerItem text-decoration-none text-dark small" id="MyPage">계정 관리</a>
+                        <a href="/company/user/update-form" class="headerItem text-decoration-none text-dark small"
+                           id="MyPage">계정 관리</a>
                     </div>
                     <div class="d-flex align-items-center gap-3">
                         {{#sessionUser}}
@@ -55,9 +58,32 @@
                             <a href="/login-form" class="headerItem text-decoration-none text-dark small"
                                id="joinLogin">회원가입/로그인</a>
                         {{/sessionUser}}
-                        <a href="#" class="headerItem text-decoration-none text-dark small" id="business">개인 서비스</a>
+                        {{#sessionUser}}
+                            <a href="#" class="headerItem text-decoration-none text-dark small" id="business"
+                               onclick="handlePersonalServiceClick()">개인 서비스</a>
+                        {{/sessionUser}}
+                        {{^sessionUser}}
+                            <a href="/login-form" class="headerItem text-decoration-none text-dark small" id="business">개인
+                                서비스</a>
+                        {{/sessionUser}}
                     </div>
                 </div>
             </div>
         </header>
         <!-- header 끝 -->
+        <script>
+            async function handlePersonalServiceClick() {
+                const role = "{{sessionUser.role}}";
+
+                if (role === 'company') {
+                    // 기업회원이면 로그아웃 먼저 하고
+                    await fetch("/logout", {method: "GET"}); // 또는 GET 방식이면 "GET"으로
+
+                    // 그 다음 로그인 페이지로 이동
+                    window.location.href = "/login-form";
+                } else {
+                    // 개인회원이면 개인서비스 메인으로 이동
+                    window.location.href = "/personal/main";
+                }
+            }
+        </script>

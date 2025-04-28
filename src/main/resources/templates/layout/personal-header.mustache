@@ -55,8 +55,11 @@
                             <a href="/login-form" class="headerItem text-decoration-none text-dark small"
                                id="joinLogin">회원가입/로그인</a>
                         {{/sessionUser}}
-                        <a href="#" class="headerItem text-decoration-none text-dark small"
-                           id="business">기업 서비스</a>
+                        {{^sessionUser}}
+                            <a href="/login-form?redirect=/company/main"
+                               class="headerItem text-decoration-none text-dark small"
+                               id="business">기업 서비스</a>
+                        {{/sessionUser}}
                     </div>
                 </div>
             </div>

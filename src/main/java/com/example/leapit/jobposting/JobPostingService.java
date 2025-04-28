@@ -61,7 +61,7 @@ public class JobPostingService {
     }
 
     // 채용 공고 삭제
-    @org.springframework.transaction.annotation.Transactional
+    @Transactional
     public void delete(Integer id) {
         jobPostingRepository.deleteById(id);
     }
@@ -252,6 +252,11 @@ public class JobPostingService {
         }
 
         return jobpostingList;
+    }
+
+    // JobPosting의 주소 정보를 반환하는 메서드
+    public JobPostingResponse.AddressDTO getJobPostingAddress(Integer id) {
+        return jobPostingRepository.findJobPostingAddressById(id);
     }
 
 

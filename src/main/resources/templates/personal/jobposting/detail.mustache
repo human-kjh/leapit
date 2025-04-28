@@ -8,41 +8,74 @@
             <div>
                 <div class="d-flex align-items-center gap-2">
                     <h1 class="fs-4 fw-bold mb-0">
-                        결제/인증 솔루션 개발 및 운영
-                    </h1>
-                    <span class="fs-6 text-primary" style="cursor: pointer"
-                    >수정</span
-                    >
+                        {{model.title}}                    </h1>
                 </div>
                 <div class="mb-4">
                     <a
-                            href="#"
+                            href="/personal/companyinfo/{{model.id}}"
                             class="text-muted small mb-4 fw-normal text-decoration-none"
-                    >에스에이치이엔씨</a
+                    >{{company.companyName}}</a
                     >
                 </div>
 
                 <!-- 기술 스택 -->
                 <div class="mb-4">
                     <h2 class="fs-6 fw-semibold mb-2">기술스택</h2>
-                    <span class="badge bg-light text-dark">Java</span>
+                    {{#techStack}}
+                        <span class="badge bg-light text-dark">{{.}}</span>
+                    {{/techStack}}
                 </div>
 
                 <!-- 주요업무 -->
                 <div class="mb-4">
                     <h2 class="fs-6 fw-semibold mb-2">주요업무</h2>
-                    <p class="small">카드사 결제/인증 솔루션 개발 및 운영</p>
+                    <p class="small">{{model.responsibility}}</p>
                 </div>
 
                 <!-- 자격요건 -->
                 <div class="mb-4">
                     <h2 class="fs-6 fw-semibold mb-2">자격요건</h2>
                     <ul class="small ps-3">
-                        <li>경력 4년~10년</li>
-                        <li>언어: Java</li>
-                        <li>DBMS: Oracle, MySQL</li>
-                        <li>FW: Spring(SpringBoot), 자체 프레임워크</li>
-                        <li>OS/미들웨어: Linux, Unix</li>
+                        {{#model.qualification}} <!-- qualification이 비어있지 않으면 출력 -->
+                            <li>{{.}}</li>
+                        {{/model.qualification}}
+                        {{^model.qualification}} <!-- qualification이 비어있으면 이 메시지 출력 -->
+                            <li>자격요건이 없습니다.</li>
+                        {{/model.qualification}}
+
+                        <!-- 학력 -->
+                        <li>학력 :
+                            {{#model.educationLevel}}
+                                {{model.educationLevel}}
+                            {{/model.educationLevel}}
+                            {{^model.educationLevel}} <!-- model.educationLevel이 null이면 -->
+                                무관
+                            {{/model.educationLevel}}
+                        </li>
+
+                        <!-- 경력 -->
+                        <li>
+                            경력 :
+                            {{#model.minCareerLevel}}
+                                {{model.minCareerLevel}}년 ~
+                            {{/model.minCareerLevel}}
+                            {{#model.maxCareerLevel}}
+                                {{model.maxCareerLevel}}년
+                            {{/model.maxCareerLevel}}
+                            {{^model.minCareerLevel}}
+                                {{#model.maxCareerLevel}}
+                                    ~ {{model.maxCareerLevel}}년
+                                {{/model.maxCareerLevel}}
+                            {{/model.minCareerLevel}}
+                            {{^model.maxCareerLevel}}
+                                {{#model.minCareerLevel}}
+                                    {{model.minCareerLevel}}년 이상
+                                {{/model.minCareerLevel}}
+                            {{/model.maxCareerLevel}}
+                            {{^model.minCareerLevel}}{{^model.maxCareerLevel}}
+                                경력 무관
+                            {{/model.maxCareerLevel}}{{/model.minCareerLevel}}
+                        </li>
                     </ul>
                 </div>
 
@@ -50,13 +83,9 @@
                 <div class="mb-4">
                     <h2 class="fs-6 fw-semibold mb-2">우대사항</h2>
                     <ul class="small ps-3">
-                        <li>3-D Secure 카드사 개발 경험</li>
-                        <li>
-                            각 카드사별 다중 Channel(Front, Backend, 배치 등) 개발
-                            경험
-                        </li>
-                        <li>결제/인증 관련 경험</li>
-                        <li>금융권 공통개발/공통UI/업무공통 개발 경험 보유</li>
+                        {{#model.preference}}
+                            <li>{{.}}</li>
+                        {{/model.preference}}
                     </ul>
                 </div>
 
@@ -64,13 +93,9 @@
                 <div class="mb-4">
                     <h2 class="fs-6 fw-semibold mb-2">복지 및 혜택</h2>
                     <ul class="small ps-3">
-                        <li>입사 축하금(최대 100만원) 지원</li>
-                        <li>매년 종합건강검진</li>
-                        <li>명절/기념일 선물 지급</li>
-                        <li>임직원 단체보험</li>
-                        <li>청년내일채움공제</li>
-                        <li>사내추천 채용 보상금</li>
-                        <li>복지 포인트 제도</li>
+                        {{#model.benefit}}
+                            <li>{{.}}</li>
+                        {{/model.benefit}}
                     </ul>
                 </div>
 
@@ -78,37 +103,25 @@
                 <div class="mb-4">
                     <div class="small text-dark">
                         <div class="d-flex">
-                            <div class="fw-semibold me-3" style="width: 80px">
-                                경력
-                            </div>
-                            <div>경력 8~10년</div>
-                        </div>
-                        <div class="d-flex">
-                            <div class="fw-semibold me-3" style="width: 80px">
-                                학력
-                            </div>
-                            <div>대학교졸업(4년) 이상</div>
-                        </div>
-                        <div class="d-flex">
-                            <div class="fw-semibold me-3" style="width: 80px">
-                                마감일
-                            </div>
-                            <div>2025-04-16</div>
+                            <div class="fw-semibold me-3" style="width: 80px;">마감일</div>
+                            <div>{{model.deadline}}</div>
                         </div>
                         <div>
                             <div class="d-flex">
-                                <div class="fw-semibold me-3" style="width: 80px">
-                                    근무지역
-                                </div>
-                                <div>서울 중구 정동길 14, 2층 (정동, 오송빌딩)</div>
+                                <div class="fw-semibold me-3" style="width: 80px;">근무지역</div>
+                                <div>{{address.regionName}} {{address.subRegionName}} {{address.addressDetail}}</div>
                             </div>
                             <div class="ps-5 pt-1 d-flex gap-2 small text-secondary">
                                 <span>◎</span>
-                                <a href="#" class="text-decoration-none">지도보기</a>
+                                <a href="https://map.naver.com/search?query={{address.regionName}} {{address.subRegionName}} {{address.addressDetail}}
+                                " class="text-decoration-none" target="_blank">지도보기</a>
                                 <span class="text-muted">·</span>
-                                <a href="#" class="text-primary text-decoration-none"
-                                >주소복사</a
-                                >
+                                <a href="#" id="copyAddressButton" class="text-primary text-decoration-none">주소복사</a>
+
+                                <!-- 복사할 주소를 숨겨서 추가 -->
+                                <input type="text" id="hiddenAddress"
+                                       value="{{address.regionName}} {{address.subRegionName}} {{address.addressDetail}}"
+                                       readonly style="position:absolute; left:-9999px;">
                             </div>
                         </div>
                     </div>
@@ -120,8 +133,8 @@
                             class="d-flex justify-content-between align-items-center mb-2"
                     >
                         <h2 class="fs-6 fw-semibold">기업/서비스 소개</h2>
-                        <a href="#" class="text-primary small text-decoration-none"
-                        >기업상세 정보로 이동 &gt;</a
+                        <a href="/personal/companyinfo/{{model.id}}" class="text-primary small text-decoration-none"
+                        >기업상세 정보로 이동</a
                         >
                     </div>
                     <img
@@ -129,11 +142,18 @@
                             alt="회사 이미지"
                             class="img-fluid rounded shadow"
                     />
-                    <p class="small text-muted mt-2">
-                        주식회사 에스와이폴라리스는 안전한 온라인 결제를 위한
-                        안심결제 인증서비스와 다양한 SNS채널에서 상품을 판매/관리 할
-                        수 있는 SNS 통합 솔루션을 제공합니다.
+                    <p class="small text-muted mt-2">                    {{model.serviceIntro}}
+
                     </p>
+                </div>
+                <div>
+                    <h2 class="fs-6 fw-semibold">기타</h2>
+                    {{#model.additionalInfo}}
+                        {{model.additionalInfo}}
+                    {{/model.additionalInfo}}
+                    {{^model.additionalInfo}}
+                        기타 사항이 없습니다.
+                    {{/model.additionalInfo}}
                 </div>
             </div>
         </div>
@@ -144,16 +164,16 @@
             <!-- 기업 정보 상단 -->
             <div class="d-flex align-items-center mb-4">
                 <img
-                        src="/img/companyLogo.png"
+                        src="/img/{{company.logoImage}}"
                         alt="기업 로고"
                         class="me-3 rounded-circle object-fit-cover"
                         width="48"
                         height="48"
                 />
                 <div>
-                    <h5 class="mb-0 fw-bold">에스와이폴라리스</h5>
-                    <a href="#" class="text-decoration-none text-secondary small"
-                    >기업정보 보기 &gt;</a
+                    <h5 class="mb-0 fw-bold">{{company.companyName}}</h5>
+                    <a href="/personal/companyinfo/{{model.id}}" class="text-decoration-none text-secondary small"
+                    >기업정보 보기</a
                     >
                 </div>
             </div>
@@ -162,23 +182,22 @@
             <div class="mb-4">
                 <div class="row g-1 mb-2">
                     <div class="col-3 text-muted">업력</div>
-                    <div class="col">5년차 (2021년 7월 설립)</div>
+                    <div class="col">{{company.establishmentDate}} 설립</div>
                 </div>
                 <div class="row g-1">
                     <div class="col-3 text-muted">홈페이지</div>
                     <div class="col">
                         <a
-                                href="https://sypolaris.co.kr"
+                                href="{{company.mainService}}"
                                 class="text-primary text-decoration-none"
                                 target="_blank"
                         >
-                            https://sypolaris.co.kr/
+                            {{company.mainService}}
                             <i class="fa fa-external-link" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>
             </div>
-
             <!-- 지원하기 버튼 -->
             <div class="d-grid mb-2">
                 <form action="/apply/form/{{jobPosting.id}}" method="get">
@@ -194,5 +213,26 @@
     </div>
 </div>
 <!-- 본문 끝 -->
+
+<script>
+    document.getElementById('copyAddressButton').addEventListener('click', function (event) {
+        event.preventDefault(); // a태그 기본 동작(페이지 튕김) 막기
+        const hiddenInput = document.getElementById('hiddenAddress');
+        hiddenInput.select();
+        hiddenInput.setSelectionRange(0, 99999); // 모바일 대응
+
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                alert('주소가 복사되었습니다!');
+            } else {
+                alert('복사에 실패했습니다.');
+            }
+        } catch (err) {
+            alert('복사 중 오류가 발생했습니다.');
+        }
+    });
+</script>
+
 
 {{> layout/footer}}

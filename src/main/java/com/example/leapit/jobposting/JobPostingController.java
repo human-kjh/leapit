@@ -3,6 +3,8 @@ package com.example.leapit.jobposting;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.common.techstack.TechStackService;
+import com.example.leapit.companyinfo.CompanyInfo;
+import com.example.leapit.companyinfo.CompanyInfoRepository;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +26,7 @@ public class JobPostingController {
     private final TechStackService techStackService;
     private final JobPostingRepository jobPostingRepository;
     private final TechStackRepository techStackRepository;
+    private final CompanyInfoRepository companyInfoRepository;
 
     // 채용 공고 목록 보기
     @GetMapping("/company/jobposting/list")
@@ -34,12 +37,18 @@ public class JobPostingController {
     }
 
     // 채용 공고 상세보기
-    @GetMapping("/jobposting/{id}")
-    public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
+    @GetMapping("/company/jobposting/{id}")
+    public String companyDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
         JobPosting jobPosting = jobPostingService.findById(id);
         List<String> techStack = jobPostingService.getTechStacksByJobPostingId(id); // 기술 스택 목록 조회
+        CompanyInfo companyInfo = companyInfoRepository.findByUserId(jobPosting.getUser().getId());  // 회사 정보 조회
+        JobPostingResponse.AddressDTO addressDTO = jobPostingService.getJobPostingAddress(id);  // 주소 정보 조회
+
         request.setAttribute("model", jobPosting);
         request.setAttribute("techStack", techStack);
+        request.setAttribute("company", companyInfo);  // 회사 정보
+        request.setAttribute("address", addressDTO);  // 주소 정보
+
         return "company/jobposting/detail";
     }
 
@@ -89,7 +98,7 @@ public class JobPostingController {
     public String update(@PathVariable("id") Integer id, JobPostingRequest.UpdateDTO updateDTO,
                          @RequestParam(value = "techStacks", required = false) String[] techStacks) {
         jobPostingService.update(id, updateDTO, techStacks);
-        return "redirect:/jobposting/" + id;
+        return "redirect:/company/jobposting/" + id;
     }
 
     // 채용 공고 삭제
@@ -97,6 +106,28 @@ public class JobPostingController {
     public String delete(@PathVariable("id") Integer id) {
         jobPostingService.delete(id);
         return "redirect:/company/jobposting/list";
+    }
+
+
+    // 구직자 - 채용공고 상세
+    @GetMapping("/personal/jobposting/{id}")
+    public String personalDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
+        // 채용공고와 기술 스택, 회사 정보를 가져옴
+        JobPosting jobPosting = jobPostingService.findById(id);  // 이미 정의된 jobPostingService.findById 메서드 사용
+        List<String> techStack = jobPostingService.getTechStacksByJobPostingId(id); // 기술 스택 리스트
+        CompanyInfo companyInfo = companyInfoRepository.findByUserId(jobPosting.getUser().getId());  // 회사 정보 조회
+
+        // 주소 정보도 가져옴
+        JobPostingResponse.AddressDTO addressDTO = jobPostingService.getJobPostingAddress(id);  // 주소 정보 조회
+
+        // 모델에 필요한 정보들을 추가
+        request.setAttribute("model", jobPosting);  // 채용공고 정보
+        request.setAttribute("techStack", techStack);  // 기술 스택 정보
+        request.setAttribute("company", companyInfo);  // 회사 정보
+        request.setAttribute("address", addressDTO);  // 주소 정보
+
+        // 상세 페이지를 반환 (Mustache 템플릿을 사용한다고 가정)
+        return "personal/jobposting/detail";  // 해당 페이지로 이동
     }
 
     // 구직자 - 채용공고 목록
