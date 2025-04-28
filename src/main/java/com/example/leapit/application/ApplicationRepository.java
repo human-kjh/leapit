@@ -1,5 +1,9 @@
 package com.example.leapit.application;
 
+import com.example.leapit.companyinfo.CompanyInfo;
+import com.example.leapit.jobposting.JobPosting;
+import com.example.leapit.resume.Resume;
+import com.example.leapit.user.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
@@ -19,29 +23,29 @@ public class ApplicationRepository {
             Integer companyUserId, Integer jobPostingId, String passStatus, Boolean isViewed, Boolean isBookmark) {
 
         String sql = """
-        SELECT
-            att.id AS applicationId,
-            rt.id AS resumeId,
-            ut.name AS applicantName,
-            jpt.title AS jobTitle,
-            att.applied_date AS appliedDate,
-            CASE WHEN abt.id IS NOT NULL THEN TRUE ELSE FALSE END AS isBookmarked,
-            CASE
-                WHEN att.is_viewed = false THEN '미열람'
-                WHEN att.is_viewed = true AND att.is_passed IS NULL THEN '열람'
-                WHEN att.is_passed = true THEN '합격'
-                WHEN att.is_passed = false THEN '불합격'
-            END AS evaluationStatus,
-            att.is_viewed AS isViewed
-        FROM APPLICATION_TB att
-        JOIN RESUME_TB rt ON att.resume_id = rt.id
-        JOIN USER_TB ut ON rt.user_id = ut.id
-        JOIN JOB_POSTING_TB jpt ON att.job_posting_id = jpt.id
-        JOIN USER_TB comut ON jpt.user_id = comut.id
-        LEFT JOIN APPLICATION_BOOKMARK_TB abt 
-            ON abt.application_id = att.id AND abt.user_id = :companyUserId
-        WHERE comut.id = :companyUserId
-    """;
+                    SELECT
+                        att.id AS applicationId,
+                        rt.id AS resumeId,
+                        ut.name AS applicantName,
+                        jpt.title AS jobTitle,
+                        att.applied_date AS appliedDate,
+                        CASE WHEN abt.id IS NOT NULL THEN TRUE ELSE FALSE END AS isBookmarked,
+                        CASE
+                            WHEN att.is_viewed = false THEN '미열람'
+                            WHEN att.is_viewed = true AND att.is_passed IS NULL THEN '열람'
+                            WHEN att.is_passed = true THEN '합격'
+                            WHEN att.is_passed = false THEN '불합격'
+                        END AS evaluationStatus,
+                        att.is_viewed AS isViewed
+                    FROM APPLICATION_TB att
+                    JOIN RESUME_TB rt ON att.resume_id = rt.id
+                    JOIN USER_TB ut ON rt.user_id = ut.id
+                    JOIN JOB_POSTING_TB jpt ON att.job_posting_id = jpt.id
+                    JOIN USER_TB comut ON jpt.user_id = comut.id
+                    LEFT JOIN APPLICATION_BOOKMARK_TB abt 
+                        ON abt.application_id = att.id AND abt.user_id = :companyUserId
+                    WHERE comut.id = :companyUserId
+                """;
 
         if (jobPostingId != null) {
             sql += " AND jpt.id = :jobPostingId";
@@ -90,20 +94,18 @@ public class ApplicationRepository {
     }
 
 
-
-
     public List<ApplicationResponse.IsClosedDTO> positionAndIsClosedDtoBycompanyUserIds(Integer companyUserId) {
         String jpql = """
-        SELECT new com.example.leapit.application.ApplicationResponse$IsClosedDTO(
-            jpt.id,
-            jpt.title,
-            CASE WHEN jpt.deadline < CURRENT_DATE THEN true ELSE false END
-        )
-        FROM JobPosting jpt
-        JOIN jpt.user u
-        WHERE u.id = :companyUserId
-        ORDER BY jpt.createdAt DESC
-    """;
+                    SELECT new com.example.leapit.application.ApplicationResponse$IsClosedDTO(
+                        jpt.id,
+                        jpt.title,
+                        CASE WHEN jpt.deadline < CURRENT_DATE THEN true ELSE false END
+                    )
+                    FROM JobPosting jpt
+                    JOIN jpt.user u
+                    WHERE u.id = :companyUserId
+                    ORDER BY jpt.createdAt DESC
+                """;
 
         return em.createQuery(jpql, ApplicationResponse.IsClosedDTO.class)
                 .setParameter("companyUserId", companyUserId)
@@ -114,14 +116,14 @@ public class ApplicationRepository {
     // 지원 현황 통계
     public ApplicationResponse.ApplicationStatusDto findSummaryByUserId(Integer userId) {
         String jpql = """
-        SELECT COUNT(a), 
-               SUM(CASE WHEN a.isPassed = true THEN 1 ELSE 0 END), 
-               SUM(CASE WHEN a.isPassed = false THEN 1 ELSE 0 END)
-        FROM Application a
-        JOIN a.resume r
-        JOIN r.user u
-        WHERE u.id = :userId
-    """;
+                    SELECT COUNT(a), 
+                           SUM(CASE WHEN a.isPassed = true THEN 1 ELSE 0 END), 
+                           SUM(CASE WHEN a.isPassed = false THEN 1 ELSE 0 END)
+                    FROM Application a
+                    JOIN a.resume r
+                    JOIN r.user u
+                    WHERE u.id = :userId
+                """;
 
         Object[] result = (Object[]) em.createQuery(jpql)
                 .setParameter("userId", userId)
@@ -137,15 +139,15 @@ public class ApplicationRepository {
     // 지원 현황 목록
     public List<ApplicationResponse.ApplicationDto> findApplicationsByUserId(Integer userId) {
         String jpql = """
-        SELECT company.username, jp.title, a.appliedDate, r.id, jp.id
-        FROM Application a
-        JOIN a.resume r
-        JOIN r.user u
-        JOIN a.jobPosting jp
-        JOIN jp.user company
-        WHERE u.id = :userId
-        ORDER BY a.appliedDate DESC
-    """;
+                    SELECT company.username, jp.title, a.appliedDate, r.id, jp.id
+                    FROM Application a
+                    JOIN a.resume r
+                    JOIN r.user u
+                    JOIN a.jobPosting jp
+                    JOIN jp.user company
+                    WHERE u.id = :userId
+                    ORDER BY a.appliedDate DESC
+                """;
 
         List<Object[]> resultList = em.createQuery(jpql, Object[].class)
                 .setParameter("userId", userId)
@@ -170,5 +172,49 @@ public class ApplicationRepository {
         Query query = em.createQuery("Select a from Application a where a.resume.id = :resumeId");
         query.setParameter("resumeId", resumeId);
         return query.getResultList();
+    }
+
+    public ApplicationRequest.ApplyFormDTO findApplyFormInfo(Integer jobPostingId, Integer userId) {
+        // 채용공고 조회
+        JobPosting jobPosting = em.find(JobPosting.class, jobPostingId);
+
+        // 지원자 조회
+        User applicantUser = em.find(User.class, userId);
+
+        // 이력서 조회
+        List<Resume> resumes = em.createQuery(
+                        "SELECT r FROM Resume r WHERE r.user.id = :userId", Resume.class)
+                .setParameter("userId", userId)
+                .getResultList();
+
+        // 회사 정보 조회 (채용공고 작성자 기준)
+        Integer companyUserId = jobPosting.getUser().getId();
+        List<CompanyInfo> companyInfos = em.createQuery(
+                        "SELECT c FROM CompanyInfo c JOIN c.user u WHERE u.id = :companyUserId", CompanyInfo.class)
+                .setParameter("companyUserId", companyUserId)
+                .getResultList();
+
+        CompanyInfo companyInfo = companyInfos.isEmpty() ? null : companyInfos.get(0);
+
+        return new ApplicationRequest.ApplyFormDTO(jobPosting, companyInfo, applicantUser, resumes);
+    }
+
+
+    public List<Resume> findAllResumesByUserId(Integer userId) {
+        Query query = em.createQuery("SELECT r FROM Resume r WHERE r.user.id = :userId");
+        query.setParameter("userId", userId);
+        return query.getResultList();
+    }
+
+    public Resume findResumeById(Integer resumeId) {
+        return em.find(Resume.class, resumeId);
+    }
+
+    public ApplicationRequest.JobPostingInfoDto findJobPostingInfoDto(Integer jobPostingId) {
+        JobPosting jobPosting = em.find(JobPosting.class, jobPostingId);
+        if (jobPosting == null) {
+            return null; // 또는 예외 처리
+        }
+        return new ApplicationRequest.JobPostingInfoDto(jobPosting);
     }
 }

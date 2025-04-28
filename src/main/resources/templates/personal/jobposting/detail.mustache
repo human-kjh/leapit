@@ -198,10 +198,11 @@
                     </div>
                 </div>
             </div>
-
             <!-- 지원하기 버튼 -->
             <div class="d-grid mb-2">
-                <a href="/personal/apply-form/{{model.id}}" class="btn btn-primary fw-bold">지원하기</a>
+                <form action="/apply/form/{{jobPosting.id}}" method="get">
+                    <button type="submit" class="apply-button">지원하기</button>
+                </form>
             </div>
 
             <!-- 스크랩하기 버튼 -->
