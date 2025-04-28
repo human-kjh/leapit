@@ -21,17 +21,98 @@ import java.util.List;
 public class ResumeRequest {
 
     @Data
-    public static class UpdateDTO{
+    public static class UpdateDTO {
+        private String title;
+        private String photoUrl;
+        private Boolean isPublic;
+        private String summary;
+        private String positionType;
+        private String selfIntroduction;
 
+        private List<String> resumeTechStacks;
+
+        private List<EducationDTO> educations;
+        private List<ProjectDTO> projects;
+        private List<ExperienceDTO> experiences;
+        private List<LinkDTO> links;
+        private List<TrainingDTO> trainings;
+        private List<EtcDTO> etcs;
+
+        @Data
+        public static class EducationDTO {
+            private Integer id;
+            private LocalDate graduationDate;
+            private Boolean isDropout;
+            private String educationLevel;
+            private String schoolName;
+            private String major;
+            private BigDecimal gpa;
+            private BigDecimal gpaScale;
+        }
+
+        @Data
+        public static class ProjectDTO {
+            private Integer id;
+            private LocalDate startDate;
+            private LocalDate endDate;
+            private Boolean isOngoing;
+            private String title;
+            private String summary;
+            private String description;
+            private String repositoryUrl;
+            private List<String> techStacks;
+        }
+
+        @Data
+        public static class ExperienceDTO {
+            private Integer id;
+            private LocalDate startDate;
+            private LocalDate endDate;
+            private Boolean isEmployed;
+            private String companyName;
+            private String summary;
+            private String position;
+            private String responsibility;
+            private List<String> techStacks;
+        }
+
+        @Data
+        public static class LinkDTO {
+            private Integer id;
+            private String title;
+            private String url;
+        }
+
+        @Data
+        public static class TrainingDTO {
+            private Integer id;
+            private LocalDate startDate;
+            private LocalDate endDate;
+            private Boolean isOngoing;
+            private String courseName;
+            private String institutionName;
+            private String description;
+            private Timestamp createdAt;
+            private List<String> techStacks;
+        }
+
+        @Data
+        public static class EtcDTO {
+            private Integer id;
+            private LocalDate startDate;
+            private LocalDate endDate;
+            private Boolean hasEndDate;
+            private String title;
+            private String etcType;
+            private String institutionName;
+            private String description;
+        }
     }
-
-
 
     @Data
     public static class SaveDTO{
         private String title;
         private String photoUrl;
-        // 유저 정보
 
         private Boolean isPublic;
         private String summary;

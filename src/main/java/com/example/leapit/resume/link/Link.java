@@ -32,4 +32,9 @@ public class Link {
         this.title = title;
         this.url = url;
     }
+
+    public void update(String title, String url) {
+        this.title = title;
+        this.url = url;
+    }
 }

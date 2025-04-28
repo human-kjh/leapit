@@ -96,4 +96,13 @@ public class Resume {
         this.isPublic = isPublic != null ? isPublic : true;
         this.createdAt = createdAt;
     }
+
+    public void update(String title, String photoUrl, Boolean isPublic, String summary, String positionType, String selfIntroduction) {
+        this.title = title;
+        this.photoUrl = photoUrl;
+        this.isPublic = isPublic != null ? isPublic : true;
+        this.summary = summary;
+        this.positionType = positionType;
+        this.selfIntroduction = selfIntroduction;
+    }
 }
