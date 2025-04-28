@@ -33,6 +33,7 @@ public class ApplicationBookmarkController {
     public Resp<?> deleteApplicationBookmark(@PathVariable("id") Integer applicationId) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
         bookmarkService.deleteApplicationBookmarkByApplicationId(applicationId, sessionUser.getId());
         return Resp.ok("북마크 삭제");
     }

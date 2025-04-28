@@ -53,6 +53,7 @@ public class UserController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
+
         return "personal/user/update-form";
     }
 
@@ -127,6 +128,7 @@ public class UserController {
     public String companyMain() {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
 
         return "company/main";
     }

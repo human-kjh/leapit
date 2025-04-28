@@ -46,7 +46,6 @@ public class JobPostingController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-
         JobPosting jobPosting = jobPostingService.findById(id);
         List<String> techStack = jobPostingService.getTechStacksByJobPostingId(id); // 기술 스택 목록 조회
         CompanyInfo companyInfo = companyInfoRepository.findByUserId(jobPosting.getUser().getId());  // 회사 정보 조회
@@ -65,6 +64,7 @@ public class JobPostingController {
     public String saveForm(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
         
         List<TechStack> techStacks = techStackService.getAllTechStacks();
         request.setAttribute("model", techStacks);
@@ -74,6 +74,9 @@ public class JobPostingController {
     // 채용 공고 등록
     @PostMapping("/s/company/jobposting/save")
     public String save(JobPostingRequest.SaveDTO saveDTO, String[] techStack) {
+        // TODO: session 인증코드 필요
+
+
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
@@ -87,6 +90,7 @@ public class JobPostingController {
     public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
 
         JobPosting jobPosting = jobPostingRepository.findById(id);
         List<String> techStackList = jobPostingService.getTechStacksByJobPostingId(id);
@@ -116,6 +120,7 @@ public class JobPostingController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
+
         jobPostingService.update(id, updateDTO, techStacks);
         return "redirect:/s/company/jobposting/" + id;
     }
@@ -125,6 +130,7 @@ public class JobPostingController {
     public String delete(@PathVariable("id") Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
 
         jobPostingService.delete(id);
         return "redirect:/s/company/jobposting/list";
