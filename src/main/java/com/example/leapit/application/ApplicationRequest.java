@@ -37,6 +37,7 @@ public class ApplicationRequest {
     public static class ApplyFormDTO {
         private String jobPostingName;
         private String companyName;
+        private Integer jobPostingId;
 
         private String userName;
         private String userEmail;
@@ -47,6 +48,7 @@ public class ApplicationRequest {
         private List<AvailableResumeDTO> availableResumes;
 
         public ApplyFormDTO(JobPosting jobPosting, CompanyInfo companyInfo, User user, List<Resume> resumes) {
+            this.jobPostingId = jobPosting.getId();
             this.jobPostingName = jobPosting.getTitle();
             this.companyName = companyInfo.getCompanyName();
             this.userName = user.getName();
