@@ -3,6 +3,7 @@ package com.example.leapit.board.like;
 import com.example.leapit.board.Board;
 import com.example.leapit.user.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,4 +32,12 @@ public class Like {
 
     @CreationTimestamp
     private Timestamp createdAt;
+
+    @Builder
+    public Like(Integer id, User user, Board board, Timestamp createdAt) {
+        this.id = id;
+        this.user = user;
+        this.board = board;
+        this.createdAt = createdAt;
+    }
 }
