@@ -38,5 +38,4 @@ public class LikeRepository {
                 .setParameter("id", id)
                 .executeUpdate();
     }
-
 }
