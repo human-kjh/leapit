@@ -14,4 +14,9 @@ public class ApplicationRequest {
 
 
     }
+
+    @Data
+    public static class UpdateDTO{
+        private Boolean isPassed;
+    }
 }
