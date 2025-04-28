@@ -31,7 +31,7 @@ public class Board {
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
-  
+
     @Builder
     public Board(Integer id, String title, String content, User user, Timestamp createdAt) {
         this.id = id;
@@ -39,5 +39,11 @@ public class Board {
         this.content = content;
         this.user = user;
         this.createdAt = createdAt;
+    }
+  
+    // 게시글 수정 Setter
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 }

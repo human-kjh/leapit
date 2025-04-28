@@ -17,6 +17,12 @@ public class BoardRequest {
                     .user(user)
                     .build();
         }
+    }
 
+    @Data
+    public static class UpdateDTO {
+        private String title;
+        private String content;
+        private String isPublic;
     }
 }

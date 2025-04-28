@@ -42,5 +42,9 @@ public class BoardRepository {
     public void save(Board board) {
         em.persist(board);
     }
+
+    public Board findById(Integer id) {
+        return em.find(Board.class, id);
+    }
 }
 

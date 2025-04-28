@@ -62,7 +62,6 @@ public class BoardResponse {
             }
         }
 
-
         public DetailDTO(Board board, Integer sessionUserId, Boolean isLike, Integer likeCount, Integer likeId, List<Reply> replies) {
             this.id = board.getId();
             this.title = board.getTitle();
