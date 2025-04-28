@@ -4,7 +4,6 @@ import com.example.leapit.companyinfo.CompanyInfo;
 import com.example.leapit.companyinfo.CompanyInfoResponse;
 import com.example.leapit.jobposting.bookmark.JobPostingBookmark;
 import com.example.leapit.jobposting.techstack.JobPostingTechStack;
-import com.example.leapit.application.Application;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
@@ -144,6 +143,7 @@ public class JobPostingRepository {
         if (selectedLabel != null) {
             jpql.append(" AND jp.positionType = :selectedLabel");
         }
+
         if (techStackCode != null) {
             jpql.append(" AND EXISTS (" +
                     "SELECT 1 FROM JobPostingTechStack jpts2 " +
@@ -288,3 +288,4 @@ public class JobPostingRepository {
         }
     }
 }
+

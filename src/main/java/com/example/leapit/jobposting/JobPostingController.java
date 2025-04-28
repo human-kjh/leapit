@@ -161,6 +161,8 @@ import java.util.List;
         boolean isPopular = reqDTO.isPopularTrue();
         boolean isLatest = reqDTO.isLatestTrue();
 
+        Integer sessionUserId = (sessionUser != null) ? sessionUser.getId() : null;
+
         JobPostingResponse.JobPostingListFilterDTO respDTO =
                 jobPostingService.공고목록페이지(
                         regionId,
@@ -170,7 +172,7 @@ import java.util.List;
                         selectedLabel,
                         isPopular,
                         isLatest,
-                        sessionUser.getId()
+                        sessionUserId
                 );
 
         req.setAttribute("models", respDTO);
