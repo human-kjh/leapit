@@ -25,7 +25,6 @@ public class BoardService {
                 .toList();
     }
 
-
     public BoardResponse.DetailDTO detail(Integer id, Integer userId) {
         Board board = boardRepository.findByIdJoinUser(id);
 

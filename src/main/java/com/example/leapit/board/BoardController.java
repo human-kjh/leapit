@@ -45,7 +45,7 @@ public class BoardController {
         request.setAttribute("model", detailDTO);
         return "personal/board/detail";
     }
-
+  
     @GetMapping("/community/save-form")
     public String saveForm() {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -94,6 +94,4 @@ public class BoardController {
 
         return "redirect:/community/list";
     }
-
-
 }

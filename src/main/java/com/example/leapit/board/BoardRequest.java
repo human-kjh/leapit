@@ -17,7 +17,6 @@ public class BoardRequest {
                     .user(user)
                     .build();
         }
-
     }
 
     @Data
