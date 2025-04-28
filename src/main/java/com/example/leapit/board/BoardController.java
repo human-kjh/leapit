@@ -33,7 +33,7 @@ public class BoardController {
 
         return "personal/board/list";
     }
-
+  
     @GetMapping("/community/{id}")
     public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -45,7 +45,7 @@ public class BoardController {
         request.setAttribute("model", detailDTO);
         return "personal/board/detail";
     }
-
+  
     @GetMapping("/community/save-form")
     public String saveForm() {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -84,6 +84,4 @@ public class BoardController {
 
         return "redirect:/community/" + id;
     }
-
-
 }

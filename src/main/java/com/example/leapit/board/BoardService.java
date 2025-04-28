@@ -24,8 +24,7 @@ public class BoardService {
                 .map(board -> new BoardResponse.ListDTO(board, sessionUserId))
                 .toList();
     }
-
-
+  
     public BoardResponse.DetailDTO detail(Integer id, Integer userId) {
         Board board = boardRepository.findByIdJoinUser(id);
 
@@ -51,7 +50,7 @@ public class BoardService {
 
         return detailDTO;
     }
-
+  
     @Transactional
     public void save(BoardRequest.SaveDTO saveDTO, User sessionUser) {
         Board board = saveDTO.toEntity(sessionUser);
