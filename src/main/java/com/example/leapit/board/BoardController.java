@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -29,5 +30,17 @@ public class BoardController {
         }
 
         return "personal/board/list";
+    }
+  
+    @GetMapping("/community/{id}")
+    public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        // 비로그인 시 상세보기
+        Integer sessionUserId = (sessionUser == null ? null : sessionUser.getId());
+
+        BoardResponse.DetailDTO detailDTO = boardService.detail(id, sessionUserId);
+        request.setAttribute("model", detailDTO);
+        return "personal/board/detail";
     }
 }

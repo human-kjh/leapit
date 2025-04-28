@@ -23,7 +23,7 @@
                                     <tbody>
                                         <!-- 예시: 내가 쓴 글인 경우 -->
                                         {{#models}}
-                                            <tr onclick="location.href='/community/{{id}}/detail'" style="cursor: pointer;">
+                                            <tr onclick="location.href='/community/{{id}}'" style="cursor: pointer;">
                                                 <td>{{title}}</td>
                                                 <td>{{name}}</td>
                                                 <td>
@@ -49,15 +49,10 @@
                                                                 </ul>
                                                         {{/isOwner}}
                                                         </div>
-
                                                     </div>
                                                 </td>
                                             </tr>
                                         {{/models}}
-
-
-
-
                                     </tbody>
                                 </table>
                             </div>
