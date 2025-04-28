@@ -12,7 +12,7 @@ public class LikeController {
     private final LikeService likeService;
     private final HttpSession session;
 
-    @PostMapping("/like")
+    @PostMapping("/s/api/like")
     public Resp<?> saveLike(@RequestBody LikeRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -22,7 +22,7 @@ public class LikeController {
         return Resp.ok(respDTO);
     }
 
-    @DeleteMapping("/like/{id}")
+    @DeleteMapping("/s/api/like/{id}")
     public Resp<?> deleteLike(@PathVariable("id") Integer id) {
         // 인증로직
         User sessionUser = (User) session.getAttribute("sessionUser");

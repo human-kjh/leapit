@@ -29,19 +29,19 @@ public class JobPostingController {
     private final CompanyInfoRepository companyInfoRepository;
 
     // 채용 공고 목록 보기
-    @GetMapping("/company/jobposting/list")
+    @GetMapping("/s/company/jobposting/list")
     public String companyList(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
 
-        request.setAttribute("openJobPostings", jobPostingService.OpenJobPostings());
-        request.setAttribute("closedJobPostings", jobPostingService.ClosedJobPostings());
+        request.setAttribute("openJobPostings", jobPostingService.OpenJobPostings(sessionUser.getId()));
+        request.setAttribute("closedJobPostings", jobPostingService.ClosedJobPostings(sessionUser.getId()));
         return "company/jobposting/list";
     }
 
     // 채용 공고 상세보기
-    @GetMapping("/company/jobposting/{id}")
+    @GetMapping("/s/company/jobposting/{id}")
     public String companyDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -61,7 +61,7 @@ public class JobPostingController {
     }
 
     // 채용 공고 등록 폼
-    @GetMapping("/jobposting/save-form")
+    @GetMapping("/s/company/jobposting/save-form")
     public String saveForm(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -72,18 +72,18 @@ public class JobPostingController {
     }
 
     // 채용 공고 등록
-    @PostMapping("/jobposting/save")
+    @PostMapping("/s/company/jobposting/save")
     public String save(JobPostingRequest.SaveDTO saveDTO, String[] techStack) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
 
         jobPostingService.save(saveDTO, sessionUser, techStack);
-        return "redirect:/company/jobposting/list";
+        return "redirect:/s/company/jobposting/list";
     }
 
     // 채용 공고 수정 폼
-    @GetMapping("/jobposting/{id}/update-form")
+    @GetMapping("/s/company/jobposting/{id}/update-form")
     public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -110,24 +110,24 @@ public class JobPostingController {
     }
 
     // 채용 공고 수정
-    @PostMapping("/jobposting/{id}/update")
+    @PostMapping("/s/company/jobposting/{id}/update")
     public String update(@PathVariable("id") Integer id, JobPostingRequest.UpdateDTO updateDTO,
                          @RequestParam(value = "techStacks", required = false) String[] techStacks) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         jobPostingService.update(id, updateDTO, techStacks);
-        return "redirect:/company/jobposting/" + id;
+        return "redirect:/s/company/jobposting/" + id;
     }
 
     // 채용 공고 삭제
-    @PostMapping("/jobposting/{id}/delete")
+    @PostMapping("/s/company/jobposting/{id}/delete")
     public String delete(@PathVariable("id") Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         jobPostingService.delete(id);
-        return "redirect:/company/jobposting/list";
+        return "redirect:/s/company/jobposting/list";
     }
 
 

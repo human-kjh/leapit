@@ -8,7 +8,7 @@
                             <div class="p-3">
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="fw-bold mb-0">게시글 목록</h4>
-                                    <a href="/community/save-form" class="btn btn-primary">
+                                    <a href="/s/community/save-form" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> 게시글 작성
                                     </a>
                                 </div>
@@ -37,9 +37,9 @@
                                                                 <i class="fa fa-ellipsis-v"></i>
                                                             </button>
                                                               <ul class="dropdown-menu dropdown-menu-end" onclick="event.stopPropagation()">
-                                                                  <li><a class="dropdown-item" href="/community/{{id}}/update-form">수정</a></li>
+                                                                  <li><a class="dropdown-item" href="/s/community/{{id}}/update-form">수정</a></li>
                                                                   <li>
-                                                                      <form action="/community/{{id}}/delete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')" style="display: inline;">
+                                                                      <form action="/s/community/{{id}}/delete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')" style="display: inline;">
                                                                           <button type="submit" class="dropdown-item text-danger" style="all: unset; padding: 8px 16px; width: 100%; text-align: left; color: #dc3545; cursor: pointer;">
                                                                               삭제
                                                                           </button>

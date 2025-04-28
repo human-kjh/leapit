@@ -18,7 +18,7 @@ public class ResumeController {
     private final ResumeService resumeService;
     private final HttpSession session;
 
-    @GetMapping("/resume")
+    @GetMapping("/s/personal/resume")
     public String list(HttpServletRequest request) {
        User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -28,7 +28,7 @@ public class ResumeController {
         return "personal/resume/list";
     }
 
-    @GetMapping("/resume/{id}")
+    @GetMapping("/s/personal/resume/{id}")
     public String detail(@PathVariable("id") int id, HttpServletRequest request) {
       User sessionUser = (User) session.getAttribute("sessionUser");
       if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -38,16 +38,16 @@ public class ResumeController {
         return "personal/resume/detail";
     }
 
-    @PostMapping("/resume/{id}/delete")
+    @PostMapping("/s/personal/resume/{id}/delete")
     public String delete(@PathVariable("id") int id) {
        User sessionUser = (User) session.getAttribute("sessionUser");
        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         resumeService.delete(id); // TODO : sessionUser.getId() 인수 추가
-        return "redirect:/resume";
+        return "redirect:/s/personal/resume";
     }
 
-    @GetMapping("/resume/save-form")
+    @GetMapping("/s/personal/resume/save-form")
     public String saveForm(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -57,7 +57,7 @@ public class ResumeController {
         return "personal/resume/save-form";
     }
 
-    @PostMapping("/resume/save")
+    @PostMapping("/s/api/personal/resume/save")
     @ResponseBody
     public Resp<?> save(@RequestBody ResumeRequest.SaveDTO saveDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");

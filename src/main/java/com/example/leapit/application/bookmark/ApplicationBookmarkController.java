@@ -15,7 +15,7 @@ public class ApplicationBookmarkController {
 
 
     // 기업 스크랩 등록 application_bookmark
-    @PostMapping("/api/company/bookmark")
+    @PostMapping("/s/api/company/bookmark")
     public Resp<?> saveApplicationBookmark(@RequestBody ApplicationBookmarkRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -29,7 +29,7 @@ public class ApplicationBookmarkController {
     }
 
     // 기업 스크랩 삭제 application_bookmark
-    @DeleteMapping("/api/company/bookmark/{id}")
+    @DeleteMapping("/s/api/company/bookmark/{id}")
     public Resp<?> deleteApplicationBookmark(@PathVariable("id") Integer applicationId) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
