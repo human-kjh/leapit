@@ -204,5 +204,16 @@ public class JobPostingResponse {
         }
     }
 
-}
+    @Data
+    public static class AddressDTO {
+        private String regionName;
+        private String subRegionName;
+        private String addressDetail;
 
+        public AddressDTO(String regionName, String subRegionName, String addressDetail) {
+            this.regionName = regionName;
+            this.subRegionName = subRegionName;
+            this.addressDetail = addressDetail;
+        }
+    }
+}

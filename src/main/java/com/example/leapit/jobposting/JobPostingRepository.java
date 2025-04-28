@@ -268,5 +268,24 @@ public class JobPostingRepository {
         return query.getResultList();
     }
 
+
+    // Native Query로 주소 정보를 조회하여 AddressDTO로 반환
+    public JobPostingResponse.AddressDTO findJobPostingAddressById(Integer id) {
+        String sql = "SELECT r.name AS region_name, sr.name AS sub_region_name, jp.address_detail "
+                + "FROM job_posting_tb jp "
+                + "JOIN region_tb r ON jp.address_region_id = r.id "
+                + "JOIN sub_region_tb sr ON jp.address_sub_region_id = sr.id "
+                + "WHERE jp.id = ?";
+
+        Query query = em.createNativeQuery(sql);
+        query.setParameter(1, id);
+
+        try {
+            Object[] result = (Object[]) query.getSingleResult();
+            return new JobPostingResponse.AddressDTO((String) result[0], (String) result[1], (String) result[2]);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
 
