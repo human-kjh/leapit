@@ -1,7 +1,6 @@
 package com.example.leapit.application;
 
 import com.example.leapit._core.util.Resp;
-import com.example.leapit.resume.ResumeResponse;
 import com.example.leapit.resume.ResumeService;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +27,7 @@ public class ApplicationController {
     }
 
     // 개인 지원 현황 관리
-    @GetMapping("/personal/mypage/application")
+    @GetMapping("/s/personal/mypage/application")
     public String application(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -71,14 +70,14 @@ public class ApplicationController {
     @GetMapping("/company/applicant/{id}")
     public String applicationDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
         ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id); // TODO : sessionUser.getId() 인수 추가
-        request.setAttribute("model",detailDTO);
+        request.setAttribute("model", detailDTO);
         return "/company/applicant/detail";
     }
 
     @ResponseBody
     @PutMapping("/company/applicant/{id}/pass")
-    public Resp<?> isPassedUpdate(@PathVariable("id") Integer id, @RequestBody ApplicationRequest.UpdateDTO updateDTO){
-        applicationService.update(id,updateDTO);
+    public Resp<?> isPassedUpdate(@PathVariable("id") Integer id, @RequestBody ApplicationRequest.UpdateDTO updateDTO) {
+        applicationService.update(id, updateDTO);
         return Resp.ok(null);
     }
 
