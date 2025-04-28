@@ -32,7 +32,6 @@ public class BoardRepository {
         return query.getResultList();
     }
 
-
     public Board findByIdJoinUser(Integer id) {
         Query query = em.createQuery("select b from Board b join fetch b.user u where b.id = :id", Board.class);
         query.setParameter("id", id);

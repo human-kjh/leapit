@@ -48,9 +48,10 @@
           </div>
     
           <div class=" bg-light border p-3 mb-3">
-              <form class="row g-2 align-items-center">
+              <form action="/reply/save" method="post" class="row g-2 align-items-center">
+                  <input type="hidden" name="boardId" value="{{model.id}}">
                 <div class="col">
-                  <input type="text" class="form-control" placeholder="댓글 작성하기..." />
+                  <input type="text" class="form-control" placeholder="댓글 작성하기..." name="content"/>
                 </div>
                 <div class="col-auto">
                   <button type="submit" class="btn btn-outline-primary">

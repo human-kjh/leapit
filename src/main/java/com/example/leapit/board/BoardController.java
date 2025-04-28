@@ -84,7 +84,7 @@ public class BoardController {
 
         return "redirect:/community/" + id;
     }
-  
+
     @PostMapping("/community/{id}/delete")
     public String delete(@PathVariable("id") Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
