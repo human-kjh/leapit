@@ -21,13 +21,13 @@ public class PositionTypeRepositoryTest {
     public void findAllLabel() {
         // given
         String selectedLabel = "백엔드";
-        
+
         // when
         List<PositionTypeResponse.PositionTypeDTO> labels = positionTypeRepository.findAllLabelAndSelectedLabel(selectedLabel);
 
         // eye
         for (PositionTypeResponse.PositionTypeDTO labelDto : labels) {
-            System.out.println(labelDto.getLabel());
+            System.out.println(labelDto.getCode());
         }
     }
 }

@@ -85,9 +85,6 @@ public class CompanyInfoController {
     // 구직자 - 기업상세
     @GetMapping("/personal/companyinfo/{id}")
     public String personalDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
-
         CompanyInfo companyInfo = companyInfoService.findById(id);
         Integer companyUserId = companyInfo.getUser().getId();
 
