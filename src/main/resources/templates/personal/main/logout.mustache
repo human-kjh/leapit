@@ -3,44 +3,46 @@
 <!-- 본문 -->
 <div class="main container px-3 px-md-4">
     <!-- Carousel + 옆 영역 (세로폭 완전 일치) -->
-    <div class="row mt-5 mb-4 gx-3">
-        <!-- Carousel 영역 -->
-        <div class="col-12 col-md-8" style="height: 300px;">
-            <div id="mainCarousel" class="carousel slide h-100" data-bs-ride="carousel">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"
-                            aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"
-                            aria-label="Slide 2"></button>
-                    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"
-                            aria-label="Slide 3"></button>
-                </div>
+<div class="row mt-5 mb-4 gx-3">
+    <!-- Carousel 영역 -->
+    <div class="col-12 col-md-8" style="height: 300px;">
+        <div id="mainCarousel" class="carousel slide h-100" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+            </div>
 
-                <div class="carousel-inner h-100">
-                    {{#model.recentJobPostings}}
-                        <div class="carousel-item {{#isActive}}active{{/isActive}} h-100">
+            <div class="carousel-inner h-100">
+                {{#model.recentJobPostings}}
+                    <div class="carousel-item {{#isActive}}active{{/isActive}} h-100">
+                        <a href="/personal/jobposting/{{id}}" class="text-decoration-none text-white">
                             <img src="/img/jobImg.png" class="d-block w-100 h-100 object-fit-cover" alt="{{title}}">
                             <div class="carousel-caption">
                                 <h3>{{title}}</h3>
                                 <p>{{companyName}}</p>
                             </div>
-                        </div>
-                    {{/model.recentJobPostings}}
-                </div>
-
-                <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel"
-                        data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel"
-                        data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                        </a>
+                    </div>
+                {{/model.recentJobPostings}}
             </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        <!-- 오른쪽 영역 -->
+    </div>
+    <!-- 오른쪽 영역 -->
     {{#sessionUser}}
         <div class="col-12 col-md-4 bg-light d-flex flex-column justify-content-between"
              style="height: 300px;">
@@ -55,14 +57,16 @@
             <!-- 버튼 그룹 영역 -->
             <div class="mt-auto">
                 <button
-                        class="btn btn-outline-primary w-100  mb-3 d-flex align-items-center justify-content-center gap-2"
-                        id="joinLoginButton">
+                        class="btn btn-outline-primary w-100 mb-3 d-flex align-items-center justify-content-center gap-2"
+                        id="joinLoginButton"
+                        onclick="location.href='/resume/save-form'">  <!-- 이력서 작성 폼 이동 -->
                     <i class="fa fa-file-text-o"></i>
                     <span>이력서 작성</span>
                 </button>
                 <button
-                        class="btn btn-outline-primary w-100  d-flex align-items-center justify-content-center gap-2"
-                        id="myPageButton">
+                        class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2"
+                        id="myPageButton"
+                        onclick="location.href='/personal/mypage/application'">  <!-- 마이페이지 이동 -->
                     <i class="fa fa-user-o"></i>
                     <span>마이페이지</span>
                 </button>
@@ -93,7 +97,7 @@
             <!-- 카드1 -->
             {{#model.popularJobPostings}}
                 <div class="col-md-3 col-sm-6">
-                    <a href="/상세페이지URL1" class="text-decoration-none text-dark">
+                    <a href="/personal/jobposting/{{id}}" class="text-decoration-none text-dark">
                         <div class="mb-3 position-relative">
                             <img src="/img/jobImg.png" class="img-fluid">
                             <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-{{dDay}}</span>

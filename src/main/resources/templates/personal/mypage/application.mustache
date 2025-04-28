@@ -1,68 +1,69 @@
 {{> layout/personal-header}}
 
-            <!-- 본문 -->
-            <div class="main container mt-5">
-                <div class="content-wrapper">
-                    <div class="mypageSidebar">
-                        <div class="mypageSidebarBox">
-                            <h5 class="mypageSidebarTitle">마이점핏</h5>
-                            <div class="mypageSidebarMenu">
-                                <a href="/personal/mypage/application" class="mypageSidebarLink">입사지원 현황</a>
-                                <a href="/personal/mypage/bookmark" class="mypageSidebarLink">스크랩 포지션</a>
-                                <a href="#" class="mypageSidebarLink">계정 정보 설정</a>
-                            </div>
-                        </div>
+<!-- 본문 -->
+<div class="main container mt-5">
+    <div class="content-wrapper">
+        <div class="mypageSidebar">
+            <div class="mypageSidebarBox">
+                <h5 class="mypageSidebarTitle">마이점핏</h5>
+                <div class="mypageSidebarMenu">
+                    <a href="/personal/mypage/application" class="mypageSidebarLink">입사지원 현황</a>
+                    <a href="/personal/mypage/bookmark" class="mypageSidebarLink">스크랩 포지션</a>
+                    <a href="/personal/user/update-form" class="mypageSidebarLink">계정 정보 설정</a>
+                </div>
+            </div>
+        </div>
+        <div class="myStatus">
+            <div class="myStatusInner">
+                <div class="myStatusTitle">마이 랩핏</div>
+                <!-- 지원 통계 영역 -->
+                <div class="statusBoxes">
+                    <div class="statusBox">
+                        <h6>지원완료</h6>
+                        <span class="statusCount">{{models.status.total}}</span>
                     </div>
-                    <div class="myStatus">
-                        <div class="myStatusInner">
-                            <div class="myStatusTitle">마이 랩핏</div>
-                            <!-- 지원 통계 영역 -->
-                            <div class="statusBoxes">
-                                <div class="statusBox">
-                                    <h6>지원완료</h6>
-                                    <span class="statusCount">{{models.status.total}}</span>
-                                </div>
-                                <div class="statusBox">
-                                    <h6>최종합격</h6>
-                                    <span class="statusCount">{{models.status.passed}}</span>
-                                </div>
-                                <div class="statusBox">
-                                    <h6>불합격</h6>
-                                    <span class="statusCount">{{models.status.failed}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 지원 완료 건수 -->
-                        <h5 class="applyTitle">지원완료 총 {{models.status.total}}건</h5>
-
-                        <!-- 지원 현황 목록 -->
-                        <div class="applyList">
-                            {{#models.applications}}
-                                <div class="applyItem">
-                                    <div class="card mb-3">
-                                        <a href="/job/detail/{{jobPostingId}}" class="card-body text-start rounded border-0 text-decoration-none bg-white">
-                                            <h6 class="card-title mb-2">{{companyName}}</h6>
-                                            <h5 class="card-title mb-2">{{jobTitle}}</h5>
-                                            <small>{{appliedDate}} 지원</small>
-                                        </a>
-                                    </div>
-                                </div>
-                            {{/models.applications}}
-                        </div>
+                    <div class="statusBox">
+                        <h6>최종합격</h6>
+                        <span class="statusCount">{{models.status.passed}}</span>
+                    </div>
+                    <div class="statusBox">
+                        <h6>불합격</h6>
+                        <span class="statusCount">{{models.status.failed}}</span>
                     </div>
                 </div>
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const toggleSwitches = document.querySelectorAll('.toggleSwitch');
+            <!-- 지원 완료 건수 -->
+            <h5 class="applyTitle">지원완료 총 {{models.status.total}}건</h5>
 
-                    toggleSwitches.forEach(toggleSwitch => {
-                        toggleSwitch.addEventListener('click', function () {
-                            this.classList.toggle('active');
-                        });
-                    });
-                });
-            </script>
-            <!-- 본문 끝 -->
+            <!-- 지원 현황 목록 -->
+            <div class="applyList">
+                {{#models.applications}}
+                    <div class="applyItem">
+                        <div class="card mb-3">
+                            <a href="/personal/jobposting/{{jobPostingId}}"
+                               class="card-body text-start rounded border-0 text-decoration-none bg-white">
+                                <h6 class="card-title mb-2">{{companyName}}</h6>
+                                <h5 class="card-title mb-2">{{jobTitle}}</h5>
+                                <small>{{appliedDate}} 지원</small>
+                            </a>
+                        </div>
+                    </div>
+                {{/models.applications}}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toggleSwitches = document.querySelectorAll('.toggleSwitch');
+
+        toggleSwitches.forEach(toggleSwitch => {
+            toggleSwitch.addEventListener('click', function () {
+                this.classList.toggle('active');
+            });
+        });
+    });
+</script>
+<!-- 본문 끝 -->
 
 {{> layout/footer}}
