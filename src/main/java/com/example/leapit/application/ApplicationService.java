@@ -13,21 +13,21 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final ApplicationBookmarkRepository applicationBookmarkRepository;
 
-    public ApplicationResponse.ApplicationBookmarkListDTO 내북마크관리페이지(Integer userId) {
+    public ApplicationResponse.ApplicationBookmarkListDTO myBookmarkpage(Integer userId) {
         // 지원 현황 통계
         ApplicationResponse.ApplicationStatusDto statusDto = applicationRepository.findSummaryByUserId(userId);
 
         // 스크랩한 공고 목록 조회
-        List<ApplicationBookmarkResponse.JobPostingBookmarkDTO> bookmarkListDTO =  applicationBookmarkRepository.findAllJobPostingBookmarkByuserId(userId);
+        List<ApplicationBookmarkResponse.JobPostingBookmarkDTO> bookmarkListDTO = applicationBookmarkRepository.findAllJobPostingBookmarkByuserId(userId);
 
         // respDTO에 담기
-        ApplicationResponse.ApplicationBookmarkListDTO respDTO = new ApplicationResponse.ApplicationBookmarkListDTO(bookmarkListDTO,statusDto);
+        ApplicationResponse.ApplicationBookmarkListDTO respDTO = new ApplicationResponse.ApplicationBookmarkListDTO(bookmarkListDTO, statusDto);
 
         return respDTO;
     }
 
 
-    public ApplicationResponse.ApplicationListViewDTO 내지원현황목록(Integer userId) {
+    public ApplicationResponse.ApplicationListViewDTO myApplicationPage(Integer userId) {
         // 지원 현황 통계
         ApplicationResponse.ApplicationStatusDto statusDto = applicationRepository.findSummaryByUserId(userId);
         // 지원 현황 목록 조회
@@ -43,17 +43,16 @@ public class ApplicationService {
         List<ApplicationResponse.IsClosedDTO> positions = applicationRepository.positionAndIsClosedDtoBycompanyUserIds(companyUserId);
 
         // 2. 지원받은 이력서 목록 조회
-        List<ApplicationResponse.CompanyeApplicantDto> applicants =applicationRepository.findAllApplicantsByFilter(companyUserId,jobPostingId,passStatus,isViewed, isBookmark);
+        List<ApplicationResponse.CompanyeApplicantDto> applicants = applicationRepository.findAllApplicantsByFilter(companyUserId, jobPostingId, passStatus, isViewed, isBookmark);
 
         // 3. 선택된 필터 정보 포함한 DTO 구성
-        ApplicationResponse.ApplicantListViewDTO listView = new ApplicationResponse.ApplicantListViewDTO(jobPostingId, passStatus, isViewed,isBookmark);
+        ApplicationResponse.ApplicantListViewDTO listView = new ApplicationResponse.ApplicantListViewDTO(jobPostingId, passStatus, isViewed, isBookmark);
 
 
         // 4. pageDTO에 담아서 컨트롤러에 넘김
-        ApplicationResponse.ApplicantListPageDTO respDTO = new ApplicationResponse.ApplicantListPageDTO(applicants,positions,listView);
+        ApplicationResponse.ApplicantListPageDTO respDTO = new ApplicationResponse.ApplicantListPageDTO(applicants, positions, listView);
 
 
         return respDTO;
     }
-
 }

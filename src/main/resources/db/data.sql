@@ -285,7 +285,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (6, '시니어 백엔드 개발자 채용', '백엔드', 5, 10,
+VALUES (6, '시니어 백엔드 개발자 채용', 'backend', 5, 10,
         '전문학사', 1, 1, '강남대로 123',
         '대용량 트래픽 처리 기반 백엔드 플랫폼 개발',
         '2025-06-30', '마이크로서비스 아키텍처 기반 시스템 설계 및 운영',
@@ -298,10 +298,23 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (7, '프론트엔드 개발자 모집', '프론트엔드', 0, 2,
+VALUES (7, '프론트엔드 개발자 모집', 'frontend', 0, 2,
         NULL, 1, 2, '서초대로 77',
         'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
         '2025-05-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
+        'React, TypeScript 기반 개발 경험',
+        'Figma 연동 경험자 우대',
+        '재택 가능, 장비 지원',
+        NULL, 13, NOW());
+
+INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max_career_level,
+                            education_level, address_region_id, address_sub_region_id, address_detail,
+                            service_intro, deadline, responsibility, qualification, preference,
+                            benefit, additional_info, view_count, created_at)
+VALUES (7, '백엔드 개발자 모집', 'backend', 0, 2,
+        NULL, 1, 2, '서초대로 77',
+        'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
+        '2025-07-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
         'React, TypeScript 기반 개발 경험',
         'Figma 연동 경험자 우대',
         '재택 가능, 장비 지원',

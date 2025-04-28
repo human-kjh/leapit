@@ -1,6 +1,5 @@
-package com.example.leapit.ApplicationRepositoryTest;
+package com.example.leapit.application;
 
-import com.example.leapit.application.ApplicationRepository;
 import com.example.leapit.application.bookmark.ApplicationBookmarkRepository;
 import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
 import jakarta.persistence.EntityManager;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Import(ApplicationBookmarkRepository.class)
@@ -19,6 +17,7 @@ public class ApplicationBookmarkRepositoryTest {
     private EntityManager em;
     @Autowired
     private ApplicationBookmarkRepository applicationBookmarkRepository;
+
     @Test
     public void findAllJobPostingBookmarkByuserId_test() {
         // given
