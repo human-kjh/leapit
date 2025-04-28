@@ -31,8 +31,7 @@ public class Board {
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
-
-
+  
     @Builder
     public Board(Integer id, String title, String content, User user, Timestamp createdAt) {
         this.id = id;

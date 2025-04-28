@@ -32,7 +32,6 @@ public class BoardResponse {
         }
     }
 
-
     @Data
     public static class DetailDTO {
         private Integer id;
@@ -86,5 +85,4 @@ public class BoardResponse {
             this.replies = repliesDTO;
         }
     }
-
 }
