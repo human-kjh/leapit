@@ -447,7 +447,7 @@ VALUES (3, '구직사이트 추천', '저는 랩핏이 제일 좋은 것 같아�
 
 -- 8. reply_tb
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
-VALUES (1, 1, '정말 유익한 글입니다.', NOW());
+VALUES (1, 1, '좋아요 부탁드려요 ~', NOW());
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
 VALUES (1, 2, '질문이 하나 있습니다.', NOW());
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
@@ -455,7 +455,7 @@ VALUES (1, 3, '좋아요 누르고 갑니다.', NOW());
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
 VALUES (2, 1, '감사합니다. 도움됐어요.', NOW());
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
-VALUES (2, 2, '정리 감사합니다!', NOW());
+VALUES (2, 2, '오늘도 화이팅!', NOW());
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
 VALUES (3, 1, '재밌게 잘 읽었습니다.', NOW());
 

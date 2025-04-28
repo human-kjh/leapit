@@ -38,5 +38,9 @@ public class BoardRepository {
         query.setParameter("id", id);
         return (Board) query.getSingleResult();
     }
+
+    public void save(Board board) {
+        em.persist(board);
+    }
 }
 

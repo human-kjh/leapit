@@ -4,8 +4,12 @@ import com.example.leapit.board.like.Like;
 import com.example.leapit.board.like.LikeRepository;
 import com.example.leapit.board.reply.Reply;
 import com.example.leapit.board.reply.ReplyRepository;
+import com.example.leapit.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import java.util.List;
 
@@ -47,5 +51,11 @@ public class BoardService {
         BoardResponse.DetailDTO detailDTO = new BoardResponse.DetailDTO(board, userId, isLike, likeCount.intValue(), likeId, replies);
 
         return detailDTO;
+    }
+  
+    @Transactional
+    public void save(BoardRequest.SaveDTO saveDTO, User sessionUser) {
+        Board board = saveDTO.toEntity(sessionUser);
+        boardRepository.save(board);
     }
 }
