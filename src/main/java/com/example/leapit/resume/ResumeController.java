@@ -66,4 +66,17 @@ public class ResumeController {
         resumeService.save(saveDTO, sessionUser);
         return Resp.ok(null);
     }
+
+    @GetMapping("/resume/{id}/update-form")
+    public String updateForm(@PathVariable("id") int id, HttpServletRequest request) {
+        ResumeResponse.UpdateDTO updateDTO = resumeService.getUpdateForm(id);
+        request.setAttribute("model", updateDTO);
+        return "personal/resume/update-form";
+    }
+
+    @PutMapping("/resume/{id}")
+    @ResponseBody
+    public String update(@PathVariable("id") int id, @RequestBody ResumeRequest.UpdateDTO updateDTO) {
+        return "redirect:/resume/" + id;
+    }
 }

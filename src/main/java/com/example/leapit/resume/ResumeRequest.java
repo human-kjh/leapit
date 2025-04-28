@@ -21,6 +21,13 @@ import java.util.List;
 public class ResumeRequest {
 
     @Data
+    public static class UpdateDTO{
+
+    }
+
+
+
+    @Data
     public static class SaveDTO{
         private String title;
         private String photoUrl;

@@ -48,7 +48,7 @@
                 summary: item.querySelectorAll('input')[4].value,
                 position: item.querySelectorAll('input')[5].value,
                 responsibility: item.querySelectorAll('input')[6].value,
-                techStacks: Array.from(item.querySelectorAll('.experience-tech-checkbox:checked')).map(cb => cb.value) // ⭐ 추가
+                techStacks: Array.from(item.querySelectorAll('.experience-tech-checkbox:checked')).map(cb => cb.value)
             })),
 
             projects: Array.from(document.querySelectorAll('.projectItem')).map(item => ({
@@ -59,7 +59,7 @@
                 summary: item.querySelectorAll('input')[4].value,
                 description: item.querySelector('textarea').value,
                 repositoryUrl: item.querySelectorAll('input')[5].value,
-                techStacks: Array.from(item.querySelectorAll('.project-tech-checkbox:checked')).map(cb => cb.value) // ⭐ 추가
+                techStacks: Array.from(item.querySelectorAll('.project-tech-checkbox:checked')).map(cb => cb.value)
             })),
 
             trainings: Array.from(document.querySelectorAll('.trainingItem')).map(item => ({
@@ -69,7 +69,7 @@
                 courseName: item.querySelectorAll('input')[3].value,
                 institutionName: item.querySelectorAll('input')[4].value,
                 description: item.querySelector('textarea').value,
-                techStacks: Array.from(item.querySelectorAll('.training-tech-checkbox:checked')).map(cb => cb.value) // ⭐ 추가
+                techStacks: Array.from(item.querySelectorAll('.training-tech-checkbox:checked')).map(cb => cb.value)
             })),
 
             etcs: Array.from(document.querySelectorAll('.etcItem')).map(item => ({
