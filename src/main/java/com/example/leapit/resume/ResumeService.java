@@ -121,61 +121,80 @@ public class ResumeService {
         resumeRepository.save(resume);
     }
 
-    public ResumeResponse.UpdateDTO getUpdateForm(Integer resumeId){
+    public ResumeResponse.UpdateDTO getUpdateForm(Integer resumeId) {
         // 1. 해당 이력서 존재 확인
         Resume resume = resumeRepository.findByIdJoinUser(resumeId);
         if (resume == null) throw new RuntimeException("이력서가 존재하지 않습니다.");
 
-        // 2. 권한 확인
+        // 2. (선택) 권한 확인
+        // if (!(resume.getUser().getId().equals(sessionUserId))) {
+        //     throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
+        // }
 
-//        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
-//            throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
-//        }
+        // 3. 이력서 관련 데이터 조회
 
-        // 3. 이력서 가져오기
-        // 기술 스택 (ResumeTechStack → String 리스트로 변환)
+        // 전체 기술스택
+        List<TechStack> allTechStacks = techStackRepository.findAll();
+
+        // 사용자가 선택한 기술스택 (ResumeTechStack → String 리스트)
         List<ResumeTechStack> resumeTechStacks = resumeTechStackRepository.findAllByResumeId(resumeId);
-        List<String> techStackList = new ArrayList<>();
+        List<String> selectedTechStackCodes = new ArrayList<>();
         for (ResumeTechStack tech : resumeTechStacks) {
-            techStackList.add(tech.getTechStack());
+            selectedTechStackCodes.add(tech.getTechStack());
         }
 
-        // 링크 (Link → UpdateDTO.LinkDTO 변환)
+        // 전체 기술스택 → ResumeTechStackDTO 변환 (checked 여부 포함)
+        List<ResumeResponse.UpdateDTO.ResumeTechStackDTO> resumeTechStackDTOList = new ArrayList<>();
+        for (TechStack techStack : allTechStacks) {
+            boolean isChecked = false;
+            for (String selectedCode : selectedTechStackCodes) {
+                if (techStack.getCode().equals(selectedCode)) {
+                    isChecked = true;
+                    break;
+                }
+            }
+            resumeTechStackDTOList.add(new ResumeResponse.UpdateDTO.ResumeTechStackDTO(techStack.getCode(), isChecked));
+        }
+
+        // 전체 직무 포지션
+        List<PositionType> positionTypes = positionTypeRepository.findAll();
+
+        // 링크
         List<Link> linkList = linkRepository.findAllByResumeId(resumeId);
         List<ResumeResponse.UpdateDTO.LinkDTO> linkDTOList = new ArrayList<>();
         for (Link link : linkList) {
             linkDTOList.add(new ResumeResponse.UpdateDTO.LinkDTO(link));
         }
 
-        // 학력 (Education → UpdateDTO.EducationDTO 변환)
+        // 학력
         List<Education> educationList = educationRepository.findAllByResumeId(resumeId);
         List<ResumeResponse.UpdateDTO.EducationDTO> educationDTOList = new ArrayList<>();
         for (Education education : educationList) {
             educationDTOList.add(new ResumeResponse.UpdateDTO.EducationDTO(education));
         }
 
-        // 경력 (Experience → UpdateDTO.ExperienceDTO 변환)
+        // 경력
         List<Experience> experienceList = experienceRepository.findAllByResumeId(resumeId);
         List<ResumeResponse.UpdateDTO.ExperienceDTO> experienceDTOList = new ArrayList<>();
         for (Experience experience : experienceList) {
-            experienceDTOList.add(new ResumeResponse.UpdateDTO.ExperienceDTO(experience));
+            experienceDTOList.add(new ResumeResponse.UpdateDTO.ExperienceDTO(experience, allTechStacks));
         }
 
-        // 프로젝트 (Project → UpdateDTO.ProjectDTO 변환)
+        // 프로젝트
         List<Project> projectList = projectRepository.findAllByResumeId(resumeId);
         List<ResumeResponse.UpdateDTO.ProjectDTO> projectDTOList = new ArrayList<>();
         for (Project project : projectList) {
-            projectDTOList.add(new ResumeResponse.UpdateDTO.ProjectDTO(project));
+            projectDTOList.add(new ResumeResponse.UpdateDTO.ProjectDTO(project, allTechStacks));
         }
 
-        // 교육 이력 (Training → UpdateDTO.TrainingDTO 변환)
+        // 교육이력
         List<Training> trainingList = trainingRepository.findAllByResumeId(resumeId);
         List<ResumeResponse.UpdateDTO.TrainingDTO> trainingDTOList = new ArrayList<>();
         for (Training training : trainingList) {
-            trainingDTOList.add(new ResumeResponse.UpdateDTO.TrainingDTO(training));
+            trainingDTOList.add(new ResumeResponse.UpdateDTO.TrainingDTO(training, allTechStacks));
         }
 
-        // 기타사항 (Etc → UpdateDTO.EtcDTO 변환)
+        // 기타사항
         List<Etc> etcList = etcRepository.findAllByResumeId(resumeId);
         List<ResumeResponse.UpdateDTO.EtcDTO> etcDTOList = new ArrayList<>();
         for (Etc etc : etcList) {
@@ -185,7 +204,9 @@ public class ResumeService {
         // 4. UpdateDTO 조립 후 리턴
         ResumeResponse.UpdateDTO updateDTO = new ResumeResponse.UpdateDTO(
                 resume,
-                techStackList,
+                positionTypes,
+                allTechStacks,
+                resumeTechStackDTOList,
                 linkDTOList,
                 educationDTOList,
                 experienceDTOList,
@@ -193,7 +214,6 @@ public class ResumeService {
                 trainingDTOList,
                 etcDTOList
         );
-
         return updateDTO;
     }
 }

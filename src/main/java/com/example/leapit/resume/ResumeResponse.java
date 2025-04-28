@@ -38,7 +38,10 @@ public class ResumeResponse {
         private String positionType;
         private String summary;
         private String selfIntroduction;
-        private List<String> resumeTechStacks;
+
+        private List<PositionTypeDTO> positionTypeList;
+        private List<TechStack> allTechStacks;
+        private List<ResumeTechStackDTO> techStackList;
 
         private List<LinkDTO> links = new ArrayList<>();
         private List<EducationDTO> educations = new ArrayList<>();
@@ -46,6 +49,28 @@ public class ResumeResponse {
         private List<ProjectDTO> projects = new ArrayList<>();
         private List<TrainingDTO> trainings = new ArrayList<>();
         private List<EtcDTO> etcs = new ArrayList<>();
+
+        @Data
+        public static class PositionTypeDTO {
+            private String code;
+            private Boolean selected;
+
+            public PositionTypeDTO(String code, boolean selected) {
+                this.code = code;
+                this.selected = selected;
+            }
+        }
+
+        @Data
+        public static class ResumeTechStackDTO {
+            private String code;
+            private Boolean checked;
+
+            public ResumeTechStackDTO(String code, Boolean checked) {
+                this.code = code;
+                this.checked = checked;
+            }
+        }
 
         @Data
         public static class LinkDTO {
@@ -66,10 +91,17 @@ public class ResumeResponse {
             private LocalDate graduationDate;
             private Boolean isDropout;
             private String educationLevel;
+            private Boolean isHighSchool;
+            private Boolean isAssociate;
+            private Boolean isBachelor;
+            private Boolean isMaster;
+            private Boolean isDoctor;
             private String schoolName;
             private String major;
             private String gpa;
             private String gpaScale;
+            private Boolean isGpaScale43;
+            private Boolean isGpaScale45;
             private String formattedGraduationDate;
 
             public EducationDTO(Education education) {
@@ -77,11 +109,22 @@ public class ResumeResponse {
                 this.graduationDate = education.getGraduationDate();
                 this.isDropout = education.getIsDropout();
                 this.educationLevel = education.getEducationLevel();
+                this.isHighSchool = "고등학교".equals(educationLevel);
+                this.isAssociate = "전문학사".equals(educationLevel);
+                this.isBachelor = "학사".equals(educationLevel);
+                this.isMaster = "석사".equals(educationLevel);
+                this.isDoctor = "박사".equals(educationLevel);
                 this.schoolName = education.getSchoolName();
                 this.major = education.getMajor();
                 this.gpa = education.getGpa() != null ? education.getGpa().toString() : null;
                 this.gpaScale = education.getGpaScale() != null ? education.getGpaScale().toString() : null;
-                // graduationDate = DB에서는 yyyy-mm-01, 화면에서는 yyyy-mm
+                if (this.gpaScale != null) {
+                    this.isGpaScale43 = this.gpaScale.equals("4.3");
+                    this.isGpaScale45 = this.gpaScale.equals("4.5");
+                } else {
+                    this.isGpaScale43 = false;
+                    this.isGpaScale45 = false;
+                }
                 if (this.graduationDate != null) {
                     this.formattedGraduationDate = this.graduationDate.toString().substring(0, 7);
                 }
@@ -98,9 +141,20 @@ public class ResumeResponse {
             private String summary;
             private String position;
             private String responsibility;
-            private List<String> techStacks;
+            private List<ExperienceTechStackDTO> techStacks;
 
-            public ExperienceDTO(Experience experience) {
+            @Data
+            public static class ExperienceTechStackDTO {
+                private String code;
+                private Boolean checked;
+
+                public ExperienceTechStackDTO(String code, Boolean checked) {
+                    this.code = code;
+                    this.checked = checked;
+                }
+            }
+
+            public ExperienceDTO(Experience experience, List<TechStack> allTechStacks) {
                 this.id = experience.getId();
                 this.startDate = experience.getStartDate();
                 this.endDate = experience.getEndDate();
@@ -110,10 +164,17 @@ public class ResumeResponse {
                 this.position = experience.getPosition();
                 this.responsibility = experience.getResponsibility();
                 this.techStacks = new ArrayList<>();
-                if (experience.getExperienceTechStacks() != null) {
-                    for (ExperienceTechStack ets : experience.getExperienceTechStacks()) {
-                        this.techStacks.add(ets.getTechStack());
+                for (TechStack techStack : allTechStacks) {
+                    boolean isChecked = false;
+                    if (experience.getExperienceTechStacks() != null) {
+                        for (ExperienceTechStack ets : experience.getExperienceTechStacks()) {
+                            if (techStack.getCode().equals(ets.getTechStack())) {
+                                isChecked = true;
+                                break;
+                            }
+                        }
                     }
+                    this.techStacks.add(new ExperienceTechStackDTO(techStack.getCode(), isChecked));
                 }
             }
         }
@@ -128,9 +189,20 @@ public class ResumeResponse {
             private String summary;
             private String description;
             private String repositoryUrl;
-            private List<String> techStacks;
+            private List<ProjectTechStackDTO> techStacks;
 
-            public ProjectDTO(Project project) {
+            @Data
+            public static class ProjectTechStackDTO {
+                private String code;
+                private Boolean checked;
+
+                public ProjectTechStackDTO(String code, Boolean checked) {
+                    this.code = code;
+                    this.checked = checked;
+                }
+            }
+
+            public ProjectDTO(Project project, List<TechStack> allTechStacks) {
                 this.id = project.getId();
                 this.startDate = project.getStartDate();
                 this.endDate = project.getEndDate();
@@ -140,10 +212,17 @@ public class ResumeResponse {
                 this.description = project.getDescription();
                 this.repositoryUrl = project.getRepositoryUrl();
                 this.techStacks = new ArrayList<>();
-                if (project.getProjectTechStacks() != null) {
-                    for (ProjectTechStack pts : project.getProjectTechStacks()) {
-                        this.techStacks.add(pts.getTechStack());
+                for (TechStack techStack : allTechStacks) {
+                    boolean isChecked = false;
+                    if (project.getProjectTechStacks() != null) {
+                        for (ProjectTechStack pts : project.getProjectTechStacks()) {
+                            if (techStack.getCode().equals(pts.getTechStack())) {
+                                isChecked = true;
+                                break;
+                            }
+                        }
                     }
+                    this.techStacks.add(new ProjectTechStackDTO(techStack.getCode(), isChecked));
                 }
             }
         }
@@ -157,9 +236,20 @@ public class ResumeResponse {
             private String courseName;
             private String institutionName;
             private String description;
-            private List<String> techStacks;
+            private List<TrainingTechStackDTO> techStacks;
 
-            public TrainingDTO(Training training) {
+            @Data
+            public static class TrainingTechStackDTO {
+                private String code;
+                private Boolean checked;
+
+                public TrainingTechStackDTO(String code, Boolean checked) {
+                    this.code = code;
+                    this.checked = checked;
+                }
+            }
+
+            public TrainingDTO(Training training, List<TechStack> allTechStacks) {
                 this.id = training.getId();
                 this.startDate = training.getStartDate();
                 this.endDate = training.getEndDate();
@@ -168,10 +258,17 @@ public class ResumeResponse {
                 this.institutionName = training.getInstitutionName();
                 this.description = training.getDescription();
                 this.techStacks = new ArrayList<>();
-                if (training.getTrainingTechStacks() != null) {
-                    for (TrainingTechStack tts : training.getTrainingTechStacks()) {
-                        this.techStacks.add(tts.getTechStack());
+                for (TechStack techStack : allTechStacks) {
+                    boolean isChecked = false;
+                    if (training.getTrainingTechStacks() != null) {
+                        for (TrainingTechStack tts : training.getTrainingTechStacks()) {
+                            if (techStack.getCode().equals(tts.getTechStack())) {
+                                isChecked = true;
+                                break;
+                            }
+                        }
                     }
+                    this.techStacks.add(new TrainingTechStackDTO(techStack.getCode(), isChecked));
                 }
             }
         }
@@ -184,6 +281,10 @@ public class ResumeResponse {
             private Boolean hasEndDate;
             private String title;
             private String etcType;
+            private Boolean isCertificate;
+            private Boolean isLanguage;
+            private Boolean isAward;
+            private Boolean isEtc;
             private String institutionName;
             private String description;
 
@@ -194,14 +295,36 @@ public class ResumeResponse {
                 this.hasEndDate = etc.getHasEndDate();
                 this.title = etc.getTitle();
                 this.etcType = etc.getEtcType();
+                if ("자격증".equals(etcType)) {
+                    this.isCertificate = true;
+                } else {
+                    this.isCertificate = false;
+                }
+
+                if ("어학".equals(etcType)) {
+                    this.isLanguage = true;
+                } else {
+                    this.isLanguage = false;
+                }
+
+                if ("수상".equals(etcType)) {
+                    this.isAward = true;
+                } else {
+                    this.isAward = false;
+                }
+
+                if ("기타".equals(etcType)) {
+                    this.isEtc = true;
+                } else {
+                    this.isEtc = false;
+                }
                 this.institutionName = etc.getInstitutionName();
                 this.description = etc.getDescription();
             }
         }
 
-        // UpdateDTO 생성자
-        public UpdateDTO(Resume resume, List<String> resumeTechStacks,
-                         List<LinkDTO> links, List<EducationDTO> educations,
+        public UpdateDTO(Resume resume, List<PositionType> positionTypes, List<TechStack> techStacks,
+                         List<ResumeTechStackDTO> resumeTechStacks, List<LinkDTO> links, List<EducationDTO> educations,
                          List<ExperienceDTO> experiences, List<ProjectDTO> projects,
                          List<TrainingDTO> trainings, List<EtcDTO> etcs) {
             this.id = resume.getId();
@@ -215,13 +338,19 @@ public class ResumeResponse {
             this.positionType = resume.getPositionType();
             this.summary = resume.getSummary();
             this.selfIntroduction = resume.getSelfIntroduction();
-            this.resumeTechStacks = resumeTechStacks;
+            this.allTechStacks = techStacks;
             this.links = links;
             this.educations = educations;
             this.experiences = experiences;
             this.projects = projects;
             this.trainings = trainings;
             this.etcs = etcs;
+            this.techStackList = resumeTechStacks;
+            this.positionTypeList = new ArrayList<>();
+            for (PositionType pt : positionTypes) {
+                boolean selected = pt.getCode().equals(resume.getPositionType());
+                this.positionTypeList.add(new PositionTypeDTO(pt.getCode(), selected));
+            }
         }
     }
 

@@ -1,9 +1,9 @@
 <script>
     // 공통 추가 함수 (template 복제해서 추가)
     function addItem(containerSelector, templateId) {
-        let container = document.querySelector(containerSelector);
-        let template = document.querySelector(templateId);
-        let clone = template.content.cloneNode(true);
+        const container = document.querySelector(containerSelector);
+        const template = document.querySelector(templateId);
+        const clone = template.content.cloneNode(true);
         container.appendChild(clone);
     }
 
@@ -14,9 +14,11 @@
         }
     });
 
-    // saveResume 함수 (모든 데이터 수집해서 전송)
-    async function saveResume() {
-        let requestBody = {
+    // updateResume 함수 (모든 데이터 수집해서 전송)
+    async function updateResume() {
+        const resumeId = document.getElementById('resumeId').value;
+
+        const requestBody = {
             title: document.querySelector("#title").value,
             summary: document.querySelector("#summary").value,
             selfIntroduction: document.querySelector("#selfIntroduction").value,
@@ -24,34 +26,37 @@
             positionType: document.querySelector("select[name='positionType']").value,
             resumeTechStacks: Array.from(document.querySelectorAll(".tech-checkbox:checked")).map(cb => cb.value),
 
-
             links: Array.from(document.querySelectorAll('.linkItem')).map(item => ({
-                title: item.querySelectorAll('input')[0].value,
-                url: item.querySelectorAll('input')[1].value
+                id: item.querySelector('.link-id')?.value || null,
+                title: item.querySelectorAll('input')[1].value,
+                url: item.querySelectorAll('input')[2].value
             })),
 
             educations: Array.from(document.querySelectorAll('.educationItem')).map(item => ({
-                graduationDate: item.querySelector('input[type="month"]').value ? item.querySelector('input[type="month"]').value + "-01" : null,
+                id: item.querySelector('.education-id')?.value || null,
+                graduationDate: item.querySelector('input[type="month"]')?.value ? item.querySelector('input[type="month"]').value + "-01" : null,
                 isDropout: item.querySelectorAll('input')[1].checked,
                 schoolName: item.querySelectorAll('input')[2].value,
                 major: item.querySelectorAll('input')[3].value,
-                educationLevel: item.querySelectorAll('select')[0].value, // 첫 번째 select (학력구분)
+                educationLevel: item.querySelectorAll('select')[0].value,
                 gpa: item.querySelectorAll('input')[4].value,
-                gpaScale: item.querySelectorAll('select')[1].value // 두 번째 select (GPA 기준)
+                gpaScale: item.querySelectorAll('select')[1].value
             })),
 
             experiences: Array.from(document.querySelectorAll('.experienceItem')).map(item => ({
+                id: item.querySelector('.experience-id')?.value || null,
                 startDate: item.querySelectorAll('input')[0].value,
                 endDate: item.querySelectorAll('input')[1].value,
                 isEmployed: item.querySelectorAll('input')[2].checked,
                 companyName: item.querySelectorAll('input')[3].value,
                 summary: item.querySelectorAll('input')[4].value,
                 position: item.querySelectorAll('input')[5].value,
-                responsibility: item.querySelectorAll('input')[6].value,
+                responsibility: item.querySelector('textarea').value,
                 techStacks: Array.from(item.querySelectorAll('.experience-tech-checkbox:checked')).map(cb => cb.value)
             })),
 
             projects: Array.from(document.querySelectorAll('.projectItem')).map(item => ({
+                id: item.querySelector('.project-id')?.value || null,
                 startDate: item.querySelectorAll('input')[0].value,
                 endDate: item.querySelectorAll('input')[1].value,
                 isOngoing: item.querySelectorAll('input')[2].checked,
@@ -63,6 +68,7 @@
             })),
 
             trainings: Array.from(document.querySelectorAll('.trainingItem')).map(item => ({
+                id: item.querySelector('.training-id')?.value || null,
                 startDate: item.querySelectorAll('input')[0].value,
                 endDate: item.querySelectorAll('input')[1].value,
                 isOngoing: item.querySelectorAll('input')[2].checked,
@@ -73,6 +79,7 @@
             })),
 
             etcs: Array.from(document.querySelectorAll('.etcItem')).map(item => ({
+                id: item.querySelector('.etc-id')?.value || null,
                 startDate: item.querySelectorAll('input')[0].value,
                 endDate: item.querySelectorAll('input')[1].value,
                 hasEndDate: item.querySelectorAll('input')[2].checked,
@@ -82,22 +89,22 @@
                 description: item.querySelector('textarea').value
             }))
         };
-        console.log("최종 전송 데이터:", requestBody);
-        // 서버로 전송
+
+        console.log("업데이트 전송 데이터:", requestBody);
+
         try {
-            let response = await fetch('/resume/save', {
-                method: 'POST',
+            let response = await fetch(`/resume/${resumeId}/update`, {
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestBody)
             });
 
-            let responseBody = await response.json();
             if (response.ok) {
-                alert('이력서가 성공적으로 저장되었습니다.');
-                location.href = "/resume";
+                alert('이력서가 성공적으로 수정되었습니다.');
+                location.href = `/resume/${resumeId}`;
             } else {
-                let responseBody = await response.json();
-                alert('이력서 저장 실패: ' + (responseBody.msg || '알 수 없는 오류'));
+                let errorBody = await response.json();
+                alert('이력서 수정 실패: ' + (errorBody.msg || '알 수 없는 오류'));
             }
         } catch (error) {
             console.error('에러 발생', error);
@@ -105,30 +112,81 @@
         }
     }
 
-    // 기술스택 선택 시 버튼에 표시 업데이트
+    // 기술스택 선택 시 버튼에 표시 업데이트 (이력서 techStack용)
     document.addEventListener('DOMContentLoaded', () => {
-        let checkboxes = document.querySelectorAll('.tech-checkbox');
-        let displayBtn = document.getElementById('selectedTechStacksBtn');
-
-        checkboxes.forEach(cb => {
-            cb.addEventListener('change', () => {
-                let selected = Array.from(checkboxes)
-                        .filter(box => box.checked)
-                        .map(box => box.nextElementSibling.innerText);
-                displayBtn.innerText = selected.length > 0 ? selected.join(', ') : '기술스택을 선택하세요';
-            });
-        });
+        updateTechStackButton();
+        updateAllDropdownSelectedText();
     });
 
-    // 경험, 프로젝트, 교육 기술스택 선택 시 버튼에 표시 업데이트
+    function updateTechStackButton() {
+        const checkboxes = document.querySelectorAll('.tech-checkbox');
+        const displayBtn = document.getElementById('selectedTechStacksBtn');
+
+        function refreshDisplay() {
+            const selected = Array.from(checkboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.nextElementSibling.innerText);
+            displayBtn.innerText = selected.length > 0 ? selected.join(', ') : '기술스택을 선택하세요';
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', refreshDisplay);
+        });
+
+        refreshDisplay(); // 초기 실행
+    }
+
+    // 경력, 프로젝트, 교육 기술스택 드롭다운 버튼에도 초기 선택된 값 표시
+    function updateAllDropdownSelectedText() {
+        document.querySelectorAll('.experienceItem').forEach(item => {
+            let container = item.querySelector('.dropdown');
+            let button = container.querySelector('button.form-select');
+            let selected = Array.from(container.querySelectorAll('.experience-tech-checkbox:checked'))
+                    .map(cb => cb.nextElementSibling.innerText);
+
+            if (selected.length > 0) {
+                button.innerText = selected.join(', ') + ' 선택됨';
+            } else {
+                button.innerText = '기술스택을 선택하세요';
+            }
+        });
+
+        document.querySelectorAll('.projectItem').forEach(item => {
+            let container = item.querySelector('.dropdown');
+            let button = container.querySelector('button.form-select');
+            let selected = Array.from(container.querySelectorAll('.project-tech-checkbox:checked'))
+                    .map(cb => cb.nextElementSibling.innerText);
+
+            if (selected.length > 0) {
+                button.innerText = selected.join(', ') + ' 선택됨';
+            } else {
+                button.innerText = '기술스택을 선택하세요';
+            }
+        });
+
+        document.querySelectorAll('.trainingItem').forEach(item => {
+            let container = item.querySelector('.dropdown');
+            let button = container.querySelector('button.form-select');
+            let selected = Array.from(container.querySelectorAll('.training-tech-checkbox:checked'))
+                    .map(cb => cb.nextElementSibling.innerText);
+
+            if (selected.length > 0) {
+                button.innerText = selected.join(', ') + ' 선택됨';
+            } else {
+                button.innerText = '기술스택을 선택하세요';
+            }
+        });
+    }
+
+    // 동적 추가된 항목에도 적용할 수 있게 클릭 이벤트로 갱신
     document.addEventListener('click', function(event) {
         if (event.target.classList.contains('experience-tech-checkbox') ||
                 event.target.classList.contains('project-tech-checkbox') ||
                 event.target.classList.contains('training-tech-checkbox')) {
 
-            let container = event.target.closest('.dropdown');
-            let button = container.querySelector('button');
-            let selected = Array.from(container.querySelectorAll('input:checked')).map(cb => cb.nextElementSibling.innerText);
+            const container = event.target.closest('.dropdown');
+            const button = container.querySelector('button.form-select');
+            const selected = Array.from(container.querySelectorAll('input:checked')).map(cb => cb.nextElementSibling.innerText);
 
             if (selected.length > 0) {
                 button.innerText = selected.join(', ') + ' 선택됨';
@@ -136,36 +194,5 @@
                 button.innerText = '기술스택을 선택하세요';
             }
         }
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        let toggleMapping = [
-            { toggleId: 'toggle-photo', sectionId: 'section-photo' },
-            { toggleId: 'toggle-summary', sectionId: 'section-summary' },
-            { toggleId: 'toggle-link', sectionId: 'section-link' },
-            { toggleId: 'toggle-experience', sectionId: 'section-experience' },
-            { toggleId: 'toggle-training', sectionId: 'section-training' },
-            { toggleId: 'toggle-etc', sectionId: 'section-etc' },
-            { toggleId: 'toggle-selfIntroduction', sectionId: 'section-selfIntroduction' }
-        ];
-
-        toggleMapping.forEach(function (mapping) {
-            let toggle = document.getElementById(mapping.toggleId);
-            let section = document.getElementById(mapping.sectionId);
-
-            if (toggle && section) {
-                // 처음 로딩될 때 상태 적용
-                section.style.display = toggle.checked ? 'block' : 'none';
-
-                // 토글될 때마다
-                toggle.addEventListener('change', function () {
-                    if (this.checked) {
-                        section.style.display = 'block';
-                    } else {
-                        section.style.display = 'none';
-                    }
-                });
-            }
-        });
     });
 </script>
