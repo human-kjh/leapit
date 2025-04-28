@@ -81,7 +81,7 @@ public class ApplicationController {
         return Resp.ok(null);
     }
 
-    @GetMapping("/apply/form/{id}")
+    @GetMapping("/personal/jobposting/{id}/apply-form")
     public String ApplyForm(@PathVariable("id") Integer id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User sessionUser = (User) session.getAttribute("sessionUser");
