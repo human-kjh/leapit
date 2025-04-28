@@ -18,7 +18,6 @@ public class BoardController {
     private final BoardService boardService;
     private final HttpSession session;
 
-
     @GetMapping("/community/list")
     public String list(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -94,6 +93,4 @@ public class BoardController {
 
         return "redirect:/community/list";
     }
-
-
 }

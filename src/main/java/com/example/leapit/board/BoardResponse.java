@@ -19,7 +19,6 @@ public class BoardResponse {
         private String createdAtFormatted;
         private Boolean isOwner;
 
-
         public ListDTO(Board board,Integer sessionUserId) {
             this.id = board.getId();
             this.title = board.getTitle();
@@ -31,7 +30,6 @@ public class BoardResponse {
             this.isOwner = sessionUserId == board.getUser().getId();;
         }
     }
-
 
     @Data
     public static class DetailDTO {
@@ -63,7 +61,6 @@ public class BoardResponse {
             }
         }
 
-
         public DetailDTO(Board board, Integer sessionUserId, Boolean isLike, Integer likeCount, Integer likeId, List<Reply> replies) {
             this.id = board.getId();
             this.title = board.getTitle();
@@ -86,5 +83,4 @@ public class BoardResponse {
             this.replies = repliesDTO;
         }
     }
-
 }

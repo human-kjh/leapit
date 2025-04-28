@@ -36,28 +36,22 @@
                                                                     data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation()">
                                                                 <i class="fa fa-ellipsis-v"></i>
                                                             </button>
-
-                                                                <ul class="dropdown-menu dropdown-menu-end" onclick="event.stopPropagation()">
-                                                                    <li><a class="dropdown-item" href="/community/{{id}}/update-form">수정</a></li>
-                                                                    <li>
-                                                                        <form action="/community/{{id}}/delete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')" style="display: inline;">
-                                                                            <button type="submit" class="dropdown-item text-danger" style="all: unset; padding: 8px 16px; width: 100%; text-align: left; color: #dc3545; cursor: pointer;">
-                                                                                삭제
-                                                                            </button>
-                                                                        </form>
-                                                                    </li>
-                                                                </ul>
+                                                              <ul class="dropdown-menu dropdown-menu-end" onclick="event.stopPropagation()">
+                                                                  <li><a class="dropdown-item" href="/community/{{id}}/update-form">수정</a></li>
+                                                                  <li>
+                                                                      <form action="/community/{{id}}/delete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')" style="display: inline;">
+                                                                          <button type="submit" class="dropdown-item text-danger" style="all: unset; padding: 8px 16px; width: 100%; text-align: left; color: #dc3545; cursor: pointer;">
+                                                                              삭제
+                                                                          </button>
+                                                                      </form>
+                                                                  </li>
+                                                              </ul>
                                                         {{/isOwner}}
                                                         </div>
-
                                                     </div>
                                                 </td>
                                             </tr>
                                         {{/models}}
-
-
-
-
                                     </tbody>
                                 </table>
                             </div>
