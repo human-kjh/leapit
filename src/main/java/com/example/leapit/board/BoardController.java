@@ -33,7 +33,7 @@ public class BoardController {
 
         return "personal/board/list";
     }
-  
+
     @GetMapping("/community/{id}")
     public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -83,5 +83,15 @@ public class BoardController {
         boardService.update(reqDTO, id, sessionUser.getId());
 
         return "redirect:/community/" + id;
+    }
+  
+    @PostMapping("/community/{id}/delete")
+    public String delete(@PathVariable("id") Integer id) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+
+        boardService.delete(id, sessionUser.getId());
+
+        return "redirect:/community/list";
     }
 }

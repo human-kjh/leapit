@@ -33,4 +33,9 @@ public class LikeRepository {
         return em.find(Like.class, id);
     }
 
+    public void deleteByBoardId(Integer id) {
+        em.createQuery("delete from Like lo where lo.board.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
+    }
 }
