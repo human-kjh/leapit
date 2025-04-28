@@ -11,14 +11,20 @@ import com.example.leapit.resume.education.Education;
 import com.example.leapit.resume.education.EducationRepository;
 import com.example.leapit.resume.etc.Etc;
 import com.example.leapit.resume.etc.EtcRepository;
+import com.example.leapit.resume.experience.Experience;
+import com.example.leapit.resume.experience.ExperienceRepository;
 import com.example.leapit.resume.experience.ExperienceResponse;
 import com.example.leapit.resume.experience.ExperienceService;
 import com.example.leapit.resume.link.Link;
 import com.example.leapit.resume.link.LinkRepository;
+import com.example.leapit.resume.project.Project;
+import com.example.leapit.resume.project.ProjectRepository;
 import com.example.leapit.resume.project.ProjectResponse;
 import com.example.leapit.resume.project.ProjectService;
 import com.example.leapit.resume.techstack.ResumeTechStack;
 import com.example.leapit.resume.techstack.ResumeTechStackRepository;
+import com.example.leapit.resume.training.Training;
+import com.example.leapit.resume.training.TrainingRepository;
 import com.example.leapit.resume.training.TrainingResponse;
 import com.example.leapit.resume.training.TrainingService;
 import com.example.leapit.user.User;
@@ -27,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -46,6 +53,9 @@ public class ResumeService {
     private final ProjectService projectService;
 
     private final ApplicationRepository applicationRepository;
+    private final ExperienceRepository experienceRepository;
+    private final TrainingRepository trainingRepository;
+    private final ProjectRepository projectRepository;
 
     public List<Resume> list(Integer sessionUserId) {
         // 자신의 userId로 된 모든 resume을 찾아서 return
@@ -109,5 +119,81 @@ public class ResumeService {
     public void save(ResumeRequest.SaveDTO saveDTO, User sessionUser) {
         Resume resume = saveDTO.toEntity(sessionUser);
         resumeRepository.save(resume);
+    }
+
+    public ResumeResponse.UpdateDTO getUpdateForm(Integer resumeId){
+        // 1. 해당 이력서 존재 확인
+        Resume resume = resumeRepository.findByIdJoinUser(resumeId);
+        if (resume == null) throw new RuntimeException("이력서가 존재하지 않습니다.");
+
+        // 2. 권한 확인
+
+//        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
+//            throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
+//        }
+
+        // 3. 이력서 가져오기
+        // 기술 스택 (ResumeTechStack → String 리스트로 변환)
+        List<ResumeTechStack> resumeTechStacks = resumeTechStackRepository.findAllByResumeId(resumeId);
+        List<String> techStackList = new ArrayList<>();
+        for (ResumeTechStack tech : resumeTechStacks) {
+            techStackList.add(tech.getTechStack());
+        }
+
+        // 링크 (Link → UpdateDTO.LinkDTO 변환)
+        List<Link> linkList = linkRepository.findAllByResumeId(resumeId);
+        List<ResumeResponse.UpdateDTO.LinkDTO> linkDTOList = new ArrayList<>();
+        for (Link link : linkList) {
+            linkDTOList.add(new ResumeResponse.UpdateDTO.LinkDTO(link));
+        }
+
+        // 학력 (Education → UpdateDTO.EducationDTO 변환)
+        List<Education> educationList = educationRepository.findAllByResumeId(resumeId);
+        List<ResumeResponse.UpdateDTO.EducationDTO> educationDTOList = new ArrayList<>();
+        for (Education education : educationList) {
+            educationDTOList.add(new ResumeResponse.UpdateDTO.EducationDTO(education));
+        }
+
+        // 경력 (Experience → UpdateDTO.ExperienceDTO 변환)
+        List<Experience> experienceList = experienceRepository.findAllByResumeId(resumeId);
+        List<ResumeResponse.UpdateDTO.ExperienceDTO> experienceDTOList = new ArrayList<>();
+        for (Experience experience : experienceList) {
+            experienceDTOList.add(new ResumeResponse.UpdateDTO.ExperienceDTO(experience));
+        }
+
+        // 프로젝트 (Project → UpdateDTO.ProjectDTO 변환)
+        List<Project> projectList = projectRepository.findAllByResumeId(resumeId);
+        List<ResumeResponse.UpdateDTO.ProjectDTO> projectDTOList = new ArrayList<>();
+        for (Project project : projectList) {
+            projectDTOList.add(new ResumeResponse.UpdateDTO.ProjectDTO(project));
+        }
+
+        // 교육 이력 (Training → UpdateDTO.TrainingDTO 변환)
+        List<Training> trainingList = trainingRepository.findAllByResumeId(resumeId);
+        List<ResumeResponse.UpdateDTO.TrainingDTO> trainingDTOList = new ArrayList<>();
+        for (Training training : trainingList) {
+            trainingDTOList.add(new ResumeResponse.UpdateDTO.TrainingDTO(training));
+        }
+
+        // 기타사항 (Etc → UpdateDTO.EtcDTO 변환)
+        List<Etc> etcList = etcRepository.findAllByResumeId(resumeId);
+        List<ResumeResponse.UpdateDTO.EtcDTO> etcDTOList = new ArrayList<>();
+        for (Etc etc : etcList) {
+            etcDTOList.add(new ResumeResponse.UpdateDTO.EtcDTO(etc));
+        }
+
+        // 4. UpdateDTO 조립 후 리턴
+        ResumeResponse.UpdateDTO updateDTO = new ResumeResponse.UpdateDTO(
+                resume,
+                techStackList,
+                linkDTOList,
+                educationDTOList,
+                experienceDTOList,
+                projectDTOList,
+                trainingDTOList,
+                etcDTOList
+        );
+
+        return updateDTO;
     }
 }
