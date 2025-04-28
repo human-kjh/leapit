@@ -50,6 +50,5 @@ public class BoardRepository {
         Board board = em.find(Board.class, id);
         em.remove(board);
     }
-
 }
 

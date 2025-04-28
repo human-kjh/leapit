@@ -19,7 +19,6 @@ public class BoardResponse {
         private String createdAtFormatted;
         private Boolean isOwner;
 
-
         public ListDTO(Board board,Integer sessionUserId) {
             this.id = board.getId();
             this.title = board.getTitle();

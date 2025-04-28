@@ -20,4 +20,17 @@ public class ReplyService {
         Reply reply = reqDTO.toEntity(sessionUser, board);
         replyRepository.save(reply);
     }
+
+    @Transactional
+    public Integer delete(Integer id, Integer sessionUserId) {
+        Reply reply = replyRepository.findById(id);
+        if (reply == null) throw new RuntimeException("삭제할 댓글이 없습니다.");
+        if (!(reply.getUser().getId().equals(sessionUserId))) throw new RuntimeException("삭제할 권한이 없습니다.");
+
+        Integer boardId = reply.getBoard().getId();
+
+        replyRepository.deleteById(id);
+
+        return boardId;
+    }
 }
