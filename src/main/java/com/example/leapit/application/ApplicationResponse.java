@@ -1,12 +1,12 @@
 package com.example.leapit.application;
 
 import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
+import com.example.leapit.resume.ResumeResponse;
 import lombok.Data;
 import java.time.LocalDate;
 import java.util.List;
 
 public class ApplicationResponse {
-
 
 
     @Data
@@ -150,6 +150,23 @@ public class ApplicationResponse {
             this.total = total;
             this.passed = passed;
             this.failed = failed;
+        }
+    }
+
+    @Data
+    public static class DetailDTO{
+        private Integer id; // 지원id
+        private Boolean isBookmarked;
+        private Boolean isPassed;
+        private String jobPositionTitle;
+        private ResumeResponse.DetailDTO detailDTO;
+
+        public DetailDTO(Application application, Boolean isBookmarked, ResumeResponse.DetailDTO detailDTO) {
+            this.id = application.getId();
+            this.isBookmarked = isBookmarked;
+            this.isPassed = application.getIsPassed();
+            this.jobPositionTitle = application.getJobPosting().getTitle();
+            this.detailDTO = detailDTO;
         }
     }
 }

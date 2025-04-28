@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.List;
     import com.example.leapit.companyinfo.CompanyInfo;
     import com.example.leapit.companyinfo.CompanyInfoRepository;
@@ -135,4 +136,43 @@ import java.util.List;
             // 상세 페이지를 반환 (Mustache 템플릿을 사용한다고 가정)
             return "personal/jobposting/detail";  // 해당 페이지로 이동
         }
+    }
+    // 구직자 - 채용공고 목록
+    @GetMapping("/personal/jobposting/list")
+    public String personalList(HttpServletRequest req, JobPostingRequest.JobPostingListRequestDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+
+        if (Boolean.TRUE.equals(reqDTO.getIsPopular())) {
+            reqDTO.setIsLatest(false);
+        } else if (Boolean.TRUE.equals(reqDTO.getIsLatest())) {
+            reqDTO.setIsPopular(false);
+        } else {
+            reqDTO.setIsPopular(false);
+            reqDTO.setIsLatest(true);
+        }
+
+        // reqDTO에 담아놨습니다~
+        Integer regionId = reqDTO.getRegionIdAsInteger();
+        Integer subRegionId = reqDTO.getSubRegionIdAsInteger();
+        Integer career = reqDTO.getCareerAsInteger();
+        String techStackCode = reqDTO.getTechStackCodeOrNull();
+        String selectedLabel = reqDTO.getSelectedLabelOrNull();
+        boolean isPopular = reqDTO.isPopularTrue();
+        boolean isLatest = reqDTO.isLatestTrue();
+
+        JobPostingResponse.JobPostingListFilterDTO respDTO =
+                jobPostingService.공고목록페이지(
+                        regionId,
+                        subRegionId,
+                        career,
+                        techStackCode,
+                        selectedLabel,
+                        isPopular,
+                        isLatest,
+                        sessionUser.getId()
+                );
+
+        req.setAttribute("models", respDTO);
+        return "personal/jobposting/list";
     }

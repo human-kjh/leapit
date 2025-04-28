@@ -1,8 +1,5 @@
-package com.example.leapit.ApplicationRepositoryTest;
+package com.example.leapit.application;
 
-import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
-import com.example.leapit.jobposting.JobPosting;
-import com.example.leapit.jobposting.JobPostingRepository;
 import com.example.leapit.jobposting.bookmark.JobPostingBookmark;
 import com.example.leapit.jobposting.bookmark.JobPostingBookmarkController;
 import com.example.leapit.jobposting.bookmark.JobPostingBookmarkRepository;

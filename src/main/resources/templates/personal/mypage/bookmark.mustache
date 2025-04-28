@@ -1,83 +1,84 @@
 {{> layout/personal-header}}
 
-            <!-- 본문 -->
-            <div class="main container mt-5">
-                <div class="content-wrapper">
-                    <div class="mypageSidebar">
-                        <div class="mypageSidebarBox">
-                            <h5 class="mypageSidebarTitle">마이점핏</h5>
-                            <div class="mypageSidebarMenu">
-                                <a href="/personal/mypage/application" class="mypageSidebarLink">입사지원 현황</a>
-                                <a href="/personal/mypage/bookmark" class="mypageSidebarLink">스크랩 포지션</a>
-                                <a href="#" class="mypageSidebarLink">계정 정보 설정</a>
-                            </div>
-                        </div>
+<!-- 본문 -->
+<div class="main container mt-5">
+    <div class="content-wrapper">
+        <div class="mypageSidebar">
+            <div class="mypageSidebarBox">
+                <h5 class="mypageSidebarTitle">마이점핏</h5>
+                <div class="mypageSidebarMenu">
+                    <a href="/personal/mypage/application" class="mypageSidebarLink">입사지원 현황</a>
+                    <a href="/personal/mypage/bookmark" class="mypageSidebarLink">스크랩 포지션</a>
+                    <a href="#" class="mypageSidebarLink">계정 정보 설정</a>
+                </div>
+            </div>
+        </div>
+        <div class="myStatus">
+            <div class="myStatusInner">
+                <div class="myStatusTitle">마이 점핏</div>
+                <div class="statusBoxes">
+                    <div class="statusBox">
+                        <h6>지원완료</h6>
+                        <span class="statusCount">{{models.status.total}}</span>
                     </div>
-                    <div class="myStatus">
-                        <div class="myStatusInner">
-                            <div class="myStatusTitle">마이 점핏</div>
-                            <div class="statusBoxes">
-                                <div class="statusBox">
-                                    <h6>지원완료</h6>
-                                    <span class="statusCount">{{models.status.total}}</span>
-                                </div>
-                                <div class="statusBox">
-                                    <h6>최종합격</h6>
-                                    <span class="statusCount">{{models.status.passed}}</span>
-                                </div>
-                                <div class="statusBox">
-                                    <h6>불합격</h6>
-                                    <span class="statusCount">{{models.status.failed}}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 스크랩 포지션 목록 -->
-                        <div class="scrapedPositionContainer">
-                            <h4 class="scrapTitle">나의 스크랩 포지션</h4>
-                            <div class="scrapedJobList">
-                                    {{#models.bookmarks}}
-                                        <div class="scrapedJobItem card p-3" style="width: 18rem;">
-                                            <div class="d-flex justify-content-between align-items-start">
-                                                <a href="/job/detail/{{jobPostingId}}" class="flex-grow-1 text-decoration-none text-dark me-2">
-                                                    <h6 class="mb-0 text-truncate">{{jobPostingTitle}}</h6>
-                                                </a>
-                                                    <i class="bi bi-bookmark-fill fs-5 text-primary"
-                                                       id="bookmark-{{jobPostingId}}"
-                                                       tabindex="-1"
-                                                       style="cursor: pointer;"
-                                                       onmousedown="event.preventDefault()"
-                                                       onclick="deleteBookmark({{jobPostingId}})"></i>
-                                            </div>
-                                            <p class="text-muted mb-1 small">{{companyName}}</p>
-                                            <div class="date text-muted small">마감일: {{DeadLine}}</div>
-                                        </div>
-                                    {{/models.bookmarks}}
-
-                                {{^models.bookmarks}}
-                                    <div class="text-muted">스크랩한 포지션이 없습니다.</div>
-                                {{/models.bookmarks}}
-                            </div>
-                        </div>
+                    <div class="statusBox">
+                        <h6>최종합격</h6>
+                        <span class="statusCount">{{models.status.passed}}</span>
+                    </div>
+                    <div class="statusBox">
+                        <h6>불합격</h6>
+                        <span class="statusCount">{{models.status.failed}}</span>
                     </div>
                 </div>
             </div>
-            <script>
-                async function deleteBookmark(jobPostingId) {
-                    try {
-                        const response = await fetch(`/api/personal/bookmark/${jobPostingId}`, {
-                            method: "POST"
-                        });
+            <!-- 스크랩 포지션 목록 -->
+            <div class="scrapedPositionContainer">
+                <h4 class="scrapTitle">나의 스크랩 포지션</h4>
+                <div class="scrapedJobList">
+                    {{#models.bookmarks}}
+                        <div class="scrapedJobItem card p-3" style="width: 18rem;">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <a href="/job/detail/{{jobPostingId}}"
+                                   class="flex-grow-1 text-decoration-none text-dark me-2">
+                                    <h6 class="mb-0 text-truncate">{{jobPostingTitle}}</h6>
+                                </a>
+                                <i class="bi bi-bookmark-fill fs-5 text-primary"
+                                   id="bookmark-{{jobPostingId}}"
+                                   tabindex="-1"
+                                   style="cursor: pointer;"
+                                   onmousedown="event.preventDefault()"
+                                   onclick="deleteBookmark({{jobPostingId}})"></i>
+                            </div>
+                            <p class="text-muted mb-1 small">{{companyName}}</p>
+                            <div class="date text-muted small">마감일: {{DeadLine}}</div>
+                        </div>
+                    {{/models.bookmarks}}
 
-                        const result = await response.json();
+                    {{^models.bookmarks}}
+                        <div class="text-muted">스크랩한 포지션이 없습니다.</div>
+                    {{/models.bookmarks}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    async function deleteBookmark(jobPostingId) {
+        try {
+            const response = await fetch(`/api/personal/bookmark/${jobPostingId}`, {
+                method: "DELETE"
+            });
 
-                            const icon = document.querySelector(`#bookmark-${jobPostingId}`);
-                            icon.classList.remove("bi-bookmark-fill");
-                            icon.classList.add("bi-bookmark");
-                            icon.setAttribute("onclick", `saveBookmark(${jobPostingId})`);
-                            location.reload();
-                    } catch (e) {
-                        console.error("스크랩 삭제 중 오류:", e);
-                    }
-                }
-            </script>
+            const result = await response.json();
+
+            const icon = document.querySelector(`#bookmark-${jobPostingId}`);
+            icon.classList.remove("bi-bookmark-fill");
+            icon.classList.add("bi-bookmark");
+            icon.setAttribute("onclick", `saveBookmark(${jobPostingId})`);
+            location.reload();
+        } catch (e) {
+            console.error("스크랩 삭제 중 오류:", e);
+        }
+    }
+</script>
 {{> layout/footer}}
