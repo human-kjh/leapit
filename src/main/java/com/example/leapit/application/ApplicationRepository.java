@@ -1,5 +1,6 @@
 package com.example.leapit.application;
 
+import com.example.leapit.companyinfo.CompanyInfo;
 import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.resume.Resume;
 import com.example.leapit.user.User;
@@ -174,32 +175,30 @@ public class ApplicationRepository {
     }
 
     public ApplicationRequest.ApplyFormDTO findApplyFormInfo(Integer jobPostingId, Integer userId) {
-        // 채용 공고 정보 조회
+        // 채용공고 조회
         JobPosting jobPosting = em.find(JobPosting.class, jobPostingId);
-        if (jobPosting == null) {
-            return null; // 또는 예외 처리
-        }
-        User companyUser = jobPosting.getUser();
 
-        // 사용자 정보 조회
+        // 지원자 조회
         User applicantUser = em.find(User.class, userId);
-        if (applicantUser == null) {
-            return null; // 또는 예외 처리
-        }
 
-        // 해당 사용자의 이력서 목록 조회
-        Query resumeQuery = em.createQuery("SELECT r FROM Resume r WHERE r.user.id = :userId");
-        resumeQuery.setParameter("userId", userId);
-        List<Resume> resumes = resumeQuery.getResultList();
+        // 이력서 조회
+        List<Resume> resumes = em.createQuery(
+                        "SELECT r FROM Resume r WHERE r.user.id = :userId", Resume.class)
+                .setParameter("userId", userId)
+                .getResultList();
 
-        return new ApplicationRequest.ApplyFormDTO(
-                jobPosting.getId(),
-                jobPosting.getTitle(),
-                companyUser.getName(),
-                applicantUser,
-                resumes
-        );
+        // 회사 정보 조회 (채용공고 작성자 기준)
+        Integer companyUserId = jobPosting.getUser().getId();
+        List<CompanyInfo> companyInfos = em.createQuery(
+                        "SELECT c FROM CompanyInfo c JOIN c.user u WHERE u.id = :companyUserId", CompanyInfo.class)
+                .setParameter("companyUserId", companyUserId)
+                .getResultList();
+
+        CompanyInfo companyInfo = companyInfos.isEmpty() ? null : companyInfos.get(0);
+
+        return new ApplicationRequest.ApplyFormDTO(jobPosting, companyInfo, applicantUser, resumes);
     }
+
 
     public List<Resume> findAllResumesByUserId(Integer userId) {
         Query query = em.createQuery("SELECT r FROM Resume r WHERE r.user.id = :userId");

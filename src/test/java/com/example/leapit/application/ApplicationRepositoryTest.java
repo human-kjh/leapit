@@ -66,5 +66,18 @@ public class ApplicationRepositoryTest {
         System.out.println("------------------테스트 결과 끝----------------------");
     }
 
+    @Test
+    public void applicationRepository_test3() {
+        // given
+        Integer jobPostingId = 1;
+        Integer userId = 1;
+
+        // when
+        ApplicationRequest.ApplyFormDTO applyFormDTO = applicationRepository.findApplyFormInfo(jobPostingId, userId);
+
+        // then
+        System.out.println(applyFormDTO);
+    }
+
 
 }

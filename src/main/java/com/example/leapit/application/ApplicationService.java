@@ -1,9 +1,9 @@
 package com.example.leapit.application;
 
-import com.example.leapit.resume.Resume;
 import com.example.leapit.application.bookmark.ApplicationBookmark;
 import com.example.leapit.application.bookmark.ApplicationBookmarkRepository;
 import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
+import com.example.leapit.resume.Resume;
 import com.example.leapit.resume.ResumeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -84,7 +84,9 @@ public class ApplicationService {
     }
 
     public ApplicationRequest.ApplyFormDTO getApplyForm(Integer jobPostingId, Integer userId) {
-        return applicationRepository.findApplyFormInfo(jobPostingId, userId);
+        ApplicationRequest.ApplyFormDTO asd = applicationRepository.findApplyFormInfo(jobPostingId, userId);
+        System.out.println(asd);
+        return null;
     }
 
     public ApplicationRequest.JobPostingInfoDto getJobPostingInfo(Integer jobPostingId) {

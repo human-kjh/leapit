@@ -1,5 +1,6 @@
 package com.example.leapit.application;
 
+import com.example.leapit.companyinfo.CompanyInfo;
 import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.jobposting.techstack.JobPostingTechStack;
 import com.example.leapit.resume.Resume;
@@ -8,9 +9,11 @@ import com.example.leapit.resume.techstack.ResumeTechStack;
 import com.example.leapit.user.User;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ApplicationRequest {
 
@@ -29,32 +32,35 @@ public class ApplicationRequest {
         private Integer resumeId;
     }
 
+    // 지원 화면에서 보이는 DTO
     @Data
     public static class ApplyFormDTO {
-        private Integer jobPostingId;
-        private String jobpostingName;
+        private String jobPostingName;
         private String companyName;
 
         private String userName;
         private String userEmail;
         private String phoneNumber;
         private LocalDate birthDate;
+        private Timestamp createAt;
 
-        private List<AvailableResumeDTO> availableResumes; // 선택 가능한 이력서 목록
+        private List<AvailableResumeDTO> availableResumes;
 
-        public ApplyFormDTO(Integer jobPostingId, String jobpostingName, String companyName, User user, List<Resume> resumes) {
-            this.jobPostingId = jobPostingId;
-            this.jobpostingName = jobpostingName;
-            this.companyName = companyName;
+        public ApplyFormDTO(JobPosting jobPosting, CompanyInfo companyInfo, User user, List<Resume> resumes) {
+            this.jobPostingName = jobPosting.getTitle();
+            this.companyName = companyInfo.getCompanyName();
             this.userName = user.getName();
             this.userEmail = user.getEmail();
             this.phoneNumber = user.getContactNumber();
             this.birthDate = user.getBirthDate();
 
-            this.availableResumes = new ArrayList<>();
-            for (Resume resume : resumes) {
-                this.availableResumes.add(new AvailableResumeDTO(resume));
-            }
+            // 이력서가 여러 개일 경우 가장 최신 생성일로 세팅할 수 있음
+            this.createAt = resumes.isEmpty() ? null : resumes.get(0).getCreatedAt();
+
+            // 이력서 리스트를 DTO로 변환
+            this.availableResumes = resumes.stream()
+                    .map(AvailableResumeDTO::new) // Resume을 AvailableResumeDTO로 변환
+                    .collect(Collectors.toList());
         }
     }
 
@@ -107,28 +113,29 @@ public class ApplicationRequest {
             }
         }
 
-        @Data
-        public static class JobPostingInfoDto {
-            private Integer jobPostingId;
-            private String title;
-            private String companyName;
-            private List<String> techStacks;
-
-            public JobPostingInfoDto(JobPosting jobPosting) {
-                this.jobPostingId = jobPosting.getId();
-                this.title = jobPosting.getTitle();
-                this.companyName = jobPosting.getUser().getName();
-                this.techStacks = new ArrayList<>();
-                for (JobPostingTechStack techStackEntry : jobPosting.getJobPostingTechStacks()) {
-                    this.techStacks.add(techStackEntry.getTechStack().getCode());
-                }
-            }
-            }
 
     }
 
     @Data
-    public static class UpdateDTO{
+    public static class JobPostingInfoDto {
+        private Integer jobPostingId;
+        private String title;
+        private String companyName;
+        private List<String> techStacks;
+
+        public JobPostingInfoDto(JobPosting jobPosting) {
+            this.jobPostingId = jobPosting.getId();
+            this.title = jobPosting.getTitle();
+            this.companyName = jobPosting.getUser().getName();
+            this.techStacks = new ArrayList<>();
+            for (JobPostingTechStack techStackEntry : jobPosting.getJobPostingTechStacks()) {
+                this.techStacks.add(techStackEntry.getTechStack().getCode());
+            }
+        }
+    }
+
+    @Data
+    public static class UpdateDTO {
         private Boolean isPassed;
     }
 }
