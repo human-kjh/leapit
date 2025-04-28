@@ -1,4 +1,4 @@
-    package com.example.leapit.jobposting;
+package com.example.leapit.jobposting;
 
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
@@ -13,38 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
-    import com.example.leapit.common.techstack.TechStack;
-    import com.example.leapit.common.techstack.TechStackRepository;
-    import com.example.leapit.common.techstack.TechStackService;
     import com.example.leapit.companyinfo.CompanyInfo;
     import com.example.leapit.companyinfo.CompanyInfoRepository;
-    import com.example.leapit.user.User;
-    import jakarta.servlet.http.HttpServletRequest;
-    import jakarta.servlet.http.HttpSession;
-    import lombok.RequiredArgsConstructor;
-    import org.springframework.stereotype.Controller;
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.PathVariable;
-    import org.springframework.web.bind.annotation.PostMapping;
-    import org.springframework.web.bind.annotation.RequestParam;
-
-    import java.util.List;
-    import com.example.leapit.common.techstack.TechStack;
-    import com.example.leapit.common.techstack.TechStackRepository;
-    import com.example.leapit.common.techstack.TechStackService;
-    import com.example.leapit.companyinfo.CompanyInfo;
-    import com.example.leapit.companyinfo.CompanyInfoRepository;
-    import com.example.leapit.user.User;
-    import jakarta.servlet.http.HttpServletRequest;
-    import jakarta.servlet.http.HttpSession;
-    import lombok.RequiredArgsConstructor;
-    import org.springframework.stereotype.Controller;
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.PathVariable;
-    import org.springframework.web.bind.annotation.PostMapping;
-    import org.springframework.web.bind.annotation.RequestParam;
-
-    import java.util.List;
 
     @RequiredArgsConstructor
     @Controller
