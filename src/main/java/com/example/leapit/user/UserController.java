@@ -111,6 +111,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login-form";
+    }
 
     @GetMapping("/company/main")
     public String companyMain() {
