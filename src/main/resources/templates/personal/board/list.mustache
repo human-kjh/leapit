@@ -8,7 +8,7 @@
                             <div class="p-3">
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h4 class="fw-bold mb-0">게시글 목록</h4>
-                                    <a href="#" class="btn btn-primary">
+                                    <a href="/community/save-form" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> 게시글 작성
                                     </a>
                                 </div>
@@ -16,47 +16,42 @@
                                     <thead>
                                         <tr>
                                             <th>제목</th>
-                                            <th>지원자</th>
-                                            <th>지원일</th>
+                                            <th>작성자</th>
+                                            <th>작성일</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <!-- 예시: 내가 쓴 글인 경우 -->
-                                        <tr>
-                                            <td>점핏 플랫폼 너무 좋아요!</td>
-                                            <td>김점핏</td>
-                                            <td>
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <span>2025.04.17</span>
-                                                    <div class="dropdown ms-2">
-                                                        <button class="btn btn-sm btn-light border-0" type="button"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="fa fa-ellipsis-v"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a class="dropdown-item" href="#">수정</a></li>
-                                                            <li><a class="dropdown-item text-danger" href="#">삭제</a>
-                                                            </li>
-                                                        </ul>
+                                        {{#models}}
+                                            <tr onclick="location.href='/community/{{id}}'" style="cursor: pointer;">
+                                                <td>{{title}}</td>
+                                                <td>{{name}}</td>
+                                                <td>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span>{{createdAtFormatted}}</span>
+
+                                                        <div class="dropdown ms-2">
+                                                        {{#isOwner}}
+                                                            <button class="btn btn-sm btn-light border-0" type="button"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation()">
+                                                                <i class="fa fa-ellipsis-v"></i>
+                                                            </button>
+                                                              <ul class="dropdown-menu dropdown-menu-end" onclick="event.stopPropagation()">
+                                                                  <li><a class="dropdown-item" href="/community/{{id}}/update-form">수정</a></li>
+                                                                  <li>
+                                                                      <form action="/community/{{id}}/delete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')" style="display: inline;">
+                                                                          <button type="submit" class="dropdown-item text-danger" style="all: unset; padding: 8px 16px; width: 100%; text-align: left; color: #dc3545; cursor: pointer;">
+                                                                              삭제
+                                                                          </button>
+                                                                      </form>
+                                                                  </li>
+                                                              </ul>
+                                                        {{/isOwner}}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <!-- 예시: 내가 안 쓴 글인 경우 (버튼 없음) -->
-                                        <tr>
-                                            <td>오늘 날씨 너무 좋아요</td>
-                                            <td>박점핏</td>
-                                            <td>2025.04.17</td>
-                                        </tr>
-
-                                        <!-- 추가 데이터 -->
-                                        <tr>
-                                            <td>점핏 서비스 추천합니다!</td>
-                                            <td>이점핏</td>
-                                            <td>2025.04.16</td>
-                                        </tr>
-
+                                                </td>
+                                            </tr>
+                                        {{/models}}
                                     </tbody>
                                 </table>
                             </div>

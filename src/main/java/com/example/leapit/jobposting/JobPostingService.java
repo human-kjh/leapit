@@ -1,9 +1,14 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit.common.positiontype.PositionTypeRepository;
+import com.example.leapit.common.positiontype.PositionTypeResponse;
+import com.example.leapit.common.region.RegionRepository;
+import com.example.leapit.common.region.RegionResponse;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.companyinfo.CompanyInfo;
 import com.example.leapit.companyinfo.CompanyInfoRepository;
+import com.example.leapit.jobposting.bookmark.JobPostingBookmarkRepository;
 import com.example.leapit.jobposting.techstack.JobPostingTechStack;
 import com.example.leapit.jobposting.techstack.JobPostingTechStackRepository;
 import com.example.leapit.user.User;
@@ -26,6 +31,9 @@ public class JobPostingService {
     private final TechStackRepository techStackRepository;
     private final CompanyInfoRepository companyInfoRepository;
     private final JobPostingTechStackRepository jobPostingTechStackRepository;
+    private final PositionTypeRepository positionTypeRepository;
+    private final RegionRepository regionRepository;
+    private final JobPostingBookmarkRepository jobPostingBookmarkRepository;
 
     // 채용 공고 등록
     @org.springframework.transaction.annotation.Transactional
@@ -92,6 +100,120 @@ public class JobPostingService {
     public List<JobPosting> ClosedJobPostings() {
         LocalDate now = LocalDate.now();
         return jobPostingRepository.findByDeadlineClosed(now);
+    }
+
+
+    public JobPostingResponse.JobPostingListFilterDTO 공고목록페이지(
+            Integer regionId,
+            Integer subRegionId,
+            Integer career,
+            String techStackCode,
+            String selectedLabel,
+            Boolean isPopular,
+            Boolean isLatest,
+            Integer sessionUserId) {
+
+        // 직무 조회
+        List<PositionTypeResponse.PositionTypeDTO> positions = positionTypeRepository.findAllLabelAndSelectedLabel(selectedLabel);
+
+
+        for (PositionTypeResponse.PositionTypeDTO position : positions) {
+            boolean isSelected = selectedLabel != null && position.getLabel().equals(selectedLabel);
+            position.setSelected(isSelected);
+        }
+
+        // 기술 스택 조회
+        List<TechStack> techStacks = techStackRepository.findAll();
+
+        // 지역 조회
+        List<RegionResponse.RegionDTO> regions = regionRepository.findAllRegions();
+
+        // 서브 지역 조회
+        List<RegionResponse.SubRegionDTO> subRegions = regionRepository.findAllSubRegions(regionId);
+        if (subRegions == null || subRegions.isEmpty()) {
+            subRegions = new ArrayList<>();
+        }
+
+        // 지역 이름 가져옴
+        String selectedSubRegionName = null;
+        String selectedRegionName = null;
+        String selectedCareerName = null;
+        String selectedTechStackName = null;
+        boolean hasAnyParam = (regionId != null || subRegionId != null || career != null || techStackCode != null || selectedLabel != null);
+
+        if (techStackCode != null) {
+
+            for (TechStack stack : techStacks) {
+                if (stack.getCode().equals(techStackCode)) {
+                    selectedTechStackName = stack.getCode(); // (네 목표는 코드 넣기)
+                }
+            }
+        }
+
+        if (career != null) {
+            if (career == 0) selectedCareerName = "신입";
+            else if (career == 1) selectedCareerName = "1년";
+            else if (career == 2) selectedCareerName = "2년";
+            else if (career == 3) selectedCareerName = "3년";
+            else if (career == 9) selectedCareerName = "9년";
+            else if (career == 10) selectedCareerName = "10년 이상";
+        }
+
+        if (regionId != null) {
+            for (RegionResponse.RegionDTO region : regions) {
+                if (region.getRegionId().equals(regionId)) {
+                    selectedRegionName = region.getRegion();
+                }
+            }
+        }
+
+        if (subRegionId != null) {
+            for (RegionResponse.SubRegionDTO subRegion : subRegions) {
+                if (subRegion.getSubRegionId().equals(subRegionId)) {
+                    selectedSubRegionName = subRegion.getSubRegion();
+                }
+            }
+        }
+
+        // 전체 공고목록 조회
+        List<JobPostingResponse.JobPostingDTO> jobPostingList = jobPostingRepository.findAllJobPostingsWithTechStacksByFilter(
+                regionId,
+                subRegionId,
+                career,
+                techStackCode,
+                selectedLabel,
+                Boolean.TRUE.equals(isPopular),
+                Boolean.TRUE.equals(isLatest),
+                sessionUserId
+        );
+
+
+        // 북마크 조회
+//        JobPostingBookmark bookmark = jobPostingBookmarkRepository.findByUserIdAndJobPostingId(sessionUserId, jobPostingId);
+
+
+        JobPostingResponse.JobPostingListFilterDTO respDTO =
+                new JobPostingResponse.JobPostingListFilterDTO(
+                        positions,
+                        techStacks,
+                        regions,
+                        subRegions,
+                        jobPostingList,
+                        regionId,
+                        subRegionId,
+                        selectedRegionName,
+                        selectedSubRegionName,
+                        career,
+                        selectedCareerName,
+                        techStackCode,
+                        selectedTechStackName,
+                        hasAnyParam,
+                        selectedLabel,
+                        Boolean.TRUE.equals(isPopular),
+                        Boolean.TRUE.equals(isLatest)
+                );
+
+        return respDTO;
     }
 
 
@@ -186,5 +308,6 @@ public class JobPostingService {
 
         return popularList;
     }
+
 
 }

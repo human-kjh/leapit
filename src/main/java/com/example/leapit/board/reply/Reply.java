@@ -3,6 +3,7 @@ package com.example.leapit.board.reply;
 import com.example.leapit.board.Board;
 import com.example.leapit.user.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,4 +30,13 @@ public class Reply {
     private Timestamp createdAt;
 
 
+
+    @Builder
+    public Reply(Integer id, String content, User user, Board board, Timestamp createdAt) {
+        this.id = id;
+        this.content = content;
+        this.user = user;
+        this.board = board;
+        this.createdAt = createdAt;
+    }
 }

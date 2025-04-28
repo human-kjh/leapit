@@ -9,6 +9,62 @@ import java.util.List;
 
 public class JobPostingRequest {
 
+    @Data
+    public class JobPostingListRequestDTO {
+
+        private String regionId;
+        private String subRegionId;
+        private String career;
+        private String techStackCode;
+        private String positionLabel;
+        private Boolean isPopular;
+        private Boolean isLatest;
+
+        // 문자로 오는거 인티저로 변환
+        public Integer getRegionIdAsInteger() {
+            if (regionId != null && !regionId.isBlank()) {
+                return Integer.parseInt(regionId.trim());
+            }
+            return null;
+        }
+
+        public Integer getSubRegionIdAsInteger() {
+            if (subRegionId != null && !subRegionId.isBlank()) {
+                return Integer.parseInt(subRegionId.trim());
+            }
+            return null;
+        }
+
+        public Integer getCareerAsInteger() {
+            if (career != null && !career.isBlank()) {
+                return Integer.parseInt(career.trim());
+            }
+            return null;
+        }
+
+        public String getTechStackCodeOrNull() {
+            if (techStackCode != null && !techStackCode.isBlank()) {
+                return techStackCode.trim();
+            }
+            return null;
+        }
+
+        public String getSelectedLabelOrNull() {
+            if (positionLabel != null && !positionLabel.isBlank()) {
+                return positionLabel.trim();
+            }
+            return null;
+        }
+
+        public boolean isPopularTrue() {
+            return Boolean.TRUE.equals(isPopular);
+        }
+
+        public boolean isLatestTrue() {
+            return Boolean.TRUE.equals(isLatest);
+        }
+    }
+
     // 채용공고 등록 요청 DTO
     @Data
     public static class SaveDTO {

@@ -21,7 +21,7 @@ public class ApplicationController {
     public String personalBookmark(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
-        ApplicationResponse.ApplicationBookmarkListDTO respDTO = applicationService.내북마크관리페이지(sessionUser.getId());
+        ApplicationResponse.ApplicationBookmarkListDTO respDTO = applicationService.myBookmarkpage(sessionUser.getId());
 
         request.setAttribute("models", respDTO);
         return "personal/mypage/bookmark";
@@ -33,7 +33,8 @@ public class ApplicationController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-        ApplicationResponse.ApplicationListViewDTO respDTO = applicationService.내지원현황목록(sessionUser.getId());
+
+        ApplicationResponse.ApplicationListViewDTO respDTO = applicationService.myApplicationPage(sessionUser.getId());
         request.setAttribute("models", respDTO);
 
         return "personal/mypage/application";
