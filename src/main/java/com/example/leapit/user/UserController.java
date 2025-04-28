@@ -27,6 +27,8 @@ public class UserController {
 
     @GetMapping("/company/user/update-form")
     public String companyUpdateForm() {
+        // TODO: session 인증코드 필요
+
         return "company/user/update-form";
     }
 
@@ -47,6 +49,8 @@ public class UserController {
 
     @GetMapping("/personal/user/update-form")
     public String personalUpdateForm() {
+        // TODO: session 인증코드 필요
+
         return "personal/user/update-form";
     }
 
@@ -119,6 +123,8 @@ public class UserController {
 
     @GetMapping("/company/main")
     public String companyMain() {
+        // TODO: session 인증코드 필요
+
         return "company/main";
     }
 
