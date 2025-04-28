@@ -61,6 +61,7 @@ public class ApplicationController {
 
         ApplicationResponse.ApplicantListPageDTO respDTO =
                 applicationService.findApplicantPageWithFilters(sessionUser.getId(), reqDTO.getJobPostingId(), passStatus, isViewed, isBookmark);
+
         request.setAttribute("models", respDTO);
 
         return "company/applicant/list";
@@ -82,12 +83,16 @@ public class ApplicationController {
 
     @GetMapping("/apply/form/{id}")
     public String ApplyForm(@PathVariable("id") Integer id, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null) {
+            throw new RuntimeException("로그인 후 이용하세요.");
+        }
 
         // 지원서 작성에 필요한 데이터 조회
-        ApplicationRequest.ApplyFormDTO applyFormDTO = applicationService.getApplyForm(id, 1);
+        ApplicationRequest.ApplyFormDTO applyFormDTO = applicationService.getApplyForm(id, sessionUser.getId());
 
-        // model로 applyFormDTO 전달
-        System.out.println(applyFormDTO);
         request.setAttribute("applyForm", applyFormDTO);
 
         // 지원 폼 페이지로 이동

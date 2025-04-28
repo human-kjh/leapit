@@ -84,9 +84,20 @@ public class ApplicationService {
     }
 
     public ApplicationRequest.ApplyFormDTO getApplyForm(Integer jobPostingId, Integer userId) {
-        ApplicationRequest.ApplyFormDTO asd = applicationRepository.findApplyFormInfo(jobPostingId, userId);
-        System.out.println(asd);
-        return null;
+        System.out.println("=== [Service] getApplyForm 호출됨 ===");
+        System.out.println("jobPostingId: " + jobPostingId);
+        System.out.println("userId: " + userId);
+
+        ApplicationRequest.ApplyFormDTO applyFormDTO = applicationRepository.findApplyFormInfo(jobPostingId, userId);
+
+        if (applyFormDTO == null) {
+            System.out.println("!!! 조회 결과가 null입니다. 지원서 폼 정보를 찾을 수 없습니다. !!!");
+        } else {
+            System.out.println("조회된 ApplyFormDTO: " + applyFormDTO);
+        }
+
+        System.out.println("=== [Service] getApplyForm 종료 ===");
+        return applyFormDTO; // <<<<<<<< 여기는 원래 null이 아니라 applyFormDTO를 return해야 정상입니다
     }
 
     public ApplicationRequest.JobPostingInfoDto getJobPostingInfo(Integer jobPostingId) {

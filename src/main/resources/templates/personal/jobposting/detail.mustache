@@ -181,7 +181,9 @@
 
             <!-- 지원하기 버튼 -->
             <div class="d-grid mb-2">
-                <a href="/applications/apply-form-all/{{jobPosting.id}}" class="apply-button">지원하기</a>
+                <form action="/apply/form/{{jobPosting.id}}" method="get">
+                    <button type="submit" class="apply-button">지원하기</button>
+                </form>
             </div>
 
             <!-- 스크랩하기 버튼 -->

@@ -43,14 +43,14 @@
 
                     {{#applyForm.availableResumes}}
                         <div class="form-check resume-option p-3 border rounded mb-3">
-                            <input class="form-check-input" type="radio" name="resume" id="resume{{@index}}"
-                                   value="{{this.id}}" required>
-                            <label class="form-check-label w-100" for="resume{{@index}}">
-                                <strong>{{this.resumeName}}</strong>
-                                <div class="small text-muted">기술스택: {{techStack}}</div>
+                            <input class="form-check-input" type="radio" name="resume" id="resume{{id}}"
+                                   value="{{id}}" required>
+                            <label class="form-check-label w-100" for="resume{{id}}">
+                                <strong>{{resumeTitle}}</strong>
+                                <div class="small text-muted">기술스택: {{skills}}</div>
                                 <div class="small text-muted">학력: {{education}}</div>
                                 <div class="small text-muted">경력: {{experience}}</div>
-                                <div class="small text-muted">등록일: {{createdAt}}</div>
+                                <div class="small text-muted">등록일: {{registeredDate}}</div>
                             </label>
                         </div>
                     {{/applyForm.availableResumes}}
