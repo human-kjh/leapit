@@ -27,7 +27,7 @@ public class ApplicationController {
     }
 
     // 개인 지원 현황 관리
-    @GetMapping("/personal/mypage/application")
+    @GetMapping("/s/personal/mypage/application")
     public String application(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
