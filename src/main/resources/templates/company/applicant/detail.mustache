@@ -7,14 +7,14 @@
                         <!-- 왼쪽 -->
                         <div class="left-panel bg-white p-3 mt-4 ms-4 mb-4">
                             <div class="text-secondary fs-5 mt-1 mb-4 ms-1">지원번호 : {{model.id}}</div>
-                            <div class="d-flex align-items-center gap-2 mt-4 mb-5 ">
+                            <div class="d-flex align-items-center gap-2 mt-4 mb-4">
+
                                 <h1 class="fw-bold">{{model.detailDTO.name}}</h1>
                             </div>
 
-
                             <!-- 버튼 그룹 영역 -->
                             <div class="mt-auto">
-                                <div id="passStatusText" class="text-center fw-bold mb-2">
+                                <div id="passStatusText" class="fw-bold mb-3">
                                     <!-- 여기에 합격/불합격 상태 텍스트가 들어갈 예정 -->
                                 </div>
                                 <div class="mb-3 w-100">
@@ -44,6 +44,9 @@
                         <!-- 오른쪽 -->
                         <div class="right-panel d-flex flex-column mt-4 me-4 ms-3">
                             <div class="bg-white p-3 mb-4">
+                                <div class="bg-white rounded-3 px-4 py-3 d-flex justify-content-between align-items-center mt-1 mb-4 shadow-sm">
+                                    <h4 class="fw-semibold">{{model.jobPositionTitle}}</h4>
+                                </div>
                                 <!-- 이력서 상세 페이지 가져오기 -->
                                 <div class="resume-section">
                                     <!-- 이력서 제목 -->
@@ -412,7 +415,6 @@
                                             </div>
                                         </div>
                                     {{/model.detailDTO.selfIntroduction}}
-
                                 </div>
                             </div>
                         </div>

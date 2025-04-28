@@ -33,5 +33,4 @@ public class ReplyController {
         replyService.delete(id, sessionUser.getId());
         return "redirect:/community/" + boardId;
     }
-
 }

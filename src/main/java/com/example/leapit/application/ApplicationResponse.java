@@ -158,12 +158,14 @@ public class ApplicationResponse {
         private Integer id; // 지원id
         private Boolean isBookmarked;
         private Boolean isPassed;
+        private String jobPositionTitle;
         private ResumeResponse.DetailDTO detailDTO;
 
         public DetailDTO(Application application, Boolean isBookmarked, ResumeResponse.DetailDTO detailDTO) {
             this.id = application.getId();
             this.isBookmarked = isBookmarked;
             this.isPassed = application.getIsPassed();
+            this.jobPositionTitle = application.getJobPosting().getTitle();
             this.detailDTO = detailDTO;
         }
     }
