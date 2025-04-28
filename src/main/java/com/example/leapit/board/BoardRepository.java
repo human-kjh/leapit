@@ -17,7 +17,6 @@ public class BoardRepository {
         return query.getResultList();
     }
 
-
     public List<Board> findAll(Integer userId) {
         String s1 = "select b from Board b join fetch b.user where b.user.id = :userId order by b.id desc";
         String s2 = "select b from Board b join fetch b.user order by b.id desc";

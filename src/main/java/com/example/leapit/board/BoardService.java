@@ -22,8 +22,7 @@ public class BoardService {
                 .map(board -> new BoardResponse.ListDTO(board, sessionUserId))
                 .toList();
     }
-
-
+  
     public BoardResponse.DetailDTO detail(Integer id, Integer userId) {
         Board board = boardRepository.findByIdJoinUser(id);
 
@@ -49,5 +48,4 @@ public class BoardService {
 
         return detailDTO;
     }
-
 }

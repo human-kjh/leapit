@@ -31,7 +31,7 @@ public class BoardController {
 
         return "personal/board/list";
     }
-
+  
     @GetMapping("/community/{id}")
     public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
