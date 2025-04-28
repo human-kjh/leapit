@@ -64,7 +64,7 @@ public class ApplicationService {
         // 지원 id 받아서
         Application application = applicationRepository.findByApplicationId(id);
         // 지원 id -> 이력서 id 찾아서 이력서 전달
-        Integer sessionUserId = 6;
+        Integer sessionUserId = 6; //TODO : sessionUserId 전달 받기 필요
         ApplicationBookmark bookmark = applicationBookmarkRepository.findByUserIdAndApplicationId(sessionUserId, application.getId());
         boolean isBookmarked = bookmark != null;
 

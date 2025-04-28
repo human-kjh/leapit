@@ -33,14 +33,4 @@ public class ReplyController {
         replyService.delete(id, sessionUser.getId());
         return "redirect:/community/" + boardId;
     }
-  
-    @PostMapping("/reply/save")
-    public String save(ReplyRequest.SaveDTO reqDTO) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
-
-        replyService.save(reqDTO, sessionUser);
-
-        return "redirect:/community/" + reqDTO.getBoardId();
-    }
 }
