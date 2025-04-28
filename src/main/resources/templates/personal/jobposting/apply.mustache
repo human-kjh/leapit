@@ -1,0 +1,66 @@
+{{> layout/personal-header}}
+
+<!-- 입사지원 폼 시작 -->
+<div class="bg-light p-4 d-flex justify-content-center">
+    <div class="application-container">
+        <h1 class="application-title">백엔드 개발자 채용</h1>
+        <h2 class="application-subtitle">코드코리아 주식회사</h2>
+        <form action="/apply" method="post">
+            <div class="personal-info-box">
+                <div class="personal-info-field">
+                    <label for="name">이름</label>
+                    <div id="name" class="info-value">홍길동</div>
+                </div>
+                <div class="personal-info-field">
+                    <label for="email">이메일</label>
+                    <div id="email" class="info-value">gildong.hong@example.com</div>
+                </div>
+                <div class="personal-info-field">
+                    <label for="phone">연락처</label>
+                    <div id="phone" class="info-value">010-1234-5678</div>
+                </div>
+                <div class="personal-info-field">
+                    <label for="birthYear">출생년도</label>
+                    <div id="birthYear" class="info-value">2000-01-01</div>
+                </div>
+            </div>
+            <div class="resume-section">
+                <h3 class="resume-section-title">지원 이력서</h3>
+                <div class="resume-option">
+                    <input type="radio" id="resume1" name="resume" value="1" required>
+                    <div class="resume-details">
+                        <div class="resume-title">백엔드 개발자 이력서</div>
+                        <div class="resume-info">기술스택: Java, Spring, JPA</div>
+                        <div class="resume-info">학력: 서울대학교 컴퓨터공학과</div>
+                        <div class="resume-info">경력/프로젝트: 쇼핑몰 백엔드 개발</div>
+                        <div class="resume-date">등록일: 2024-12-01</div>
+                    </div>
+                </div>
+                <div class="resume-option">
+                    <input type="radio" id="resume2" name="resume" value="2">
+                    <div class="resume-details">
+                        <div class="resume-title">풀스택 개발자 이력서</div>
+                        <div class="resume-info">기술스택: React, Node.js, MySQL</div>
+                        <div class="resume-info">학력: 고려대학교 소프트웨어학과</div>
+                        <div class="resume-info">경력/프로젝트: 스타트업 풀스택 개발</div>
+                        <div class="resume-date">등록일: 2025-01-15</div>
+                    </div>
+                </div>
+                <div class="resume-option">
+                    <input type="radio" id="resume3" name="resume" value="3">
+                    <div class="resume-details">
+                        <div class="resume-title">앱 개발자 이력서</div>
+                        <div class="resume-info">기술스택: Flutter, Dart, Firebase</div>
+                        <div class="resume-info">학력: 한양대학교 정보시스템학과</div>
+                        <div class="resume-info">경력/프로젝트: 모바일 앱 개발 프로젝트</div>
+                        <div class="resume-date">등록일: 2025-03-05</div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn">지원하기</button>
+        </form>
+    </div>
+</div>
+<!-- 입사지원 폼 끝 -->
+
+{{> layout/footer}}
