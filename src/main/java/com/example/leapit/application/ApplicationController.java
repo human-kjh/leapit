@@ -1,7 +1,6 @@
 package com.example.leapit.application;
 
 import com.example.leapit._core.util.Resp;
-import com.example.leapit.resume.ResumeResponse;
 import com.example.leapit.resume.ResumeService;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -71,15 +70,32 @@ public class ApplicationController {
     @GetMapping("/company/applicant/{id}")
     public String applicationDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
         ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id); // TODO : sessionUser.getId() 인수 추가
-        request.setAttribute("model",detailDTO);
+        request.setAttribute("model", detailDTO);
         return "/company/applicant/detail";
     }
 
     @ResponseBody
     @PutMapping("/company/applicant/{id}/pass")
-    public Resp<?> isPassedUpdate(@PathVariable("id") Integer id, @RequestBody ApplicationRequest.UpdateDTO updateDTO){
-        applicationService.update(id,updateDTO);
+    public Resp<?> isPassedUpdate(@PathVariable("id") Integer id, @RequestBody ApplicationRequest.UpdateDTO updateDTO) {
+        applicationService.update(id, updateDTO);
         return Resp.ok(null);
     }
 
+    @GetMapping("/apply/form/{id}")
+    public String ApplyForm(@PathVariable("id") Integer id, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null) {
+            throw new RuntimeException("로그인 후 이용하세요.");
+        }
+
+        // 지원서 작성에 필요한 데이터 조회
+        ApplicationRequest.ApplyFormDTO applyFormDTO = applicationService.getApplyForm(id, sessionUser.getId());
+
+        request.setAttribute("applyForm", applyFormDTO);
+
+        // 지원 폼 페이지로 이동
+        return "/personal/jobposting/apply";
+    }
 }

@@ -3,11 +3,13 @@ package com.example.leapit.application;
 import com.example.leapit.application.bookmark.ApplicationBookmark;
 import com.example.leapit.application.bookmark.ApplicationBookmarkRepository;
 import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
+import com.example.leapit.resume.Resume;
 import com.example.leapit.resume.ResumeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -79,5 +81,45 @@ public class ApplicationService {
         if (applicationPS == null) throw new RuntimeException("해당 지원서는 존재하지 않습니다.");
 
         applicationPS.update(updateDTO.getIsPassed());
+    }
+
+    public ApplicationRequest.ApplyFormDTO getApplyForm(Integer jobPostingId, Integer userId) {
+        System.out.println("=== [Service] getApplyForm 호출됨 ===");
+        System.out.println("jobPostingId: " + jobPostingId);
+        System.out.println("userId: " + userId);
+
+        ApplicationRequest.ApplyFormDTO applyFormDTO = applicationRepository.findApplyFormInfo(jobPostingId, userId);
+
+        if (applyFormDTO == null) {
+            System.out.println("!!! 조회 결과가 null입니다. 지원서 폼 정보를 찾을 수 없습니다. !!!");
+        } else {
+            System.out.println("조회된 ApplyFormDTO: " + applyFormDTO);
+        }
+
+        System.out.println("=== [Service] getApplyForm 종료 ===");
+        return applyFormDTO; // <<<<<<<< 여기는 원래 null이 아니라 applyFormDTO를 return해야 정상입니다
+    }
+
+    public ApplicationRequest.JobPostingInfoDto getJobPostingInfo(Integer jobPostingId) {
+        return applicationRepository.findJobPostingInfoDto(jobPostingId);
+    }
+
+    public ApplicationRequest.AvailableResumeDTO getAvailableResumeInfo(Integer resumeId) {
+        Resume resume = applicationRepository.findResumeById(resumeId);
+        if (resume == null) {
+            return null; // 또는 예외 처리
+        }
+        return new ApplicationRequest.AvailableResumeDTO(resume);
+    }
+
+    // 특정 사용자의 모든 AvailableResumeDTO 목록 조회 (예시 - 스트림 없이)
+    public List<ApplicationRequest.AvailableResumeDTO> getAllAvailableResumes(Integer userId) {
+        // 레포지토리에서 해당 사용자의 모든 이력서 조회
+        List<Resume> resumes = applicationRepository.findAllResumesByUserId(userId);
+        List<ApplicationRequest.AvailableResumeDTO> availableResumes = new ArrayList<>();
+        for (Resume resume : resumes) {
+            availableResumes.add(new ApplicationRequest.AvailableResumeDTO(resume));
+        }
+        return availableResumes;
     }
 }
