@@ -31,7 +31,7 @@ public class JobPostingController {
     private final CompanyInfoRepository companyInfoRepository;
     private final JobPostingBookmarkRepository jobPostingBookmarkRepository;
     private final CompanyInfoService companyInfoService;
-
+  
     // 채용 공고 목록 보기
     @GetMapping("/s/company/jobposting/list")
     public String companyList(HttpServletRequest request) {
@@ -74,7 +74,6 @@ public class JobPostingController {
         if (companyInfoId == null) {
             throw new RuntimeException("기업정보를 먼저 등록해야 채용공고를 작성할 수 있습니다.");
         }
-
 
         List<TechStack> techStacks = techStackService.getAllTechStacks();
         request.setAttribute("model", techStacks);
