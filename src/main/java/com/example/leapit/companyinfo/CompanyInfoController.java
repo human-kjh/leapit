@@ -54,7 +54,7 @@ public class CompanyInfoController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
-        CompanyInfo companyInfo = companyInfoService.updateCheck(id);
+        CompanyInfo companyInfo = companyInfoService.updateCheck(id,sessionUser.getId());
         request.setAttribute("model", companyInfo);
 
         return "company/info/update-form";
@@ -76,7 +76,7 @@ public class CompanyInfoController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
-        companyInfoService.delete(id);
+        companyInfoService.delete(id,sessionUser.getId());
 
         session.removeAttribute("companyInfoId");
 

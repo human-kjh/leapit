@@ -1,5 +1,7 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit._core.error.ex.Exception403;
+import com.example.leapit._core.error.ex.Exception404;
 import com.example.leapit.common.positiontype.PositionTypeRepository;
 import com.example.leapit.common.positiontype.PositionTypeResponse;
 import com.example.leapit.common.region.RegionRepository;
@@ -38,6 +40,13 @@ public class JobPostingService {
     // 채용 공고 등록
     @org.springframework.transaction.annotation.Transactional
     public void save(JobPostingRequest.SaveDTO saveDTO, User sessionUser, String[] techStacks) {
+        if (sessionUser == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
+        CompanyInfo companyInfo = companyInfoRepository.findByUserId(sessionUser.getId());
+        if (companyInfo == null) {
+            throw new Exception403("기업정보가 없어서 채용공고를 등록할 수 없습니다.");
+        }
+
         JobPosting jobPosting = saveDTO.toEntity(sessionUser);
         jobPostingRepository.save(jobPosting);
         // 2. 선택된 기술 스택 처리
@@ -62,7 +71,14 @@ public class JobPostingService {
 
     // 채용 공고 삭제
     @Transactional
-    public void delete(Integer id) {
+    public void delete(Integer id,Integer sessionUserId) {
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
+        JobPosting jobPosting = jobPostingRepository.findById(id);
+        if (jobPosting == null) throw new Exception404("채용공고를 찾을 수 없습니다.");
+
+        if (!jobPosting.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
+        
         jobPostingRepository.deleteById(id);
     }
 
@@ -73,8 +89,14 @@ public class JobPostingService {
 
     // 채용 공고 수정
     @Transactional
-    public void update(Integer id, JobPostingRequest.UpdateDTO updateDTO, String[] techStacks) {
+    public void update(Integer id, JobPostingRequest.UpdateDTO updateDTO, String[] techStacks, Integer sessionUserId) {
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         JobPosting jobPosting = jobPostingRepository.findById(id);
+        if (jobPosting == null) throw new Exception404("채용공고를 찾을 수 없습니다.");
+
+        if (!jobPosting.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
+
         jobPosting.update(updateDTO);
 
         jobPostingTechStackRepository.deleteByJobPostingId(id);
@@ -92,12 +114,16 @@ public class JobPostingService {
 
     // 진행 중인 채용 공고 목록 조회
     public List<JobPosting> OpenJobPostings(Integer userId) {
+        if (userId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         LocalDate now = LocalDate.now();
         return jobPostingRepository.findByDeadlineOpen(now, userId);
     }
 
     // 마감된 채용 공고 목록 조회
     public List<JobPosting> ClosedJobPostings(Integer userId) {
+        if (userId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         LocalDate now = LocalDate.now();
         return jobPostingRepository.findByDeadlineClosed(now, userId);
     }

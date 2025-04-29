@@ -1,5 +1,9 @@
 package com.example.leapit.application.bookmark;
 
+import com.example.leapit._core.error.ex.Exception404;
+import com.example.leapit._core.error.ex.ExceptionApi400;
+import com.example.leapit._core.error.ex.ExceptionApi403;
+import com.example.leapit._core.error.ex.ExceptionApi404;
 import com.example.leapit.application.Application;
 import com.example.leapit.application.ApplicationRepository;
 import com.example.leapit.user.User;
@@ -21,13 +25,13 @@ public class ApplicationBookmarkService {
     public ApplicationBookmarkResponse.SaveDTO saveApplicantBookmarkByUserId(ApplicationBookmarkRequest.SaveDTO reqDTO, Integer sessionUserId) {
 
         User companyUser = userRepository.findById(sessionUserId);
-        if (companyUser == null) throw new RuntimeException("유저가 존재하지 않습니다");
+        if (companyUser == null) throw new ExceptionApi404("회원정보가 존재하지 않습니다.");
 
         Application application = applicationRepository.findByApplicationId(reqDTO.getApplicationId());
-        if (application == null) throw new RuntimeException("지원 정보가 존재하지 않습니다");
+        if (application == null) throw new ExceptionApi404("지원 정보가 존재하지 않습니다");
 
         ApplicationBookmark applicationBookmark = applicationBookmarkRepository.findByUserIdAndApplicationId(sessionUserId, application.getId());
-        if (applicationBookmark != null) throw new RuntimeException("이미 스크랩된 지원서 입니다.");
+        if (applicationBookmark != null) throw new ExceptionApi400("이미 스크랩된 지원서 입니다.");
 
         ApplicationBookmark bookmark = ApplicationBookmark.builder()
                 .user(companyUser)
@@ -41,9 +45,10 @@ public class ApplicationBookmarkService {
     @Transactional
     public void deleteApplicationBookmarkByApplicationId(Integer applicationId, Integer sessionUserId) {
         ApplicationBookmark bookmark = applicationBookmarkRepository.findByUserIdAndApplicationId(sessionUserId, applicationId);
+        if (sessionUserId == null) throw new ExceptionApi404("회원정보가 존재하지 않습니다.");
 
-        if (bookmark == null) throw new RuntimeException("해당 스크랩이 존재하지 않습니다.");
-        if (!bookmark.getUser().getId().equals(sessionUserId)) throw new RuntimeException("권한이 없습니다.");
+        if (bookmark == null) throw new ExceptionApi404("해당 스크랩이 존재하지 않습니다.");
+        if (!bookmark.getUser().getId().equals(sessionUserId)) throw new ExceptionApi403("권한이 없습니다.");
 
         applicationBookmarkRepository.delete(bookmark);
     }

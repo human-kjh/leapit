@@ -1,5 +1,6 @@
 package com.example.leapit.application;
 
+import com.example.leapit._core.error.ex.*;
 import com.example.leapit.application.bookmark.ApplicationBookmark;
 import com.example.leapit.application.bookmark.ApplicationBookmarkRepository;
 import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
@@ -8,6 +9,8 @@ import com.example.leapit.jobposting.JobPostingRepository;
 import com.example.leapit.resume.Resume;
 import com.example.leapit.resume.ResumeRepository;
 import com.example.leapit.resume.ResumeService;
+import com.example.leapit.user.User;
+import com.example.leapit.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,8 +26,11 @@ public class ApplicationService {
     private final ResumeService resumeService;
     private final JobPostingRepository jobPostingRepository;
     private final ResumeRepository resumeRepository;
+    private final UserRepository userRepository;
 
     public ApplicationResponse.ApplicationBookmarkListDTO myBookmarkpage(Integer userId) {
+        if (userId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         // 지원 현황 통계
         ApplicationResponse.ApplicationStatusDto statusDto = applicationRepository.findSummaryByUserId(userId);
 
@@ -39,6 +45,8 @@ public class ApplicationService {
 
 
     public ApplicationResponse.ApplicationListViewDTO myApplicationPage(Integer userId) {
+        if (userId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         // 지원 현황 통계
         ApplicationResponse.ApplicationStatusDto statusDto = applicationRepository.findSummaryByUserId(userId);
         // 지원 현황 목록 조회
@@ -50,6 +58,8 @@ public class ApplicationService {
 
 
     public ApplicationResponse.ApplicantListPageDTO findApplicantPageWithFilters(Integer companyUserId, Integer jobPostingId, String passStatus, Boolean isViewed, Boolean isBookmark) {
+        if (companyUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         // 1. 진행중과 마감된 리스트 조회
         List<ApplicationResponse.IsClosedDTO> positions = applicationRepository.positionAndIsClosedDtoBycompanyUserIds(companyUserId);
 
@@ -68,8 +78,13 @@ public class ApplicationService {
     }
 
     public ApplicationResponse.DetailDTO detail(Integer id) {
+//        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         // 지원 id 받아서
         Application application = applicationRepository.findByApplicationId(id);
+        if (application == null) throw new Exception404("지원 내역을 찾을 수 없습니다.");
+
+
         // 지원 id -> 이력서 id 찾아서 이력서 전달
         Integer sessionUserId = 6; //TODO : sessionUserId 전달 받기 필요
         ApplicationBookmark bookmark = applicationBookmarkRepository.findByUserIdAndApplicationId(sessionUserId, application.getId());
@@ -80,15 +95,24 @@ public class ApplicationService {
     }
 
     @Transactional
-    public void update(Integer applicationId, ApplicationRequest.UpdateDTO updateDTO) {
+    public void update(Integer applicationId, ApplicationRequest.UpdateDTO updateDTO, Integer sessionUserId) {
+        if (sessionUserId == null) throw new ExceptionApi404("회원정보가 존재하지 않습니다.");
+
         // 해당 지원서 있는지 확인
         Application applicationPS = applicationRepository.findByApplicationId(applicationId);
-        if (applicationPS == null) throw new RuntimeException("해당 지원서는 존재하지 않습니다.");
+        if (applicationPS == null) throw new ExceptionApi404("해당 지원서는 존재하지 않습니다.");
+
+        // 권한 확인
+        User user = applicationPS.getResume().getUser();
+        if(!user.getId().equals(sessionUserId)) throw new ExceptionApi403("권한이 없습니다.");
+
 
         applicationPS.update(updateDTO.getIsPassed());
     }
 
     public ApplicationRequest.ApplyFormDTO getApplyForm(Integer jobPostingId, Integer userId) {
+        if (userId == null) throw new ExceptionApi404("회원정보가 존재하지 않습니다.");
+
         ApplicationRequest.ApplyFormDTO applyFormDTO = applicationRepository.findApplyFormInfo(jobPostingId, userId);
         return applyFormDTO;
     }
@@ -118,15 +142,21 @@ public class ApplicationService {
 
     @Transactional
     public void apply(ApplicationRequest.ApplyReqDTO applyReqDTO, Integer userId) {
+        if (userId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
 
         boolean alreadyApplied = applicationRepository.checkIfAlreadyApplied(userId, applyReqDTO.getJobPostingId());
-
         if (alreadyApplied) {
-            throw new RuntimeException("이미 지원한 공고입니다.");
+            throw new Exception400("이미 지원한 공고입니다.");
         }
 
         Resume resume = resumeRepository.findById(applyReqDTO.getResumeId());
+        if (resume == null) throw new Exception404("이력서가 존재하지 않습니다.");
+
+        User user = userRepository.findById(userId);
+        if (!user.getId().equals(resume.getUser().getId())) throw new Exception403("권한이 없습니다.");
+
         JobPosting jobPosting = jobPostingRepository.findById(applyReqDTO.getJobPostingId());
+        if (jobPosting == null) throw new Exception404("채용공고가 존재하지 않습니다.");
 
         Application application = applyReqDTO.toEntity(resume, jobPosting);
 

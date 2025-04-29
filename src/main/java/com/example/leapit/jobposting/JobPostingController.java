@@ -131,7 +131,7 @@ public class JobPostingController {
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
-        jobPostingService.update(id, updateDTO, techStacks);
+        jobPostingService.update(id, updateDTO, techStacks,sessionUser.getId());
         return "redirect:/s/company/jobposting/" + id;
     }
 
@@ -142,7 +142,7 @@ public class JobPostingController {
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
-        jobPostingService.delete(id);
+        jobPostingService.delete(id,sessionUser.getId());
         return "redirect:/s/company/jobposting/list";
     }
 

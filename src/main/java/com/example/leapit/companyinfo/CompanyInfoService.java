@@ -1,5 +1,8 @@
 package com.example.leapit.companyinfo;
 
+import com.example.leapit._core.error.ex.Exception400;
+import com.example.leapit._core.error.ex.Exception403;
+import com.example.leapit._core.error.ex.Exception404;
 import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.jobposting.JobPostingRepository;
 import com.example.leapit.jobposting.techstack.JobPostingTechStack;
@@ -23,6 +26,8 @@ public class CompanyInfoService {
 
     @Transactional
     public CompanyInfo save(CompanyInfoRequest.SaveDTO reqDTO, User sessionUser) {
+        if (sessionUser == null) throw new Exception404("회원정보가 존재하지 않습니다");
+
         String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/img/";
 
         try {
@@ -43,7 +48,7 @@ public class CompanyInfoService {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("파일 업로드 실패", e);
+            throw new Exception400("파일 업로드 실패");
         }
 
         CompanyInfo companyInfo = reqDTO.toEntity(sessionUser);
@@ -52,7 +57,10 @@ public class CompanyInfoService {
     }
 
     public CompanyInfoResponse.DetailDTO detail(Integer id, Integer userId) {
+        if (userId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         CompanyInfo companyInfo = companyInfoRepository.findById(id);
+        if (companyInfo == null) throw new Exception404("기업정보가 존재하지 않습니다.");
 
         // 1. 조인된 결과 가져오기 (JobPosting + JobPostingTechStack)
         List<Object[]> results = jobPostingRepository.findJobPostingsWithTechStacksByUserId(userId);
@@ -82,15 +90,25 @@ public class CompanyInfoService {
         return respDTO;
     }
 
-    public CompanyInfo updateCheck(Integer id) {
+    public CompanyInfo updateCheck(Integer id, Integer sessionUserId) {
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         CompanyInfo companyInfo = companyInfoRepository.findById(id);
+        if (companyInfo == null) throw new Exception404("기업정보가 존재하지 않습니다.");
+
+        if (!companyInfo.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
 
         return companyInfo;
     }
 
     @Transactional
-    public CompanyInfo update(Integer id, Integer userId, CompanyInfoRequest.UpdateDTO reqDTO) {
+    public CompanyInfo update(Integer id, Integer sessionUserId, CompanyInfoRequest.UpdateDTO reqDTO) {
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         CompanyInfo companyInfo = companyInfoRepository.findById(id);
+        if (companyInfo == null) throw new Exception404("기업정보가 존재하지 않습니다.");
+
+        if (!companyInfo.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
 
         String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/img/";
 
@@ -116,7 +134,7 @@ public class CompanyInfoService {
             }
 
         } catch (Exception e) {
-            throw new RuntimeException("파일 업로드 실패", e);
+            throw new Exception400("파일 업로드 실패");
         }
 
         companyInfo.update(reqDTO.getLogoImage(), reqDTO.getCompanyName(), reqDTO.getEstablishmentDate(), reqDTO.getAddress(), reqDTO.getMainService(), reqDTO.getIntroduction(), reqDTO.getImage(), reqDTO.getBenefit());
@@ -126,7 +144,13 @@ public class CompanyInfoService {
 
 
     @Transactional
-    public void delete(Integer id) {
+    public void delete(Integer id, Integer sessionUserId) {
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
+        CompanyInfo companyInfo = companyInfoRepository.findById(id);
+        if (companyInfo == null) throw new Exception404("기업정보가 존재하지 않습니다.");
+
+        if (!companyInfo.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
 
         companyInfoRepository.deleteById(id);
 

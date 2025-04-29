@@ -29,7 +29,7 @@ public class LikeController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
 
-        LikeResponse.DeleteDTO respDTO = likeService.delete(id);   // likeId
+        LikeResponse.DeleteDTO respDTO = likeService.delete(id,sessionUser.getId());   // likeId
 
         return Resp.ok(respDTO);
     }

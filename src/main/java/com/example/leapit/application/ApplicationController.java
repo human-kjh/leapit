@@ -1,6 +1,7 @@
 package com.example.leapit.application;
 
 import com.example.leapit._core.error.ex.Exception401;
+import com.example.leapit._core.error.ex.ExceptionApi401;
 import com.example.leapit._core.util.Resp;
 import com.example.leapit.resume.ResumeService;
 import com.example.leapit.user.User;
@@ -82,9 +83,9 @@ public class ApplicationController {
     @PutMapping("/s/api/company/applicant/{id}/pass")
     public Resp<?> isPassedUpdate(@PathVariable("id") Integer id, @RequestBody ApplicationRequest.UpdateDTO updateDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new Exception401("로그인 후 이용");
+        if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
 
-        applicationService.update(id, updateDTO);
+        applicationService.update(id, updateDTO,sessionUser.getId());
         return Resp.ok(null);
     }
 

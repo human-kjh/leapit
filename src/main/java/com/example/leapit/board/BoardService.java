@@ -1,5 +1,7 @@
 package com.example.leapit.board;
 
+import com.example.leapit._core.error.ex.Exception403;
+import com.example.leapit._core.error.ex.Exception404;
 import com.example.leapit.board.like.Like;
 import com.example.leapit.board.like.LikeRepository;
 import com.example.leapit.board.reply.Reply;
@@ -53,15 +55,19 @@ public class BoardService {
 
     @Transactional
     public void save(BoardRequest.SaveDTO saveDTO, User sessionUser) {
+        if (sessionUser == null) throw new Exception404("회원정보가 존재하지 않습니다");
+
         Board board = saveDTO.toEntity(sessionUser);
         boardRepository.save(board);
     }
 
     public Board updateCheck(Integer id, Integer sessionUserId) {
-        Board board = boardRepository.findById(id);
-        if (board == null) throw new RuntimeException("게시글을 찾을 수 없습니다.");
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
 
-        if (!board.getUser().getId().equals(sessionUserId)) throw new RuntimeException("권한이 없습니다.");
+        Board board = boardRepository.findById(id);
+        if (board == null) throw new Exception404("게시글을 찾을 수 없습니다.");
+
+        if (!board.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
 
         return board;
     }
@@ -69,10 +75,12 @@ public class BoardService {
 
     @Transactional
     public Board update(BoardRequest.UpdateDTO reqDTO, Integer id, Integer sessionUserId) {
-        Board board = boardRepository.findById(id);
-        if (board == null) throw new RuntimeException("게시글을 찾을 수 없습니다");
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
 
-        if (!board.getUser().getId().equals(sessionUserId)) throw new RuntimeException("권한이 없습니다.");
+        Board board = boardRepository.findById(id);
+        if (board == null) throw new Exception404("게시글을 찾을 수 없습니다");
+
+        if (!board.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
 
         board.update(reqDTO.getTitle(), reqDTO.getContent());
 
@@ -81,10 +89,12 @@ public class BoardService {
 
     @Transactional
     public void delete(Integer id, Integer sessionUserId) {
-        Board board = boardRepository.findById(id);
-        if (board == null) throw new RuntimeException("게시글을 찾을 수 없습니다");
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
 
-        if (!board.getUser().getId().equals(sessionUserId)) throw new RuntimeException("권한이 없습니다.");
+        Board board = boardRepository.findById(id);
+        if (board == null) throw new Exception404("게시글을 찾을 수 없습니다");
+
+        if (!board.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
 
         // 좋아요 삭제
         likeRepository.deleteByBoardId(board.getId());
