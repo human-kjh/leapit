@@ -1,5 +1,6 @@
 package com.example.leapit.application;
 
+import com.example.leapit._core.error.ex.Exception401;
 import com.example.leapit._core.util.Resp;
 import com.example.leapit.resume.ResumeService;
 import com.example.leapit.user.User;
@@ -30,7 +31,7 @@ public class ApplicationController {
     @GetMapping("/s/personal/mypage/application")
     public String application(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
         ApplicationResponse.ApplicationListViewDTO respDTO = applicationService.myApplicationPage(sessionUser.getId());
@@ -47,7 +48,7 @@ public class ApplicationController {
                                 @RequestParam(required = false, value = "isBookmark") String isBookmarkStr
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         Boolean isViewed = null;
         if ("열람".equals(isViewedStr)) {
@@ -70,7 +71,7 @@ public class ApplicationController {
     @GetMapping("/s/company/applicant/{id}")
     public String applicationDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id); // TODO : sessionUser.getId() 인수 추가
         request.setAttribute("model", detailDTO);
@@ -81,7 +82,7 @@ public class ApplicationController {
     @PutMapping("/s/api/company/applicant/{id}/pass")
     public Resp<?> isPassedUpdate(@PathVariable("id") Integer id, @RequestBody ApplicationRequest.UpdateDTO updateDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         applicationService.update(id, updateDTO);
         return Resp.ok(null);
@@ -93,7 +94,7 @@ public class ApplicationController {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         if (sessionUser == null) {
-            throw new RuntimeException("로그인 후 이용하세요.");
+            throw new Exception401("로그인 후 이용하세요.");
         }
 
         // 지원서 작성에 필요한 데이터 조회

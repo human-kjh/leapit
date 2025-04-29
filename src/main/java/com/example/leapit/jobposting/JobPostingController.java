@@ -1,5 +1,7 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit._core.error.ex.Exception400;
+import com.example.leapit._core.error.ex.Exception401;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.common.techstack.TechStackService;
@@ -67,12 +69,12 @@ public class JobPostingController {
     @GetMapping("/s/company/jobposting/save-form")
     public String saveForm(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         // 추가: 기업정보 조회
         Integer companyInfoId = companyInfoService.findCompanyInfoIdByUserId(sessionUser.getId());
         if (companyInfoId == null) {
-            throw new RuntimeException("기업정보를 먼저 등록해야 채용공고를 작성할 수 있습니다.");
+            throw new Exception400("기업정보를 먼저 등록해야 채용공고를 작성할 수 있습니다.");
         }
 
 
@@ -85,7 +87,7 @@ public class JobPostingController {
     @PostMapping("/s/company/jobposting/save")
     public String save(JobPostingRequest.SaveDTO saveDTO, String[] techStack) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
         jobPostingService.save(saveDTO, sessionUser, techStack);
@@ -96,7 +98,7 @@ public class JobPostingController {
     @GetMapping("/s/company/jobposting/{id}/update-form")
     public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
         JobPosting jobPosting = jobPostingRepository.findById(id);
@@ -125,7 +127,7 @@ public class JobPostingController {
     public String update(@PathVariable("id") Integer id, JobPostingRequest.UpdateDTO updateDTO,
                          @RequestParam(value = "techStacks", required = false) String[] techStacks) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
         jobPostingService.update(id, updateDTO, techStacks);
@@ -136,7 +138,7 @@ public class JobPostingController {
     @PostMapping("/s/company/jobposting/{id}/delete")
     public String delete(@PathVariable("id") Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
         jobPostingService.delete(id);

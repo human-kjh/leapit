@@ -1,21 +1,11 @@
 package com.example.leapit.jobposting.bookmark;
 
+import com.example.leapit._core.error.ex.ExceptionApi401;
 import com.example.leapit._core.util.Resp;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpSession;
-import com.example.leapit._core.util.Resp;
-import com.example.leapit.application.bookmark.ApplicationBookmarkRequest;
-import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
-import com.example.leapit.user.User;
-import jakarta.servlet.http.HttpSession;
-import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RequiredArgsConstructor
 @RestController
@@ -28,7 +18,7 @@ public class JobPostingBookmarkController {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         if (sessionUser == null) {
-            return Resp.fail(400, "사용자 정보가 없습니다. 로그인 후 다시 시도해주세요.");
+            throw new ExceptionApi401("사용자 정보가 없습니다. 로그인 후 다시 시도해주세요.");
         }
 
         try {
@@ -45,7 +35,7 @@ public class JobPostingBookmarkController {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         if (sessionUser == null) {
-            return Resp.fail(400, "사용자 정보가 없습니다. 로그인 후 다시 시도해주세요.");
+            throw new ExceptionApi401("사용자 정보가 없습니다. 로그인 후 다시 시도해주세요.");
         }
 
         try {
