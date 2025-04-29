@@ -36,4 +36,35 @@ public class RegionRepository {
         }
         return dtos;
     }
+
+    // 시/도
+    public List<RegionResponse.SelectedRegionDTO> findAllRegionsBySelection(Integer selectedRegionId) {
+        List<Region> regions = em.createQuery("SELECT r FROM Region r", Region.class).getResultList();
+
+        List<RegionResponse.SelectedRegionDTO> dtos = new ArrayList<>();
+        for (Region r : regions) {
+            boolean selected = r.getId().equals(selectedRegionId);
+            dtos.add(new RegionResponse.SelectedRegionDTO(r.getId(), r.getName(), selected));
+        }
+        return dtos;
+    }
+
+    // 시/군/구
+    public List<RegionResponse.SelectedSubRegionDTO> findAllSubRegionsBySelection(Integer regionId, Integer selectedSubRegionId) {
+        List<Object[]> results = em.createQuery(
+                        "SELECT s.id, s.name FROM SubRegion s WHERE s.region.id = :regionId", Object[].class)
+                .setParameter("regionId", regionId)
+                .getResultList();
+
+        List<RegionResponse.SelectedSubRegionDTO> dtos = new ArrayList<>();
+        for (Object[] row : results) {
+            Integer subRegionId = (Integer) row[0];
+            String name = (String) row[1];
+            boolean selected = subRegionId.equals(selectedSubRegionId);
+            dtos.add(new RegionResponse.SelectedSubRegionDTO(subRegionId, name, selected));
+        }
+        return dtos;
+    }
+
+
 }

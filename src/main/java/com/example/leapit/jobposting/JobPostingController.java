@@ -1,5 +1,7 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit.common.region.RegionRepository;
+import com.example.leapit.common.region.RegionResponse;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.common.techstack.TechStackService;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -27,6 +32,7 @@ public class JobPostingController {
     private final JobPostingRepository jobPostingRepository;
     private final TechStackRepository techStackRepository;
     private final CompanyInfoRepository companyInfoRepository;
+    private final RegionRepository regionRepository;
 
     // 채용 공고 목록 보기
     @GetMapping("/s/company/jobposting/list")
@@ -65,7 +71,7 @@ public class JobPostingController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-        
+
         List<TechStack> techStacks = techStackService.getAllTechStacks();
         request.setAttribute("model", techStacks);
         return "company/jobposting/save-form";
@@ -91,24 +97,27 @@ public class JobPostingController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-
         JobPosting jobPosting = jobPostingRepository.findById(id);
-        List<String> techStackList = jobPostingService.getTechStacksByJobPostingId(id);
-        List<TechStack> allTechStacks = techStackRepository.findAll();
+        List<String> techStackList = jobPostingService.getTechStacksByJobPostingId(id); // 선택된 기술 스택
+        List<TechStack> allTechStacks = techStackRepository.findAll(); // 전체 스택
 
-        // techStackList를 JSON 문자열로 직접 변환
-        StringBuilder jsonTechStack = new StringBuilder("[");
-        for (int i = 0; i < techStackList.size(); i++) {
-            jsonTechStack.append("\"").append(techStackList.get(i)).append("\"");
-            if (i < techStackList.size() - 1) {
-                jsonTechStack.append(",");
-            }
+        List<RegionResponse.SelectedRegionDTO> addressRegionList = regionRepository.findAllRegionsBySelection(jobPosting.getAddressRegionId()); // 시/도 (선택 여부 포함)
+        List<RegionResponse.SelectedSubRegionDTO> addressSubRegionList = regionRepository.findAllSubRegionsBySelection(
+                jobPosting.getAddressRegionId(), jobPosting.getAddressSubRegionId()); // 시/군/구 (선택 여부 포함)
+
+        // Mustache에 넘기기 위해 selected 여부 포함한 리스트 만들기
+        List<Map<String, Object>> stackModels = new ArrayList<>();
+        for (TechStack stack : allTechStacks) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("code", stack.getCode());
+            map.put("selected", techStackList.contains(stack.getCode())); // true 또는 false
+            stackModels.add(map);
         }
-        jsonTechStack.append("]");
 
         request.setAttribute("model", jobPosting);
-        request.setAttribute("techStackJson", jsonTechStack.toString()); // JSON 문자열을 모델에 담기
-        request.setAttribute("allTechStacks", allTechStacks);
+        request.setAttribute("allTechStacks", stackModels);
+        request.setAttribute("addressRegionList", addressRegionList);
+        request.setAttribute("addressSubRegionList", addressSubRegionList);
 
         return "company/jobposting/update-form";
     }
