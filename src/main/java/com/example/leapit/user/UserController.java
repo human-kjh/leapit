@@ -25,14 +25,15 @@ public class UserController {
     private final JobPostingService jobPostingService;
 
 
-    @GetMapping("/company/user/update-form")
+    @GetMapping("/s/company/user/update-form")
     public String companyUpdateForm() {
-        // TODO: session 인증코드 필요
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         return "company/user/update-form";
     }
 
-    @PostMapping("/company/user/update")
+    @PostMapping("/s/company/user/update")
     public String update(UserRequest.CompanyUpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -47,14 +48,16 @@ public class UserController {
         return "redirect:/login-form";
     }
 
-    @GetMapping("/personal/user/update-form")
+    @GetMapping("/s/personal/user/update-form")
     public String personalUpdateForm() {
-        // TODO: session 인증코드 필요
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
 
         return "personal/user/update-form";
     }
 
-    @PostMapping("/personal/user/update")
+    @PostMapping("/s/personal/user/update")
     public String update(UserRequest.PersonalUpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -107,10 +110,10 @@ public class UserController {
 
             if (companyInfoId != null) {
                 session.setAttribute("companyInfoId", companyInfoId);
-                return "redirect:/company/info/" + companyInfoId;
+                return "redirect:/s/company/info/" + companyInfoId;
             } else {
                 session.removeAttribute("companyInfoId");
-                return "redirect:/company/main";
+                return "redirect:/s/company/main";
             }
         }
     }
@@ -121,9 +124,11 @@ public class UserController {
         return "redirect:/login-form";
     }
 
-    @GetMapping("/company/main")
+    @GetMapping("/s/company/main")
     public String companyMain() {
-        // TODO: session 인증코드 필요
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
 
         return "company/main";
     }

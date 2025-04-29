@@ -27,7 +27,7 @@
                         <ul class="list-group list-group-flush">
                             {{#models.positions}}
                                 {{^isClosed}}
-                                    <a href="/company/applicant/list?jobPostingId={{jobPostingId}}"
+                                    <a href="/s/company/applicant/list?jobPostingId={{jobPostingId}}"
                                     class="list-group-item">
                                     {{title}}
                                     </a>
@@ -49,7 +49,7 @@
                         <ul class="list-group list-group-flush">
                             {{#models.positions}}
                                 {{#isClosed}}
-                                    <a href="/company/applicant/list?jobPostingId={{jobPostingId}}"
+                                    <a href="/s/company/applicant/list?jobPostingId={{jobPostingId}}"
                                     class="list-group-item">
                                     {{title}}
                                     </a>
@@ -65,7 +65,7 @@
             <div class="right-panel d-flex flex-column mt-4 me-4 ms-3">
                 <!-- 위쪽 -->
                 <div class="p-3 bg-white mb-3">
-                    <form action="/company/applicant/list" method="get">
+                    <form action="/s/company/applicant/list" method="get">
                         {{#models.listView.isViewed}}
                             <input type="hidden" name="isViewed" value="{{models.listView.isViewed}}">
                         {{/models.listView.isViewed}}
@@ -82,7 +82,7 @@
                 <!-- 아래쪽  -->
                 <div class="flex-grow-1 bg-white p-3 mb-4">
                     <div class="d-flex gap-2 mb-3">
-                        <form method="get" action="/company/applicant/list">
+                        <form method="get" action="/s/company/applicant/list">
                             <input type="hidden" name="passStatus" value="{{models.listView.passStatus}}">
                             <div class="dropdown">
                                 <button class="btn btn-outline-primary dropdown-toggle" type="button"
@@ -107,7 +107,7 @@
                         </form>
 
 
-                        <form id="bookmarkForm" method="get" action="/company/applicant/list">
+                        <form id="bookmarkForm" method="get" action="/s/company/applicant/list">
                             <input type="hidden" name="passStatus" value="{{models.listView.passStatus}}">
 
                             {{#models.listView.isBookmark}}
@@ -141,7 +141,7 @@
                         </thead>
                         <tbody>
                         {{#models.applicants}}
-                            <tr style="cursor: pointer;" onclick="location.href='/company/applicant/{{applicationId}}'">
+                            <tr style="cursor: pointer;" onclick="location.href='/s/company/applicant/{{applicationId}}'">
                                 <td>
                                     {{#isBookmarked}}
                                         <i class="fa fa-star text-warning ms-4"
@@ -149,7 +149,7 @@
                                            tabindex="-1"
                                            style="cursor: pointer;"
                                            onmousedown="event.preventDefault()"
-                                           onclick="deleteBookmark({{applicationId}})"></i>
+                                           onclick="deleteBookmark({{applicationId}}, event)"></i>
                                     {{/isBookmarked}}
                                     {{^isBookmarked}}
                                         <i class="fa fa-star-o ms-4"
@@ -157,7 +157,7 @@
                                            tabindex="-1"
                                            style="cursor: pointer;"
                                            onmousedown="event.preventDefault()"
-                                           onclick="saveBookmark({{applicationId}})"></i>
+                                           onclick="saveBookmark({{applicationId}}, event)"></i>
                                     {{/isBookmarked}}
                                 </td>
                                 <td>{{appliedDate}}</td>
@@ -183,8 +183,9 @@
 <script>
 
     async function saveBookmark(applicationId) {
+        event.stopPropagation();
         try {
-            const response = await fetch(`/api/company/bookmark`, {
+            const response = await fetch(`/s/api/company/bookmark`, {
                 method: "POST",
                 body: JSON.stringify({applicationId: applicationId}),
                 headers: {"Content-Type": "application/json"}
@@ -206,8 +207,9 @@
     }
 
     async function deleteBookmark(applicationId) {
+        event.stopPropagation();
         try {
-            const response = await fetch(`/api/company/bookmark/${applicationId}`, {
+            const response = await fetch(`/s/api/company/bookmark/${applicationId}`, {
                 method: "DELETE"
             });
 

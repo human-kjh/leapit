@@ -39,16 +39,22 @@ public class JobPostingRepository {
     }
 
     // 진행 중인 채용 공고 목록 조회
-    public List<JobPosting> findByDeadlineOpen(LocalDate deadline) {
-        return em.createQuery("select jp from JobPosting jp where jp.deadline >= :deadline", JobPosting.class)
+    public List<JobPosting> findByDeadlineOpen(LocalDate deadline, Integer userId) {
+        return em.createQuery(
+                        "select jp from JobPosting jp where jp.deadline >= :deadline and jp.user.id = :userId",
+                        JobPosting.class)
                 .setParameter("deadline", deadline)
+                .setParameter("userId", userId)
                 .getResultList();
     }
 
     // 마감된 채용 공고 목록 조회
-    public List<JobPosting> findByDeadlineClosed(LocalDate deadline) {
-        return em.createQuery("select jp from JobPosting jp where jp.deadline < :deadline", JobPosting.class)
+    public List<JobPosting> findByDeadlineClosed(LocalDate deadline, Integer userId) {
+        return em.createQuery(
+                        "select jp from JobPosting jp where jp.deadline < :deadline and jp.user.id = :userId",
+                        JobPosting.class)
                 .setParameter("deadline", deadline)
+                .setParameter("userId", userId)
                 .getResultList();
     }
 
