@@ -9,20 +9,24 @@ import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.resume.education.Education;
 import com.example.leapit.resume.education.EducationRepository;
+import com.example.leapit.resume.education.EducationService;
 import com.example.leapit.resume.etc.Etc;
 import com.example.leapit.resume.etc.EtcRepository;
+import com.example.leapit.resume.etc.EtcService;
 import com.example.leapit.resume.experience.Experience;
 import com.example.leapit.resume.experience.ExperienceRepository;
 import com.example.leapit.resume.experience.ExperienceResponse;
 import com.example.leapit.resume.experience.ExperienceService;
 import com.example.leapit.resume.link.Link;
 import com.example.leapit.resume.link.LinkRepository;
+import com.example.leapit.resume.link.LinkService;
 import com.example.leapit.resume.project.Project;
 import com.example.leapit.resume.project.ProjectRepository;
 import com.example.leapit.resume.project.ProjectResponse;
 import com.example.leapit.resume.project.ProjectService;
 import com.example.leapit.resume.techstack.ResumeTechStack;
 import com.example.leapit.resume.techstack.ResumeTechStackRepository;
+import com.example.leapit.resume.techstack.ResumeTechStackService;
 import com.example.leapit.resume.training.Training;
 import com.example.leapit.resume.training.TrainingRepository;
 import com.example.leapit.resume.training.TrainingResponse;
@@ -48,9 +52,13 @@ public class ResumeService {
     private final EducationRepository educationRepository;
     private final EtcRepository etcRepository;
 
+    private final ResumeTechStackService resumeTechStackService;
     private final ExperienceService experienceService;
     private final TrainingService trainingService;
     private final ProjectService projectService;
+    private final EducationService educationService;
+    private final EtcService etcService;
+    private final LinkService linkService;
 
     private final ApplicationRepository applicationRepository;
     private final ExperienceRepository experienceRepository;
@@ -120,6 +128,32 @@ public class ResumeService {
         Resume resume = saveDTO.toEntity(sessionUser);
         resumeRepository.save(resume);
     }
+
+    @Transactional
+    public void update(Integer resumeId, ResumeRequest.UpdateDTO reqDTO){
+        // 1. 이력서 존재 확인
+        Resume resumePS = resumeRepository.findById(resumeId);
+        if (resumePS == null) throw new RuntimeException("이력서가 존재하지 않습니다.");
+
+        // 2. (선택) 권한 확인
+        // if (!(resumePS.getUser().getId().equals(sessionUserId))) {
+        //     throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
+        // }
+
+        // 3. 이력서 업데이트
+        resumePS.update(reqDTO.getTitle(), reqDTO.getPhotoUrl(), reqDTO.getIsPublic(), reqDTO.getSummary(), reqDTO.getPositionType(), reqDTO.getSelfIntroduction());
+
+        // 항목별 업데이트는 각 항목의 Service 호출
+        resumeTechStackService.update(resumePS, reqDTO.getResumeTechStacks());
+        trainingService.update(resumePS, reqDTO.getTrainings());
+//        projectService.update(resumePS, reqDTO.getProjects());
+//        experienceService.update(resumePS, reqDTO.getExperiences());
+//        educationService.update(resumePS, reqDTO.getEducations());
+//        linkService.update(resumePS, reqDTO.getLinks());
+//        etcService.update(resumePS, reqDTO.getEtcs());
+
+    }
+
 
     public ResumeResponse.UpdateDTO getUpdateForm(Integer resumeId) {
         // 1. 해당 이력서 존재 확인

@@ -74,9 +74,10 @@ public class ResumeController {
         return "personal/resume/update-form";
     }
 
-    @PutMapping("/resume/{id}")
+    @PutMapping("/resume/{id}/update")
     @ResponseBody
-    public String update(@PathVariable("id") int id, @RequestBody ResumeRequest.UpdateDTO updateDTO) {
-        return "redirect:/resume/" + id;
+    public Resp<?> update(@PathVariable("id") int id, @RequestBody ResumeRequest.UpdateDTO updateDTO) {
+        resumeService.update(id, updateDTO);
+        return Resp.ok(null);
     }
 }

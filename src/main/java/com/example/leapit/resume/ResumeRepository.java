@@ -24,6 +24,10 @@ public class ResumeRepository {
         return (Resume) query.getSingleResult();
     }
 
+    public Resume findById(Integer id){
+        return em.find(Resume.class, id);
+    }
+
     public void deleteById(Integer resumeId) {
         em.remove(em.find(Resume.class, resumeId));
     }

@@ -92,7 +92,6 @@ public class ResumeRequest {
             private String courseName;
             private String institutionName;
             private String description;
-            private Timestamp createdAt;
             private List<String> techStacks;
         }
 
@@ -109,6 +108,8 @@ public class ResumeRequest {
         }
     }
 
+
+    // SaveDTO ----------------------------------------------------------------------------------------------------
     @Data
     public static class SaveDTO{
         private String title;

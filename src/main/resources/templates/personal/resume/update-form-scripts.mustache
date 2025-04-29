@@ -1,9 +1,9 @@
 <script>
     // 공통 추가 함수 (template 복제해서 추가)
     function addItem(containerSelector, templateId) {
-        const container = document.querySelector(containerSelector);
-        const template = document.querySelector(templateId);
-        const clone = template.content.cloneNode(true);
+        let container = document.querySelector(containerSelector);
+        let template = document.querySelector(templateId);
+        let clone = template.content.cloneNode(true);
         container.appendChild(clone);
     }
 
@@ -16,9 +16,9 @@
 
     // updateResume 함수 (모든 데이터 수집해서 전송)
     async function updateResume() {
-        const resumeId = document.getElementById('resumeId').value;
+        let resumeId = document.getElementById('resumeId').value;
 
-        const requestBody = {
+        let requestBody = {
             title: document.querySelector("#title").value,
             summary: document.querySelector("#summary").value,
             selfIntroduction: document.querySelector("#selfIntroduction").value,
@@ -119,11 +119,11 @@
     });
 
     function updateTechStackButton() {
-        const checkboxes = document.querySelectorAll('.tech-checkbox');
-        const displayBtn = document.getElementById('selectedTechStacksBtn');
+        let checkboxes = document.querySelectorAll('.tech-checkbox');
+        let displayBtn = document.getElementById('selectedTechStacksBtn');
 
         function refreshDisplay() {
-            const selected = Array.from(checkboxes)
+            let selected = Array.from(checkboxes)
                     .filter(cb => cb.checked)
                     .map(cb => cb.nextElementSibling.innerText);
             displayBtn.innerText = selected.length > 0 ? selected.join(', ') : '기술스택을 선택하세요';
@@ -184,9 +184,9 @@
                 event.target.classList.contains('project-tech-checkbox') ||
                 event.target.classList.contains('training-tech-checkbox')) {
 
-            const container = event.target.closest('.dropdown');
-            const button = container.querySelector('button.form-select');
-            const selected = Array.from(container.querySelectorAll('input:checked')).map(cb => cb.nextElementSibling.innerText);
+            let container = event.target.closest('.dropdown');
+            let button = container.querySelector('button.form-select');
+            let selected = Array.from(container.querySelectorAll('input:checked')).map(cb => cb.nextElementSibling.innerText);
 
             if (selected.length > 0) {
                 button.innerText = selected.join(', ') + ' 선택됨';

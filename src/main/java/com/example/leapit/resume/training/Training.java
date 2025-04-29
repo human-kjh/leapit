@@ -56,13 +56,12 @@ public class Training {
         this.trainingTechStacks = trainingTechStacks!= null ? trainingTechStacks : new ArrayList<>();
     }
 
-    public void update(LocalDate startDate, LocalDate endDate, Boolean isOngoing, String courseName, String institutionName, String description, Timestamp createdAt) {
+    public void update(LocalDate startDate, LocalDate endDate, Boolean isOngoing, String courseName, String institutionName, String description) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.isOngoing = isOngoing;
         this.courseName = courseName;
         this.institutionName = institutionName;
         this.description = description;
-        this.createdAt = createdAt;
     }
 }
