@@ -8,7 +8,8 @@
             <h1 class="mb-3 text-center">{{applyForm.jobPostingName}}</h1>
             <h2 class="mb-4 text-center text-muted">{{applyForm.companyName}}</h2>
 
-            <form action="/s/personal/apply" method="post">
+            <form action="/personal/jobposting/{{applyForm.jobPostingId}}/apply" method="POST">
+                <input type="hidden" name="jobPostingId" value="{{applyForm.jobPostingId}}">
 
                 <!-- 개인 정보 -->
                 <div class="mb-4">
@@ -43,9 +44,9 @@
 
                     {{#applyForm.availableResumes}}
                         <div class="form-check resume-option p-3 border rounded mb-3">
-                            <input class="form-check-input" type="radio" name="resume" id="resume{{id}}"
-                                   value="{{id}}" required>
-                            <label class="form-check-label w-100" for="resume{{id}}">
+                            <input class="form-check-input" type="radio" name="resumeId" id="{{resumeId}}"
+                                   value="{{resumeId}}" required>
+                            <label class="form-check-label w-100" for="{{resumeId}}">
                                 <strong>{{resumeTitle}}</strong>
                                 <div class="small text-muted">기술스택: {{skills}}</div>
                                 <div class="small text-muted">학력: {{education}}</div>
@@ -54,17 +55,12 @@
                             </label>
                         </div>
                     {{/applyForm.availableResumes}}
-
                 </div>
 
                 <!-- 제출 버튼 -->
                 <div class="text-center">
-                    <form action="/apply/form" method="POST">
-                        <input type="hidden" name="jobPostingId" value="{{applyForm.jobPostingId}}">
-                        <button type="submit" class="btn btn-primary btn-lg px-5">지원하기</button>
-                    </form>
+                    <button type="submit" class="btn btn-primary btn-lg px-5">지원하기</button>
                 </div>
-
             </form>
         </div>
     </div>

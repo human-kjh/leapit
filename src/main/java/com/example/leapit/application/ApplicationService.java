@@ -3,7 +3,10 @@ package com.example.leapit.application;
 import com.example.leapit.application.bookmark.ApplicationBookmark;
 import com.example.leapit.application.bookmark.ApplicationBookmarkRepository;
 import com.example.leapit.application.bookmark.ApplicationBookmarkResponse;
+import com.example.leapit.jobposting.JobPosting;
+import com.example.leapit.jobposting.JobPostingRepository;
 import com.example.leapit.resume.Resume;
+import com.example.leapit.resume.ResumeRepository;
 import com.example.leapit.resume.ResumeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,8 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final ApplicationBookmarkRepository applicationBookmarkRepository;
     private final ResumeService resumeService;
+    private final JobPostingRepository jobPostingRepository;
+    private final ResumeRepository resumeRepository;
 
     public ApplicationResponse.ApplicationBookmarkListDTO myBookmarkpage(Integer userId) {
         // 지원 현황 통계
@@ -84,20 +89,8 @@ public class ApplicationService {
     }
 
     public ApplicationRequest.ApplyFormDTO getApplyForm(Integer jobPostingId, Integer userId) {
-        System.out.println("=== [Service] getApplyForm 호출됨 ===");
-        System.out.println("jobPostingId: " + jobPostingId);
-        System.out.println("userId: " + userId);
-
         ApplicationRequest.ApplyFormDTO applyFormDTO = applicationRepository.findApplyFormInfo(jobPostingId, userId);
-
-        if (applyFormDTO == null) {
-            System.out.println("!!! 조회 결과가 null입니다. 지원서 폼 정보를 찾을 수 없습니다. !!!");
-        } else {
-            System.out.println("조회된 ApplyFormDTO: " + applyFormDTO);
-        }
-
-        System.out.println("=== [Service] getApplyForm 종료 ===");
-        return applyFormDTO; // <<<<<<<< 여기는 원래 null이 아니라 applyFormDTO를 return해야 정상입니다
+        return applyFormDTO;
     }
 
     public ApplicationRequest.JobPostingInfoDto getJobPostingInfo(Integer jobPostingId) {
@@ -112,7 +105,7 @@ public class ApplicationService {
         return new ApplicationRequest.AvailableResumeDTO(resume);
     }
 
-    // 특정 사용자의 모든 AvailableResumeDTO 목록 조회 (예시 - 스트림 없이)
+    // 특정 사용자의 모든 AvailableResumeDTO 목록 조회
     public List<ApplicationRequest.AvailableResumeDTO> getAllAvailableResumes(Integer userId) {
         // 레포지토리에서 해당 사용자의 모든 이력서 조회
         List<Resume> resumes = applicationRepository.findAllResumesByUserId(userId);
@@ -122,4 +115,22 @@ public class ApplicationService {
         }
         return availableResumes;
     }
+
+    @Transactional
+    public void apply(ApplicationRequest.ApplyReqDTO applyReqDTO, Integer userId) {
+
+        boolean alreadyApplied = applicationRepository.checkIfAlreadyApplied(userId, applyReqDTO.getJobPostingId());
+
+        if (alreadyApplied) {
+            throw new RuntimeException("이미 지원한 공고입니다.");
+        }
+
+        Resume resume = resumeRepository.findById(applyReqDTO.getResumeId());
+        JobPosting jobPosting = jobPostingRepository.findById(applyReqDTO.getJobPostingId());
+
+        Application application = applyReqDTO.toEntity(resume, jobPosting);
+
+        applicationRepository.save(application);
+    }
+
 }

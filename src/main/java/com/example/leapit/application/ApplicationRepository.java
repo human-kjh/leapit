@@ -218,4 +218,24 @@ public class ApplicationRepository {
         }
         return new ApplicationRequest.JobPostingInfoDto(jobPosting);
     }
+
+    // 채용공고에 이력서 지원하기
+    public void save(Application application) {
+        em.persist(application);
+    }
+
+    public boolean checkIfAlreadyApplied(Integer userId, Integer jobPostingId) { // userId, jobPostingId 받도록 수정
+        String jpql = """
+                SELECT COUNT(a) > 0
+                FROM Application a
+                WHERE a.resume.user.id = :userId
+                AND a.jobPosting.id = :jobPostingId
+                """;
+
+        // 쿼리에 넘겨주는 파라미터 이름도 userId로 맞춰줌
+        return em.createQuery(jpql, Boolean.class)
+                .setParameter("userId", userId)
+                .setParameter("jobPostingId", jobPostingId)
+                .getSingleResult();
+    }
 }

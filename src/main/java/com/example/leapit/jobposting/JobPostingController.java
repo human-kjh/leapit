@@ -34,6 +34,7 @@ public class JobPostingController {
     private final JobPostingBookmarkRepository jobPostingBookmarkRepository;
     private final CompanyInfoService companyInfoService;
 
+
     // 채용 공고 목록 보기
     @GetMapping("/s/company/jobposting/list")
     public String companyList(HttpServletRequest request) {
