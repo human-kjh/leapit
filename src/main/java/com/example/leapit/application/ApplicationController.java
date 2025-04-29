@@ -98,4 +98,22 @@ public class ApplicationController {
         // 지원 폼 페이지로 이동
         return "/personal/jobposting/apply";
     }
+
+    // 채용공고에 이력서 지원하기
+    @PostMapping("/personal/jobposting/{id}/apply")
+    public String apply(@PathVariable("id") Integer jobPostingId, ApplicationRequest.ApplyReqDTO applyReqDTO) {
+
+        // 세션에서 로그인한 사용자 정보 가져오기
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null) {
+            throw new RuntimeException("로그인 후 이용하세요.");
+        }
+
+        Integer userId = sessionUser.getId();
+
+        applicationService.apply(applyReqDTO, userId);
+
+        return "redirect:/s/personal/mypage/application";
+    }
 }
