@@ -423,30 +423,33 @@
         <!-- 공고 카드 리스트 -->
         <div class="row gx-3 gy-4 ms-2 me-2 " >
             {{#models.jobPostingList}}
-                <div class="col-md-3 col-sm-6">
-                    <a href="/personal/jobposting/{{id}}" class="text-decoration-none text-dark">
-                        <div class="mb-3 position-relative">
-                            <img src="/img/{{image}}" class="img-fluid rounded">
-                            <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">
+                <div class="col-md-3 col-sm-6 d-flex">
+                    <div class="w-100 d-flex flex-column bg-light rounded p-2">
+                        <a href="/personal/jobposting/{{id}}"
+                           class="text-decoration-none text-dark flex-grow-1 d-flex flex-column">
+                            <div class="mb-3 position-relative">
+                                <img src="/img/{{image}}" class="img-fluid rounded">
+                                <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">
                             D-{{dDay}}
                         </span>
-                        </div>
-                        <div>
-                            <div class="position-relative mb-2">{{companyName}}</div>
-                            <h4 class="mb-2">{{title}}</h4>
-                            <div class="mb-3">
-                                <small>{{#techStacks}}{{name}} · {{/techStacks}}</small><br>
-                                <small>{{address}} · 경력 {{career}}</small>
                             </div>
-                        </div>
-                    </a>
-                    <button class="btn {{#isBookmarked}}btn-primary{{/isBookmarked}}{{^isBookmarked}}btn-outline-primary{{/isBookmarked}} w-100"
-                            id="bookmark-btn-{{id}}"
-                            onclick="{{#isBookmarked}}deleteBookmark{{/isBookmarked}}{{^isBookmarked}}saveBookmark{{/isBookmarked}}({{id}})">
-                        <i class="fa {{#isBookmarked}}fa-bookmark{{/isBookmarked}}{{^isBookmarked}}fa-bookmark-o{{/isBookmarked}} me-2"
-                           id="bookmark-icon-{{id}}"></i>
-                        {{#isBookmarked}}스크랩됨{{/isBookmarked}}{{^isBookmarked}}스크랩하기{{/isBookmarked}}
-                    </button>
+                            <div class="flex-grow-1 d-flex flex-column">
+                                <div class="position-relative mb-2">{{companyName}}</div>
+                                <h4 class="mb-2">{{title}}</h4>
+                                <div class="mb-3">
+                                    <small>{{#techStacks}}{{name}} · {{/techStacks}}</small><br>
+                                    <small>{{address}} · 경력 {{career}}</small>
+                                </div>
+                            </div>
+                        </a>
+                        <button class="btn {{#isBookmarked}}btn-primary{{/isBookmarked}}{{^isBookmarked}}btn-outline-primary{{/isBookmarked}} w-100 mt-auto"
+                                id="bookmark-btn-{{id}}"
+                                onclick="{{#isBookmarked}}deleteBookmark{{/isBookmarked}}{{^isBookmarked}}saveBookmark{{/isBookmarked}}({{id}})">
+                            <i class="fa {{#isBookmarked}}fa-bookmark{{/isBookmarked}}{{^isBookmarked}}fa-bookmark-o{{/isBookmarked}} me-2"
+                               id="bookmark-icon-{{id}}"></i>
+                            {{#isBookmarked}}스크랩됨{{/isBookmarked}}{{^isBookmarked}}스크랩하기{{/isBookmarked}}
+                        </button>
+                    </div>
                 </div>
             {{/models.jobPostingList}}
         </div>
