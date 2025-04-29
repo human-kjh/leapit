@@ -65,7 +65,7 @@ public class JobPostingController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-        
+
         List<TechStack> techStacks = techStackService.getAllTechStacks();
         request.setAttribute("model", techStacks);
         return "company/jobposting/save-form";
@@ -197,6 +197,7 @@ public class JobPostingController {
                 );
 
         req.setAttribute("models", respDTO);
+        req.setAttribute("isLoggedIn", sessionUser != null);
         return "personal/jobposting/list";
     }
 }
