@@ -113,7 +113,7 @@ public class UserController {
                 return "redirect:/s/company/info/" + companyInfoId;
             } else {
                 session.removeAttribute("companyInfoId");
-                return "redirect:/s/company/main";
+                return "redirect:/s/company/info/save-form";
             }
         }
     }

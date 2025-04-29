@@ -5,6 +5,7 @@ import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.common.techstack.TechStackService;
 import com.example.leapit.companyinfo.CompanyInfo;
 import com.example.leapit.companyinfo.CompanyInfoRepository;
+import com.example.leapit.companyinfo.CompanyInfoService;
 import com.example.leapit.jobposting.bookmark.JobPostingBookmarkRepository;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +30,8 @@ public class JobPostingController {
     private final TechStackRepository techStackRepository;
     private final CompanyInfoRepository companyInfoRepository;
     private final JobPostingBookmarkRepository jobPostingBookmarkRepository;
-
+    private final CompanyInfoService companyInfoService;
+  
     // 채용 공고 목록 보기
     @GetMapping("/s/company/jobposting/list")
     public String companyList(HttpServletRequest request) {
@@ -67,6 +69,11 @@ public class JobPostingController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
+        // 추가: 기업정보 조회
+        Integer companyInfoId = companyInfoService.findCompanyInfoIdByUserId(sessionUser.getId());
+        if (companyInfoId == null) {
+            throw new RuntimeException("기업정보를 먼저 등록해야 채용공고를 작성할 수 있습니다.");
+        }
 
         List<TechStack> techStacks = techStackService.getAllTechStacks();
         request.setAttribute("model", techStacks);
@@ -76,9 +83,6 @@ public class JobPostingController {
     // 채용 공고 등록
     @PostMapping("/s/company/jobposting/save")
     public String save(JobPostingRequest.SaveDTO saveDTO, String[] techStack) {
-        // TODO: session 인증코드 필요
-
-
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
