@@ -184,12 +184,16 @@ public class UserController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request) {
-        List<JobPostingResponse.MainDTO.MainRecentJobPostingDTO> recent = jobPostingService.getRecentPostings();
-        List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> popular = jobPostingService.getPopularJobPostings();
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        Integer userId = sessionUser != null ? sessionUser.getId() : null;
+
+        List<JobPostingResponse.MainDTO.MainRecentJobPostingDTO> recent = jobPostingService.getRecentPostings(userId);
+        List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> popular = jobPostingService.getPopularJobPostings(userId);
 
         JobPostingResponse.MainDTO mainDTO = new JobPostingResponse.MainDTO(recent, popular);
 
         request.setAttribute("model", mainDTO);
+        request.setAttribute("isLoggedIn", sessionUser != null);
         return "personal/main/logout";
     }
 }

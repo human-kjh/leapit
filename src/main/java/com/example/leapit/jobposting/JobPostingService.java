@@ -261,7 +261,7 @@ public class JobPostingService {
 
 
     // 구직자 - 메인페이지 최신공고 3개
-    public List<JobPostingResponse.MainDTO.MainRecentJobPostingDTO> getRecentPostings() {
+    public List<JobPostingResponse.MainDTO.MainRecentJobPostingDTO> getRecentPostings(Integer userId) {
         List<JobPosting> recentPostings = jobPostingRepository.findTop3RecentJobPostings();
         AtomicInteger index = new AtomicInteger(0);
 
@@ -269,14 +269,18 @@ public class JobPostingService {
                 .map(jp -> {
                     int i = index.getAndIncrement();
                     CompanyInfo ci = companyInfoRepository.findByUserId(jp.getUser().getId());
-                    return new JobPostingResponse.MainDTO.MainRecentJobPostingDTO(jp, ci, i == 0);
+                    boolean isBookmarked = false;
+                    if (userId != null) {
+                        isBookmarked = jobPostingBookmarkRepository.findByUserIdAndJobPostingId(userId, jp.getId()) != null;
+                    }
+                    return new JobPostingResponse.MainDTO.MainRecentJobPostingDTO(jp, ci, i == 0, isBookmarked);
                 })
                 .collect(Collectors.toList());
     }
 
 
     // 구직자 - 메인페이지 인기 공고 8개
-    public List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> getPopularJobPostings() {
+    public List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> getPopularJobPostings(Integer userId) {
         List<Object[]> results = jobPostingRepository.findTop8PopularJobPostingsWithTechStacks();
 
         Map<Integer, JobPosting> postingMap = new HashMap<>();
@@ -301,13 +305,17 @@ public class JobPostingService {
 
             List<JobPostingTechStack> techStacks = stackMap.getOrDefault(jp.getId(), new ArrayList<>());
             CompanyInfo companyInfo = companyInfoRepository.findByUserId(jp.getUser().getId());
-
+            boolean isBookmarked = false;
+            if (userId != null) {
+                isBookmarked = jobPostingBookmarkRepository.findByUserIdAndJobPostingId(userId, jp.getId()) != null;
+            }
             popularList.add(new JobPostingResponse.MainDTO.MainPopularJobPostingDTO(
                     jp,
                     companyInfo.getCompanyName(),
                     companyInfo.getImage(),
                     address,
-                    techStacks
+                    techStacks,
+                    isBookmarked
             ));
         }
 

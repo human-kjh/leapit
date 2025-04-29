@@ -85,13 +85,15 @@ public class JobPostingResponse {
             private String companyName;
             private String image;
             private boolean isActive;
+            private boolean isBookmarked;
 
-            public MainRecentJobPostingDTO(JobPosting jp, CompanyInfo companyInfo, boolean isActive) {
+            public MainRecentJobPostingDTO(JobPosting jp, CompanyInfo companyInfo, boolean isActive, boolean isBookmarked) {
                 this.id = jp.getId();
                 this.title = jp.getTitle();
                 this.companyName = companyInfo.getCompanyName();
                 this.image = companyInfo.getImage();
                 this.isActive = isActive;
+                this.isBookmarked = isBookmarked;
             }
         }
 
@@ -105,13 +107,14 @@ public class JobPostingResponse {
             private String career;
             private int dDay;
             private int viewCount;
+            private boolean isBookmarked;
             private List<CompanyInfoResponse.DetailDTO.TechStackDTO> techStacks;
 
             public MainPopularJobPostingDTO(JobPosting jp,
                                             String companyName,
                                             String image,
                                             String address,
-                                            List<JobPostingTechStack> techStacks) {
+                                            List<JobPostingTechStack> techStacks, boolean isBookmarked) {
                 this.id = jp.getId();
                 this.title = jp.getTitle();
                 this.companyName = companyName;
@@ -120,7 +123,7 @@ public class JobPostingResponse {
                 this.career = formatCareer(jp.getMinCareerLevel(), jp.getMaxCareerLevel());
                 this.dDay = calculateDDay(jp.getDeadline());
                 this.viewCount = jp.getViewCount();
-
+                this.isBookmarked = isBookmarked;
                 this.techStacks = techStacks.stream()
                         .map(stack -> new CompanyInfoResponse.DetailDTO.TechStackDTO(stack.getTechStack().getCode()))
                         .collect(Collectors.toList());

@@ -5,6 +5,7 @@ import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.common.techstack.TechStackService;
 import com.example.leapit.companyinfo.CompanyInfo;
 import com.example.leapit.companyinfo.CompanyInfoRepository;
+import com.example.leapit.jobposting.bookmark.JobPostingBookmarkRepository;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +28,7 @@ public class JobPostingController {
     private final JobPostingRepository jobPostingRepository;
     private final TechStackRepository techStackRepository;
     private final CompanyInfoRepository companyInfoRepository;
+    private final JobPostingBookmarkRepository jobPostingBookmarkRepository;
 
     // 채용 공고 목록 보기
     @GetMapping("/s/company/jobposting/list")
@@ -65,7 +67,7 @@ public class JobPostingController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
-        
+
         List<TechStack> techStacks = techStackService.getAllTechStacks();
         request.setAttribute("model", techStacks);
         return "company/jobposting/save-form";
@@ -140,6 +142,8 @@ public class JobPostingController {
     // 구직자 - 채용공고 상세
     @GetMapping("/personal/jobposting/{id}")
     public String personalDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
         // 채용공고와 기술 스택, 회사 정보를 가져옴
         JobPosting jobPosting = jobPostingService.findById(id);  // 이미 정의된 jobPostingService.findById 메서드 사용
         List<String> techStack = jobPostingService.getTechStacksByJobPostingId(id); // 기술 스택 리스트
@@ -148,11 +152,19 @@ public class JobPostingController {
         // 주소 정보도 가져옴
         JobPostingResponse.AddressDTO addressDTO = jobPostingService.getJobPostingAddress(id);  // 주소 정보 조회
 
+        // 북마크여부
+        boolean isBookmarked = false;
+        if (sessionUser != null) {
+            isBookmarked = (jobPostingBookmarkRepository.findByUserIdAndJobPostingId(sessionUser.getId(), id) != null);
+        }
+
         // 모델에 필요한 정보들을 추가
         request.setAttribute("model", jobPosting);  // 채용공고 정보
         request.setAttribute("techStack", techStack);  // 기술 스택 정보
         request.setAttribute("company", companyInfo);  // 회사 정보
         request.setAttribute("address", addressDTO);  // 주소 정보
+        request.setAttribute("isLoggedIn", sessionUser != null);
+        request.setAttribute("isBookmarked", isBookmarked);
 
         // 상세 페이지를 반환 (Mustache 템플릿을 사용한다고 가정)
         return "personal/jobposting/detail";  // 해당 페이지로 이동
@@ -197,6 +209,7 @@ public class JobPostingController {
                 );
 
         req.setAttribute("models", respDTO);
+        req.setAttribute("isLoggedIn", sessionUser != null);
         return "personal/jobposting/list";
     }
 }
