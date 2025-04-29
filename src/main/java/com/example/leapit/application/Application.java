@@ -28,11 +28,20 @@ public class Application {
 
     private LocalDate appliedDate;
     private Boolean isPassed;
-    private Boolean isViewed= false;
+    private Boolean isViewed = false;
 
     @Builder
     public Application(Integer id) {
         this.id = id;
+    }
+
+
+    public Application(Resume resume, JobPosting jobPosting, Boolean isPassed, Boolean isViewed, LocalDate appliedDate) {
+        this.resume = resume;
+        this.jobPosting = jobPosting;
+        this.isPassed = isPassed;
+        this.isViewed = isViewed;
+        this.appliedDate = appliedDate;
     }
 
     public void update(Boolean isPassed) {

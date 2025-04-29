@@ -30,6 +30,10 @@ public class ApplicationRequest {
     public static class ApplyReqDTO {
         private Integer jobPostingId;
         private Integer resumeId;
+
+        public Application toEntity(Resume resume, JobPosting jobPosting) {
+            return new Application(resume, jobPosting, null, false, LocalDate.now());
+        }
     }
 
     // 지원 화면에서 보이는 DTO

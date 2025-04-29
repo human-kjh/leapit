@@ -31,4 +31,9 @@ public class ResumeRepository {
     public void save(Resume resume) {
         em.persist(resume);
     }
+
+    public Resume findById(Integer id) {
+        return em.find(Resume.class, id);
+    }
+
 }
