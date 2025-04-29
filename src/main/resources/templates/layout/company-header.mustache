@@ -73,7 +73,7 @@
         <!-- header 끝 -->
         <script>
             async function handlePersonalServiceClick() {
-                const role = "{{sessionUser.role}}";
+                const role = "{{#sessionUser}}{{sessionUser.role}}{{/sessionUser}}";
 
                 if (role === 'company') {
                     // 기업회원이면 로그아웃 먼저 하고

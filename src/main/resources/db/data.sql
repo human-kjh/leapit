@@ -285,7 +285,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (6, '시니어 백엔드 개발자 채용', 'backend', 5, 10,
+VALUES (6, '시니어 백엔드 개발자 채용', '백엔드', 5, 10,
         '전문학사', 1, 1, '강남대로 123',
         '대용량 트래픽 처리 기반 백엔드 플랫폼 개발',
         '2025-06-30', '마이크로서비스 아키텍처 기반 시스템 설계 및 운영',
@@ -298,7 +298,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (7, '프론트엔드 개발자 모집', 'frontend', 0, 2,
+VALUES (7, '프론트엔드 개발자 모집', '프론트엔드', 0, 2,
         NULL, 1, 2, '서초대로 77',
         'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
         '2025-05-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
@@ -311,33 +311,33 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (7, '백엔드 개발자 모집', 'backend', 0, 2,
+VALUES (7, '데이터 엔지니어 채용', '데이터 엔지니어', 0, 2,
         NULL, 1, 2, '서초대로 77',
-        'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
-        '2025-07-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
-        'React, TypeScript 기반 개발 경험',
-        'Figma 연동 경험자 우대',
-        '재택 가능, 장비 지원',
+        'B2B SaaS 플랫폼의 데이터 인프라를 담당할 인재를 찾습니다.',
+        '2025-07-20', 'ETL 파이프라인 구축 및 데이터 웨어하우스 운영',
+        'Python, SQL 기반 데이터 처리 경험',
+        'AWS Glue, Redshift 경험자 우대',
+        '재택 근무 가능, 최신 장비 지원',
         NULL, 13, NOW());
 
 INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max_career_level,
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (7, '백엔드 개발자 모집', 'frontend', 0, 2,
+VALUES (7, '주니어 데이터 엔지니어 모집', '데이터 엔지니어', 0, 2,
         NULL, 1, 2, '서초대로 77',
-        'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
-        '2025-05-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
-        'React, TypeScript 기반 개발 경험',
-        'Figma 연동 경험자 우대',
-        '재택 가능, 장비 지원',
+        'B2B SaaS 스타트업의 데이터 기반 서비스 구축에 참여할 인재를 찾습니다.',
+        '2025-05-20', '데이터 수집 및 정제 자동화 시스템 구축',
+        'Python, SQL 기본 지식 필수',
+        '빅데이터 분석 또는 Hadoop 경험자 우대',
+        '유연 근무제, 성장 지원 프로그램 운영',
         NULL, 13, NOW());
 
 INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max_career_level,
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (7, '마감된 개발자 모집', 'frontend', 0, 2,
+VALUES (7, '마감된 개발자 모집', '프론트엔드', 0, 2,
         NULL, 1, 2, '서초대로 77',
         'B2B SaaS 웹서비스 구축 중인 스타트업입니다.',
         '2025-03-20', 'React 기반 웹 프론트엔드 개발 및 유지보수',
@@ -350,7 +350,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (8, '데이터 엔지니어 채용', 'data_engineer', 3, 5,
+VALUES (8, '데이터 엔지니어 채용', '데이터 엔지니어', 3, 5,
         3, 2, 3, '해운대로 456',
         'AI 데이터 파이프라인 구축 기업입니다.',
         '2025-04-15', 'ETL 파이프라인 설계 및 데이터 웨어하우스 운영',
@@ -363,7 +363,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (6, '프론트엔드 웹 개발자 채용', 'frontend', 2, 5,
+VALUES (6, '프론트엔드 웹 개발자 채용', '프론트엔드', 2, 5,
         '학사', 1, 2, '강남구 테헤란로 456',
         '대규모 플랫폼 웹 프론트엔드 개발',
         '2025-06-30', 'React 기반 SPA 아키텍처 설계 및 개발',
@@ -372,12 +372,11 @@ VALUES (6, '프론트엔드 웹 개발자 채용', 'frontend', 2, 5,
         '유연 근무제, 점심 식대 지원',
         NULL, 5, NOW());
 
-
 INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max_career_level,
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (6, '모바일 프론트엔드 앱 개발자', 'frontend', 2, 5,
+VALUES (6, '모바일 프론트엔드 앱 개발자', '모바일 앱 개발자', 2, 5,
         '학사', 2, 1, '성남시 분당구 정자일로 123',
         'React Native 기반 모바일 앱 개발',
         '2025-06-30', '모바일 최적화 및 퍼포먼스 개선 작업',
@@ -390,7 +389,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (7, 'iOS 앱 개발자 구인', 'ios', 1, 4,
+VALUES (7, 'iOS 앱 개발자 구인', '모바일 앱 개발자', 1, 4,
         '학사', 1, 3, '잠실로 321',
         'iOS 기반 모바일 앱 개발',
         '2025-07-31', 'Swift 기반 앱 아키텍처 설계 및 구현',
@@ -403,7 +402,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (8, 'AI 연구원 채용', 'ai_researcher', 0, 2,
+VALUES (8, 'AI 연구원 채용', 'AI 엔지니어', 0, 2,
         '석사', 2, 4, '가산디지털단지 777',
         '머신러닝/딥러닝 모델 연구 및 개발',
         '2025-07-01', '최신 AI 모델 논문 분석 및 모델 개선',
@@ -416,12 +415,12 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (8, 'DevOps 엔지니어 채용', 'devops', 4, 8,
+VALUES (8, '풀스택 개발자 채용', '풀스택', 4, 8,
         '전문학사', 1, 2, '디지털로 888',
-        '클라우드 인프라 구축 및 운영',
-        '2025-08-10', 'CI/CD 파이프라인 설계 및 유지보수',
-        'AWS, Docker, Kubernetes 경험자',
-        'Terraform 경험자 우대',
+        '웹 및 서버 통합 풀스택 개발을 담당할 인재를 찾습니다.',
+        '2025-08-10', 'React 및 Spring Boot 기반 풀스택 아키텍처 설계 및 개발',
+        'Java, Spring Boot, React 개발 경험',
+        'AWS 클라우드 서비스 활용 경험 우대',
         '재택근무 일부 가능, 복지 포인트 제공',
         NULL, 6, NOW());
 
@@ -429,7 +428,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             education_level, address_region_id, address_sub_region_id, address_detail,
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
-VALUES (7, 'QA 엔지니어 모집', 'qa', 1, 5,
+VALUES (7, 'QA 엔지니어 모집', '백엔드', 1, 5,
         '학사', 2, 1, '영등포로 999',
         '품질 보증 및 테스트 자동화 구축',
         '2025-07-20', '테스트 케이스 작성 및 품질 관리',
