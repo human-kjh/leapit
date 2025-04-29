@@ -23,7 +23,7 @@ public class JobPostingBookmarkController {
     private final JobPostingBookmarkService jobPostingBookmarkService;
     private final HttpSession session;
 
-    @PostMapping("/api/personal/bookmark")
+    @PostMapping("/s/api/personal/bookmark")
     public Resp<?> saveBookmark(@RequestBody JobPostingBookmarkRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
@@ -40,7 +40,7 @@ public class JobPostingBookmarkController {
     }
 
     // 개인 스크랩 삭제 job_posting_bookmark
-    @DeleteMapping("/api/personal/bookmark/{id}")
+    @DeleteMapping("/s/api/personal/bookmark/{id}")
     public Resp<?> deleteBookmark(@PathVariable("id") Integer jobPostingId) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 

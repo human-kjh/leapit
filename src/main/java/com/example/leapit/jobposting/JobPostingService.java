@@ -91,15 +91,15 @@ public class JobPostingService {
     }
 
     // 진행 중인 채용 공고 목록 조회
-    public List<JobPosting> OpenJobPostings() {
+    public List<JobPosting> OpenJobPostings(Integer userId) {
         LocalDate now = LocalDate.now();
-        return jobPostingRepository.findByDeadlineOpen(now);
+        return jobPostingRepository.findByDeadlineOpen(now, userId);
     }
 
     // 마감된 채용 공고 목록 조회
-    public List<JobPosting> ClosedJobPostings() {
+    public List<JobPosting> ClosedJobPostings(Integer userId) {
         LocalDate now = LocalDate.now();
-        return jobPostingRepository.findByDeadlineClosed(now);
+        return jobPostingRepository.findByDeadlineClosed(now, userId);
     }
 
 

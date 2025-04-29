@@ -7,9 +7,9 @@
             <div class="mypageSidebarBox">
                 <h5 class="mypageSidebarTitle">마이점핏</h5>
                 <div class="mypageSidebarMenu">
-                    <a href="/personal/mypage/application" class="mypageSidebarLink">입사지원 현황</a>
-                    <a href="/personal/mypage/bookmark" class="mypageSidebarLink">스크랩 포지션</a>
-                    <a href="#" class="mypageSidebarLink">계정 정보 설정</a>
+                    <a href="/s/personal/mypage/application" class="mypageSidebarLink">입사지원 현황</a>
+                    <a href="/s/personal/mypage/bookmark" class="mypageSidebarLink">스크랩 포지션</a>
+                    <a href="/s/personal/user/update-form" class="mypageSidebarLink">계정 정보 설정</a>
                 </div>
             </div>
         </div>
@@ -65,7 +65,7 @@
 <script>
     async function deleteBookmark(jobPostingId) {
         try {
-            const response = await fetch(`/api/personal/bookmark/${jobPostingId}`, {
+            const response = await fetch(`/s/api/personal/bookmark/${jobPostingId}`, {
                 method: "DELETE"
             });
 

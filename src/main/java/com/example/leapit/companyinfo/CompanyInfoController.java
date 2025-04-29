@@ -15,7 +15,7 @@ public class CompanyInfoController {
     private final CompanyInfoService companyInfoService;
     private final HttpSession session;
 
-    @GetMapping("/company/info/{id}")
+    @GetMapping("/s/company/info/{id}")
     public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -26,7 +26,7 @@ public class CompanyInfoController {
         return "company/info/detail";
     }
 
-    @GetMapping("/company/info/save-form")
+    @GetMapping("/s/company/info/save-form")
     public String saveForm() {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -35,7 +35,7 @@ public class CompanyInfoController {
     }
 
 
-    @PostMapping("/company/info/save")
+    @PostMapping("/s/company/info/save")
     public String save(CompanyInfoRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -44,11 +44,11 @@ public class CompanyInfoController {
 
         session.setAttribute("companyInfoId", companyInfo.getId());
 
-        return "redirect:/company/info/" + companyInfo.getId();
+        return "redirect:/s/company/info/" + companyInfo.getId();
     }
 
 
-    @GetMapping("/company/info/{id}/update-form")
+    @GetMapping("/s/company/info/{id}/update-form")
     public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -59,18 +59,18 @@ public class CompanyInfoController {
         return "company/info/update-form";
     }
 
-    @PostMapping("/company/info/{id}/update")
+    @PostMapping("/s/company/info/{id}/update")
     public String update(@PathVariable("id") Integer id, CompanyInfoRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         companyInfoService.update(id, sessionUser.getId(), reqDTO);
 
-        return "redirect:/company/info/" + id;
+        return "redirect:/s/company/info/" + id;
     }
 
 
-    @PostMapping("/company/info/{id}/delete")
+    @PostMapping("/s/company/info/{id}/delete")
     public String delete(@PathVariable("id") Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -79,7 +79,7 @@ public class CompanyInfoController {
 
         session.removeAttribute("companyInfoId");
 
-        return "redirect:/company/main";
+        return "redirect:/s/company/main";
     }
 
     // 구직자 - 기업상세

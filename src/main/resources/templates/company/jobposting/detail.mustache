@@ -4,12 +4,12 @@
     <div class="ms-2">
         <h1 class="fs-4 fw-bold mb-2">
             {{model.title}}
-            <form action="/jobposting/{{model.id}}/update-form" method="get" class="d-inline">
+            <form action="/s/company/jobposting/{{model.id}}/update-form" method="get" class="d-inline">
                 <button type="submit" class="fs-6 text-primary"
                         style="border: none; background: none; padding: 0;">수정
                 </button>
             </form>
-            <form id="deleteForm{{model.id}}" action="/jobposting/{{model.id}}/delete" method="post"
+            <form id="deleteForm{{model.id}}" action="/s/company/jobposting/{{model.id}}/delete" method="post"
                   class="d-inline ms-2">
                 <button type="button"
                         class="fs-6 text-danger"
@@ -138,7 +138,7 @@
             <div class="mb-4">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h2 class="fs-6 fw-semibold">기업/서비스 소개</h2>
-                    <a href="/company/info/{{model.id}}" class="text-primary small text-decoration-none">기업상세 정보로 이동 &gt;</a>
+                    <a href="/s/company/info/{{model.id}}" class="text-primary small text-decoration-none">기업상세 정보로 이동 &gt;</a>
                 </div>
                 <img src="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80"
                      alt="회사 이미지" class="img-fluid rounded shadow">

@@ -49,7 +49,7 @@
     </div>
 
     <!-- 기술스택 드롭다운 -->
-    <div class="bg-light mt-4 p-3 rounded">
+    <div class="bg-light mt-4 p-3 rounded mb-5">
         <div class="dropdown d-inline-block me-2">
             <button class="btn {{#models.selectedTechStackCode}}btn-primary{{/models.selectedTechStackCode}} {{^models.selectedTechStackCode}}btn-outline-primary{{/models.selectedTechStackCode}} dropdown-toggle rounded-5"
                     type="button" data-bs-toggle="dropdown">
@@ -421,7 +421,7 @@
         </div>
 
         <!-- 공고 카드 리스트 -->
-        <div class="row gx-3 gy-4 ms-2 me-2">
+        <div class="row gx-3 gy-4 ms-2 me-2 " >
             {{#models.jobPostingList}}
                 <div class="col-md-3 col-sm-6">
                     <a href="/personal/jobposting/{{id}}" class="text-decoration-none text-dark">
@@ -456,7 +456,7 @@
 <script>
     async function saveBookmark(jobPostingId) {
         try {
-            const response = await fetch("/api/personal/bookmark", {
+            const response = await fetch("/s/api/personal/bookmark", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({jobPostingId: jobPostingId})
@@ -484,7 +484,7 @@
 
     async function deleteBookmark(jobPostingId) {
         try {
-            const response = await fetch(`/api/personal/bookmark/${jobPostingId}`, {
+            const response = await fetch(`/s/api/personal/bookmark/${jobPostingId}`, {
                 method: "DELETE"
             });
 

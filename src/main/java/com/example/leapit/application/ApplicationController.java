@@ -16,7 +16,7 @@ public class ApplicationController {
     private final HttpSession session;
     private final ResumeService resumeService;
 
-    @GetMapping("/personal/mypage/bookmark")
+    @GetMapping("/s/personal/mypage/bookmark")
     public String personalBookmark(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
@@ -39,7 +39,7 @@ public class ApplicationController {
         return "personal/mypage/application";
     }
 
-    @GetMapping("/company/applicant/list")
+    @GetMapping("/s/company/applicant/list")
     public String applicantList(ApplicationRequest.ApplicantListReqDTO reqDTO,
                                 HttpServletRequest request,
                                 @RequestParam(required = false, value = "passStatus", defaultValue = "전체") String passStatus,
@@ -67,21 +67,27 @@ public class ApplicationController {
         return "company/applicant/list";
     }
 
-    @GetMapping("/company/applicant/{id}")
+    @GetMapping("/s/company/applicant/{id}")
     public String applicationDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
         ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id); // TODO : sessionUser.getId() 인수 추가
         request.setAttribute("model", detailDTO);
         return "/company/applicant/detail";
     }
 
     @ResponseBody
-    @PutMapping("/company/applicant/{id}/pass")
+    @PutMapping("/s/api/company/applicant/{id}/pass")
     public Resp<?> isPassedUpdate(@PathVariable("id") Integer id, @RequestBody ApplicationRequest.UpdateDTO updateDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+
         applicationService.update(id, updateDTO);
         return Resp.ok(null);
     }
 
-    @GetMapping("/personal/jobposting/{id}/apply-form")
+    @GetMapping("/s/personal/jobposting/{id}/apply-form")
     public String ApplyForm(@PathVariable("id") Integer id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User sessionUser = (User) session.getAttribute("sessionUser");
