@@ -7,7 +7,7 @@
             <!-- 회사명 -->
             <div class="d-flex align-items-end gap-2 mb-4">
                 <h1 class="display-5 fw-bold">{{model.companyName}}</h1>
-                <a href="/company/info/{{model.id}}/update-form" class="text-primary small text-decoration-none">수정</a>
+                <a href="/s/company/info/{{model.id}}/update-form" class="text-primary small text-decoration-none">수정</a>
             </div>
 
             <!-- 기업 정보 -->
@@ -70,7 +70,7 @@
                         <div class="col-md-6">
                             <div class="border rounded p-3 position-relative shadow-sm">
                                 <div class="text-muted small mb-1">D-{{dDay}}</div>
-                                <a href="/company/jobposting/{{id}}"
+                                <a href="/s/company/jobposting/{{id}}"
                                    class="fw-semibold text-dark text-decoration-none d-block">
                                     {{title}}
                                 </a>
@@ -88,12 +88,12 @@
                     {{/model.jobPostings}}
                 </div>
 
-                <form action="/company/info/{{model.id}}/update-form" method="get">
+                <form action="/s/company/info/{{model.id}}/update-form" method="get">
                     <div class="d-grid mt-5">
                         <button type="submit" class="btn btn-primary rounded">수정하기</button>
                     </div>
                 </form>
-                <form action="/company/info/{{model.id}}/delete" method="post">
+                <form action="/s/company/info/{{model.id}}/delete" method="post">
                     <div class="d-grid mt-3 mb-5">
                         <button type="submit" class="btn btn-primary rounded">삭제하기</button>
                     </div>

@@ -4,12 +4,12 @@
     <div class="ms-2">
         <h1 class="fs-4 fw-bold mb-2">
             {{model.title}}
-            <form action="/jobposting/{{model.id}}/update-form" method="get" class="d-inline">
+            <form action="/s/company/jobposting/{{model.id}}/update-form" method="get" class="d-inline">
                 <button type="submit" class="fs-6 text-primary"
                         style="border: none; background: none; padding: 0;">수정
                 </button>
             </form>
-            <form id="deleteForm{{model.id}}" action="/jobposting/{{model.id}}/delete" method="post"
+            <form id="deleteForm{{model.id}}" action="/s/company/jobposting/{{model.id}}/delete" method="post"
                   class="d-inline ms-2">
                 <button type="button"
                         class="fs-6 text-danger"
@@ -28,11 +28,16 @@
         </h1>
 
         <div class="mb-4">
+            <h2 class="fs-6 fw-semibold mb-2">채용 포지션</h2>
+            <p class="small">{{model.positionType}}</p>
+        </div>
+
+        <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">기술스택</h2>
             {{#techStack}}
                 <span class="badge bg-light text-dark">{{.}}</span>
             {{/techStack}}
-            
+
         </div>
 
         <div class="mb-4">
@@ -106,6 +111,16 @@
         </div>
 
         <div class="mb-4">
+            <h2 class="fs-6 fw-semibold">기타</h2>
+            {{#model.additionalInfo}}
+                {{model.additionalInfo}}
+            {{/model.additionalInfo}}
+            {{^model.additionalInfo}}
+                기타 사항이 없습니다.
+            {{/model.additionalInfo}}
+        </div>
+
+        <div class="mb-4">
             <div class="small text-dark">
                 <div class="d-flex">
                     <div class="fw-semibold me-3" style="width: 80px;">마감일</div>
@@ -125,12 +140,15 @@
                     </div>
                     <div class="ps-5 pt-1 d-flex gap-2 small text-secondary">
                         <span>◎</span>
-                        <a href="https://map.naver.com/search?query={{#address}}{{regionName}} {{subRegionName}} {{addressDetail}}{{/address}}{{^address}}정보 없음{{/address}}" class="text-decoration-none" target="_blank">지도보기</a>
+                        <a href="https://map.naver.com/search?query={{#address}}{{regionName}} {{subRegionName}} {{addressDetail}}{{/address}}{{^address}}
+                        정보 없음{{/address}}" class="text-decoration-none" target="_blank">지도보기</a>
                         <span class="text-muted">·</span>
                         <a href="#" id="copyAddressButton" class="text-primary text-decoration-none">주소복사</a>
-                    
+
                         <!-- 복사할 주소를 숨겨서 추가 -->
-                        <input type="text" id="hiddenAddress" value="{{#address}}{{regionName}} {{subRegionName}} {{addressDetail}}{{/address}}{{^address}}정보 없음{{/address}}" readonly style="position:absolute; left:-9999px;">
+                        <input type="text" id="hiddenAddress"
+                               value="{{#address}}{{regionName}} {{subRegionName}} {{addressDetail}}{{/address}}{{^address}}정보 없음{{/address}}"
+                               readonly style="position:absolute; left:-9999px;">
                     </div>
                 </div>
             </div>
@@ -138,7 +156,8 @@
             <div class="mb-4">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h2 class="fs-6 fw-semibold">기업/서비스 소개</h2>
-                    <a href="/company/info/{{model.id}}" class="text-primary small text-decoration-none">기업상세 정보로 이동 &gt;</a>
+                    <a href="/s/company/info/{{model.id}}" class="text-primary small text-decoration-none">기업상세 정보로 이동
+                        &gt;</a>
                 </div>
                 <img src="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?auto=format&fit=crop&w=800&q=80"
                      alt="회사 이미지" class="img-fluid rounded shadow">
@@ -146,18 +165,10 @@
                     {{model.serviceIntro}}
                 </p>
             </div>
-            <div>
-                <h2 class="fs-6 fw-semibold">기타</h2>
-                {{#model.additionalInfo}}
-                    {{model.additionalInfo}}
-                {{/model.additionalInfo}}
-                {{^model.additionalInfo}}
-                    기타 사항이 없습니다.
-                {{/model.additionalInfo}}
-            </div>
         </div>
     </div>
     <script>
+        // 삭제 버튼 눌렀을 때 alert창
         function confirmDelete(id) {
             if (confirm("삭제하시겠습니까?")) {
                 const form = document.getElementById("deleteForm" + id);
@@ -169,22 +180,23 @@
             }
         }
 
-         document.getElementById('copyAddressButton').addEventListener('click', function(event) {
+        // 주소 복사
+        document.getElementById('copyAddressButton').addEventListener('click', function (event) {
             event.preventDefault(); // a태그 기본 동작(페이지 튕김) 막기
             const hiddenInput = document.getElementById('hiddenAddress');
             hiddenInput.select();
             hiddenInput.setSelectionRange(0, 99999); // 모바일 대응
 
             try {
-            const successful = document.execCommand('copy');
-            if (successful) {
-            alert('주소가 복사되었습니다!');
-        } else {
-            alert('복사에 실패했습니다.');
-        }
-        } catch (err) {
-            alert('복사 중 오류가 발생했습니다.');
-        }
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    alert('주소가 복사되었습니다!');
+                } else {
+                    alert('복사에 실패했습니다.');
+                }
+            } catch (err) {
+                alert('복사 중 오류가 발생했습니다.');
+            }
         });
 
     </script>

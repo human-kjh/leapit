@@ -1,5 +1,7 @@
 {{> layout/personal-header}}
-
+<script>
+    var isLoggedIn = {{#isLoggedIn}}true{{/isLoggedIn}}{{^isLoggedIn}}false{{/isLoggedIn}};
+</script>
 <!-- 본문 -->
 <div class="main container px-3 px-md-4">
     <!-- Carousel + 옆 영역 (세로폭 완전 일치) -->
@@ -59,14 +61,14 @@
                 <button
                         class="btn btn-outline-primary w-100 mb-3 d-flex align-items-center justify-content-center gap-2"
                         id="joinLoginButton"
-                        onclick="location.href='/resume/save-form'">  <!-- 이력서 작성 폼 이동 -->
+                        onclick="location.href='/s/personal/resume/save-form'">  <!-- 이력서 작성 폼 이동 -->
                     <i class="fa fa-file-text-o"></i>
                     <span>이력서 작성</span>
                 </button>
                 <button
                         class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2"
                         id="myPageButton"
-                        onclick="location.href='/personal/mypage/application'">  <!-- 마이페이지 이동 -->
+                        onclick="location.href='/s/personal/mypage/application'">  <!-- 마이페이지 이동 -->
                     <i class="fa fa-user-o"></i>
                     <span>마이페이지</span>
                 </button>
@@ -91,36 +93,119 @@
     {{/sessionUser}}
 
     <!-- 아래 영역  -->
-    <div>
+    <div class="mb-5">
         <h4 class="fw-bold mt-5 mb-3">이번주 인기 포지션</h4>
         <div class="row gx-3 gy-4">
-            <!-- 카드1 -->
             {{#model.popularJobPostings}}
-                <div class="col-md-3 col-sm-6">
-                    <a href="/personal/jobposting/{{id}}" class="text-decoration-none text-dark">
-                        <div class="mb-3 position-relative">
-                            <img src="/img/jobImg.png" class="img-fluid">
-                            <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-{{dDay}}</span>
-                        </div>
-                        <div>
-                            <div class="mb-2">{{companyName}}</div>
-                            <h4 class="mb-2">{{title}}</h4>
-                            <div class="mb-3">
-                                <div><small>{{#techStacks}}
-                                    {{name}} ·
-                                {{/techStacks}}</small></div>
-                                <div><small>{{address}} · 경력 {{career}}</small></div>
+                <div class="col-md-3 col-sm-6 d-flex">
+                    <div class="card w-100 d-flex flex-column border-0">
+                        <a href="/personal/jobposting/{{id}}"
+                           class="text-decoration-none text-dark flex-grow-1 d-flex flex-column">
+                            <div class="mb-3 position-relative">
+                                <img src="/img/jobImg.png" class="img-fluid">
+                                <span class="position-absolute top-0 start-0 badge bg-primary ms-2 mt-2">D-{{dDay}}</span>
                             </div>
-                        </div>
-                    </a>
-                    <button class="btn btn-outline-primary w-100"><i class="fa fa-bookmark-o me-2"></i>
-                        스크랩하기
-                    </button>
+                            <div class="flex-grow-1 d-flex flex-column">
+                                <div class="mb-2">{{companyName}}</div>
+                                <h4 class="mb-2">{{title}}</h4>
+                                <div class="mb-3">
+                                    <div><small>{{#techStacks}}
+                                        {{name}} ·
+                                    {{/techStacks}}</small></div>
+                                    <div><small>{{address}} · 경력 {{career}}</small></div>
+                                </div>
+                            </div>
+                        </a>
+                        <button class="btn {{#isBookmarked}}btn-primary{{/isBookmarked}}{{^isBookmarked}}btn-outline-primary{{/isBookmarked}} w-100 mt-auto"
+                                id="bookmark-btn-{{id}}"
+                                onclick="{{#isBookmarked}}deleteBookmark{{/isBookmarked}}{{^isBookmarked}}saveBookmark{{/isBookmarked}}({{id}})">
+                            <i class="fa {{#isBookmarked}}fa-bookmark{{/isBookmarked}}{{^isBookmarked}}fa-bookmark-o{{/isBookmarked}} me-2"
+                               id="bookmark-icon-{{id}}"></i>
+                            <span id="bookmark-text-{{id}}">
+        {{#isBookmarked}}스크랩취소{{/isBookmarked}}{{^isBookmarked}}스크랩하기{{/isBookmarked}}
+    </span>
+                        </button>
+                    </div>
                 </div>
             {{/model.popularJobPostings}}
         </div>
     </div>
-</div>
-<!-- 본문 끝 -->
+    <!-- 본문 끝 -->
+
+    <script>
+        async function saveBookmark(jobPostingId) {
+            if (!isLoggedIn) {
+                alert("로그인 후 이용해주세요.");
+                location.href = "/login-form";
+                return;
+            }
+
+            try {
+                const response = await fetch("/s/api/personal/bookmark", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({jobPostingId: jobPostingId})
+                });
+
+                const result = await response.json();
+
+                if (response.status === 200) {
+                    updateBookmarkButton(jobPostingId, true);
+                } else {
+                    alert(result.msg || "북마크 저장 실패");
+                }
+            } catch (e) {
+                console.error("북마크 저장 중 오류:", e);
+            }
+        }
+
+        async function deleteBookmark(jobPostingId) {
+            if (!isLoggedIn) {
+                alert("로그인 후 이용해주세요.");
+                location.href = "/login-form";
+                return;
+            }
+
+            try {
+                const response = await fetch(`/s/api/personal/bookmark/${jobPostingId}`, {
+                    method: "DELETE"
+                });
+
+                const result = await response.json();
+
+                if (response.status === 200) {
+                    updateBookmarkButton(jobPostingId, false);
+                } else {
+                    alert(result.msg || "북마크 삭제 실패");
+                }
+            } catch (e) {
+                console.error("북마크 삭제 중 오류:", e);
+            }
+        }
+
+        function updateBookmarkButton(jobPostingId, isBookmarked) {
+            const button = document.querySelector(`#bookmark-btn-${jobPostingId}`);
+            const icon = document.querySelector(`#bookmark-icon-${jobPostingId}`);
+            const text = document.querySelector(`#bookmark-text-${jobPostingId}`);
+
+            if (isBookmarked) {
+                button.classList.remove("btn-outline-primary");
+                button.classList.add("btn-primary");
+                button.setAttribute("onclick", `deleteBookmark(${jobPostingId})`);
+                icon.classList.remove("fa-bookmark-o");
+                icon.classList.add("fa-bookmark");
+                text.innerText = "스크랩취소";
+            } else {
+                button.classList.remove("btn-primary");
+                button.classList.add("btn-outline-primary");
+                button.setAttribute("onclick", `saveBookmark(${jobPostingId})`);
+                icon.classList.remove("fa-bookmark");
+                icon.classList.add("fa-bookmark-o");
+                text.innerText = "스크랩하기";
+            }
+        }
+    </script>
+
+
 
 {{> layout/footer}}

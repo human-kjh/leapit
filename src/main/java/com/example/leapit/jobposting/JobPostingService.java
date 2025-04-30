@@ -1,5 +1,7 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit._core.error.ex.Exception403;
+import com.example.leapit._core.error.ex.Exception404;
 import com.example.leapit.common.positiontype.PositionTypeRepository;
 import com.example.leapit.common.positiontype.PositionTypeResponse;
 import com.example.leapit.common.region.RegionRepository;
@@ -38,6 +40,13 @@ public class JobPostingService {
     // 채용 공고 등록
     @org.springframework.transaction.annotation.Transactional
     public void save(JobPostingRequest.SaveDTO saveDTO, User sessionUser, String[] techStacks) {
+        if (sessionUser == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
+        CompanyInfo companyInfo = companyInfoRepository.findByUserId(sessionUser.getId());
+        if (companyInfo == null) {
+            throw new Exception403("기업정보가 없어서 채용공고를 등록할 수 없습니다.");
+        }
+
         JobPosting jobPosting = saveDTO.toEntity(sessionUser);
         jobPostingRepository.save(jobPosting);
         // 2. 선택된 기술 스택 처리
@@ -62,7 +71,14 @@ public class JobPostingService {
 
     // 채용 공고 삭제
     @Transactional
-    public void delete(Integer id) {
+    public void delete(Integer id, Integer sessionUserId) {
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
+        JobPosting jobPosting = jobPostingRepository.findById(id);
+        if (jobPosting == null) throw new Exception404("채용공고를 찾을 수 없습니다.");
+
+        if (!jobPosting.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
+
         jobPostingRepository.deleteById(id);
     }
 
@@ -73,8 +89,14 @@ public class JobPostingService {
 
     // 채용 공고 수정
     @Transactional
-    public void update(Integer id, JobPostingRequest.UpdateDTO updateDTO, String[] techStacks) {
+    public void update(Integer id, JobPostingRequest.UpdateDTO updateDTO, String[] techStacks, Integer sessionUserId) {
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         JobPosting jobPosting = jobPostingRepository.findById(id);
+        if (jobPosting == null) throw new Exception404("채용공고를 찾을 수 없습니다.");
+
+        if (!jobPosting.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
+
         jobPosting.update(updateDTO);
 
         jobPostingTechStackRepository.deleteByJobPostingId(id);
@@ -91,15 +113,19 @@ public class JobPostingService {
     }
 
     // 진행 중인 채용 공고 목록 조회
-    public List<JobPosting> OpenJobPostings() {
+    public List<JobPosting> OpenJobPostings(Integer userId) {
+        if (userId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         LocalDate now = LocalDate.now();
-        return jobPostingRepository.findByDeadlineOpen(now);
+        return jobPostingRepository.findByDeadlineOpen(now, userId);
     }
 
     // 마감된 채용 공고 목록 조회
-    public List<JobPosting> ClosedJobPostings() {
+    public List<JobPosting> ClosedJobPostings(Integer userId) {
+        if (userId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+
         LocalDate now = LocalDate.now();
-        return jobPostingRepository.findByDeadlineClosed(now);
+        return jobPostingRepository.findByDeadlineClosed(now, userId);
     }
 
 
@@ -261,7 +287,7 @@ public class JobPostingService {
 
 
     // 구직자 - 메인페이지 최신공고 3개
-    public List<JobPostingResponse.MainDTO.MainRecentJobPostingDTO> getRecentPostings() {
+    public List<JobPostingResponse.MainDTO.MainRecentJobPostingDTO> getRecentPostings(Integer userId) {
         List<JobPosting> recentPostings = jobPostingRepository.findTop3RecentJobPostings();
         AtomicInteger index = new AtomicInteger(0);
 
@@ -269,14 +295,18 @@ public class JobPostingService {
                 .map(jp -> {
                     int i = index.getAndIncrement();
                     CompanyInfo ci = companyInfoRepository.findByUserId(jp.getUser().getId());
-                    return new JobPostingResponse.MainDTO.MainRecentJobPostingDTO(jp, ci, i == 0);
+                    boolean isBookmarked = false;
+                    if (userId != null) {
+                        isBookmarked = jobPostingBookmarkRepository.findByUserIdAndJobPostingId(userId, jp.getId()) != null;
+                    }
+                    return new JobPostingResponse.MainDTO.MainRecentJobPostingDTO(jp, ci, i == 0, isBookmarked);
                 })
                 .collect(Collectors.toList());
     }
 
 
     // 구직자 - 메인페이지 인기 공고 8개
-    public List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> getPopularJobPostings() {
+    public List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> getPopularJobPostings(Integer userId) {
         List<Object[]> results = jobPostingRepository.findTop8PopularJobPostingsWithTechStacks();
 
         Map<Integer, JobPosting> postingMap = new HashMap<>();
@@ -301,13 +331,17 @@ public class JobPostingService {
 
             List<JobPostingTechStack> techStacks = stackMap.getOrDefault(jp.getId(), new ArrayList<>());
             CompanyInfo companyInfo = companyInfoRepository.findByUserId(jp.getUser().getId());
-
+            boolean isBookmarked = false;
+            if (userId != null) {
+                isBookmarked = jobPostingBookmarkRepository.findByUserIdAndJobPostingId(userId, jp.getId()) != null;
+            }
             popularList.add(new JobPostingResponse.MainDTO.MainPopularJobPostingDTO(
                     jp,
                     companyInfo.getCompanyName(),
                     companyInfo.getImage(),
                     address,
-                    techStacks
+                    techStacks,
+                    isBookmarked
             ));
         }
 

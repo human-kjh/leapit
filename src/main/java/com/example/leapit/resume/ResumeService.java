@@ -1,5 +1,8 @@
 package com.example.leapit.resume;
 
+import com.example.leapit._core.error.ex.Exception400;
+import com.example.leapit._core.error.ex.Exception404;
+import com.example.leapit._core.error.ex.ExceptionApi404;
 import com.example.leapit.application.Application;
 import com.example.leapit.application.ApplicationRepository;
 import com.example.leapit.common.positiontype.PositionType;
@@ -81,11 +84,11 @@ public class ResumeService {
     public ResumeResponse.DetailDTO detail(int resumeId) { // TODO : Integer sessionUserId 매개변수 추가
         // 1. 이력서 존재 확인
         Resume resume =  resumeRepository.findByIdJoinUser(resumeId);
-        if (resume == null) throw new RuntimeException("이력서가 존재하지 않습니다.");
+        if (resume == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
         // 2. 이력서 주인 (권한) 확인
 //        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
-//            throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
+//            throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
 //        }
 
         // 3. 이력서 DTO 조립
@@ -105,26 +108,27 @@ public class ResumeService {
     @Transactional
     public void delete(int resumeId) { // TODO : Integer sessionUserId 매개변수 추가
         // 1. 이력서 존재 확인
-        Resume resume =  resumeRepository.findByIdJoinUser(resumeId);
-        if (resume == null) throw new RuntimeException("이력서가 존재하지 않습니다.");
+        Resume resume = resumeRepository.findByIdJoinUser(resumeId);
+        if (resume == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
         // 2. 지원된 이력서인지 확인
         // 연관된 지원서 존재 여부 확인
         List<Application> applications = applicationRepository.findAllByResumeId(resumeId);
         if (applications != null && !applications.isEmpty()) {
-            throw new RuntimeException("이 이력서는 지원 이력이 있어 삭제할 수 없습니다.");
+            throw new Exception400("이 이력서는 지원 이력이 있어 삭제할 수 없습니다.");
         }
 
         // 2. 이력서 주인 (권한) 확인
 //        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
-//            throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
+//            throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
 //        }
 
         // 3. 이력서 삭제
         resumeRepository.deleteById(resumeId);
     }
 
-    public ResumeResponse.SaveDTO getSaveForm(Integer sessionUserId){
+    public ResumeResponse.SaveDTO getSaveForm(Integer sessionUserId) {
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다");
         User user = userRepository.findById(sessionUserId);
         List<PositionType> positionTypes = positionTypeRepository.findAll();
         List<TechStack> techStacks = techStackRepository.findAll();
@@ -133,6 +137,8 @@ public class ResumeService {
 
     @Transactional
     public void save(ResumeRequest.SaveDTO saveDTO, User sessionUser) {
+        if (sessionUser == null) throw new ExceptionApi404("회원정보가 존재하지 않습니다");
+
         Resume resume = saveDTO.toEntity(sessionUser);
         resumeRepository.save(resume);
     }
@@ -141,11 +147,11 @@ public class ResumeService {
     public void update(Integer resumeId, ResumeRequest.UpdateDTO reqDTO){
         // 1. 이력서 존재 확인
         Resume resumePS = resumeRepository.findById(resumeId);
-        if (resumePS == null) throw new RuntimeException("이력서가 존재하지 않습니다.");
+        if (resumePS == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
         // 2. (선택) 권한 확인
         // if (!(resumePS.getUser().getId().equals(sessionUserId))) {
-        //     throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
+        //     throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
         // }
 
         // 3. 이력서 업데이트
@@ -166,11 +172,11 @@ public class ResumeService {
     public ResumeResponse.UpdateDTO getUpdateForm(Integer resumeId) {
         // 1. 해당 이력서 존재 확인
         Resume resume = resumeRepository.findByIdJoinUser(resumeId);
-        if (resume == null) throw new RuntimeException("이력서가 존재하지 않습니다.");
+        if (resume == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
         // 2. (선택) 권한 확인
         // if (!(resume.getUser().getId().equals(sessionUserId))) {
-        //     throw new RuntimeException("해당 이력서에 대한 권한이 없습니다.");
+        //     throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
         // }
 
         // 3. 이력서 관련 데이터 조회

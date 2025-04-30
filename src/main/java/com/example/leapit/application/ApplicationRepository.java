@@ -139,12 +139,13 @@ public class ApplicationRepository {
     // 지원 현황 목록
     public List<ApplicationResponse.ApplicationDto> findApplicationsByUserId(Integer userId) {
         String jpql = """
-                    SELECT company.username, jp.title, a.appliedDate, r.id, jp.id
+                    SELECT ci.companyName, jp.title, a.appliedDate, r.id, jp.id
                     FROM Application a
                     JOIN a.resume r
                     JOIN r.user u
                     JOIN a.jobPosting jp
                     JOIN jp.user company
+                    JOIN CompanyInfo ci ON ci.user.id = company.id
                     WHERE u.id = :userId
                     ORDER BY a.appliedDate DESC
                 """;
@@ -216,5 +217,25 @@ public class ApplicationRepository {
             return null; // 또는 예외 처리
         }
         return new ApplicationRequest.JobPostingInfoDto(jobPosting);
+    }
+
+    // 채용공고에 이력서 지원하기
+    public void save(Application application) {
+        em.persist(application);
+    }
+
+    public boolean checkIfAlreadyApplied(Integer userId, Integer jobPostingId) { // userId, jobPostingId 받도록 수정
+        String jpql = """
+                SELECT COUNT(a) > 0
+                FROM Application a
+                WHERE a.resume.user.id = :userId
+                AND a.jobPosting.id = :jobPostingId
+                """;
+
+        // 쿼리에 넘겨주는 파라미터 이름도 userId로 맞춰줌
+        return em.createQuery(jpql, Boolean.class)
+                .setParameter("userId", userId)
+                .setParameter("jobPostingId", jobPostingId)
+                .getSingleResult();
     }
 }

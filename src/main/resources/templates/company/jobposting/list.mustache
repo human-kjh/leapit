@@ -4,10 +4,10 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="fs-4 fw-semibold">포지션 리스트</h1>
-            <button class="btn btn-primary" onclick="location.href='/jobposting/save-form'">포지션 등록</button>
+            <button class="btn btn-primary" onclick="location.href='/s/company/jobposting/save-form'">포지션 등록</button>
         </div>
 
-        <div class="row g-5">
+        <div class="row g-5 mb-5">
             <div class="col-md-6">
                 <h2 class="fs-6 fw-medium mb-3">
                     진행 중 <span class="text-success fw-semibold">{{openJobPostings.size}}</span>
@@ -16,7 +16,7 @@
                     {{#openJobPostings}}
                         <div class="card p-3 card-clickable">
                             <div class="card-body text-start">
-                                <a href="/company/jobposting/{{id}}"
+                                <a href="/s/company/jobposting/{{id}}"
                                    class="btn btn-link text-dark text-decoration-none p-0 text-start fw-semibold">
                                     {{title}}
                                 </a>
@@ -39,7 +39,7 @@
                     {{#closedJobPostings}}
                         <div class="card p-3 card-clickable">
                             <div class="card-body text-start">
-                                <a href="/company/jobposting/{{id}}"
+                                <a href="/s/company/jobposting/{{id}}"
                                    class="btn btn-link text-dark text-decoration-none p-0 text-start fw-semibold">
                                     {{title}}
                                 </a>

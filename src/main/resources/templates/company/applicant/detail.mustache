@@ -423,7 +423,7 @@
             </div>
             <!-- 본문 끝 -->
             <script>
-                let isBookmarked = {{model.isBookmarked}};
+                let isBookmarked = {{#model.isBookmarked}}true{{/model.isBookmarked}}{{^model.isBookmarked}}false{{/model.isBookmarked}};
 
                 // 버튼 텍스트 초기화
                 let scrapButton = document.querySelector('#scrapButton');
@@ -440,7 +440,7 @@
 
                     try {
                         if (!isBookmarked) {
-                            let response = await fetch("/api/company/bookmark", {
+                            let response = await fetch("/s/api/company/bookmark", {
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json"
@@ -459,7 +459,7 @@
                             }
 
                         } else {
-                            let response = await fetch(`/api/company/bookmark/{{model.id}}`, {
+                            let response = await fetch(`/s/api/company/bookmark/{{model.id}}`, {
                                 method: "DELETE"
                             });
 
@@ -511,7 +511,7 @@
                             isPassed: newStatus
                         };
 
-                        let response = await fetch(`/company/applicant/{{model.id}}/pass`, {
+                        let response = await fetch(`/s/api/company/applicant/{{model.id}}/pass`, {
                             method: "PUT",
                             headers: {
                                 "Content-Type": "application/json"

@@ -1,5 +1,7 @@
 package com.example.leapit.application;
 
+import com.example.leapit._core.error.ex.Exception401;
+import com.example.leapit._core.error.ex.ExceptionApi401;
 import com.example.leapit._core.util.Resp;
 import com.example.leapit.resume.ResumeService;
 import com.example.leapit.user.User;
@@ -16,10 +18,10 @@ public class ApplicationController {
     private final HttpSession session;
     private final ResumeService resumeService;
 
-    @GetMapping("/personal/mypage/bookmark")
+    @GetMapping("/s/personal/mypage/bookmark")
     public String personalBookmark(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
         ApplicationResponse.ApplicationBookmarkListDTO respDTO = applicationService.myBookmarkpage(sessionUser.getId());
 
         request.setAttribute("models", respDTO);
@@ -30,7 +32,7 @@ public class ApplicationController {
     @GetMapping("/s/personal/mypage/application")
     public String application(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
         ApplicationResponse.ApplicationListViewDTO respDTO = applicationService.myApplicationPage(sessionUser.getId());
@@ -39,7 +41,7 @@ public class ApplicationController {
         return "personal/mypage/application";
     }
 
-    @GetMapping("/company/applicant/list")
+    @GetMapping("/s/company/applicant/list")
     public String applicantList(ApplicationRequest.ApplicantListReqDTO reqDTO,
                                 HttpServletRequest request,
                                 @RequestParam(required = false, value = "passStatus", defaultValue = "전체") String passStatus,
@@ -47,7 +49,7 @@ public class ApplicationController {
                                 @RequestParam(required = false, value = "isBookmark") String isBookmarkStr
     ) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         Boolean isViewed = null;
         if ("열람".equals(isViewedStr)) {
@@ -67,27 +69,33 @@ public class ApplicationController {
         return "company/applicant/list";
     }
 
-    @GetMapping("/company/applicant/{id}")
+    @GetMapping("/s/company/applicant/{id}")
     public String applicationDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
-        ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id); // TODO : sessionUser.getId() 인수 추가
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
+
+        ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id, sessionUser.getId());
         request.setAttribute("model", detailDTO);
         return "/company/applicant/detail";
     }
 
     @ResponseBody
-    @PutMapping("/company/applicant/{id}/pass")
+    @PutMapping("/s/api/company/applicant/{id}/pass")
     public Resp<?> isPassedUpdate(@PathVariable("id") Integer id, @RequestBody ApplicationRequest.UpdateDTO updateDTO) {
-        applicationService.update(id, updateDTO);
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
+
+        applicationService.update(id, updateDTO, sessionUser.getId());
         return Resp.ok(null);
     }
 
-    @GetMapping("/personal/jobposting/{id}/apply-form")
+    @GetMapping("/s/personal/jobposting/{id}/apply-form")
     public String ApplyForm(@PathVariable("id") Integer id, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         if (sessionUser == null) {
-            throw new RuntimeException("로그인 후 이용하세요.");
+            throw new Exception401("로그인 후 이용하세요.");
         }
 
         // 지원서 작성에 필요한 데이터 조회
@@ -97,5 +105,23 @@ public class ApplicationController {
 
         // 지원 폼 페이지로 이동
         return "/personal/jobposting/apply";
+    }
+
+    // 채용공고에 이력서 지원하기
+    @PostMapping("/personal/jobposting/{id}/apply")
+    public String apply(@PathVariable("id") Integer jobPostingId, ApplicationRequest.ApplyReqDTO applyReqDTO) {
+
+        // 세션에서 로그인한 사용자 정보 가져오기
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null) {
+            throw new Exception401("로그인 후 이용하세요.");
+        }
+
+        Integer userId = sessionUser.getId();
+
+        applicationService.apply(applyReqDTO, userId);
+
+        return "redirect:/s/personal/mypage/application";
     }
 }

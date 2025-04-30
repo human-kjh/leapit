@@ -93,7 +93,7 @@
         console.log("업데이트 전송 데이터:", requestBody);
 
         try {
-            let response = await fetch(`/resume/${resumeId}/update`, {
+            let response = await fetch(`/s/personal/resume/${resumeId}/update`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestBody)

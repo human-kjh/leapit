@@ -1,5 +1,6 @@
 package com.example.leapit.board.reply;
 
+import com.example.leapit._core.error.ex.Exception401;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -13,20 +14,20 @@ public class ReplyController {
     private final ReplyService replyService;
     private final HttpSession session;
 
-    @PostMapping("/reply/save")
+    @PostMapping("/s/reply/save")
     public String save(ReplyRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         replyService.save(reqDTO, sessionUser);
 
         return "redirect:/community/" + reqDTO.getBoardId();
     }
 
-    @PostMapping("/reply/{id}/delete")
+    @PostMapping("/s/reply/{id}/delete")
     public String delete(@PathVariable("id") Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("인증이 필요합니다.");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         Integer boardId = replyService.delete(id, sessionUser.getId());
 

@@ -4,7 +4,7 @@
     <div class="container">
         <div class="bg-white p-5 rounded shadow">
             <h2 class="mb-4 fw-bold">채용 포지션 수정</h2>
-            <form class="row g-4" action="/jobposting/{{model.id}}/update" method="post">
+            <form class="row g-4" action="/s/company/jobposting/{{model.id}}/update" method="post">
                 <div class="col-md-6">
                     <label class="form-label">직무 <span class="text-danger">*</span></label>
                     <select class="form-select" name="positionType">
@@ -24,7 +24,7 @@
                             {{#allTechStacks}}
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="checkbox" name="techStacks" value="{{code}}"
-                                           id="tech_{{code}}"/>
+                                           id="tech_{{code}}" {{#selected}}checked{{/selected}} />
                                     <label class="form-check-label" for="tech_{{code}}">{{code}}</label>
                                 </div>
                             {{/allTechStacks}}
@@ -48,7 +48,8 @@
                     <div>연차 (최소) <span class="text-danger">*</span></div>
                     <select class="form-select" name="minCareerLevel">
                         <option disabled selected>선택하세요</option>
-                        <option value="1">1년 이하</option>
+                        <option value="0">신입</option>
+                        <option value="1">1년</option>
                         <option value="2">2년</option>
                         <option value="3">3년</option>
                         <option value="4">4년</option>
@@ -65,7 +66,8 @@
                     <div>연차 (최대) <span class="text-danger">*</span></div>
                     <select class="form-select" name="maxCareerLevel">
                         <option disabled selected>선택하세요</option>
-                        <option value="1">1년 이하</option>
+                        <option value="0">신입</option>
+                        <option value="1">1년</option>
                         <option value="2">2년</option>
                         <option value="3">3년</option>
                         <option value="4">4년</option>
@@ -84,52 +86,23 @@
                         <div>시/도 <span class="text-danger">*</span></div>
                         <select class="form-select" name="addressRegionId">
                             <option selected disabled>선택하세요</option>
-                            <option value="1" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>서울특별시
-                            </option>
-                            <option value="2" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>부산광역시
-                            </option>
-                            <option value="3" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>대구광역시
-                            </option>
-                            <option value="4" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>인천광역시
-                            </option>
-                            <option value="5" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>광주광역시
-                            </option>
-                            <option value="6" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>대전광역시
-                            </option>
-                            <option value="7" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>울산광역시
-                            </option>
-                            <option value="8" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>세종특별자치시
-                            </option>
-                            <option value="31" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>경기도</option>
-                            <option value="42" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>강원특별자치도
-                            </option>
-                            <option value="43" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>충청북도
-                            </option>
-                            <option value="44" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>충청남도
-                            </option>
-                            <option value="45" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>전라북도
-                            </option>
-                            <option value="46" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>전라남도
-                            </option>
-                            <option value="47" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>경상북도
-                            </option>
-                            <option value="48" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>경상남도
-                            </option>
-                            <option value="50" {{#model.addressRegionId}}selected{{/model.addressRegionId}}>제주특별자치도
-                            </option>
+                            {{#addressRegionList}}
+                                <option value="{{regionId}}" {{#selected}}selected{{/selected}}>{{region}}</option>
+                            {{/addressRegionList}}
                         </select>
                     </div>
 
                     <div class="col-md-3">
                         <div>시/군/구 <span class="text-danger">*</span></div>
-                        <select class="form-select" name="addressSubRegionId">
-                            <option selected disabled>선택하세요</option>
-                            <option value="101" {{#model.addressSubRegionId}}selected{{/model.addressSubRegionId}}>강남구
-                            </option>
-                            <option value="102" {{#model.addressSubRegionId}}selected{{/model.addressSubRegionId}}>서초구
-                            </option>
+                        <select class="form-select" id="addressSubRegion" name="addressSubRegionId">
+                            <option disabled selected>선택하세요</option>
+                            {{#addressSubRegionList}}
+                                <option value="{{subRegionId}}"
+                                        {{#selected}}selected{{/selected}}>{{subRegion}}</option>
+                            {{/addressSubRegionList}}
                         </select>
                     </div>
+
                     <div class="col-md-6">
                         <div>상세주소 <span class="text-danger">*</span></div>
                         <input class="form-control" name="addressDetail" placeholder="상세주소입력"
@@ -205,16 +178,31 @@
 </div>
 
 <script>
-    const selectedTechStackCodes = JSON.parse('{{techStackJson}}');
-    const checkboxes = document.querySelectorAll('#techStackCheckboxes input[name="techStacks"]');
+    document.addEventListener("DOMContentLoaded", function () {
+        const regionSelect = document.querySelector('select[name="addressRegionId"]');
+        const subRegionSelect = document.querySelector('select[name="addressSubRegionId"]');
 
-    selectedTechStackCodes.forEach(code => {
-        checkboxes.forEach(checkbox => {
-            if (checkbox.value === code) {
-                checkbox.checked = true;
-            }
+        regionSelect.addEventListener("change", function () {
+            const selectedRegionId = this.value;
+
+            // 하위 옵션 초기화
+            subRegionSelect.innerHTML = '<option disabled selected>선택하세요</option>';
+
+            // 서버로 서브 지역 요청
+            fetch(`/api/region/subregions?regionId=${selectedRegionId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(subRegion => {
+                            const option = document.createElement("option");
+                            option.value = subRegion.subRegionId;
+                            option.textContent = subRegion.subRegion;
+                            subRegionSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error("서브 지역 로딩 실패:", error));
         });
     });
 </script>
+
 
 {{> layout/footer}}

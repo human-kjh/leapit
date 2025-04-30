@@ -1,5 +1,7 @@
 {{> layout/personal-header}}
-
+<script>
+    var isLoggedIn = {{#isLoggedIn}}true{{/isLoggedIn}}{{^isLoggedIn}}false{{/isLoggedIn}};
+</script>
 <!-- 본문 -->
 <div class="main container mt-5">
     <div class="row bg-light">
@@ -16,6 +18,11 @@
                             class="text-muted small mb-4 fw-normal text-decoration-none"
                     >{{company.companyName}}</a
                     >
+                </div>
+
+                <div class="mb-4">
+                    <h2 class="fs-6 fw-semibold mb-2">채용 포지션</h2>
+                    <p class="small">{{model.positionType}}</p>
                 </div>
 
                 <!-- 기술 스택 -->
@@ -99,6 +106,16 @@
                     </ul>
                 </div>
 
+                <div class="mb-4">
+                    <h2 class="fs-6 fw-semibold">기타</h2>
+                    {{#model.additionalInfo}}
+                        {{model.additionalInfo}}
+                    {{/model.additionalInfo}}
+                    {{^model.additionalInfo}}
+                        기타 사항이 없습니다.
+                    {{/model.additionalInfo}}
+                </div>
+
                 <!-- 기타 지원 사항 -->
                 <div class="mb-4">
                     <div class="small text-dark">
@@ -146,15 +163,6 @@
 
                     </p>
                 </div>
-                <div>
-                    <h2 class="fs-6 fw-semibold">기타</h2>
-                    {{#model.additionalInfo}}
-                        {{model.additionalInfo}}
-                    {{/model.additionalInfo}}
-                    {{^model.additionalInfo}}
-                        기타 사항이 없습니다.
-                    {{/model.additionalInfo}}
-                </div>
             </div>
         </div>
 
@@ -200,14 +208,20 @@
             </div>
             <!-- 지원하기 버튼 -->
             <div class="d-grid mb-2">
-                <form action="/personal/jobposting/{id}/apply-form" method="get">
+                <form action="/s/personal/jobposting/{{model.id}}/apply-form" method="get">
                     <button type="submit" class="btn btn-primary w-100">지원하기</button>
                 </form>
             </div>
 
             <!-- 스크랩하기 버튼 -->
-            <button class="btn btn-outline-primary w-100">
-                <i class="fa fa-bookmark-o me-2"></i> 스크랩하기
+            <button class="btn {{#isBookmarked}}btn-primary{{/isBookmarked}}{{^isBookmarked}}btn-outline-primary{{/isBookmarked}} w-100 mt-auto"
+                    id="bookmark-btn-{{id}}"
+                    onclick="{{#isBookmarked}}deleteBookmark{{/isBookmarked}}{{^isBookmarked}}saveBookmark{{/isBookmarked}}({{id}})">
+                <i class="fa {{#isBookmarked}}fa-bookmark{{/isBookmarked}}{{^isBookmarked}}fa-bookmark-o{{/isBookmarked}} me-2"
+                   id="bookmark-icon-{{id}}"></i>
+                <span id="bookmark-text-{{id}}">
+        {{#isBookmarked}}스크랩취소{{/isBookmarked}}{{^isBookmarked}}스크랩하기{{/isBookmarked}}
+    </span>
             </button>
         </div>
     </div>
@@ -215,6 +229,7 @@
 <!-- 본문 끝 -->
 
 <script>
+    // 주소 복사
     document.getElementById('copyAddressButton').addEventListener('click', function (event) {
         event.preventDefault(); // a태그 기본 동작(페이지 튕김) 막기
         const hiddenInput = document.getElementById('hiddenAddress');
@@ -232,6 +247,78 @@
             alert('복사 중 오류가 발생했습니다.');
         }
     });
+
+    async function saveBookmark(jobPostingId) {
+        if (!isLoggedIn) {
+            alert("로그인 후 이용해주세요.");
+            location.href = "/login-form";
+            return;
+        }
+
+        try {
+            const response = await fetch("/s/api/personal/bookmark", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({jobPostingId: jobPostingId})
+            });
+
+            const result = await response.json();
+
+            if (response.status === 200) {
+                updateBookmarkButton(jobPostingId, true);
+            } else {
+                alert(result.msg || "북마크 저장 실패");
+            }
+        } catch (e) {
+            console.error("북마크 저장 중 오류:", e);
+        }
+    }
+
+    async function deleteBookmark(jobPostingId) {
+        if (!isLoggedIn) {
+            alert("로그인 후 이용해주세요.");
+            location.href = "/login-form";
+            return;
+        }
+
+        try {
+            const response = await fetch(`/s/api/personal/bookmark/${jobPostingId}`, {
+                method: "DELETE"
+            });
+
+            const result = await response.json();
+
+            if (response.status === 200) {
+                updateBookmarkButton(jobPostingId, false);
+            } else {
+                alert(result.msg || "북마크 삭제 실패");
+            }
+        } catch (e) {
+            console.error("북마크 삭제 중 오류:", e);
+        }
+    }
+
+    function updateBookmarkButton(jobPostingId, isBookmarked) {
+        const button = document.querySelector(`#bookmark-btn-${jobPostingId}`);
+        const icon = document.querySelector(`#bookmark-icon-${jobPostingId}`);
+        const text = document.querySelector(`#bookmark-text-${jobPostingId}`);
+
+        if (isBookmarked) {
+            button.classList.remove("btn-outline-primary");
+            button.classList.add("btn-primary");
+            button.setAttribute("onclick", `deleteBookmark(${jobPostingId})`);
+            icon.classList.remove("fa-bookmark-o");
+            icon.classList.add("fa-bookmark");
+            text.innerText = "스크랩취소";
+        } else {
+            button.classList.remove("btn-primary");
+            button.classList.add("btn-outline-primary");
+            button.setAttribute("onclick", `saveBookmark(${jobPostingId})`);
+            icon.classList.remove("fa-bookmark");
+            icon.classList.add("fa-bookmark-o");
+            text.innerText = "스크랩하기";
+        }
+    }
 </script>
 
 
