@@ -71,7 +71,7 @@ public class JobPostingRepository {
         Query query = em.createQuery(
                 "SELECT j, t FROM JobPosting j " +
                         "LEFT JOIN JobPostingTechStack t ON t.jobPosting.id = j.id " +
-                        "WHERE j.user.id = :userId"
+                        "WHERE j.user.id = :userId" + " ORDER BY j.deadline DESC "
         );
         query.setParameter("userId", userId);
         return query.getResultList();

@@ -1,10 +1,11 @@
 package com.example.leapit.jobposting;
 
+
+import com.example.leapit._core.error.ex.Exception400;
+import com.example.leapit._core.error.ex.Exception401;
 import com.example.leapit.common.region.RegionRepository;
 import com.example.leapit.common.region.RegionResponse;
 import com.example.leapit.common.region.RegionService;
-import com.example.leapit._core.error.ex.Exception400;
-import com.example.leapit._core.error.ex.Exception401;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.common.techstack.TechStackService;
@@ -108,6 +109,7 @@ public class JobPostingController {
     public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
+
 
         JobPosting jobPosting = jobPostingRepository.findById(id);
         List<String> techStackList = jobPostingService.getTechStacksByJobPostingId(id);

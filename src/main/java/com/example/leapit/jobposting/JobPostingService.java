@@ -72,6 +72,7 @@ public class JobPostingService {
     // 채용 공고 삭제
     @Transactional
     public void delete(Integer id, Integer sessionUserId) {
+
         if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
 
         JobPosting jobPosting = jobPostingRepository.findById(id);

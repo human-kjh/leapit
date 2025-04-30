@@ -12,7 +12,7 @@
             <!-- 기업 정보 -->
             <h2 class="h6 text-dark fw-semibold mb-2">기업 정보</h2>
             <div class="border rounded p-4 d-flex gap-3 align-items-start bg-light">
-                <img src="/img/{{model.logoImage}}" alt="로고"
+                <img src="/upload/{{model.logoImage}}" alt="로고"
                      class="img-thumbnail rounded-circle" style="width: 48px; height: 48px"/>
                 <div class="small text-secondary">
                     <div>
@@ -44,8 +44,9 @@
                 <div class="text-secondary small lh-lg">
                     {{{model.introduction}}}
                     <div>
-                        <img src="/img/{{model.image}}"
-                             alt="차량 관리 이미지" class="img-fluid rounded mt-3" style="max-width: 400px"/>
+                        <img src="/upload/{{model.image}}"
+                             alt="차량 관리 이미지" class="img-fluid rounded mt-3"
+                             style="width: 600px; height: 400px; object-fit: cover;"/>
                     </div>
                 </div>
             </div>
@@ -68,7 +69,7 @@
                     {{#model.jobPostings}}
                         <div class="col-md-6">
                             <div class="border rounded p-3 position-relative shadow-sm">
-                                <div class="text-muted small mb-1">D-{{dDay}}</div>
+                                <div class="text-muted small mb-1">{{dDayLabel}}</div>
                                 <a href="/personal/jobposting/{{id}}"
                                    class="fw-semibold text-dark text-decoration-none d-block">
                                     {{title}}
@@ -76,6 +77,9 @@
                                 <div class="text-muted small mt-1">
                                     {{#techStacks}}
                                         {{name}} ·
+                                    {{/techStacks}}
+                                    {{^techStacks}}
+                                        기술스택 없음
                                     {{/techStacks}}
                                 </div>
                             </div>
@@ -89,6 +93,7 @@
             </div>
         </div>
     </div>
-    <!-- 본문 끝 -->
+</div>
+<!-- 본문 끝 -->
 
 {{> layout/footer}}

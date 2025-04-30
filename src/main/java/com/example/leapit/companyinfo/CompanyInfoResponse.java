@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,21 +34,23 @@ public class CompanyInfoResponse {
             private Integer id;
             private String title;
             private LocalDate deadline;
-            private int dDay;
+            private String dDayLabel;
             private List<TechStackDTO> techStacks;
 
             public JobPostingDTO(JobPosting jobPostings, List<JobPostingTechStack> techStacks) {
                 this.id = jobPostings.getId();
                 this.title = jobPostings.getTitle();
                 this.deadline = jobPostings.getDeadline();
-                this.dDay = calculateDDay(deadline);
+                this.dDayLabel = calculateDdayLabel(deadline);
                 this.techStacks = techStacks.stream()
                         .map(stack -> new TechStackDTO(stack.getTechStack().getCode()))
                         .collect(Collectors.toList());
             }
 
-            private int calculateDDay(LocalDate deadline) {
-                return (int) java.time.temporal.ChronoUnit.DAYS.between(LocalDate.now(), deadline);
+            private String calculateDdayLabel(LocalDate deadline) {
+                if (deadline == null) return "마감일 없음";
+                int days = (int) ChronoUnit.DAYS.between(LocalDate.now(), deadline);
+                return days < 0 ? "마감" : "D-" + days;
             }
         }
 
@@ -78,9 +81,9 @@ public class CompanyInfoResponse {
 
             for (JobPosting jobPosting : jobPostings) {
                 // 마감일이 지난 공고는 건너뛰기
-                if (jobPosting.getDeadline().isBefore(LocalDate.now())) {
-                    continue;
-                }
+//                if (jobPosting.getDeadline().isBefore(LocalDate.now())) {
+//                    continue;
+//                }
 
                 List<JobPostingTechStack> matchedStacks = techStacks.stream()
                         .filter(stack -> stack.getJobPosting() != null && stack.getJobPosting().getId().equals(jobPosting.getId()))
