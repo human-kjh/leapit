@@ -51,4 +51,21 @@ public class RegionResponse {
             this.selected = selected;
         }
     }
+
+    @Data
+    public static class SelectedRegionSubRegionDTO {
+        private Integer regionId;
+        private String region;
+        private Integer subRegionId;
+        private String subRegion;
+        private Boolean selected;
+
+        public SelectedRegionSubRegionDTO(Integer regionId, String region, Integer subRegionId, String subRegion, Boolean selected) {
+            this.regionId = regionId;
+            this.region = region;
+            this.subRegionId = subRegionId;
+            this.subRegion = subRegion;
+            this.selected = selected;
+        }
+    }
 }

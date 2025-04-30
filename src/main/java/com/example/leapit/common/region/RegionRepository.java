@@ -65,6 +65,28 @@ public class RegionRepository {
         }
         return dtos;
     }
+    
+    public RegionResponse.SelectedRegionSubRegionDTO findSelectedRegionSubRegion(Integer regionId, Integer subRegionId) {
+        String sql = "SELECT " +
+                "r.region_id, " +
+                "r.region, " +
+                "sr.sub_region_id, " +
+                "sr.sub_region " +
+                "FROM region r " +
+                "JOIN sub_region sr ON r.region_id = sr.region_id " +
+                "WHERE r.region_id = ? AND sr.sub_region_id = ?";
 
+        Object[] result = (Object[]) em.createNativeQuery(sql)
+                .setParameter(1, regionId)
+                .setParameter(2, subRegionId)
+                .getSingleResult();
 
+        return new RegionResponse.SelectedRegionSubRegionDTO(
+                ((Number) result[0]).intValue(),   // region_id
+                (String) result[1],                // region
+                ((Number) result[2]).intValue(),   // sub_region_id
+                (String) result[3],                // sub_region
+                true
+        );
+    }
 }

@@ -2,6 +2,7 @@ package com.example.leapit.jobposting;
 
 import com.example.leapit.common.region.RegionRepository;
 import com.example.leapit.common.region.RegionResponse;
+import com.example.leapit.common.region.RegionService;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.common.techstack.TechStackService;
@@ -33,6 +34,7 @@ public class JobPostingController {
     private final TechStackRepository techStackRepository;
     private final CompanyInfoRepository companyInfoRepository;
     private final RegionRepository regionRepository;
+    private final RegionService regionService;
 
     // 채용 공고 목록 보기
     @GetMapping("/s/company/jobposting/list")
@@ -98,22 +100,27 @@ public class JobPostingController {
         if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
 
         JobPosting jobPosting = jobPostingRepository.findById(id);
-        List<String> techStackList = jobPostingService.getTechStacksByJobPostingId(id); // 선택된 기술 스택
-        List<TechStack> allTechStacks = techStackRepository.findAll(); // 전체 스택
 
-        List<RegionResponse.SelectedRegionDTO> addressRegionList = regionRepository.findAllRegionsBySelection(jobPosting.getAddressRegionId()); // 시/도 (선택 여부 포함)
-        List<RegionResponse.SelectedSubRegionDTO> addressSubRegionList = regionRepository.findAllSubRegionsBySelection(
-                jobPosting.getAddressRegionId(), jobPosting.getAddressSubRegionId()); // 시/군/구 (선택 여부 포함)
+        // 선택된 기술 스택 + 전체 스택
+        List<String> techStackList = jobPostingService.getTechStacksByJobPostingId(id);
+        List<TechStack> allTechStacks = techStackRepository.findAll();
 
-        // Mustache에 넘기기 위해 selected 여부 포함한 리스트 만들기
         List<Map<String, Object>> stackModels = new ArrayList<>();
         for (TechStack stack : allTechStacks) {
             Map<String, Object> map = new HashMap<>();
             map.put("code", stack.getCode());
-            map.put("selected", techStackList.contains(stack.getCode())); // true 또는 false
+            map.put("selected", techStackList.contains(stack.getCode()));
             stackModels.add(map);
         }
 
+        // 시/도, 시/군/구 전체 리스트 + 선택 여부 포함해서 서비스에서 가져오기
+        List<RegionResponse.SelectedRegionDTO> addressRegionList =
+                regionService.getRegionsWithSelection(jobPosting.getAddressRegionId());
+
+        List<RegionResponse.SelectedSubRegionDTO> addressSubRegionList =
+                regionService.getSubRegionsWithSelection(jobPosting.getAddressRegionId(), jobPosting.getAddressSubRegionId());
+
+        // Mustache에 값 넘기기
         request.setAttribute("model", jobPosting);
         request.setAttribute("allTechStacks", stackModels);
         request.setAttribute("addressRegionList", addressRegionList);
@@ -121,6 +128,7 @@ public class JobPostingController {
 
         return "company/jobposting/update-form";
     }
+
 
     // 채용 공고 수정
     @PostMapping("/s/company/jobposting/{id}/update")

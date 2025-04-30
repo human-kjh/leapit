@@ -177,4 +177,32 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const regionSelect = document.querySelector('select[name="addressRegionId"]');
+        const subRegionSelect = document.querySelector('select[name="addressSubRegionId"]');
+
+        regionSelect.addEventListener("change", function () {
+            const selectedRegionId = this.value;
+
+            // 하위 옵션 초기화
+            subRegionSelect.innerHTML = '<option disabled selected>선택하세요</option>';
+
+            // 서버로 서브 지역 요청
+            fetch(`/api/region/subregions?regionId=${selectedRegionId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(subRegion => {
+                            const option = document.createElement("option");
+                            option.value = subRegion.subRegionId;
+                            option.textContent = subRegion.subRegion;
+                            subRegionSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error("서브 지역 로딩 실패:", error));
+        });
+    });
+</script>
+
+
 {{> layout/footer}}
