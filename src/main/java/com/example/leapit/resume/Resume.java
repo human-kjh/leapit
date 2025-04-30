@@ -14,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -74,6 +75,9 @@ public class Resume {
     @CreationTimestamp
     private Timestamp createdAt;
 
+    @UpdateTimestamp
+    private Timestamp updatedAt;
+
     @Builder
     public Resume(Integer id, User user, String title, String photoUrl, String summary, String positionType,
                   List<ResumeTechStack> resumeTechStacks, List<Education> educations, List<Project> projects,
@@ -95,5 +99,14 @@ public class Resume {
         this.selfIntroduction = selfIntroduction;
         this.isPublic = isPublic != null ? isPublic : true;
         this.createdAt = createdAt;
+    }
+
+    public void update(String title, String photoUrl, Boolean isPublic, String summary, String positionType, String selfIntroduction) {
+        this.title = title;
+        this.photoUrl = photoUrl;
+        this.isPublic = isPublic != null ? isPublic : true;
+        this.summary = summary;
+        this.positionType = positionType;
+        this.selfIntroduction = selfIntroduction;
     }
 }

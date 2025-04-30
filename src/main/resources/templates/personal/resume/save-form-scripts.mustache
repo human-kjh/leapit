@@ -1,9 +1,9 @@
 <script>
     // 공통 추가 함수 (template 복제해서 추가)
     function addItem(containerSelector, templateId) {
-        const container = document.querySelector(containerSelector);
-        const template = document.querySelector(templateId);
-        const clone = template.content.cloneNode(true);
+        let container = document.querySelector(containerSelector);
+        let template = document.querySelector(templateId);
+        let clone = template.content.cloneNode(true);
         container.appendChild(clone);
     }
 
@@ -14,9 +14,9 @@
         }
     });
 
-    // saveResume 함수 (모든 데이터 수집해서 전송)
+    // saveResume 함수 - 등록하기 버튼 클릭시
     async function saveResume() {
-        const requestBody = {
+        let requestBody = {
             title: document.querySelector("#title").value,
             summary: document.querySelector("#summary").value,
             selfIntroduction: document.querySelector("#selfIntroduction").value,
@@ -48,7 +48,7 @@
                 summary: item.querySelectorAll('input')[4].value,
                 position: item.querySelectorAll('input')[5].value,
                 responsibility: item.querySelectorAll('input')[6].value,
-                techStacks: Array.from(item.querySelectorAll('.experience-tech-checkbox:checked')).map(cb => cb.value) // ⭐ 추가
+                techStacks: Array.from(item.querySelectorAll('.experience-tech-checkbox:checked')).map(cb => cb.value)
             })),
 
             projects: Array.from(document.querySelectorAll('.projectItem')).map(item => ({
@@ -59,7 +59,7 @@
                 summary: item.querySelectorAll('input')[4].value,
                 description: item.querySelector('textarea').value,
                 repositoryUrl: item.querySelectorAll('input')[5].value,
-                techStacks: Array.from(item.querySelectorAll('.project-tech-checkbox:checked')).map(cb => cb.value) // ⭐ 추가
+                techStacks: Array.from(item.querySelectorAll('.project-tech-checkbox:checked')).map(cb => cb.value)
             })),
 
             trainings: Array.from(document.querySelectorAll('.trainingItem')).map(item => ({
@@ -69,7 +69,7 @@
                 courseName: item.querySelectorAll('input')[3].value,
                 institutionName: item.querySelectorAll('input')[4].value,
                 description: item.querySelector('textarea').value,
-                techStacks: Array.from(item.querySelectorAll('.training-tech-checkbox:checked')).map(cb => cb.value) // ⭐ 추가
+                techStacks: Array.from(item.querySelectorAll('.training-tech-checkbox:checked')).map(cb => cb.value)
             })),
 
             etcs: Array.from(document.querySelectorAll('.etcItem')).map(item => ({
@@ -145,8 +145,7 @@
             { toggleId: 'toggle-link', sectionId: 'section-link' },
             { toggleId: 'toggle-experience', sectionId: 'section-experience' },
             { toggleId: 'toggle-training', sectionId: 'section-training' },
-            { toggleId: 'toggle-etc', sectionId: 'section-etc' },
-            { toggleId: 'toggle-selfIntroduction', sectionId: 'section-selfIntroduction' }
+            { toggleId: 'toggle-etc', sectionId: 'section-etc' }
         ];
 
         toggleMapping.forEach(function (mapping) {

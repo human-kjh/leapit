@@ -60,4 +60,14 @@ public class Experience {
         this.createdAt = createdAt;
         this.experienceTechStacks = experienceTechStacks != null ? experienceTechStacks : new ArrayList<>();
     }
+
+    public void update(LocalDate startDate, LocalDate endDate, Boolean isEmployed, String companyName, String summary, String position, String responsibility) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isEmployed = isEmployed;
+        this.companyName = companyName;
+        this.summary = summary;
+        this.position = position;
+        this.responsibility = responsibility;
+    }
 }

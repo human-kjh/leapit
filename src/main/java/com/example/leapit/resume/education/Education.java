@@ -58,4 +58,14 @@ public class Education {
         this.gpaScale = gpaScale;
         this.createdAt = createdAt;
     }
+
+    public void update(LocalDate graduationDate, Boolean isDropout, String educationLevel, String schoolName, String major, BigDecimal gpa, BigDecimal gpaScale) {
+        this.graduationDate = graduationDate;
+        this.isDropout = isDropout;
+        this.educationLevel = educationLevel;
+        this.schoolName = schoolName;
+        this.major = major;
+        this.gpa = gpa;
+        this.gpaScale = gpaScale;
+    }
 }
