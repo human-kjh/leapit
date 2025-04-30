@@ -1,5 +1,6 @@
 package com.example.leapit.application;
 
+import com.example.leapit.application.bookmark.ApplicationBookmark;
 import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.resume.Resume;
 import jakarta.persistence.*;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -25,6 +27,9 @@ public class Application {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_posting_id")
     private JobPosting jobPosting;
+
+    @OneToMany(mappedBy = "application", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<ApplicationBookmark> applicationBookmarks;
 
     private LocalDate appliedDate;
     private Boolean isPassed;

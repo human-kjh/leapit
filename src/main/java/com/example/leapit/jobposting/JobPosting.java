@@ -1,5 +1,6 @@
 package com.example.leapit.jobposting;
 
+import com.example.leapit.application.Application;
 import com.example.leapit.jobposting.bookmark.JobPostingBookmark;
 import com.example.leapit.jobposting.techstack.JobPostingTechStack;
 import com.example.leapit.user.User;
@@ -76,6 +77,9 @@ public class JobPosting {
 
     @OneToMany(mappedBy = "jobPosting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<JobPostingTechStack> jobPostingTechStacks;
+
+    @OneToMany(mappedBy = "jobPosting", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Application> applications;
 
 
     @Builder
