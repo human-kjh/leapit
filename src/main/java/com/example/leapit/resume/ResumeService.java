@@ -43,8 +43,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -138,6 +142,22 @@ public class ResumeService {
     @Transactional
     public void save(ResumeRequest.SaveDTO saveDTO, User sessionUser) {
         if (sessionUser == null) throw new ExceptionApi404("회원정보가 존재하지 않습니다");
+        
+        // 이미지
+        String uploadDir = System.getProperty("user.dir") + "/upload/";
+
+        try {
+            // 대표 이미지 저장
+            if (saveDTO.getPhotoUrlFile() != null && !saveDTO.getPhotoUrlFile().isEmpty()) {
+                String imageFilename = UUID.randomUUID() + "_" + saveDTO.getPhotoUrlFile().getOriginalFilename();
+                Path imagePath = Paths.get(uploadDir + imageFilename);
+                Files.write(imagePath, saveDTO.getPhotoUrlFile().getBytes());
+                saveDTO.setPhotoUrl(imageFilename);
+            }
+
+        } catch (Exception e) {
+            throw new Exception400("파일 업로드 실패");
+        }
 
         Resume resume = saveDTO.toEntity(sessionUser);
         resumeRepository.save(resume);
@@ -154,6 +174,25 @@ public class ResumeService {
         //     throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
         // }
 
+        // 이미지
+        String uploadDir = System.getProperty("user.dir") + "/upload/";
+
+        try {
+            // 대표 이미지 저장
+            if (reqDTO.getPhotoUrlFile() != null && !reqDTO.getPhotoUrlFile().isEmpty()) {
+                String imageFilename = UUID.randomUUID() + "_" + reqDTO.getPhotoUrlFile().getOriginalFilename();
+                Path imagePath = Paths.get(uploadDir + imageFilename);
+                Files.write(imagePath, reqDTO.getPhotoUrlFile().getBytes());
+                reqDTO.setPhotoUrl(imageFilename);
+            } else {
+            // 기존 값 유지
+            reqDTO.setPhotoUrl(resumePS.getPhotoUrl());
+        }
+
+        } catch (Exception e) {
+            throw new Exception400("파일 업로드 실패");
+        }
+        
         // 3. 이력서 업데이트
         resumePS.update(reqDTO.getTitle(), reqDTO.getPhotoUrl(), reqDTO.getIsPublic(), reqDTO.getSummary(), reqDTO.getPositionType(), reqDTO.getSelfIntroduction());
 

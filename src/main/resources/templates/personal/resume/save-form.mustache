@@ -84,7 +84,7 @@
             </div>
 
             <!-- 이력서 폼 -->
-            <form class="col-md-9" id="resumeForm">
+            <form class="col-md-9" id="resumeForm" method="post" enctype="multipart/form-data">
                 <div class="resume-container">
 
                     <!-- 이력서 제목 -->
@@ -99,7 +99,9 @@
                             <div
                                     class="h-100 d-flex flex-column justify-content-center align-items-center bg-light rounded-3 shadow-sm"
                                     style="width: 100%; aspect-ratio: 1 / 1; min-height: 100%; cursor: pointer;">
-                                <i class="bi bi-plus-circle-fill text-primary fs-2 mb-2"></i>
+                                <input type="file" id="photoUpload" class="d-none" accept="image/*" name="photoUrlFile">
+                                <button type="button" id="uploadBtn" class="btn border-0 bg-transparent"><i class="bi bi-plus-circle-fill text-primary fs-2 mb-2"></i></button>
+
                                 <div class="text-center">
                                     <div class="fw-semibold small">사진추가</div>
                                     <div class="text-muted" style="font-size: 12px">1:1 비율 권장</div>
