@@ -48,7 +48,7 @@
                                     <h4 class="fw-semibold">{{model.jobPositionTitle}}</h4>
                                 </div>
                                 <!-- 이력서 상세 페이지 가져오기 -->
-                                <div class="resume-section">
+                                <div class="resume-container">
                                     <!-- 이력서 제목 -->
                                     <div
                                             class="bg-white rounded-3 px-4 py-3 d-flex justify-content-between align-items-center mb-4 shadow-sm">
@@ -65,33 +65,59 @@
                                                     <img src="{{model.detailDTO.photoUrl}}" alt="프로필 사진" class="img-fluid rounded-3" style="object-fit: cover; width: 100%; height: 100%;">
                                                 </div>
                                             </div>
-                                        {{/model.detailDTO.photoUrl}}
-                                        <!-- 기본정보 영역 -->
-                                        <div class="col-md-9">
-                                            <div class="bg-white rounded-3 p-4 shadow-sm h-100">
-                                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                                    <h5 class="fw-bold mb-0">{{model.detailDTO.name}}</h5>
-                                                </div>
+                                            <!-- 기본정보 영역 -->
+                                            <div class="col-md-9">
+                                                <div class="bg-white rounded-3 p-4 shadow-sm h-100">
+                                                    <div class="d-flex justify-content-between align-items-start mb-5">
+                                                        <h5 class="fw-bold mb-0">{{model.detailDTO.name}}</h5>
+                                                        <a href="/personal/user/update-form" class="btn btn-outline-secondary btn-sm">계정 정보 설정</a>
+                                                    </div>
 
-                                                <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="bi bi-envelope me-2"></i>{{model.detailDTO.email}}
+                                                    <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="bi bi-calendar3 me-2"></i>{{model.detailDTO.birthDate}}년생
+                                                        </div>
                                                     </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="bi bi-briefcase me-2"></i>신입
+                                                    <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="bi bi-envelope me-2"></i>{{model.detailDTO.email}}
+                                                        </div>
                                                     </div>
-                                                </div>
-
-                                                <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="bi bi-calendar3 me-2"></i>{{model.detailDTO.birthDate}}년생
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <i class="bi bi-telephone me-2"></i>{{model.detailDTO.contactNumber}}
+                                                    <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="bi bi-telephone me-2"></i>{{model.detailDTO.contactNumber}}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        {{/model.detailDTO.photoUrl}}
+                                        {{^model.detailDTO.photoUrl}}
+                                            <!-- 기본정보 영역 -->
+                                            <div class="col-md-12">
+                                                <div class="bg-white rounded-3 p-4 shadow-sm h-100">
+                                                    <div class="d-flex justify-content-between align-items-start mb-5">
+                                                        <h5 class="fw-bold mb-0">{{model.detailDTO.name}}</h5>
+                                                        <a href="/personal/user/update-form" class="btn btn-outline-secondary btn-sm">계정 정보 설정</a>
+                                                    </div>
+
+                                                    <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="bi bi-calendar3 me-2"></i>{{model.detailDTO.birthDate}}년생
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="bi bi-envelope me-2"></i>{{model.detailDTO.email}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
+                                                        <div class="d-flex align-items-center">
+                                                            <i class="bi bi-telephone me-2"></i>{{model.detailDTO.contactNumber}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {{/model.detailDTO.photoUrl}}
                                     </div>
 
                                     <!-- 간단소개 (선택항목) -->
