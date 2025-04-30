@@ -12,7 +12,7 @@
 
                                     <!-- 반복 가능한 resumeItem -->
                                     {{#models}}
-                                        <div class="resumeItem">
+                                        <div class="resumeItem"  data-id="{{id}}">
                                             <div class="dropdown" style="position: absolute; top: 10px; right: 10px;">
                                                 <button class="btn btn-sm btn-light dropdown-toggle" type="button"
                                                         id="dropdownMenuButton1" data-bs-toggle="dropdown"
@@ -20,9 +20,6 @@
                                                     ⋮
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                    <li>
-                                                        <a class="dropdown-item" href="/resume/{{id}}">상세보기</a>
-                                                    </li>
                                                     <li>
                                                         <a class="dropdown-item" href="/resume/{{id}}/update-form">수정</a>
                                                     </li>
@@ -33,13 +30,13 @@
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <h6>{{title}}</h6>
-                                            <small class="mb-5">기본정보 ・ 학력 ・ 프로젝트</small>
-                                            <div class="date mt-5">{{createdAt}}</div>
+                                            <div>
+                                                <h5 class="mt-2 mb-3">{{title}}</h5>
+                                                <small>기본정보 <span class="text-danger">*</span> 학력 <span class="text-danger">*</span> 프로젝트 <span class="text-danger">*</span> 자기소개서 <span class="text-danger">*</span></small>
+                                                <div class="date mb-1">{{updatedAt}} 기준</div>
+                                            </div>
                                         </div>
                                     {{/models}}
-
-
 
                                     <!-- 새로운 이력서 등록 버튼 -->
                                     <div class="resumeItem d-flex align-items-center justify-content-center"
@@ -59,6 +56,7 @@
             </div>
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
+                    // 삭제 폼 처리
                     document.querySelectorAll('.deleteForm').forEach(form => {
                         form.addEventListener('submit', function (e) {
                             e.stopPropagation();
@@ -68,17 +66,19 @@
                             }
                         });
                     });
-                });
 
-                document.addEventListener('DOMContentLoaded', function () {
-                    document.querySelectorAll('.dropdown').forEach(dropdown => {
-                        dropdown.addEventListener('click', function (e) {
-                            e.stopPropagation();
+                    // resumeItem 클릭 시 상세보기 이동 (드롭다운 제외)
+                    document.querySelectorAll('.resumeItem').forEach(item => {
+                        item.addEventListener('click', function (e) {
+                            // 드롭다운 버튼이나 메뉴 클릭 시 무시
+                            if (e.target.closest('.dropdown')) return;
+                            const resumeId = item.dataset.id;
+                            if (resumeId) {
+                                window.location.href = `/resume/${resumeId}`;
+                            }
                         });
                     });
                 });
-
-
             </script>
             <!-- 본문 끝 -->
 

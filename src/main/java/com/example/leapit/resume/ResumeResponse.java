@@ -29,6 +29,19 @@ import java.util.List;
 public class ResumeResponse {
 
     @Data
+    public static class ListDTO {
+        private Integer id;
+        private String title;
+        private String updatedAt;
+
+        public ListDTO(Resume resume) {
+            this.id = resume.getId();
+            this.title = resume.getTitle();
+            this.updatedAt = resume.getUpdatedAt() != null? resume.getUpdatedAt().toString().substring(0, 16) : resume.getCreatedAt().toString().substring(0,16);
+        }
+    }
+
+    @Data
     public static class UpdateDTO {
         private Integer id;
         private String title;

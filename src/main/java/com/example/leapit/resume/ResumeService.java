@@ -68,9 +68,14 @@ public class ResumeService {
     private final TrainingRepository trainingRepository;
     private final ProjectRepository projectRepository;
 
-    public List<Resume> list(Integer sessionUserId) {
+    public List<ResumeResponse.ListDTO> list(Integer sessionUserId) {
         // 자신의 userId로 된 모든 resume을 찾아서 return
-        return resumeRepository.findAllByUserId(sessionUserId);
+        List<Resume> resumes = resumeRepository.findAllByUserId(sessionUserId);
+        List<ResumeResponse.ListDTO> listDTOs = new ArrayList<>();
+        for (Resume resume : resumes) {
+            listDTOs.add(new ResumeResponse.ListDTO(resume));
+        }
+        return listDTOs;
     }
 
     public ResumeResponse.DetailDTO detail(int resumeId) { // TODO : Integer sessionUserId 매개변수 추가
@@ -107,7 +112,7 @@ public class ResumeService {
         // 연관된 지원서 존재 여부 확인
         List<Application> applications = applicationRepository.findAllByResumeId(resumeId);
         if (applications != null && !applications.isEmpty()) {
-            throw new IllegalStateException("이 이력서는 지원 이력이 있어 삭제할 수 없습니다.");
+            throw new RuntimeException("이 이력서는 지원 이력이 있어 삭제할 수 없습니다.");
         }
 
         // 2. 이력서 주인 (권한) 확인

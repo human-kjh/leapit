@@ -23,7 +23,7 @@ public class ResumeController {
 //        User sessionUser = (User) session.getAttribute("sessionUser");
 //        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
         Integer sessionUserId = 1;
-        List<Resume> resumeList = resumeService.list(1); // TODO : sessionUser.getId() 인수 추가
+        List<ResumeResponse.ListDTO> resumeList = resumeService.list(1); // TODO : sessionUser.getId() 인수 추가
         request.setAttribute("models", resumeList);
         return "personal/resume/list";
     }
