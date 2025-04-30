@@ -9,9 +9,11 @@ import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.resume.education.Education;
 import com.example.leapit.resume.education.EducationRepository;
+import com.example.leapit.resume.education.EducationResponse;
 import com.example.leapit.resume.education.EducationService;
 import com.example.leapit.resume.etc.Etc;
 import com.example.leapit.resume.etc.EtcRepository;
+import com.example.leapit.resume.etc.EtcResponse;
 import com.example.leapit.resume.etc.EtcService;
 import com.example.leapit.resume.experience.Experience;
 import com.example.leapit.resume.experience.ExperienceRepository;
@@ -19,6 +21,7 @@ import com.example.leapit.resume.experience.ExperienceResponse;
 import com.example.leapit.resume.experience.ExperienceService;
 import com.example.leapit.resume.link.Link;
 import com.example.leapit.resume.link.LinkRepository;
+import com.example.leapit.resume.link.LinkResponse;
 import com.example.leapit.resume.link.LinkService;
 import com.example.leapit.resume.project.Project;
 import com.example.leapit.resume.project.ProjectRepository;
@@ -82,12 +85,12 @@ public class ResumeService {
 
         // 3. 이력서 DTO 조립
         List<ResumeTechStack> techStacks  = resumeTechStackRepository.findAllByResumeId(resumeId);
-        List<Link> links = linkRepository.findAllByResumeId(resumeId);
-        List<Education> educations = educationRepository.findAllByResumeId(resumeId) ;
+        List<LinkResponse.DetailDTO> links = linkService.getDTOsByResumeId(resumeId);
+        List<EducationResponse.DetailDTO> educations = educationService.getDTOsByResumeId(resumeId) ;
         List<ExperienceResponse.DetailDTO> experiences = experienceService.getDTOsByResumeId(resumeId);
         List<ProjectResponse.DetailDTO> projects = projectService.getDTOsByResumeId(resumeId);
         List<TrainingResponse.DetailDTO> trainings = trainingService.getDTOsByResumeId(resumeId);
-        List<Etc> etcs = etcRepository.findAllByResumeId(resumeId);
+        List<EtcResponse.DetailDTO> etcs = etcService.getDTOsByResumeId(resumeId);
 
         ResumeResponse.DetailDTO detailDTO = new ResumeResponse.DetailDTO(resume, techStacks, links, educations, experiences, projects, trainings, etcs);
 

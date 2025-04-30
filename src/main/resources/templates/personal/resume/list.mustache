@@ -36,12 +36,6 @@
                                             <h6>{{title}}</h6>
                                             <small class="mb-5">기본정보 ・ 학력 ・ 프로젝트</small>
                                             <div class="date mt-5">{{createdAt}}</div>
-
-                                            <!-- 공개/비공개 토글버튼 -->
-                                            <div class="toggleContainer">
-                                                <label for="toggleSwitch1">공개/비공개</label>
-                                                <div class="toggleSwitch" id="toggleSwitch1"></div>
-                                            </div>
                                         </div>
                                     {{/models}}
 
@@ -77,14 +71,14 @@
                 });
 
                 document.addEventListener('DOMContentLoaded', function () {
-                    let toggleSwitches = document.querySelectorAll('.toggleSwitch');
-
-                    toggleSwitches.forEach(toggleSwitch => {
-                        toggleSwitch.addEventListener('click', function () {
-                            this.classList.toggle('active');
+                    document.querySelectorAll('.dropdown').forEach(dropdown => {
+                        dropdown.addEventListener('click', function (e) {
+                            e.stopPropagation();
                         });
                     });
                 });
+
+
             </script>
             <!-- 본문 끝 -->
 

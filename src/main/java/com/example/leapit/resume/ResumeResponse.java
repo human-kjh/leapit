@@ -3,11 +3,14 @@ package com.example.leapit.resume;
 import com.example.leapit.common.positiontype.PositionType;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.resume.education.Education;
+import com.example.leapit.resume.education.EducationResponse;
 import com.example.leapit.resume.etc.Etc;
+import com.example.leapit.resume.etc.EtcResponse;
 import com.example.leapit.resume.experience.Experience;
 import com.example.leapit.resume.experience.techstack.ExperienceTechStack;
 import com.example.leapit.resume.link.Link;
 import com.example.leapit.resume.experience.ExperienceResponse;
+import com.example.leapit.resume.link.LinkResponse;
 import com.example.leapit.resume.project.Project;
 import com.example.leapit.resume.project.ProjectResponse ;
 import com.example.leapit.resume.project.techstack.ProjectTechStack;
@@ -127,6 +130,8 @@ public class ResumeResponse {
                 }
                 if (this.graduationDate != null) {
                     this.formattedGraduationDate = this.graduationDate.toString().substring(0, 7);
+                } else {
+                    this.formattedGraduationDate = "";
                 }
             }
         }
@@ -363,31 +368,29 @@ public class ResumeResponse {
         // 유저 정보
         private String name;
         private String email;
-        private Integer birthDate; // 생년월일 중 생년만 받아야 됨
+        private Integer birthDate;
         private String contactNumber;
 
         // 공개 여부
         private Boolean isPublic;
 
-        private String positionType; // code -> label로 전환 필요
+        private String positionType;
         private String summary;
         private String selfIntroduction;
 
-        private List<ResumeTechStack> techStackList;
-
-
-        private List<Link> links = new ArrayList<>(); // 없을 수도 있으니까 초기화
-        private List<Education> educations;
+        private List<ResumeTechStack> techStackList = new ArrayList<>();
+        private List<LinkResponse.DetailDTO> links = new ArrayList<>();
+        private List<EducationResponse.DetailDTO> educations = new ArrayList<>();
         private List<ExperienceResponse.DetailDTO> experiences = new ArrayList<>();
-        private List<ProjectResponse.DetailDTO> projects;
+        private List<ProjectResponse.DetailDTO> projects = new ArrayList<>();
         private List<TrainingResponse.DetailDTO> trainings = new ArrayList<>();
-        private List<Etc> etcs = new ArrayList<>();
+        private List<EtcResponse.DetailDTO> etcs = new ArrayList<>();
 
 
 
-        public DetailDTO(Resume resume, List<ResumeTechStack> techStacks, List<Link> links,
-                         List<Education> educations, List<ExperienceResponse.DetailDTO> experiences, List<ProjectResponse.DetailDTO> projects,
-                         List<TrainingResponse.DetailDTO> trainings, List<Etc> etcs) {
+        public DetailDTO(Resume resume, List<ResumeTechStack> techStacks, List<LinkResponse.DetailDTO> links,
+                         List<EducationResponse.DetailDTO> educations, List<ExperienceResponse.DetailDTO> experiences, List<ProjectResponse.DetailDTO> projects,
+                         List<TrainingResponse.DetailDTO> trainings, List<EtcResponse.DetailDTO> etcs) {
             this.id = resume.getId();
             this.title = resume.getTitle();
             this.photoUrl = resume.getPhotoUrl();

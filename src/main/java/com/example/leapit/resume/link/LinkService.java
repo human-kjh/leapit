@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -46,5 +47,15 @@ public class LinkService {
                 linkList.add(newLink);
             }
         }
+    }
+
+    public List<LinkResponse.DetailDTO> getDTOsByResumeId(Integer resumeId) {
+        List<Link> linkList = linkRepository.findAllByResumeId(resumeId);
+        List<LinkResponse.DetailDTO> dtoList = new ArrayList<>();
+
+        for (Link link : linkList) {
+            dtoList.add(new LinkResponse.DetailDTO(link));
+        }
+        return dtoList;
     }
 }

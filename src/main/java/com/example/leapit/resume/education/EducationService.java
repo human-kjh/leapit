@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -59,5 +60,16 @@ public class EducationService {
                 educationList.add(newEducation);
             }
         }
+    }
+
+    public List<EducationResponse.DetailDTO> getDTOsByResumeId(Integer resumeId) {
+        List<Education> educationList = educationRepository.findAllByResumeId(resumeId);
+        List<EducationResponse.DetailDTO> dtoList = new ArrayList<>();
+
+        for (Education education : educationList) {
+            dtoList.add(new EducationResponse.DetailDTO(education));
+        }
+
+        return dtoList;
     }
 }

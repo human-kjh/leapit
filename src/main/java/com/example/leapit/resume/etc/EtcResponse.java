@@ -9,13 +9,20 @@ public class EtcResponse {
     public static class DetailDTO {
         private LocalDate startDate;
         private LocalDate endDate;
-        //hasEndDate = true : 종료일 있음
         private Boolean hasEndDate;
         private String title;
-        private Integer etcType;
+        private String etcType;
         private String institutionName;
-
         private String description;
 
+        public DetailDTO(Etc etc) {
+            this.startDate = etc.getStartDate();
+            this.endDate = etc.getEndDate();
+            this.hasEndDate = etc.getHasEndDate();
+            this.title = etc.getTitle();
+            this.etcType = etc.getEtcType();
+            this.institutionName = etc.getInstitutionName();
+            this.description = etc.getDescription();
+        }
     }
 }

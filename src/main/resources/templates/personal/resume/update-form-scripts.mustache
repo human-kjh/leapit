@@ -5,17 +5,16 @@
         let template = document.querySelector(templateId);
         let clone = template.content.cloneNode(true);
         container.appendChild(clone);
-        updateAllDropdownSelectedText(); // 드롭다운도 다시 바인딩
     }
 
     // 삭제 버튼 처리
-    document.addEventListener('click', function(event) {
+    document.addEventListener('click', function (event) {
         if (event.target.classList.contains('removeItemBtn')) {
             event.target.closest('.linkItem, .educationItem, .experienceItem, .projectItem, .trainingItem, .etcItem').remove();
         }
     });
 
-    // 이력서 업데이트 전송
+    // updateResume 함수 - 수정하기 버튼 클릭시
     async function updateResume() {
         let resumeId = document.getElementById('resumeId').value;
 
@@ -113,68 +112,21 @@
         }
     }
 
-    // 기술스택 표시 업데이트
-    function updateTechStackButton() {
-        let checkboxes = document.querySelectorAll('.techCheckbox');
-        let displayBtn = document.getElementById('selectedTechStacksBtn');
-
-        function refreshDisplay() {
-            let selected = Array.from(checkboxes)
-                    .filter(cb => cb.checked)
-                    .map(cb => cb.nextElementSibling.innerText);
-            displayBtn.innerText = selected.length > 0 ? selected.join(', ') : '기술스택을 선택하세요';
-        }
-
-        checkboxes.forEach(cb => {
-            cb.addEventListener('change', refreshDisplay);
-        });
-
-        refreshDisplay();
-    }
-
-    // 동적 기술스택 텍스트 반영
+    // 기술스택 드롭다운 버튼 텍스트 초기화 함수
     function updateAllDropdownSelectedText() {
-        ['.experienceItem', '.projectItem', '.trainingItem'].forEach(selector => {
-            document.querySelectorAll(selector).forEach(item => {
-                let container = item.querySelector('.dropdown');
-                let button = container.querySelector('button.form-select');
-                let selected = Array.from(container.querySelectorAll('input:checked')).map(cb => cb.nextElementSibling.innerText);
-                button.innerText = selected.length > 0 ? selected.join(', ') + ' 선택됨' : '기술스택을 선택하세요';
-            });
+        document.querySelectorAll('.experienceItem, .projectItem, .trainingItem').forEach(item => {
+            let container = item.querySelector('.dropdown');
+            if (!container) return;
+
+            let button = container.querySelector('button.form-select');
+            if (!button) return;
+
+            let selected = Array.from(container.querySelectorAll('input:checked')).map(cb => cb.nextElementSibling.innerText);
+            button.innerText = selected.length > 0 ? selected.join(', ') + ' 선택됨' : '기술스택을 선택하세요';
         });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        updateTechStackButton();
-        updateAllDropdownSelectedText();
-
-        // === [👀 toggle: section visibility 제어] ===
-        const toggleMap = [
-            ['togglePhoto', '#section-photo'],
-            ['toggleSummary', '#section-summary'],
-            ['toggleLink', '#section-link'],
-            ['toggleExperience', '#section-experience'],
-            ['toggleTraining', '#section-training'],
-            ['toggleEtc', '#section-etc']
-        ];
-
-        toggleMap.forEach(([toggleClass, sectionId]) => {
-            document.querySelectorAll(`.${toggleClass}`).forEach(toggle => {
-                const section = document.querySelector(sectionId);
-                if (!section) return;
-
-                // 초기 상태 적용
-                section.style.display = toggle.checked ? '' : 'none';
-
-                // 이벤트 리스너 등록
-                toggle.addEventListener('change', () => {
-                    section.style.display = toggle.checked ? '' : 'none';
-                });
-            });
-        });
-    });
-
-    // 기술스택 선택 드롭다운 실시간 갱신
+    // 개별 기술스택 드롭다운 클릭 시 텍스트 갱신
     document.addEventListener('click', function (event) {
         if (
                 event.target.classList.contains('experienceTechCheckbox') ||
@@ -188,7 +140,24 @@
         }
     });
 
+    // 기술스택 메인 필터 버튼 텍스트 갱신
+    function updateTechStackButton() {
+        let checkboxes = document.querySelectorAll('.techCheckbox');
+        let displayBtn = document.getElementById('selectedTechStacksBtn');
+
+        let selected = Array.from(checkboxes)
+                .filter(box => box.checked)
+                .map(box => box.nextElementSibling.innerText);
+
+        displayBtn.innerText = selected.length > 0 ? selected.join(', ') : '기술스택을 선택하세요';
+    }
+
+    // DOM 로딩 완료 시 초기화
     document.addEventListener("DOMContentLoaded", function () {
+        updateTechStackButton();
+        updateAllDropdownSelectedText();
+
+        // 각 항목 토글 처리
         let toggleMapping = [
             { toggleId: 'toggle-photo', sectionId: 'section-photo' },
             { toggleId: 'toggle-summary', sectionId: 'section-summary' },
@@ -203,18 +172,17 @@
             let section = document.getElementById(mapping.sectionId);
 
             if (toggle && section) {
-                // 처음 로딩될 때 상태 적용
                 section.style.display = toggle.checked ? 'block' : 'none';
 
-                // 토글될 때마다
                 toggle.addEventListener('change', function () {
-                    if (this.checked) {
-                        section.style.display = 'block';
-                    } else {
-                        section.style.display = 'none';
-                    }
+                    section.style.display = this.checked ? 'block' : 'none';
                 });
             }
+        });
+
+        // techCheckbox 초기화 시 이벤트 리스너 등록
+        document.querySelectorAll('.techCheckbox').forEach(cb => {
+            cb.addEventListener('change', updateTechStackButton);
         });
     });
 </script>
