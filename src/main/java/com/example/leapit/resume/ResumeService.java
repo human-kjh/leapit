@@ -146,11 +146,11 @@ public class ResumeService {
         // 항목별 업데이트는 각 항목의 Service 호출
         resumeTechStackService.update(resumePS, reqDTO.getResumeTechStacks());
         trainingService.update(resumePS, reqDTO.getTrainings());
-//        projectService.update(resumePS, reqDTO.getProjects());
-//        experienceService.update(resumePS, reqDTO.getExperiences());
-//        educationService.update(resumePS, reqDTO.getEducations());
-//        linkService.update(resumePS, reqDTO.getLinks());
-//        etcService.update(resumePS, reqDTO.getEtcs());
+        projectService.update(resumePS, reqDTO.getProjects());
+        experienceService.update(resumePS, reqDTO.getExperiences());
+        educationService.update(resumePS, reqDTO.getEducations());
+        linkService.update(resumePS, reqDTO.getLinks());
+        etcService.update(resumePS, reqDTO.getEtcs());
 
     }
 

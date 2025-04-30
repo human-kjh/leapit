@@ -28,8 +28,8 @@
 
             links: Array.from(document.querySelectorAll('.linkItem')).map(item => ({
                 id: item.querySelector('.link-id')?.value || null,
-                title: item.querySelectorAll('input')[1].value,
-                url: item.querySelectorAll('input')[2].value
+                title: item.querySelector('.link-title')?.value || '',
+                url: item.querySelector('.link-url')?.value || ''
             })),
 
             educations: Array.from(document.querySelectorAll('.educationItem')).map(item => ({
@@ -63,7 +63,7 @@
                 title: item.querySelectorAll('input')[3].value,
                 summary: item.querySelectorAll('input')[4].value,
                 description: item.querySelector('textarea').value,
-                repositoryUrl: item.querySelectorAll('input')[5].value,
+                repositoryUrl: item.querySelector('.project-repo-url')?.value || '',
                 techStacks: Array.from(item.querySelectorAll('.project-tech-checkbox:checked')).map(cb => cb.value)
             })),
 

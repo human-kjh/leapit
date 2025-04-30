@@ -34,7 +34,7 @@ public class ProjectService {
     }
 
     @Transactional
-    public void updateProjects(Resume resumePS, List<ResumeRequest.UpdateDTO.ProjectDTO> projectDTOList) {
+    public void update(Resume resumePS, List<ResumeRequest.UpdateDTO.ProjectDTO> projectDTOList) {
         List<Project> projectList = resumePS.getProjects();
 
         Map<Integer, ResumeRequest.UpdateDTO.ProjectDTO> dtoMap = projectDTOList.stream()
