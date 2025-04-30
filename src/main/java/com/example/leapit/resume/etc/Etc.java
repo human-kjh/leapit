@@ -50,4 +50,14 @@ public class Etc {
         this.description = description;
         this.createdAt = createdAt;
     }
+
+    public void update(LocalDate startDate, LocalDate endDate, Boolean hasEndDate, String title, String etcType, String institutionName, String description) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.hasEndDate = hasEndDate;
+        this.title = title;
+        this.etcType = etcType;
+        this.institutionName = institutionName;
+        this.description = description;
+    }
 }

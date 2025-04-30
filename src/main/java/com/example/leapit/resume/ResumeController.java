@@ -23,7 +23,7 @@ public class ResumeController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
         Integer sessionUserId = 1;
-        List<Resume> resumeList = resumeService.list(1); // TODO : sessionUser.getId() 인수 추가
+        List<ResumeResponse.ListDTO> resumeList = resumeService.list(1); // TODO : sessionUser.getId() 인수 추가
         request.setAttribute("models", resumeList);
         return "personal/resume/list";
     }
@@ -64,6 +64,20 @@ public class ResumeController {
         if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
 
         resumeService.save(saveDTO, sessionUser);
+        return Resp.ok(null);
+    }
+
+    @GetMapping("/s/personal/resume/{id}/update-form")
+    public String updateForm(@PathVariable("id") int id, HttpServletRequest request) {
+        ResumeResponse.UpdateDTO updateDTO = resumeService.getUpdateForm(id);
+        request.setAttribute("model", updateDTO);
+        return "personal/resume/update-form";
+    }
+
+    @PutMapping("/s/personal/resume/{id}/update")
+    @ResponseBody
+    public Resp<?> update(@PathVariable("id") int id, @RequestBody ResumeRequest.UpdateDTO updateDTO) {
+        resumeService.update(id, updateDTO);
         return Resp.ok(null);
     }
 }
