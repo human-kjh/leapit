@@ -1,20 +1,21 @@
 <script>
-    // 공통 추가 함수 (template 복제해서 추가)
+    // 공통 추가 함수
     function addItem(containerSelector, templateId) {
         let container = document.querySelector(containerSelector);
         let template = document.querySelector(templateId);
         let clone = template.content.cloneNode(true);
         container.appendChild(clone);
+        updateAllDropdownSelectedText(); // 드롭다운도 다시 바인딩
     }
 
-    // 삭제 버튼 처리 (동적 요소 포함)
+    // 삭제 버튼 처리
     document.addEventListener('click', function(event) {
         if (event.target.classList.contains('removeItemBtn')) {
             event.target.closest('.linkItem, .educationItem, .experienceItem, .projectItem, .trainingItem, .etcItem').remove();
         }
     });
 
-    // updateResume 함수 (모든 데이터 수집해서 전송)
+    // 이력서 업데이트 전송
     async function updateResume() {
         let resumeId = document.getElementById('resumeId').value;
 
@@ -24,69 +25,69 @@
             selfIntroduction: document.querySelector("#selfIntroduction").value,
             isPublic: document.querySelector("#resumeToggle")?.checked ?? true,
             positionType: document.querySelector("select[name='positionType']").value,
-            resumeTechStacks: Array.from(document.querySelectorAll(".tech-checkbox:checked")).map(cb => cb.value),
+            resumeTechStacks: Array.from(document.querySelectorAll(".techCheckbox:checked")).map(cb => cb.value),
 
             links: Array.from(document.querySelectorAll('.linkItem')).map(item => ({
-                id: item.querySelector('.link-id')?.value || null,
-                title: item.querySelector('.link-title')?.value || '',
-                url: item.querySelector('.link-url')?.value || ''
+                id: item.querySelector('.linkId')?.value || null,
+                title: item.querySelector('.linkTitle')?.value || '',
+                url: item.querySelector('.linkUrl')?.value || ''
             })),
 
             educations: Array.from(document.querySelectorAll('.educationItem')).map(item => ({
-                id: item.querySelector('.education-id')?.value || null,
-                graduationDate: item.querySelector('input[type="month"]')?.value ? item.querySelector('input[type="month"]').value + "-01" : null,
-                isDropout: item.querySelectorAll('input')[1].checked,
-                schoolName: item.querySelectorAll('input')[2].value,
-                major: item.querySelectorAll('input')[3].value,
-                educationLevel: item.querySelectorAll('select')[0].value,
-                gpa: item.querySelectorAll('input')[4].value,
-                gpaScale: item.querySelectorAll('select')[1].value
+                id: item.querySelector('.educationId')?.value || null,
+                graduationDate: item.querySelector('.educationGraduationDate')?.value ? item.querySelector('.educationGraduationDate').value + "-01" : null,
+                isDropout: item.querySelector('.educationIsDropout')?.checked || false,
+                schoolName: item.querySelector('.educationSchoolName')?.value || '',
+                major: item.querySelector('.educationMajor')?.value || '',
+                educationLevel: item.querySelector('.educationLevel')?.value || '',
+                gpa: item.querySelector('.educationGpa')?.value || '',
+                gpaScale: item.querySelector('.educationGpaScale')?.value || ''
             })),
 
             experiences: Array.from(document.querySelectorAll('.experienceItem')).map(item => ({
-                id: item.querySelector('.experience-id')?.value || null,
-                startDate: item.querySelectorAll('input')[0].value,
-                endDate: item.querySelectorAll('input')[1].value,
-                isEmployed: item.querySelectorAll('input')[2].checked,
-                companyName: item.querySelectorAll('input')[3].value,
-                summary: item.querySelectorAll('input')[4].value,
-                position: item.querySelectorAll('input')[5].value,
-                responsibility: item.querySelector('textarea').value,
-                techStacks: Array.from(item.querySelectorAll('.experience-tech-checkbox:checked')).map(cb => cb.value)
+                id: item.querySelector('.experienceId')?.value || null,
+                startDate: item.querySelector('.experienceStartDate')?.value || '',
+                endDate: item.querySelector('.experienceEndDate')?.value || '',
+                isEmployed: item.querySelector('.experienceIsEmployed')?.checked || false,
+                companyName: item.querySelector('.experienceCompanyName')?.value || '',
+                summary: item.querySelector('.experienceSummary')?.value || '',
+                position: item.querySelector('.experiencePosition')?.value || '',
+                responsibility: item.querySelector('.experienceResponsibility')?.value || '',
+                techStacks: Array.from(item.querySelectorAll('.experienceTechCheckbox:checked')).map(cb => cb.value)
             })),
 
             projects: Array.from(document.querySelectorAll('.projectItem')).map(item => ({
-                id: item.querySelector('.project-id')?.value || null,
-                startDate: item.querySelectorAll('input')[0].value,
-                endDate: item.querySelectorAll('input')[1].value,
-                isOngoing: item.querySelectorAll('input')[2].checked,
-                title: item.querySelectorAll('input')[3].value,
-                summary: item.querySelectorAll('input')[4].value,
-                description: item.querySelector('textarea').value,
-                repositoryUrl: item.querySelector('.project-repo-url')?.value || '',
-                techStacks: Array.from(item.querySelectorAll('.project-tech-checkbox:checked')).map(cb => cb.value)
+                id: item.querySelector('.projectId')?.value || null,
+                startDate: item.querySelector('.projectStartDate')?.value || '',
+                endDate: item.querySelector('.projectEndDate')?.value || '',
+                isOngoing: item.querySelector('.projectIsOngoing')?.checked || false,
+                title: item.querySelector('.projectTitle')?.value || '',
+                summary: item.querySelector('.projectSummary')?.value || '',
+                description: item.querySelector('.projectDescription')?.value || '',
+                repositoryUrl: item.querySelector('.projectRepoUrl')?.value || '',
+                techStacks: Array.from(item.querySelectorAll('.projectTechCheckbox:checked')).map(cb => cb.value)
             })),
 
             trainings: Array.from(document.querySelectorAll('.trainingItem')).map(item => ({
-                id: item.querySelector('.training-id')?.value || null,
-                startDate: item.querySelectorAll('input')[0].value,
-                endDate: item.querySelectorAll('input')[1].value,
-                isOngoing: item.querySelectorAll('input')[2].checked,
-                courseName: item.querySelectorAll('input')[3].value,
-                institutionName: item.querySelectorAll('input')[4].value,
-                description: item.querySelector('textarea').value,
-                techStacks: Array.from(item.querySelectorAll('.training-tech-checkbox:checked')).map(cb => cb.value)
+                id: item.querySelector('.trainingId')?.value || null,
+                startDate: item.querySelector('.trainingStartDate')?.value || '',
+                endDate: item.querySelector('.trainingEndDate')?.value || '',
+                isOngoing: item.querySelector('.trainingIsOngoing')?.checked || false,
+                courseName: item.querySelector('.trainingCourseName')?.value || '',
+                institutionName: item.querySelector('.trainingInstitutionName')?.value || '',
+                description: item.querySelector('.trainingDescription')?.value || '',
+                techStacks: Array.from(item.querySelectorAll('.trainingTechCheckbox:checked')).map(cb => cb.value)
             })),
 
             etcs: Array.from(document.querySelectorAll('.etcItem')).map(item => ({
-                id: item.querySelector('.etc-id')?.value || null,
-                startDate: item.querySelectorAll('input')[0].value,
-                endDate: item.querySelectorAll('input')[1].value,
-                hasEndDate: item.querySelectorAll('input')[2].checked,
-                title: item.querySelectorAll('input')[3].value,
-                etcType: item.querySelector('select').value,
-                institutionName: item.querySelectorAll('input')[4].value,
-                description: item.querySelector('textarea').value
+                id: item.querySelector('.etcId')?.value || null,
+                startDate: item.querySelector('.etcStartDate')?.value || '',
+                endDate: item.querySelector('.etcEndDate')?.value || '',
+                hasEndDate: item.querySelector('.etcHasEndDate')?.checked || false,
+                title: item.querySelector('.etcTitle')?.value || '',
+                etcType: item.querySelector('.etcType')?.value || '',
+                institutionName: item.querySelector('.etcInstitutionName')?.value || '',
+                description: item.querySelector('.etcDescription')?.value || ''
             }))
         };
 
@@ -112,14 +113,9 @@
         }
     }
 
-    // 기술스택 선택 시 버튼에 표시 업데이트 (이력서 techStack용)
-    document.addEventListener('DOMContentLoaded', () => {
-        updateTechStackButton();
-        updateAllDropdownSelectedText();
-    });
-
+    // 기술스택 표시 업데이트
     function updateTechStackButton() {
-        let checkboxes = document.querySelectorAll('.tech-checkbox');
+        let checkboxes = document.querySelectorAll('.techCheckbox');
         let displayBtn = document.getElementById('selectedTechStacksBtn');
 
         function refreshDisplay() {
@@ -133,66 +129,92 @@
             cb.addEventListener('change', refreshDisplay);
         });
 
-        refreshDisplay(); // 초기 실행
+        refreshDisplay();
     }
 
-    // 경력, 프로젝트, 교육 기술스택 드롭다운 버튼에도 초기 선택된 값 표시
+    // 동적 기술스택 텍스트 반영
     function updateAllDropdownSelectedText() {
-        document.querySelectorAll('.experienceItem').forEach(item => {
-            let container = item.querySelector('.dropdown');
-            let button = container.querySelector('button.form-select');
-            let selected = Array.from(container.querySelectorAll('.experience-tech-checkbox:checked'))
-                    .map(cb => cb.nextElementSibling.innerText);
-
-            if (selected.length > 0) {
-                button.innerText = selected.join(', ') + ' 선택됨';
-            } else {
-                button.innerText = '기술스택을 선택하세요';
-            }
-        });
-
-        document.querySelectorAll('.projectItem').forEach(item => {
-            let container = item.querySelector('.dropdown');
-            let button = container.querySelector('button.form-select');
-            let selected = Array.from(container.querySelectorAll('.project-tech-checkbox:checked'))
-                    .map(cb => cb.nextElementSibling.innerText);
-
-            if (selected.length > 0) {
-                button.innerText = selected.join(', ') + ' 선택됨';
-            } else {
-                button.innerText = '기술스택을 선택하세요';
-            }
-        });
-
-        document.querySelectorAll('.trainingItem').forEach(item => {
-            let container = item.querySelector('.dropdown');
-            let button = container.querySelector('button.form-select');
-            let selected = Array.from(container.querySelectorAll('.training-tech-checkbox:checked'))
-                    .map(cb => cb.nextElementSibling.innerText);
-
-            if (selected.length > 0) {
-                button.innerText = selected.join(', ') + ' 선택됨';
-            } else {
-                button.innerText = '기술스택을 선택하세요';
-            }
+        ['.experienceItem', '.projectItem', '.trainingItem'].forEach(selector => {
+            document.querySelectorAll(selector).forEach(item => {
+                let container = item.querySelector('.dropdown');
+                let button = container.querySelector('button.form-select');
+                let selected = Array.from(container.querySelectorAll('input:checked')).map(cb => cb.nextElementSibling.innerText);
+                button.innerText = selected.length > 0 ? selected.join(', ') + ' 선택됨' : '기술스택을 선택하세요';
+            });
         });
     }
 
-    // 동적 추가된 항목에도 적용할 수 있게 클릭 이벤트로 갱신
-    document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('experience-tech-checkbox') ||
-                event.target.classList.contains('project-tech-checkbox') ||
-                event.target.classList.contains('training-tech-checkbox')) {
+    document.addEventListener('DOMContentLoaded', () => {
+        updateTechStackButton();
+        updateAllDropdownSelectedText();
 
+        // === [👀 toggle: section visibility 제어] ===
+        const toggleMap = [
+            ['togglePhoto', '#section-photo'],
+            ['toggleSummary', '#section-summary'],
+            ['toggleLink', '#section-link'],
+            ['toggleExperience', '#section-experience'],
+            ['toggleTraining', '#section-training'],
+            ['toggleEtc', '#section-etc']
+        ];
+
+        toggleMap.forEach(([toggleClass, sectionId]) => {
+            document.querySelectorAll(`.${toggleClass}`).forEach(toggle => {
+                const section = document.querySelector(sectionId);
+                if (!section) return;
+
+                // 초기 상태 적용
+                section.style.display = toggle.checked ? '' : 'none';
+
+                // 이벤트 리스너 등록
+                toggle.addEventListener('change', () => {
+                    section.style.display = toggle.checked ? '' : 'none';
+                });
+            });
+        });
+    });
+
+    // 기술스택 선택 드롭다운 실시간 갱신
+    document.addEventListener('click', function (event) {
+        if (
+                event.target.classList.contains('experienceTechCheckbox') ||
+                event.target.classList.contains('projectTechCheckbox') ||
+                event.target.classList.contains('trainingTechCheckbox')
+        ) {
             let container = event.target.closest('.dropdown');
             let button = container.querySelector('button.form-select');
             let selected = Array.from(container.querySelectorAll('input:checked')).map(cb => cb.nextElementSibling.innerText);
-
-            if (selected.length > 0) {
-                button.innerText = selected.join(', ') + ' 선택됨';
-            } else {
-                button.innerText = '기술스택을 선택하세요';
-            }
+            button.innerText = selected.length > 0 ? selected.join(', ') + ' 선택됨' : '기술스택을 선택하세요';
         }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let toggleMapping = [
+            { toggleId: 'toggle-photo', sectionId: 'section-photo' },
+            { toggleId: 'toggle-summary', sectionId: 'section-summary' },
+            { toggleId: 'toggle-link', sectionId: 'section-link' },
+            { toggleId: 'toggle-experience', sectionId: 'section-experience' },
+            { toggleId: 'toggle-training', sectionId: 'section-training' },
+            { toggleId: 'toggle-etc', sectionId: 'section-etc' }
+        ];
+
+        toggleMapping.forEach(function (mapping) {
+            let toggle = document.getElementById(mapping.toggleId);
+            let section = document.getElementById(mapping.sectionId);
+
+            if (toggle && section) {
+                // 처음 로딩될 때 상태 적용
+                section.style.display = toggle.checked ? 'block' : 'none';
+
+                // 토글될 때마다
+                toggle.addEventListener('change', function () {
+                    if (this.checked) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            }
+        });
     });
 </script>

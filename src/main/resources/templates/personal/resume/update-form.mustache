@@ -10,78 +10,66 @@
                 <div class="card p-3">
                     <h5 class="fw-bold mb-1">항목편집</h5>
                     <div class="d-flex flex-column gap-2">
-
                         <!-- 필수 항목 (항상 보임) -->
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <span>기본정보 <span class="text-danger">*</span></span>
                         </div>
-
                         <!-- 선택 항목들 -->
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <span>사진</span>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="toggle-photo" checked />
+                                <input class="form-check-input togglePhoto" type="checkbox" id="toggle-photo" checked />
                             </div>
                         </div>
-
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <span>간단소개</span>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="toggle-summary" checked />
+                                <input class="form-check-input toggleSummary" type="checkbox" id="toggle-summary" checked />
                             </div>
                         </div>
-
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <span>개발직무 <span class="text-danger">*</span></span>
                         </div>
-
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <span>기술스택 <span class="text-danger">*</span></span>
                         </div>
-
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <span>링크</span>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="toggle-link" checked />
+                                <input class="form-check-input toggleLink" type="checkbox" id="toggle-link" checked />
                             </div>
                         </div>
-
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <span>학력 <span class="text-danger">*</span></span>
                         </div>
-
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <span>경력</span>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="toggle-experience" checked />
+                                <input class="form-check-input toggleExperience" type="checkbox" id="toggle-experience" checked />
                             </div>
                         </div>
-
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <span>프로젝트 <span class="text-danger">*</span></span>
                         </div>
-
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <span>교육이력</span>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="toggle-training" checked />
+                                <input class="form-check-input toggleTraining" type="checkbox" id="toggle-training" checked />
                             </div>
                         </div>
-
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <span>기타사항</span>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="toggle-etc" checked />
+                                <input class="form-check-input toggleEtc" type="checkbox" id="toggle-etc" checked />
                             </div>
                         </div>
-
                         <div class="mb-2 d-flex justify-content-between align-items-center">
                             <span>자기소개서 <span class="text-danger">*</span></span>
                         </div>
-
                     </div>
                 </div>
             </div>
+
 
             <!-- 이력서 폼 -->
             <form class="col-md-9" id="resumeForm">
@@ -157,12 +145,11 @@
                     <div id="section-summary" class="bg-white rounded-3 p-4 mb-4 shadow-sm">
                         <label class="form-label fw-bold">간단 소개</label>
                         <hr class="mt-1 mb-3" />
-                        <input id="summary" type="text" class="form-control form-control-sm border-0" placeholder="요약"
-                               value="열정 넘치는 개발자입니다.">
+                        <input id="summary" type="text" class="form-control form-control-sm border-0 resumeSummary" placeholder="요약" value="열정 넘치는 개발자입니다.">
                     </div>
 
                     <!-- 개발직무 -->
-                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm resumePositionType">
                         <label class="form-label fw-bold"><span class="text-danger">*</span> 개발직무</label>
                         <hr class="mt-1 mb-3" />
                         <select name="positionType" class="form-select">
@@ -174,7 +161,7 @@
                     </div>
 
                     <!-- 기술스택 -->
-                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                    <div class="bg-white rounded-3 p-4 mb-4 shadow-sm resumeTechStack">
                         <label class="form-label fw-bold"><span class="text-danger">*</span> 기술스택</label>
                         <hr class="mt-1 mb-3" />
                         <div class="dropdown">
@@ -187,7 +174,7 @@
                                 {{#model.techStackList}}
                                     <li>
                                         <div class="form-check">
-                                            <input class="form-check-input tech-checkbox" type="checkbox" value="{{code}}" id="tech-{{code}}" {{#checked}}checked{{/checked}}>
+                                            <input class="form-check-input techCheckbox" type="checkbox" value="{{code}}" id="tech-{{code}}" {{#checked}}checked{{/checked}}>
                                             <label class="form-check-label" for="tech-{{code}}">{{code}}</label>
                                         </div>
                                     </li>
@@ -197,29 +184,28 @@
                     </div>
 
                     <!-- 링크 -->
-                    <div id="section-link" class="bg-white rounded-3 p-4 mb-4 shadow-sm">
+                    <div id="section-link" class="bg-white rounded-3 p-4 mb-4 shadow-sm resumeLink">
                         <label class="form-label fw-bold">링크</label>
                         <hr class="mt-1 mb-3" />
                         <div class="linkContainer">
                             {{#model.links}}
                                 <div class="linkItem d-flex align-items-center gap-2 mb-2">
                                     <i class="bi bi-link-45deg fs-5"></i>
-                                    <input type="hidden" class="link-id" value="{{id}}" />
-                                    <input type="text" class="form-control form-control-sm link-title" placeholder="* 링크 제목" value="{{title}}" />
-                                    <input type="text" class="form-control form-control-sm link-url" placeholder="* http://, https://를 포함해 작성해주세요" value="{{url}}" />
+                                    <input type="hidden" class="linkId" value="{{id}}" />
+                                    <input type="text" class="form-control form-control-sm linkTitle" placeholder="* 링크 제목" value="{{title}}" />
+                                    <input type="text" class="form-control form-control-sm linkUrl" placeholder="* http://, https://를 포함해 작성해주세요" value="{{url}}" />
                                     <button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center removeItemBtn" style="white-space: nowrap;">
                                         삭제
                                     </button>
                                 </div>
                             {{/model.links}}
                         </div>
-                        <button type="button" class="btn btn-outline-primary btn-sm mt-2"
-                                onclick="addItem('.linkContainer', '#linkTemplate')">
+                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addItem('.linkContainer', '#linkTemplate')">
                             <i class="bi bi-plus-lg me-1"></i> 링크 추가
                         </button>
                     </div>
 
-                    <!-- 학력 추가 -->
+                    <!-- 학력 -->
                     <div id="section-education" class="bg-white rounded-3 p-4 mb-4 shadow-sm">
                         <label class="form-label fw-bold"><span class="text-danger">*</span> 학력</label>
                         <hr class="mt-1 mb-3" />
@@ -229,15 +215,15 @@
                                     <div class="d-flex flex-wrap gap-3">
                                         <div style="min-width: 180px">
                                             <label class="form-label fw-bold"><span class="text-danger">*</span> 졸업(예정)</label>
-                                            <input type="month" class="form-control form-control-sm mb-2" value="{{formattedGraduationDate}}" />
+                                            <input type="month" class="form-control form-control-sm mb-2 educationGraduationDate" value="{{formattedGraduationDate}}" />
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" {{#isDropout}}checked{{/isDropout}} /> 중퇴
+                                                <input type="checkbox" class="form-check-input educationIsDropout" {{#isDropout}}checked{{/isDropout}} /> 중퇴
                                             </div>
                                         </div>
                                         <div class="flex-grow-1">
                                             <div class="row gx-2 mb-2">
                                                 <div class="col-4">
-                                                    <select class="form-select form-select-sm">
+                                                    <select class="form-select form-select-sm educationLevel">
                                                         <option disabled>* 학력 구분</option>
                                                         <option value="고등학교" {{#isHighSchool}}selected{{/isHighSchool}}>고등학교</option>
                                                         <option value="전문학사" {{#isAssociate}}selected{{/isAssociate}}>전문학사</option>
@@ -245,19 +231,18 @@
                                                         <option value="석사" {{#isMaster}}selected{{/isMaster}}>석사</option>
                                                         <option value="박사" {{#isDoctor}}selected{{/isDoctor}}>박사</option>
                                                     </select>
-
                                                 </div>
                                                 <div class="col-8">
-                                                    <input type="text" class="form-control form-control-sm" placeholder="* 학교명" value="{{schoolName}}" />
+                                                    <input type="text" class="form-control form-control-sm educationSchoolName" placeholder="* 학교명" value="{{schoolName}}" />
                                                 </div>
                                             </div>
                                             <div class="mb-2">
-                                                <input type="text" class="form-control form-control-sm" placeholder="학과명" value="{{major}}" />
+                                                <input type="text" class="form-control form-control-sm educationMajor" placeholder="학과명" value="{{major}}" />
                                             </div>
                                             <div class="d-flex align-items-center gap-2">
-                                                <input type="number" class="form-control form-control-sm w-25" placeholder="GPA" value="{{gpa}}" />
+                                                <input type="number" class="form-control form-control-sm w-25 educationGpa" placeholder="GPA" value="{{gpa}}" />
                                                 /
-                                                <select class="form-select form-select-sm w-auto">
+                                                <select class="form-select form-select-sm w-auto educationGpaScale">
                                                     <option value="" disabled>GPA 기준</option>
                                                     <option value="4.3" {{#isGpaScale43}}selected{{/isGpaScale43}}>4.3</option>
                                                     <option value="4.5" {{#isGpaScale45}}selected{{/isGpaScale45}}>4.5</option>
@@ -274,7 +259,7 @@
                         </button>
                     </div>
 
-                    <!-- 경력 추가 -->
+                    <!-- 경력 -->
                     <div id="section-experience" class="bg-white rounded-3 p-4 mb-4 shadow-sm">
                         <label class="form-label fw-bold">경력</label>
                         <hr class="mt-1 mb-3" />
@@ -285,24 +270,23 @@
                                         <div style="min-width: 200px">
                                             <label class="form-label fw-bold"><span class="text-danger">*</span> 근무기간</label>
                                             <div class="d-flex align-items-center gap-2 mb-2">
-                                                <input type="date" class="form-control form-control-sm w-auto" value="{{startDate}}" />
+                                                <input type="date" class="form-control form-control-sm w-auto experienceStartDate" value="{{startDate}}" />
                                                 ~
                                                 {{#endDate}}
-                                                    <input type="date" class="form-control form-control-sm w-auto" value="{{endDate}}" />
+                                                    <input type="date" class="form-control form-control-sm w-auto experienceEndDate" value="{{endDate}}" />
                                                 {{/endDate}}
                                                 {{^endDate}}
-                                                    <input type="date" class="form-control form-control-sm w-auto" value="" />
+                                                    <input type="date" class="form-control form-control-sm w-auto experienceEndDate" value="" />
                                                 {{/endDate}}
-
                                             </div>
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" {{#isEmployed}}checked{{/isEmployed}} /> 재직중
+                                                <input type="checkbox" class="form-check-input experienceIsEmployed" {{#isEmployed}}checked{{/isEmployed}} /> 재직중
                                             </div>
                                         </div>
                                         <div class="flex-grow-1">
-                                            <input type="text" class="form-control form-control-sm mb-2" placeholder="* 회사명" value="{{companyName}}" />
-                                            <input type="text" class="form-control form-control-sm mb-2" placeholder="회사 요약" value="{{summary}}" />
-                                            <input type="text" class="form-control form-control-sm mb-2" placeholder="포지션/부서" value="{{position}}" />
+                                            <input type="text" class="form-control form-control-sm mb-2 experienceCompanyName" placeholder="* 회사명" value="{{companyName}}" />
+                                            <input type="text" class="form-control form-control-sm mb-2 experienceSummary" placeholder="회사 요약" value="{{summary}}" />
+                                            <input type="text" class="form-control form-control-sm mb-2 experiencePosition" placeholder="포지션/부서" value="{{position}}" />
                                             <div class="bg-light px-2 py-1 rounded mb-2">
                                                 <div class="dropdown">
                                                     <button class="form-select text-start border-0 bg-light" type="button" data-bs-toggle="dropdown">
@@ -312,7 +296,7 @@
                                                         {{#techStacks}}
                                                             <li>
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input experience-tech-checkbox" type="checkbox" value="{{code}}" id="experience-tech-{{code}}" {{#checked}}checked{{/checked}}>
+                                                                    <input class="form-check-input experienceTechCheckbox" type="checkbox" value="{{code}}" id="experience-tech-{{code}}" {{#checked}}checked{{/checked}}>
                                                                     <label class="form-check-label" for="experience-tech-{{code}}">{{code}}</label>
                                                                 </div>
                                                             </li>
@@ -320,7 +304,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <textarea class="form-control form-control-sm" rows="2" placeholder="* 주요 업무">{{responsibility}}</textarea>
+                                            <textarea class="form-control form-control-sm experienceResponsibility" rows="2" placeholder="* 주요 업무">{{responsibility}}</textarea>
                                         </div>
                                     </div>
                                     <button type="button" class="btn btn-outline-danger btn-sm mt-2 removeItemBtn">삭제</button>
@@ -332,7 +316,7 @@
                         </button>
                     </div>
 
-                    <!-- 프로젝트 추가 -->
+                    <!-- 프로젝트 -->
                     <div id="section-project" class="bg-white rounded-3 p-4 mb-4 shadow-sm">
                         <label class="form-label fw-bold"><span class="text-danger">*</span> 프로젝트</label>
                         <hr class="mt-1 mb-3" />
@@ -343,23 +327,22 @@
                                         <div style="min-width: 200px">
                                             <label class="form-label fw-bold"><span class="text-danger">*</span> 프로젝트 기간</label>
                                             <div class="d-flex align-items-center gap-2 mb-2">
-                                                <input type="date" class="form-control form-control-sm w-auto" value="{{startDate}}" />
+                                                <input type="date" class="form-control form-control-sm w-auto projectStartDate" value="{{startDate}}" />
                                                 ~
                                                 {{#endDate}}
-                                                    <input type="date" class="form-control form-control-sm w-auto" value="{{endDate}}" />
+                                                    <input type="date" class="form-control form-control-sm w-auto projectEndDate" value="{{endDate}}" />
                                                 {{/endDate}}
                                                 {{^endDate}}
-                                                    <input type="date" class="form-control form-control-sm w-auto" value="" />
+                                                    <input type="date" class="form-control form-control-sm w-auto projectEndDate" value="" />
                                                 {{/endDate}}
-
                                             </div>
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" {{#isOngoing}}checked{{/isOngoing}} /> 진행중
+                                                <input type="checkbox" class="form-check-input projectIsOngoing" {{#isOngoing}}checked{{/isOngoing}} /> 진행중
                                             </div>
                                         </div>
                                         <div class="flex-grow-1">
-                                            <input type="text" class="form-control form-control-sm mb-2" placeholder="* 프로젝트명" value="{{title}}" />
-                                            <input type="text" class="form-control form-control-sm mb-2" placeholder="프로젝트 요약" value="{{summary}}" />
+                                            <input type="text" class="form-control form-control-sm mb-2 projectTitle" placeholder="* 프로젝트명" value="{{title}}" />
+                                            <input type="text" class="form-control form-control-sm mb-2 projectSummary" placeholder="프로젝트 요약" value="{{summary}}" />
                                             <div class="bg-light px-2 py-1 rounded mb-2">
                                                 <div class="dropdown">
                                                     <button class="form-select text-start border-0 bg-light" type="button" data-bs-toggle="dropdown">
@@ -369,7 +352,7 @@
                                                         {{#techStacks}}
                                                             <li>
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input project-tech-checkbox" type="checkbox" value="{{code}}" id="project-tech-{{code}}" {{#checked}}checked{{/checked}}>
+                                                                    <input class="form-check-input projectTechCheckbox" type="checkbox" value="{{code}}" id="project-tech-{{code}}" {{#checked}}checked{{/checked}}>
                                                                     <label class="form-check-label" for="project-tech-{{code}}">{{code}}</label>
                                                                 </div>
                                                             </li>
@@ -377,12 +360,12 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <textarea class="form-control form-control-sm" rows="2" placeholder="* 상세 설명">{{description}}</textarea>
+                                            <textarea class="form-control form-control-sm projectDescription" rows="2" placeholder="* 상세 설명">{{description}}</textarea>
                                             {{#repositoryUrl}}
-                                                <input type="text" class="form-control form-control-sm mt-2 project-repo-url" placeholder="저장소 URL" value="{{repositoryUrl}}" />
+                                                <input type="text" class="form-control form-control-sm mt-2 projectRepoUrl" placeholder="저장소 URL" value="{{repositoryUrl}}" />
                                             {{/repositoryUrl}}
                                             {{^repositoryUrl}}
-                                                <input type="text" class="form-control form-control-sm mt-2 project-repo-url" placeholder="저장소 URL" value="" />
+                                                <input type="text" class="form-control form-control-sm mt-2 projectRepoUrl" placeholder="저장소 URL" value="" />
                                             {{/repositoryUrl}}
                                         </div>
                                     </div>
@@ -390,13 +373,12 @@
                                 </div>
                             {{/model.projects}}
                         </div>
-
                         <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addItem('.projectContainer', '#projectTemplate')">
                             <i class="bi bi-plus-lg me-1"></i> 프로젝트 추가
                         </button>
                     </div>
 
-                    <!-- 교육이력 추가 -->
+                    <!-- 교육이력 -->
                     <div id="section-training" class="bg-white rounded-3 p-4 mb-4 shadow-sm">
                         <label class="form-label fw-bold">교육이력</label>
                         <hr class="mt-1 mb-3" />
@@ -407,22 +389,22 @@
                                         <div style="min-width: 200px">
                                             <label class="form-label fw-bold"><span class="text-danger">*</span> 교육 기간</label>
                                             <div class="d-flex align-items-center gap-2 mb-2">
-                                                <input type="date" class="form-control form-control-sm w-auto" value="{{startDate}}" />
+                                                <input type="date" class="form-control form-control-sm w-auto trainingStartDate" value="{{startDate}}" />
                                                 ~
                                                 {{#endDate}}
-                                                    <input type="date" class="form-control form-control-sm w-auto" value="{{endDate}}" />
+                                                    <input type="date" class="form-control form-control-sm w-auto trainingEndDate" value="{{endDate}}" />
                                                 {{/endDate}}
                                                 {{^endDate}}
-                                                    <input type="date" class="form-control form-control-sm w-auto" value="" />
+                                                    <input type="date" class="form-control form-control-sm w-auto trainingEndDate" value="" />
                                                 {{/endDate}}
                                             </div>
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" {{#isOngoing}}checked{{/isOngoing}} /> 진행중
+                                                <input type="checkbox" class="form-check-input trainingIsOngoing" {{#isOngoing}}checked{{/isOngoing}} /> 진행중
                                             </div>
                                         </div>
                                         <div class="flex-grow-1">
-                                            <input type="text" class="form-control form-control-sm mb-2" placeholder="* 교육 과정명" value="{{courseName}}" />
-                                            <input type="text" class="form-control form-control-sm mb-2" placeholder="* 기관명" value="{{institutionName}}" />
+                                            <input type="text" class="form-control form-control-sm mb-2 trainingCourseName" placeholder="* 교육 과정명" value="{{courseName}}" />
+                                            <input type="text" class="form-control form-control-sm mb-2 trainingInstitutionName" placeholder="* 기관명" value="{{institutionName}}" />
                                             <div class="bg-light px-2 py-1 rounded mb-2">
                                                 <div class="dropdown">
                                                     <button class="form-select text-start border-0 bg-light" type="button" data-bs-toggle="dropdown">
@@ -432,7 +414,7 @@
                                                         {{#techStacks}}
                                                             <li>
                                                                 <div class="form-check">
-                                                                    <input class="form-check-input training-tech-checkbox" type="checkbox" value="{{code}}" id="training-tech-{{code}}" {{#checked}}checked{{/checked}}>
+                                                                    <input class="form-check-input trainingTechCheckbox" type="checkbox" value="{{code}}" id="training-tech-{{code}}" {{#checked}}checked{{/checked}}>
                                                                     <label class="form-check-label" for="training-tech-{{code}}">{{code}}</label>
                                                                 </div>
                                                             </li>
@@ -440,7 +422,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <textarea class="form-control form-control-sm" rows="2" placeholder="* 상세 설명">{{description}}</textarea>
+                                            <textarea class="form-control form-control-sm trainingDescription" rows="2" placeholder="* 상세 설명">{{description}}</textarea>
                                         </div>
                                     </div>
                                     <button type="button" class="btn btn-outline-danger btn-sm mt-2 removeItemBtn">삭제</button>
@@ -452,7 +434,7 @@
                         </button>
                     </div>
 
-                    <!-- 기타사항 추가 -->
+                    <!-- 기타사항 -->
                     <div id="section-etc" class="bg-white rounded-3 p-4 mb-4 shadow-sm">
                         <label class="form-label fw-bold">기타사항</label>
                         <hr class="mt-1 mb-3" />
@@ -463,31 +445,30 @@
                                         <div style="min-width: 200px">
                                             <label class="form-label fw-bold"><span class="text-danger">*</span> 활동 기간</label>
                                             <div class="d-flex align-items-center gap-2 mb-2">
-                                                <input type="date" class="form-control form-control-sm w-auto" value="{{startDate}}" />
+                                                <input type="date" class="form-control form-control-sm w-auto etcStartDate" value="{{startDate}}" />
                                                 ~
                                                 {{#endDate}}
-                                                    <input type="date" class="form-control form-control-sm w-auto" value="{{endDate}}" />
+                                                    <input type="date" class="form-control form-control-sm w-auto etcEndDate" value="{{endDate}}" />
                                                 {{/endDate}}
                                                 {{^endDate}}
-                                                    <input type="date" class="form-control form-control-sm w-auto" value="" />
+                                                    <input type="date" class="form-control form-control-sm w-auto etcEndDate" value="" />
                                                 {{/endDate}}
-
                                             </div>
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" {{#hasEndDate}}checked{{/hasEndDate}} /> 종료일 없음
+                                                <input type="checkbox" class="form-check-input etcHasEndDate" {{#hasEndDate}}checked{{/hasEndDate}} /> 종료일 없음
                                             </div>
                                         </div>
                                         <div class="flex-grow-1">
-                                            <input type="text" class="form-control form-control-sm mb-2" placeholder="* 활동명/제목" value="{{title}}" />
-                                            <select class="form-select form-select-sm mb-2">
+                                            <input type="text" class="form-control form-control-sm mb-2 etcTitle" placeholder="* 활동명/제목" value="{{title}}" />
+                                            <select class="form-select form-select-sm mb-2 etcType">
                                                 <option disabled>* 선택</option>
                                                 <option value="자격증" {{#isCertificate}}selected{{/isCertificate}}>자격증</option>
                                                 <option value="어학" {{#isLanguage}}selected{{/isLanguage}}>어학</option>
                                                 <option value="수상" {{#isAward}}selected{{/isAward}}>수상</option>
                                                 <option value="기타" {{#isEtc}}selected{{/isEtc}}>기타</option>
                                             </select>
-                                            <input type="text" class="form-control form-control-sm mb-2" placeholder="* 기관명" value="{{institutionName}}" />
-                                            <textarea class="form-control form-control-sm" rows="2" placeholder="* 상세 내용/점수">{{description}}</textarea>
+                                            <input type="text" class="form-control form-control-sm mb-2 etcInstitutionName" placeholder="* 기관명" value="{{institutionName}}" />
+                                            <textarea class="form-control form-control-sm etcDescription" rows="2" placeholder="* 상세 내용/점수">{{description}}</textarea>
                                         </div>
                                     </div>
                                     <button type="button" class="btn btn-outline-danger btn-sm mt-2 removeItemBtn">삭제</button>
@@ -503,7 +484,7 @@
                     <div class="bg-white rounded-3 p-4 mb-4 shadow-sm">
                         <label class="form-label fw-bold">자기소개서</label>
                         <hr class="mt-1 mb-3" />
-                        <textarea id="selfIntroduction" class="form-control" rows="6" placeholder="자기소개서">{{model.selfIntroduction}}</textarea>
+                        <textarea id="selfIntroduction" class="form-control selfIntroduction" rows="6" placeholder="자기소개서">{{model.selfIntroduction}}</textarea>
                     </div>
 
                     <!-- 수정하기 버튼 -->
