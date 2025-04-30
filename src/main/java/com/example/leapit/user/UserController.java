@@ -11,8 +11,10 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,15 +38,10 @@ public class UserController {
     }
 
     @PostMapping("/s/company/user/update")
-    public String update(UserRequest.CompanyUpdateDTO reqDTO) {
+    public String update(@Valid UserRequest.CompanyUpdateDTO reqDTO, Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
         if (!reqDTO.getNewPassword().equals(reqDTO.getConfirmPassword())) throw new Exception400("입력한 비밀번호가 다릅니다.");
-        if (!reqDTO.getNewPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-{}\\[\\]:;\"'<>,.?/]).{8,16}$"))
-            throw new Exception400("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
-        if (!reqDTO.getContactNumber().matches("^010-\\d{4}-\\d{4}$")) {
-            throw new Exception400("전화번호는 010-1234-5678 형식으로 입력해주세요.");
-        }
         User userPS = userService.update(reqDTO, sessionUser.getId());
         session.setAttribute("sessionUser", userPS);
         return "redirect:/login-form";
@@ -60,18 +57,11 @@ public class UserController {
     }
 
     @PostMapping("/s/personal/user/update")
-    public String update(UserRequest.PersonalUpdateDTO reqDTO) {
+    public String update(@Valid UserRequest.PersonalUpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
         if (!reqDTO.getNewPassword().equals(reqDTO.getConfirmPassword())) throw new Exception400("입력한 비밀번호가 다릅니다.");
-        if (!reqDTO.getNewPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-{}\\[\\]:;\"'<>,.?/]).{8,16}$"))
-            throw new Exception400("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
-        if (reqDTO.getEmail() == null || !reqDTO.getEmail().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
-            throw new Exception400("올바른 이메일 형식이 아닙니다.");
-        }
-        if (reqDTO.getContactNumber() == null || !reqDTO.getContactNumber().matches("^010-\\d{4}-\\d{4}$")) {
-            throw new Exception400("전화번호는 010-1234-5678 형식으로 입력해주세요.");
-        }
+
         User userPS = userService.update(reqDTO, sessionUser.getId());
         session.setAttribute("sessionUser", userPS);
         return "redirect:/login-form";
@@ -83,7 +73,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(UserRequest.LoginDTO loginDTO, HttpServletResponse response, @RequestParam(required = false) String redirect) {
+    public String login(@Valid UserRequest.LoginDTO loginDTO, HttpServletResponse response, Errors errors, @RequestParam(required = false) String redirect) {
 
         User sessionUser = userService.login(loginDTO);
         session.setAttribute("sessionUser", sessionUser);
@@ -148,17 +138,7 @@ public class UserController {
     }
 
     @PostMapping("/personal/user/join")
-    public String userJoin(UserRequest.PersonalJoinDTO reqDTO) {
-        if (!reqDTO.getUsername().matches("^[a-zA-Z0-9*_]{4,20}$"))
-            throw new Exception400("아이디는 4~20자, 영문/숫자/*/_만 가능합니다.");
-        if (!reqDTO.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-{}\\[\\]:;\"'<>,.?/]).{8,16}$"))
-            throw new Exception400("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
-        if (reqDTO.getEmail() == null || !reqDTO.getEmail().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
-            throw new Exception400("올바른 이메일 형식이 아닙니다.");
-        }
-        if (reqDTO.getContactNumber() == null || !reqDTO.getContactNumber().matches("^010-\\d{4}-\\d{4}$")) {
-            throw new Exception400("전화번호는 010-1234-5678 형식으로 입력해주세요.");
-        }
+    public String userJoin(@Valid UserRequest.PersonalJoinDTO reqDTO, Errors errors) {
         userService.join(reqDTO);
         return "redirect:/login-form";
     }
@@ -169,17 +149,7 @@ public class UserController {
     }
 
     @PostMapping("/company/user/join")
-    public String companyJoin(UserRequest.CompanyJoinDTO reqDTO) {
-        if (!reqDTO.getUsername().matches("^[a-zA-Z0-9*_]{4,20}$"))
-            throw new Exception400("아이디는 4~20자, 영문/숫자/*/_만 가능합니다.");
-        if (!reqDTO.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-{}\\[\\]:;\"'<>,.?/]).{8,16}$"))
-            throw new Exception400("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
-        if (reqDTO.getEmail() == null || !reqDTO.getEmail().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
-            throw new Exception400("올바른 이메일 형식이 아닙니다.");
-        }
-        if (reqDTO.getContactNumber() == null || !reqDTO.getContactNumber().matches("^010-\\d{4}-\\d{4}$")) {
-            throw new Exception400("전화번호는 010-1234-5678 형식으로 입력해주세요.");
-        }
+    public String companyJoin(@Valid UserRequest.CompanyJoinDTO reqDTO) {
         userService.join(reqDTO);
         return "redirect:/login-form";
     }
