@@ -39,7 +39,7 @@ public class JobPostingController {
     @GetMapping("/s/company/jobposting/list")
     public String companyList(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
         request.setAttribute("openJobPostings", jobPostingService.OpenJobPostings(sessionUser.getId()));
@@ -51,7 +51,7 @@ public class JobPostingController {
     @GetMapping("/s/company/jobposting/{id}")
     public String companyDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         JobPosting jobPosting = jobPostingService.findById(id);
         List<String> techStack = jobPostingService.getTechStacksByJobPostingId(id); // 기술 스택 목록 조회
@@ -131,7 +131,7 @@ public class JobPostingController {
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
-        jobPostingService.update(id, updateDTO, techStacks,sessionUser.getId());
+        jobPostingService.update(id, updateDTO, techStacks, sessionUser.getId());
         return "redirect:/s/company/jobposting/" + id;
     }
 
@@ -142,7 +142,7 @@ public class JobPostingController {
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
-        jobPostingService.delete(id,sessionUser.getId());
+        jobPostingService.delete(id, sessionUser.getId());
         return "redirect:/s/company/jobposting/list";
     }
 

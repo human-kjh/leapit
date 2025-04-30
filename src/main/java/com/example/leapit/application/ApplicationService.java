@@ -8,6 +8,7 @@ import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.jobposting.JobPostingRepository;
 import com.example.leapit.resume.Resume;
 import com.example.leapit.resume.ResumeRepository;
+import com.example.leapit.resume.ResumeResponse;
 import com.example.leapit.resume.ResumeService;
 import com.example.leapit.user.User;
 import com.example.leapit.user.UserRepository;
@@ -77,21 +78,20 @@ public class ApplicationService {
         return respDTO;
     }
 
-    public ApplicationResponse.DetailDTO detail(Integer id) {
-//        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+    public ApplicationResponse.DetailDTO detail(Integer id, Integer sessionUserId) {
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
 
         // 지원 id 받아서
         Application application = applicationRepository.findByApplicationId(id);
         if (application == null) throw new Exception404("지원 내역을 찾을 수 없습니다.");
 
-
-        // 지원 id -> 이력서 id 찾아서 이력서 전달
-        Integer sessionUserId = 6; //TODO : sessionUserId 전달 받기 필요
+        // 북마크 여부 조회
         ApplicationBookmark bookmark = applicationBookmarkRepository.findByUserIdAndApplicationId(sessionUserId, application.getId());
         boolean isBookmarked = bookmark != null;
 
-        ApplicationResponse.DetailDTO detailDTO = new ApplicationResponse.DetailDTO(application, isBookmarked, resumeService.detail(application.getResume().getId()));
-        return detailDTO;
+        // 이력서 상세 포함한 DTO 조립
+        ResumeResponse.DetailDTO resumeDetail = resumeService.detail(application.getResume().getId());
+        return new ApplicationResponse.DetailDTO(application, isBookmarked, resumeDetail);
     }
 
     @Transactional
@@ -104,7 +104,7 @@ public class ApplicationService {
 
         // 권한 확인
         User user = applicationPS.getResume().getUser();
-        if(!user.getId().equals(sessionUserId)) throw new ExceptionApi403("권한이 없습니다.");
+        if (!user.getId().equals(sessionUserId)) throw new ExceptionApi403("권한이 없습니다.");
 
 
         applicationPS.update(updateDTO.getIsPassed());

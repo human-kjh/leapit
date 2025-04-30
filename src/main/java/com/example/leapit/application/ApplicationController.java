@@ -21,7 +21,7 @@ public class ApplicationController {
     @GetMapping("/s/personal/mypage/bookmark")
     public String personalBookmark(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
         ApplicationResponse.ApplicationBookmarkListDTO respDTO = applicationService.myBookmarkpage(sessionUser.getId());
 
         request.setAttribute("models", respDTO);
@@ -74,7 +74,7 @@ public class ApplicationController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
-        ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id); // TODO : sessionUser.getId() 인수 추가
+        ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id, sessionUser.getId());
         request.setAttribute("model", detailDTO);
         return "/company/applicant/detail";
     }
@@ -85,7 +85,7 @@ public class ApplicationController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
 
-        applicationService.update(id, updateDTO,sessionUser.getId());
+        applicationService.update(id, updateDTO, sessionUser.getId());
         return Resp.ok(null);
     }
 
@@ -115,7 +115,7 @@ public class ApplicationController {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         if (sessionUser == null) {
-            throw new RuntimeException("로그인 후 이용하세요.");
+            throw new Exception401("로그인 후 이용하세요.");
         }
 
         Integer userId = sessionUser.getId();

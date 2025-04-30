@@ -2,11 +2,11 @@ package com.example.leapit.resume;
 
 import com.example.leapit._core.error.ex.Exception400;
 import com.example.leapit._core.error.ex.Exception404;
+import com.example.leapit._core.error.ex.ExceptionApi404;
 import com.example.leapit.application.Application;
 import com.example.leapit.application.ApplicationRepository;
 import com.example.leapit.common.positiontype.PositionType;
 import com.example.leapit.common.positiontype.PositionTypeRepository;
-import com.example.leapit.common.positiontype.PositionTypeService;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.resume.education.Education;
@@ -50,7 +50,7 @@ public class ResumeService {
     private final ApplicationRepository applicationRepository;
 
     public List<Resume> list(Integer sessionUserId) {
-        if(sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
+        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
 
         // 자신의 userId로 된 모든 resume을 찾아서 return
         return resumeRepository.findAllByUserId(sessionUserId);
@@ -60,7 +60,7 @@ public class ResumeService {
 //        if(sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
 
         // 1. 이력서 존재 확인
-        Resume resume =  resumeRepository.findByIdJoinUser(resumeId);
+        Resume resume = resumeRepository.findByIdJoinUser(resumeId);
         if (resume == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
         // 2. 이력서 주인 (권한) 확인
@@ -69,9 +69,9 @@ public class ResumeService {
 //        }
 
         // 3. 이력서 DTO 조립
-        List<ResumeTechStack> techStacks  = resumeTechStackRepository.findAllByResumeId(resumeId);
+        List<ResumeTechStack> techStacks = resumeTechStackRepository.findAllByResumeId(resumeId);
         List<Link> links = linkRepository.findAllByResumeId(resumeId);
-        List<Education> educations = educationRepository.findAllByResumeId(resumeId) ;
+        List<Education> educations = educationRepository.findAllByResumeId(resumeId);
         List<ExperienceResponse.DetailDTO> experiences = experienceService.getDTOsByResumeId(resumeId);
         List<ProjectResponse.DetailDTO> projects = projectService.getDTOsByResumeId(resumeId);
         List<TrainingResponse.DetailDTO> trainings = trainingService.getDTOsByResumeId(resumeId);
@@ -87,7 +87,7 @@ public class ResumeService {
 //        if(sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
 
         // 1. 이력서 존재 확인
-        Resume resume =  resumeRepository.findByIdJoinUser(resumeId);
+        Resume resume = resumeRepository.findByIdJoinUser(resumeId);
         if (resume == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
         // 2. 지원된 이력서인지 확인
@@ -106,7 +106,7 @@ public class ResumeService {
         resumeRepository.deleteById(resumeId);
     }
 
-    public ResumeResponse.SaveDTO getSaveForm(Integer sessionUserId){
+    public ResumeResponse.SaveDTO getSaveForm(Integer sessionUserId) {
         if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다");
         User user = userRepository.findById(sessionUserId);
         List<PositionType> positionTypes = positionTypeRepository.findAll();
@@ -116,7 +116,7 @@ public class ResumeService {
 
     @Transactional
     public void save(ResumeRequest.SaveDTO saveDTO, User sessionUser) {
-        if (sessionUser == null) throw new Exception404("회원정보가 존재하지 않습니다");
+        if (sessionUser == null) throw new ExceptionApi404("회원정보가 존재하지 않습니다");
 
         Resume resume = saveDTO.toEntity(sessionUser);
         resumeRepository.save(resume);

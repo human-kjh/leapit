@@ -1,6 +1,7 @@
 package com.example.leapit.resume;
 
 import com.example.leapit._core.error.ex.Exception401;
+import com.example.leapit._core.error.ex.ExceptionApi401;
 import com.example.leapit._core.util.Resp;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -60,7 +61,7 @@ public class ResumeController {
     @ResponseBody
     public Resp<?> save(@RequestBody ResumeRequest.SaveDTO saveDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new Exception401("로그인 후 이용");
+        if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
 
         resumeService.save(saveDTO, sessionUser);
         return Resp.ok(null);
