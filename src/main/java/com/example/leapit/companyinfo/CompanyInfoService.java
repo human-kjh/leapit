@@ -29,8 +29,8 @@ public class CompanyInfoService {
     @Transactional
     public CompanyInfo save(CompanyInfoRequest.SaveDTO reqDTO, User sessionUser) {
         if (sessionUser == null) throw new Exception404("회원정보가 존재하지 않습니다");
-
         String uploadDir = System.getProperty("user.dir") + "/upload/";
+
 
         try {
             // 로고 이미지 저장
@@ -59,7 +59,6 @@ public class CompanyInfoService {
     }
 
     public CompanyInfoResponse.DetailDTO detail(Integer id, Integer userId) {
-
         CompanyInfo companyInfo = companyInfoRepository.findById(id);
         if (companyInfo == null) throw new Exception404("기업정보가 존재하지 않습니다.");
 

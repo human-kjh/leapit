@@ -20,6 +20,11 @@
                     >
                 </div>
 
+                <div class="mb-4">
+                    <h2 class="fs-6 fw-semibold mb-2">채용 포지션</h2>
+                    <p class="small">{{model.positionType}}</p>
+                </div>
+
                 <!-- 기술 스택 -->
                 <div class="mb-4">
                     <h2 class="fs-6 fw-semibold mb-2">기술스택</h2>
@@ -101,6 +106,16 @@
                     </ul>
                 </div>
 
+                <div class="mb-4">
+                    <h2 class="fs-6 fw-semibold">기타</h2>
+                    {{#model.additionalInfo}}
+                        {{model.additionalInfo}}
+                    {{/model.additionalInfo}}
+                    {{^model.additionalInfo}}
+                        기타 사항이 없습니다.
+                    {{/model.additionalInfo}}
+                </div>
+
                 <!-- 기타 지원 사항 -->
                 <div class="mb-4">
                     <div class="small text-dark">
@@ -148,15 +163,6 @@
                     <p class="small text-muted mt-2">                    {{model.serviceIntro}}
 
                     </p>
-                </div>
-                <div>
-                    <h2 class="fs-6 fw-semibold">기타</h2>
-                    {{#model.additionalInfo}}
-                        {{model.additionalInfo}}
-                    {{/model.additionalInfo}}
-                    {{^model.additionalInfo}}
-                        기타 사항이 없습니다.
-                    {{/model.additionalInfo}}
                 </div>
             </div>
         </div>
@@ -225,6 +231,7 @@
 <!-- 본문 끝 -->
 
 <script>
+    // 주소 복사
     document.getElementById('copyAddressButton').addEventListener('click', function (event) {
         event.preventDefault(); // a태그 기본 동작(페이지 튕김) 막기
         const hiddenInput = document.getElementById('hiddenAddress');

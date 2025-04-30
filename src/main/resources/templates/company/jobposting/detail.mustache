@@ -28,6 +28,11 @@
         </h1>
 
         <div class="mb-4">
+            <h2 class="fs-6 fw-semibold mb-2">채용 포지션</h2>
+            <p class="small">{{model.positionType}}</p>
+        </div>
+
+        <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">기술스택</h2>
             {{#techStack}}
                 <span class="badge bg-light text-dark">{{.}}</span>
@@ -106,6 +111,16 @@
         </div>
 
         <div class="mb-4">
+            <h2 class="fs-6 fw-semibold">기타</h2>
+            {{#model.additionalInfo}}
+                {{model.additionalInfo}}
+            {{/model.additionalInfo}}
+            {{^model.additionalInfo}}
+                기타 사항이 없습니다.
+            {{/model.additionalInfo}}
+        </div>
+
+        <div class="mb-4">
             <div class="small text-dark">
                 <div class="d-flex">
                     <div class="fw-semibold me-3" style="width: 80px;">마감일</div>
@@ -150,18 +165,10 @@
                     {{model.serviceIntro}}
                 </p>
             </div>
-            <div>
-                <h2 class="fs-6 fw-semibold">기타</h2>
-                {{#model.additionalInfo}}
-                    {{model.additionalInfo}}
-                {{/model.additionalInfo}}
-                {{^model.additionalInfo}}
-                    기타 사항이 없습니다.
-                {{/model.additionalInfo}}
-            </div>
         </div>
     </div>
     <script>
+        // 삭제 버튼 눌렀을 때 alert창
         function confirmDelete(id) {
             if (confirm("삭제하시겠습니까?")) {
                 const form = document.getElementById("deleteForm" + id);
@@ -172,6 +179,8 @@
                 }
             }
         }
+
+        // 주소 복사
 
         document.getElementById('copyAddressButton').addEventListener('click', function (event) {
             event.preventDefault(); // a태그 기본 동작(페이지 튕김) 막기

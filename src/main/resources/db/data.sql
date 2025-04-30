@@ -351,7 +351,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
 VALUES (8, '데이터 엔지니어 채용', '데이터 엔지니어', 3, 5,
-        3, 2, 3, '해운대로 456',
+        '학사', 2, 3, '해운대로 456',
         'AI 데이터 파이프라인 구축 기업입니다.',
         '2025-04-15', 'ETL 파이프라인 설계 및 데이터 웨어하우스 운영',
         'Python, SQL, AWS Redshift 경험',
