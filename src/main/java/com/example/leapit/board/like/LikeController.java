@@ -1,5 +1,6 @@
 package com.example.leapit.board.like;
 
+import com.example.leapit._core.error.ex.ExceptionApi401;
 import com.example.leapit._core.util.Resp;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpSession;
@@ -15,7 +16,7 @@ public class LikeController {
     @PostMapping("/s/api/like")
     public Resp<?> saveLike(@RequestBody LikeRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
 
         LikeResponse.SaveDTO respDTO = likeService.save(reqDTO, sessionUser.getId());
 
@@ -26,9 +27,9 @@ public class LikeController {
     public Resp<?> deleteLike(@PathVariable("id") Integer id) {
         // 인증로직
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
 
-        LikeResponse.DeleteDTO respDTO = likeService.delete(id);   // likeId
+        LikeResponse.DeleteDTO respDTO = likeService.delete(id,sessionUser.getId());   // likeId
 
         return Resp.ok(respDTO);
     }

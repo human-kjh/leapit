@@ -1,5 +1,6 @@
 package com.example.leapit.companyinfo;
 
+import com.example.leapit._core.error.ex.Exception401;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -18,7 +19,7 @@ public class CompanyInfoController {
     @GetMapping("/s/company/info/{id}")
     public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         CompanyInfoResponse.DetailDTO respDTO = companyInfoService.detail(id, sessionUser.getId());
         request.setAttribute("model", respDTO);
@@ -29,7 +30,7 @@ public class CompanyInfoController {
     @GetMapping("/s/company/info/save-form")
     public String saveForm() {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         return "company/info/save-form";
     }
@@ -38,7 +39,7 @@ public class CompanyInfoController {
     @PostMapping("/s/company/info/save")
     public String save(CompanyInfoRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         CompanyInfo companyInfo = companyInfoService.save(reqDTO, sessionUser);
 
@@ -51,9 +52,9 @@ public class CompanyInfoController {
     @GetMapping("/s/company/info/{id}/update-form")
     public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
-        CompanyInfo companyInfo = companyInfoService.updateCheck(id);
+        CompanyInfo companyInfo = companyInfoService.updateCheck(id,sessionUser.getId());
         request.setAttribute("model", companyInfo);
 
         return "company/info/update-form";
@@ -62,7 +63,7 @@ public class CompanyInfoController {
     @PostMapping("/s/company/info/{id}/update")
     public String update(@PathVariable("id") Integer id, CompanyInfoRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         companyInfoService.update(id, sessionUser.getId(), reqDTO);
 
@@ -73,9 +74,9 @@ public class CompanyInfoController {
     @PostMapping("/s/company/info/{id}/delete")
     public String delete(@PathVariable("id") Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
-        companyInfoService.delete(id);
+        companyInfoService.delete(id,sessionUser.getId());
 
         session.removeAttribute("companyInfoId");
 

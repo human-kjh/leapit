@@ -423,7 +423,7 @@
             </div>
             <!-- 본문 끝 -->
             <script>
-                let isBookmarked = {{model.isBookmarked}};
+                let isBookmarked = {{#model.isBookmarked}}true{{/model.isBookmarked}}{{^model.isBookmarked}}false{{/model.isBookmarked}};
 
                 // 버튼 텍스트 초기화
                 let scrapButton = document.querySelector('#scrapButton');

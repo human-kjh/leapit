@@ -1,5 +1,9 @@
 package com.example.leapit.jobposting.bookmark;
 
+import com.example.leapit._core.error.ex.Exception403;
+import com.example.leapit._core.error.ex.Exception404;
+import com.example.leapit._core.error.ex.ExceptionApi403;
+import com.example.leapit._core.error.ex.ExceptionApi404;
 import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.jobposting.JobPostingRepository;
 import com.example.leapit.user.User;
@@ -21,12 +25,12 @@ public class JobPostingBookmarkService {
         User personalUser = userRepository.findById(sessionUserId);
 
         if (personalUser == null) {
-            throw new RuntimeException("유저가 존재하지 않습니다");
+            throw new ExceptionApi404("회원정보가 존재하지 않습니다.");
         }
 
         JobPosting jobPosting = jobPostingRepository.findByJobPostingId(reqDTO.getJobPostingId());
         if (jobPosting == null) {
-            throw new RuntimeException("지원 정보가 존재하지 않습니다");
+            throw new ExceptionApi404("지원 정보가 존재하지 않습니다.");
         }
 
         JobPostingBookmark bookmark = JobPostingBookmark.builder()
@@ -41,17 +45,19 @@ public class JobPostingBookmarkService {
 
     @Transactional
     public void deleteJobPostingBookmarkByBookmarkId(Integer jobPostingId, Integer sessionUserId) {
+        if(sessionUserId == null) throw new ExceptionApi404("회원정보가 존재하지 않습니다.");
+
         // 북마크 조회
         JobPostingBookmark bookmark = jobPostingBookmarkRepository.findByUserIdAndJobPostingId(sessionUserId, jobPostingId);
 
         // 북마크가 존재하는지 확인
         if (bookmark == null) {
-            throw new RuntimeException("해당 스크랩이 존재하지 않습니다.");
+            throw new ExceptionApi404("해당 스크랩이 존재하지 않습니다.");
         }
 
         // 권한 확인
         if (!bookmark.getUser().getId().equals(sessionUserId)) {
-            throw new RuntimeException("권한이 없습니다.");
+            throw new ExceptionApi403("권한이 없습니다.");
         }
 
         // 북마크 삭제
