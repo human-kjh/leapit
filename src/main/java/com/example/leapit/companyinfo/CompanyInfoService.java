@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -27,8 +29,8 @@ public class CompanyInfoService {
     @Transactional
     public CompanyInfo save(CompanyInfoRequest.SaveDTO reqDTO, User sessionUser) {
         if (sessionUser == null) throw new Exception404("회원정보가 존재하지 않습니다");
+        String uploadDir = System.getProperty("user.dir") + "/upload/";
 
-        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/img/";
 
         try {
             // 로고 이미지 저장
@@ -57,8 +59,6 @@ public class CompanyInfoService {
     }
 
     public CompanyInfoResponse.DetailDTO detail(Integer id, Integer userId) {
-        if (userId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
-
         CompanyInfo companyInfo = companyInfoRepository.findById(id);
         if (companyInfo == null) throw new Exception404("기업정보가 존재하지 않습니다.");
 
@@ -79,8 +79,25 @@ public class CompanyInfoService {
             }
         }
 
-        // 3. Map → List<JobPosting>
-        List<JobPosting> jobPostings = new ArrayList<>(postingMap.values());
+
+        // 3. 중복 제거 후 상위 2개 ID만 추출
+        List<Integer> top2PostingIds = results.stream()
+                .map(row -> ((JobPosting) row[0]).getId())
+                .distinct()
+                .limit(2)
+                .collect(Collectors.toList());
+
+        // 4. 해당 ID에 맞는 JobPosting 리스트만 추출
+        List<JobPosting> jobPostings = top2PostingIds.stream()
+                .map(postingMap::get)
+                .collect(Collectors.toList());
+
+        for (JobPosting jobPosting : jobPostings) {
+            // 마감일이 지난 공고는 제외
+            if (jobPosting.getDeadline() != null && jobPosting.getDeadline().isBefore(LocalDate.now())) {
+                continue;
+            }
+        }
 
         // 4. 마감일이 지나지 않은 공고 수 계산
         Long jobPostingCount = jobPostingRepository.countByUserIdAndDeadlineAfter(userId);
@@ -110,7 +127,7 @@ public class CompanyInfoService {
 
         if (!companyInfo.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
 
-        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/img/";
+        String uploadDir = System.getProperty("user.dir") + "/upload/";
 
         try {
             if (reqDTO.getLogoImageFile() != null && !reqDTO.getLogoImageFile().isEmpty()) {

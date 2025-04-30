@@ -559,17 +559,17 @@ VALUES (8, 5, NOW());
 -- 6. company_info_tb
 INSERT INTO company_info_tb (user_id, logo_image, company_name, establishment_date, address, main_service, introduction,
                              image, benefit)
-VALUES (6, '/images/company/logo1.png', '점핏 주식회사', '2017-07-01', '서울특별시 강남구 테헤란로 1길 10',
-        'https://www.google.co.kr/', '우리는 혁신적인 구직 플랫폼입니다.', '/images/company/office.jpg',
+VALUES (6, '점핏주식회사로고이미지.png', '점핏 주식회사', '2017-07-01', '서울특별시 강남구 테헤란로 1길 10',
+        'https://www.google.co.kr/', '우리는 혁신적인 구직 플랫폼입니다.', '점핏주식회사대표이미지.png',
         '유연근무제, 점심 제공, 워케이션 제도');
 INSERT INTO company_info_tb (user_id, logo_image, company_name, establishment_date, address, main_service, introduction,
                              image, benefit)
-VALUES (7, '/images/company/logo2.png', '랩핏테크', '2019-03-15', '서울시 마포구 백범로 12길 22', 'https://www.nate.com/',
-        '랩핏테크는 기업 전용 커뮤니케이션 도구를 개발합니다.', '/images/company/labpit.jpg', '자유복장, 재택근무, 자율출퇴근');
+VALUES (7, '랩핏테크로고이미지.png', '랩핏테크', '2019-03-15', '서울시 마포구 백범로 12길 22', 'https://www.nate.com/',
+        '랩핏테크는 기업 전용 커뮤니케이션 도구를 개발합니다.', '랩핏테크대표이미지.png', '자유복장, 재택근무, 자율출퇴근');
 INSERT INTO company_info_tb (user_id, logo_image, company_name, establishment_date, address, main_service, introduction,
                              image, benefit)
-VALUES (8, '/images/company/logo3.png', '코드몽키', '2018-04-20', '경기도 성남시 분당구 판교로 235', 'https://www.daum.net/',
-        '우리는 개발자를 위한 온라인 실습 기반 교육 플랫폼입니다.', '/images/company/codeoffice.jpg', '식대 제공, 헬스비 지원, 사내 도서관');
+VALUES (8, '코드몽키로고이미지.png', '코드몽키', '2018-04-20', '경기도 성남시 분당구 판교로 235', 'https://www.daum.net/',
+        '우리는 개발자를 위한 온라인 실습 기반 교육 플랫폼입니다.', '코드몽키대표이미지.png', '식대 제공, 헬스비 지원, 사내 도서관');
 
 -- 7. board_tb
 INSERT INTO board_tb (user_id, title, content, created_at)
