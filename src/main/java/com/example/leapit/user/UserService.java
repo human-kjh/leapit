@@ -1,5 +1,7 @@
 package com.example.leapit.user;
 
+import com.example.leapit._core.error.ex.Exception401;
+import com.example.leapit._core.error.ex.Exception404;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,11 @@ public class UserService {
         User user = userRepository.findByUsernameAndRole(loginDTO.getUsername(), loginDTO.getRole());
 
         if (user == null) {
-            throw new RuntimeException("유저네임 혹은 비밀번호가 틀렸습니다");
+            throw new Exception401("유저네임 혹은 비밀번호가 틀렸습니다");
         }
 
         if (!user.getPassword().equals(loginDTO.getPassword())) {
-            throw new RuntimeException("유저네임 혹은 비밀번호가 틀렸습니다");
+            throw new Exception401("유저네임 혹은 비밀번호가 틀렸습니다");
         }return user;
     }
 
@@ -52,7 +54,7 @@ public class UserService {
     public User update(UserRequest.PersonalUpdateDTO reqDTO, Integer userId) {
         User userPS = userRepository.findById(userId);
 
-        if (userPS == null) throw new RuntimeException("자원을 찾을 수 없습니다");
+        if (userPS == null) throw new Exception404("회원정보가 존재하지 않습니다.");
         userPS.PersonalUpdate(reqDTO.getName(),reqDTO.getNewPassword(), reqDTO.getEmail(),reqDTO.getContactNumber()); // 영속화된 객체의 상태변경
         return userPS;
     }
@@ -61,7 +63,7 @@ public class UserService {
     public User update(UserRequest.CompanyUpdateDTO reqDTO, Integer userId) {
         User userPS = userRepository.findById(userId);
 
-        if (userPS == null) throw new RuntimeException("자원을 찾을 수 없습니다");
+        if (userPS == null) throw new Exception404("회원정보가 존재하지 않습니다.");
         userPS.CompanyUpdate(reqDTO.getNewPassword(),reqDTO.getContactNumber()); // 영속화된 객체의 상태변경
         return userPS;
     }

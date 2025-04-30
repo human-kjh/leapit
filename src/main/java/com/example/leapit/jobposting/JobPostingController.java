@@ -3,11 +3,15 @@ package com.example.leapit.jobposting;
 import com.example.leapit.common.region.RegionRepository;
 import com.example.leapit.common.region.RegionResponse;
 import com.example.leapit.common.region.RegionService;
+import com.example.leapit._core.error.ex.Exception400;
+import com.example.leapit._core.error.ex.Exception401;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.common.techstack.TechStackService;
 import com.example.leapit.companyinfo.CompanyInfo;
 import com.example.leapit.companyinfo.CompanyInfoRepository;
+import com.example.leapit.companyinfo.CompanyInfoService;
+import com.example.leapit.jobposting.bookmark.JobPostingBookmarkRepository;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -35,12 +39,15 @@ public class JobPostingController {
     private final CompanyInfoRepository companyInfoRepository;
     private final RegionRepository regionRepository;
     private final RegionService regionService;
+    private final JobPostingBookmarkRepository jobPostingBookmarkRepository;
+    private final CompanyInfoService companyInfoService;
+
 
     // 채용 공고 목록 보기
     @GetMapping("/s/company/jobposting/list")
     public String companyList(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
         request.setAttribute("openJobPostings", jobPostingService.OpenJobPostings(sessionUser.getId()));
@@ -52,7 +59,7 @@ public class JobPostingController {
     @GetMapping("/s/company/jobposting/{id}")
     public String companyDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         JobPosting jobPosting = jobPostingService.findById(id);
         List<String> techStack = jobPostingService.getTechStacksByJobPostingId(id); // 기술 스택 목록 조회
@@ -71,7 +78,13 @@ public class JobPostingController {
     @GetMapping("/s/company/jobposting/save-form")
     public String saveForm(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
+
+        // 추가: 기업정보 조회
+        Integer companyInfoId = companyInfoService.findCompanyInfoIdByUserId(sessionUser.getId());
+        if (companyInfoId == null) {
+            throw new Exception400("기업정보를 먼저 등록해야 채용공고를 작성할 수 있습니다.");
+        }
 
 
         List<TechStack> techStacks = techStackService.getAllTechStacks();
@@ -82,11 +95,8 @@ public class JobPostingController {
     // 채용 공고 등록
     @PostMapping("/s/company/jobposting/save")
     public String save(JobPostingRequest.SaveDTO saveDTO, String[] techStack) {
-        // TODO: session 인증코드 필요
-
-
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
         jobPostingService.save(saveDTO, sessionUser, techStack);
@@ -97,11 +107,9 @@ public class JobPostingController {
     @GetMapping("/s/company/jobposting/{id}/update-form")
     public String updateForm(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         JobPosting jobPosting = jobPostingRepository.findById(id);
-
-        // 선택된 기술 스택 + 전체 스택
         List<String> techStackList = jobPostingService.getTechStacksByJobPostingId(id);
         List<TechStack> allTechStacks = techStackRepository.findAll();
 
@@ -120,7 +128,6 @@ public class JobPostingController {
         List<RegionResponse.SelectedSubRegionDTO> addressSubRegionList =
                 regionService.getSubRegionsWithSelection(jobPosting.getAddressRegionId(), jobPosting.getAddressSubRegionId());
 
-        // Mustache에 값 넘기기
         request.setAttribute("model", jobPosting);
         request.setAttribute("allTechStacks", stackModels);
         request.setAttribute("addressRegionList", addressRegionList);
@@ -135,10 +142,10 @@ public class JobPostingController {
     public String update(@PathVariable("id") Integer id, JobPostingRequest.UpdateDTO updateDTO,
                          @RequestParam(value = "techStacks", required = false) String[] techStacks) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
-        jobPostingService.update(id, updateDTO, techStacks);
+        jobPostingService.update(id, updateDTO, techStacks, sessionUser.getId());
         return "redirect:/s/company/jobposting/" + id;
     }
 
@@ -146,10 +153,10 @@ public class JobPostingController {
     @PostMapping("/s/company/jobposting/{id}/delete")
     public String delete(@PathVariable("id") Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
-        jobPostingService.delete(id);
+        jobPostingService.delete(id, sessionUser.getId());
         return "redirect:/s/company/jobposting/list";
     }
 
@@ -157,6 +164,8 @@ public class JobPostingController {
     // 구직자 - 채용공고 상세
     @GetMapping("/personal/jobposting/{id}")
     public String personalDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
         // 채용공고와 기술 스택, 회사 정보를 가져옴
         JobPosting jobPosting = jobPostingService.findById(id);  // 이미 정의된 jobPostingService.findById 메서드 사용
         List<String> techStack = jobPostingService.getTechStacksByJobPostingId(id); // 기술 스택 리스트
@@ -165,11 +174,19 @@ public class JobPostingController {
         // 주소 정보도 가져옴
         JobPostingResponse.AddressDTO addressDTO = jobPostingService.getJobPostingAddress(id);  // 주소 정보 조회
 
+        // 북마크여부
+        boolean isBookmarked = false;
+        if (sessionUser != null) {
+            isBookmarked = (jobPostingBookmarkRepository.findByUserIdAndJobPostingId(sessionUser.getId(), id) != null);
+        }
+
         // 모델에 필요한 정보들을 추가
         request.setAttribute("model", jobPosting);  // 채용공고 정보
         request.setAttribute("techStack", techStack);  // 기술 스택 정보
         request.setAttribute("company", companyInfo);  // 회사 정보
         request.setAttribute("address", addressDTO);  // 주소 정보
+        request.setAttribute("isLoggedIn", sessionUser != null);
+        request.setAttribute("isBookmarked", isBookmarked);
 
         // 상세 페이지를 반환 (Mustache 템플릿을 사용한다고 가정)
         return "personal/jobposting/detail";  // 해당 페이지로 이동
@@ -214,6 +231,7 @@ public class JobPostingController {
                 );
 
         req.setAttribute("models", respDTO);
+        req.setAttribute("isLoggedIn", sessionUser != null);
         return "personal/jobposting/list";
     }
 }

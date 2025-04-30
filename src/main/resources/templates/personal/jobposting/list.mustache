@@ -1,5 +1,7 @@
 {{> layout/personal-header}}
-
+<script>
+    var isLoggedIn = {{#isLoggedIn}}true{{/isLoggedIn}}{{^isLoggedIn}}false{{/isLoggedIn}};
+</script>
 <!-- 본문 -->
 <div class="main container mt-5">
     <div>
@@ -421,7 +423,7 @@
         </div>
 
         <!-- 공고 카드 리스트 -->
-        <div class="row gx-3 gy-4 ms-2 me-2 " >
+        <div class="row gx-3 gy-4 ms-2 me-2 ">
             {{#models.jobPostingList}}
                 <div class="col-md-3 col-sm-6 d-flex">
                     <div class="w-100 d-flex flex-column bg-light rounded p-2">
@@ -447,7 +449,9 @@
                                 onclick="{{#isBookmarked}}deleteBookmark{{/isBookmarked}}{{^isBookmarked}}saveBookmark{{/isBookmarked}}({{id}})">
                             <i class="fa {{#isBookmarked}}fa-bookmark{{/isBookmarked}}{{^isBookmarked}}fa-bookmark-o{{/isBookmarked}} me-2"
                                id="bookmark-icon-{{id}}"></i>
-                            {{#isBookmarked}}스크랩됨{{/isBookmarked}}{{^isBookmarked}}스크랩하기{{/isBookmarked}}
+                            <span id="bookmark-text-{{id}}">
+        {{#isBookmarked}}스크랩취소{{/isBookmarked}}{{^isBookmarked}}스크랩하기{{/isBookmarked}}
+    </span>
                         </button>
                     </div>
                 </div>
@@ -458,6 +462,12 @@
 </div>
 <script>
     async function saveBookmark(jobPostingId) {
+        if (!isLoggedIn) {
+            alert("로그인 후 이용해주세요.");
+            location.href = "/login-form";
+            return;
+        }
+
         try {
             const response = await fetch("/s/api/personal/bookmark", {
                 method: "POST",
@@ -466,17 +476,9 @@
             });
 
             const result = await response.json();
-            console.log(result);
 
             if (response.status === 200) {
-                const icon = document.querySelector(`#bookmark-icon-${jobPostingId}`);
-                const button = document.querySelector(`#bookmark-btn-${jobPostingId}`);
-                icon.classList.remove("fa-bookmark-o");
-                icon.classList.add("fa-bookmark");
-                button.setAttribute("onclick", `deleteBookmark(${jobPostingId})`);
-                button.classList.remove("btn-outline-primary");
-                button.classList.add("btn-primary");
-                console.log("북마크가 저장되었습니다.");
+                updateBookmarkButton(jobPostingId, true);
             } else {
                 alert(result.msg || "북마크 저장 실패");
             }
@@ -486,6 +488,12 @@
     }
 
     async function deleteBookmark(jobPostingId) {
+        if (!isLoggedIn) {
+            alert("로그인 후 이용해주세요.");
+            location.href = "/login-form";
+            return;
+        }
+
         try {
             const response = await fetch(`/s/api/personal/bookmark/${jobPostingId}`, {
                 method: "DELETE"
@@ -494,14 +502,7 @@
             const result = await response.json();
 
             if (response.status === 200) {
-                const icon = document.querySelector(`#bookmark-icon-${jobPostingId}`);
-                const button = document.querySelector(`#bookmark-btn-${jobPostingId}`);
-                icon.classList.remove("fa-bookmark");
-                icon.classList.add("fa-bookmark-o");
-                button.setAttribute("onclick", `saveBookmark(${jobPostingId})`);
-                button.classList.remove("btn-primary");
-                button.classList.add("btn-outline-primary");
-                console.log("북마크가 삭제되었습니다.");
+                updateBookmarkButton(jobPostingId, false);
             } else {
                 alert(result.msg || "북마크 삭제 실패");
             }
@@ -510,5 +511,26 @@
         }
     }
 
+    function updateBookmarkButton(jobPostingId, isBookmarked) {
+        const button = document.querySelector(`#bookmark-btn-${jobPostingId}`);
+        const icon = document.querySelector(`#bookmark-icon-${jobPostingId}`);
+        const text = document.querySelector(`#bookmark-text-${jobPostingId}`);
+
+        if (isBookmarked) {
+            button.classList.remove("btn-outline-primary");
+            button.classList.add("btn-primary");
+            button.setAttribute("onclick", `deleteBookmark(${jobPostingId})`);
+            icon.classList.remove("fa-bookmark-o");
+            icon.classList.add("fa-bookmark");
+            text.innerText = "스크랩취소";
+        } else {
+            button.classList.remove("btn-primary");
+            button.classList.add("btn-outline-primary");
+            button.setAttribute("onclick", `saveBookmark(${jobPostingId})`);
+            icon.classList.remove("fa-bookmark");
+            icon.classList.add("fa-bookmark-o");
+            text.innerText = "스크랩하기";
+        }
+    }
 </script>
 {{> layout/footer}}

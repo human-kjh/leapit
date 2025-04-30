@@ -1,5 +1,7 @@
 package com.example.leapit.user;
 
+import com.example.leapit._core.error.ex.Exception400;
+import com.example.leapit._core.error.ex.Exception401;
 import com.example.leapit._core.util.Resp;
 import com.example.leapit.common.enums.Role;
 import com.example.leapit.companyinfo.CompanyInfoService;
@@ -28,7 +30,7 @@ public class UserController {
     @GetMapping("/s/company/user/update-form")
     public String companyUpdateForm() {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
         return "company/user/update-form";
     }
@@ -36,12 +38,12 @@ public class UserController {
     @PostMapping("/s/company/user/update")
     public String update(UserRequest.CompanyUpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
-        if (!reqDTO.getNewPassword().equals(reqDTO.getConfirmPassword())) throw new RuntimeException("입력한 비밀번호가 다릅니다.");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
+        if (!reqDTO.getNewPassword().equals(reqDTO.getConfirmPassword())) throw new Exception400("입력한 비밀번호가 다릅니다.");
         if (!reqDTO.getNewPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-{}\\[\\]:;\"'<>,.?/]).{8,16}$"))
-            throw new RuntimeException("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
+            throw new Exception400("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
         if (!reqDTO.getContactNumber().matches("^010-\\d{4}-\\d{4}$")) {
-            throw new RuntimeException("전화번호는 010-1234-5678 형식으로 입력해주세요.");
+            throw new Exception400("전화번호는 010-1234-5678 형식으로 입력해주세요.");
         }
         User userPS = userService.update(reqDTO, sessionUser.getId());
         session.setAttribute("sessionUser", userPS);
@@ -51,7 +53,7 @@ public class UserController {
     @GetMapping("/s/personal/user/update-form")
     public String personalUpdateForm() {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
         return "personal/user/update-form";
@@ -60,15 +62,15 @@ public class UserController {
     @PostMapping("/s/personal/user/update")
     public String update(UserRequest.PersonalUpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
-        if (!reqDTO.getNewPassword().equals(reqDTO.getConfirmPassword())) throw new RuntimeException("입력한 비밀번호가 다릅니다.");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
+        if (!reqDTO.getNewPassword().equals(reqDTO.getConfirmPassword())) throw new Exception400("입력한 비밀번호가 다릅니다.");
         if (!reqDTO.getNewPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-{}\\[\\]:;\"'<>,.?/]).{8,16}$"))
-            throw new RuntimeException("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
+            throw new Exception400("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
         if (reqDTO.getEmail() == null || !reqDTO.getEmail().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
-            throw new RuntimeException("올바른 이메일 형식이 아닙니다.");
+            throw new Exception400("올바른 이메일 형식이 아닙니다.");
         }
         if (reqDTO.getContactNumber() == null || !reqDTO.getContactNumber().matches("^010-\\d{4}-\\d{4}$")) {
-            throw new RuntimeException("전화번호는 010-1234-5678 형식으로 입력해주세요.");
+            throw new Exception400("전화번호는 010-1234-5678 형식으로 입력해주세요.");
         }
         User userPS = userService.update(reqDTO, sessionUser.getId());
         session.setAttribute("sessionUser", userPS);
@@ -113,7 +115,7 @@ public class UserController {
                 return "redirect:/s/company/info/" + companyInfoId;
             } else {
                 session.removeAttribute("companyInfoId");
-                return "redirect:/s/company/main";
+                return "redirect:/s/company/info/save-form";
             }
         }
     }
@@ -127,7 +129,7 @@ public class UserController {
     @GetMapping("/s/company/main")
     public String companyMain() {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new RuntimeException("로그인 후 이용");
+        if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
 
         return "company/main";
@@ -148,14 +150,14 @@ public class UserController {
     @PostMapping("/personal/user/join")
     public String userJoin(UserRequest.PersonalJoinDTO reqDTO) {
         if (!reqDTO.getUsername().matches("^[a-zA-Z0-9*_]{4,20}$"))
-            throw new RuntimeException("아이디는 4~20자, 영문/숫자/*/_만 가능합니다.");
+            throw new Exception400("아이디는 4~20자, 영문/숫자/*/_만 가능합니다.");
         if (!reqDTO.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-{}\\[\\]:;\"'<>,.?/]).{8,16}$"))
-            throw new RuntimeException("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
+            throw new Exception400("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
         if (reqDTO.getEmail() == null || !reqDTO.getEmail().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
-            throw new RuntimeException("올바른 이메일 형식이 아닙니다.");
+            throw new Exception400("올바른 이메일 형식이 아닙니다.");
         }
         if (reqDTO.getContactNumber() == null || !reqDTO.getContactNumber().matches("^010-\\d{4}-\\d{4}$")) {
-            throw new RuntimeException("전화번호는 010-1234-5678 형식으로 입력해주세요.");
+            throw new Exception400("전화번호는 010-1234-5678 형식으로 입력해주세요.");
         }
         userService.join(reqDTO);
         return "redirect:/login-form";
@@ -169,14 +171,14 @@ public class UserController {
     @PostMapping("/company/user/join")
     public String companyJoin(UserRequest.CompanyJoinDTO reqDTO) {
         if (!reqDTO.getUsername().matches("^[a-zA-Z0-9*_]{4,20}$"))
-            throw new RuntimeException("아이디는 4~20자, 영문/숫자/*/_만 가능합니다.");
+            throw new Exception400("아이디는 4~20자, 영문/숫자/*/_만 가능합니다.");
         if (!reqDTO.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=\\-{}\\[\\]:;\"'<>,.?/]).{8,16}$"))
-            throw new RuntimeException("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
+            throw new Exception400("비밀번호는 8~16자, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.");
         if (reqDTO.getEmail() == null || !reqDTO.getEmail().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
-            throw new RuntimeException("올바른 이메일 형식이 아닙니다.");
+            throw new Exception400("올바른 이메일 형식이 아닙니다.");
         }
         if (reqDTO.getContactNumber() == null || !reqDTO.getContactNumber().matches("^010-\\d{4}-\\d{4}$")) {
-            throw new RuntimeException("전화번호는 010-1234-5678 형식으로 입력해주세요.");
+            throw new Exception400("전화번호는 010-1234-5678 형식으로 입력해주세요.");
         }
         userService.join(reqDTO);
         return "redirect:/login-form";
@@ -184,12 +186,16 @@ public class UserController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request) {
-        List<JobPostingResponse.MainDTO.MainRecentJobPostingDTO> recent = jobPostingService.getRecentPostings();
-        List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> popular = jobPostingService.getPopularJobPostings();
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        Integer userId = sessionUser != null ? sessionUser.getId() : null;
+
+        List<JobPostingResponse.MainDTO.MainRecentJobPostingDTO> recent = jobPostingService.getRecentPostings(userId);
+        List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> popular = jobPostingService.getPopularJobPostings(userId);
 
         JobPostingResponse.MainDTO mainDTO = new JobPostingResponse.MainDTO(recent, popular);
 
         request.setAttribute("model", mainDTO);
+        request.setAttribute("isLoggedIn", sessionUser != null);
         return "personal/main/logout";
     }
 }
