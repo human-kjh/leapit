@@ -48,6 +48,10 @@ public class Application {
         this.isViewed = isViewed;
         this.appliedDate = appliedDate;
     }
+    public void setIsViewed(Boolean isViewed) {
+        this.isViewed = isViewed;
+    }
+
 
     public void update(Boolean isPassed) {
         this.isPassed = isPassed;
