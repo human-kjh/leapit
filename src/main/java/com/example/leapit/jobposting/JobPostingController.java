@@ -89,9 +89,20 @@ public class JobPostingController {
             throw new Exception400("기업정보를 먼저 등록해야 채용공고를 작성할 수 있습니다.");
         }
 
+        JobPosting jobPosting = jobPostingRepository.findById(companyInfoId);
+
+
+        List<RegionResponse.SelectedRegionDTO> addressRegionList =
+                regionService.getRegionsWithSelection(jobPosting.getAddressRegionId());
+
+        List<RegionResponse.SelectedSubRegionDTO> addressSubRegionList =
+                regionService.getSubRegionsWithSelection(jobPosting.getAddressRegionId(), jobPosting.getAddressSubRegionId());
+
 
         List<TechStack> techStacks = techStackService.getAllTechStacks();
         request.setAttribute("model", techStacks);
+        request.setAttribute("addressRegionList", addressRegionList);
+        request.setAttribute("addressSubRegionList", addressSubRegionList);
         return "company/jobposting/save-form";
     }
 
