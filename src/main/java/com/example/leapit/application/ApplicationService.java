@@ -78,19 +78,17 @@ public class ApplicationService {
         return respDTO;
     }
 
-    public ApplicationResponse.DetailDTO detail(Integer id, Integer sessionUserId) {
-        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
-
+    public ApplicationResponse.DetailDTO detail(Integer id, User sessionUser) {
         // 지원 id 받아서
         Application application = applicationRepository.findByApplicationId(id);
         if (application == null) throw new Exception404("지원 내역을 찾을 수 없습니다.");
 
         // 북마크 여부 조회
-        ApplicationBookmark bookmark = applicationBookmarkRepository.findByUserIdAndApplicationId(sessionUserId, application.getId());
+        ApplicationBookmark bookmark = applicationBookmarkRepository.findByUserIdAndApplicationId(sessionUser.getId(), application.getId());
         boolean isBookmarked = bookmark != null;
 
         // 이력서 상세 포함한 DTO 조립
-        ResumeResponse.DetailDTO resumeDetail = resumeService.detail(application.getResume().getId(), sessionUserId);
+        ResumeResponse.DetailDTO resumeDetail = resumeService.detail(application.getResume().getId(), sessionUser, application.getId());
         return new ApplicationResponse.DetailDTO(application, isBookmarked, resumeDetail);
     }
 

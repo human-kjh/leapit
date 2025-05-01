@@ -23,7 +23,8 @@ public class ResumeController {
     public String list(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
-        List<ResumeResponse.ListDTO> resumeList = resumeService.list(sessionUser.getId()); // TODO : sessionUser.getId() 인수 추가
+
+        List<ResumeResponse.ListDTO> resumeList = resumeService.list(sessionUser.getId());
         request.setAttribute("models", resumeList);
         return "personal/resume/list";
     }
@@ -33,7 +34,7 @@ public class ResumeController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
-        ResumeResponse.DetailDTO detailDTO = resumeService.detail(id, sessionUser.getId()); // TODO : sessionUser.getId() 인수 추가
+        ResumeResponse.DetailDTO detailDTO = resumeService.detail(id, sessionUser, null);
         request.setAttribute("model", detailDTO);
         return "personal/resume/detail";
     }
@@ -51,6 +52,7 @@ public class ResumeController {
     public String saveForm(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
+
         ResumeResponse.SaveDTO saveDTO = resumeService.getSaveForm(sessionUser.getId());
         request.setAttribute("model", saveDTO);
 

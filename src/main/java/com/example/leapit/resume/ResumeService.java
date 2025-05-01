@@ -6,6 +6,7 @@ import com.example.leapit._core.error.ex.Exception404;
 import com.example.leapit._core.error.ex.ExceptionApi404;
 import com.example.leapit.application.Application;
 import com.example.leapit.application.ApplicationRepository;
+import com.example.leapit.common.enums.Role;
 import com.example.leapit.common.positiontype.PositionType;
 import com.example.leapit.common.positiontype.PositionTypeRepository;
 import com.example.leapit.common.positiontype.PositionTypeService;
@@ -40,6 +41,7 @@ import com.example.leapit.resume.training.TrainingResponse;
 import com.example.leapit.resume.training.TrainingService;
 import com.example.leapit.user.User;
 import com.example.leapit.user.UserRepository;
+import io.micrometer.common.lang.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,14 +89,29 @@ public class ResumeService {
         return listDTOs;
     }
 
-    public ResumeResponse.DetailDTO detail(Integer resumeId, Integer sessionUserId) { // TODO : Integer sessionUserId 매개변수 추가
+    public ResumeResponse.DetailDTO detail(Integer resumeId, User sessionUser, @Nullable Integer applicationId) {
         // 1. 이력서 존재 확인
         Resume resume =  resumeRepository.findByIdJoinUser(resumeId);
         if (resume == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
-        // 2. 이력서 주인 (권한) 확인
-        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
-            throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
+        // 2. 권한 체크
+        if (sessionUser.getRole() == Role.personal) {
+            // 개인 유저는 본인만 열람 가능
+            if (!(resume.getUser().getId().equals(sessionUser.getId()))) {
+                throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
+            }
+        } else if (sessionUser.getRole() == Role.company) {
+            // 기업 유저는 applicationId를 통해 접근한 경우만 허용
+            if (applicationId == null) {
+                throw new Exception403("applicationId가 필요합니다.");
+            }
+
+            Application application = applicationRepository.findByApplicationId(applicationId);
+            if (application == null ||
+                    !application.getResume().getId().equals(resumeId) ||
+                    !application.getJobPosting().getUser().getId().equals(sessionUser.getId())) {
+                throw new Exception403("해당 이력서를 열람할 권한이 없습니다.");
+            }
         }
 
         // 3. 이력서 DTO 조립
