@@ -176,6 +176,8 @@ public class JobPostingController {
         // 주소 정보도 가져옴
         JobPostingResponse.AddressDTO addressDTO = jobPostingService.getJobPostingAddress(id);  // 주소 정보 조회
 
+        jobPostingService.increaseViewCount(id);
+
         // 북마크여부
         boolean isBookmarked = false;
         if (sessionUser != null) {
