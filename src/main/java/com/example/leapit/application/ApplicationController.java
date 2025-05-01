@@ -76,7 +76,7 @@ public class ApplicationController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
-        ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id, sessionUser.getId());
+        ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id, sessionUser);
         request.setAttribute("model", detailDTO);
         return "/company/applicant/detail";
     }

@@ -138,13 +138,9 @@ public class JobPostingRepository {
             jpql.append(" AND jp.addressSubRegionId = :subRegionId");
         }
 
-        // 3년차
-//        if (career != null) {
-//            jpql.append(" AND jp.minCareerLevel <= :career");
-//        }
-        // 3년차 이하인 거 다 띄움
+
         if (career != null) {
-            jpql.append(" AND :career >= jp.minCareerLevel");
+            jpql.append(" AND :career >= jp.minCareerLevel and :career <= jp.maxCareerLevel");
         }
         if (selectedLabel != null) {
             jpql.append(" AND jp.positionType = :selectedLabel");

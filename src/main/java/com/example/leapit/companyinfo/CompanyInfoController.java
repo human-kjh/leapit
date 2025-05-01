@@ -73,17 +73,8 @@ public class CompanyInfoController {
     }
 
 
-    @PostMapping("/s/company/info/{id}/delete")
-    public String delete(@PathVariable("id") Integer id) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        if (sessionUser == null) throw new Exception401("로그인 후 이용");
+    // TODO : 기업정보만 삭제시 채용공고의 기업이름으로 인해 터지는 오류 발생 -> 기업 정보 삭제 기능 X 이후 회원 탈퇴로 처리
 
-        companyInfoService.delete(id, sessionUser.getId());
-
-        session.removeAttribute("companyInfoId");
-
-        return "redirect:/s/company/main";
-    }
 
     // 구직자 - 기업상세
     @GetMapping("/personal/companyinfo/{id}")

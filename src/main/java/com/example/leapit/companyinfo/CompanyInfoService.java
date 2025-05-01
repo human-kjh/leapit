@@ -112,6 +112,12 @@ public class CompanyInfoService {
 
         CompanyInfo companyInfo = companyInfoRepository.findById(id);
         if (companyInfo == null) throw new Exception404("기업정보가 존재하지 않습니다.");
+        System.out.println("============================");
+        System.out.println("LogoImage" + companyInfo.getLogoImage());
+        System.out.println("CompanyName" + companyInfo.getCompanyName());
+        System.out.println("Image" + companyInfo.getImage());
+        System.out.println("id" + companyInfo.getId());
+        System.out.println("============================");
 
         if (!companyInfo.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
 
@@ -160,18 +166,7 @@ public class CompanyInfoService {
     }
 
 
-    @Transactional
-    public void delete(Integer id, Integer sessionUserId) {
-        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다.");
-
-        CompanyInfo companyInfo = companyInfoRepository.findById(id);
-        if (companyInfo == null) throw new Exception404("기업정보가 존재하지 않습니다.");
-
-        if (!companyInfo.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
-
-        companyInfoRepository.deleteById(id);
-
-    }
+    // TODO : 기업정보만 삭제시 채용공고의 기업이름으로 인해 터지는 오류 발생 -> 기업 정보 삭제 기능 X 이후 회원 탈퇴로 처리
 
     public Integer findCompanyInfoIdByUserId(Integer userId) {
         CompanyInfo companyInfo = companyInfoRepository.findByUserId(userId);

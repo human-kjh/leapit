@@ -18,11 +18,6 @@ public class CompanyInfoRepository {
         return em.find(CompanyInfo.class, id);
     }
 
-    public void deleteById(Integer id) {
-        CompanyInfo companyInfo = em.find(CompanyInfo.class, id);
-        em.remove(companyInfo);
-    }
-
     public CompanyInfo findByUserId(Integer userId) {
         Query query = em.createQuery("select c from CompanyInfo c where c.user.id = :userId", CompanyInfo.class);
         query.setParameter("userId", userId);
