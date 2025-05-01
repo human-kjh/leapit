@@ -15,8 +15,8 @@ public class EducationResponse {
         private String educationLevel;
         private String schoolName;
         private String major;
-        private BigDecimal gpa;
-        private BigDecimal gpaScale;
+        private String gpa;
+        private String  gpaScale;
 
         public DetailDTO(Education education) {
             this.graduationDate = education.getGraduationDate();
@@ -25,8 +25,8 @@ public class EducationResponse {
             this.educationLevel = education.getEducationLevel();
             this.schoolName = education.getSchoolName();
             this.major = education.getMajor();
-            this.gpa = education.getGpa();
-            this.gpaScale = education.getGpaScale();
+            this.gpa = education.getGpa() != null ? education.getGpa().toString() : null;
+            this.gpaScale = education.getGpaScale() != null ? education.getGpaScale().toString() : null;
         }
     }
 }
