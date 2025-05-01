@@ -2,6 +2,7 @@ package com.example.leapit.jobposting;
 
 import com.example.leapit.user.User;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -80,7 +81,7 @@ public class JobPostingRequest {
         private Integer addressSubRegionId;
         private String addressDetail;
         private String serviceIntro;
-        @NotEmpty(message = "마감일은 필수입니다.")
+        @NotNull(message = "마감일은 필수입니다.")
         private LocalDate deadline;
         @NotEmpty(message = "담당 업무는 필수입니다.")
         private String responsibility;
@@ -128,7 +129,7 @@ public class JobPostingRequest {
         private Integer addressSubRegionId;
         private String addressDetail;
         private String serviceIntro;
-        @NotEmpty(message = "마감일은 필수입니다.")
+        @NotNull(message = "마감일은 필수입니다.")
         private LocalDate deadline;
         @NotEmpty(message = "담당 업무는 필수입니다.")
         private String responsibility;

@@ -1,5 +1,6 @@
 {{> layout/company-header}}
 
+<!-- 본문 -->
 <div class="main container mt-5">
     <div class="ms-2">
         <h1 class="fs-4 fw-bold mb-2">
@@ -24,27 +25,27 @@
                 >{{company.companyName}}</a
                 >
             </div>
-
         </h1>
-
         <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">채용 포지션</h2>
             <p class="small">{{model.positionType}}</p>
         </div>
 
+        <!-- 기술 스택 -->
         <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">기술스택</h2>
             {{#techStack}}
                 <span class="badge bg-light text-dark">{{.}}</span>
             {{/techStack}}
-
         </div>
 
+        <!-- 주요업무 -->
         <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">주요업무</h2>
             <p class="small">{{model.responsibility}}</p>
         </div>
 
+        <!-- 자격요건 -->
         <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">자격요건</h2>
             <ul class="small ps-3">
@@ -91,7 +92,7 @@
             </ul>
         </div>
 
-
+        <!-- 우대사항 -->
         <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">우대사항</h2>
             <ul class="small ps-3">
@@ -101,6 +102,7 @@
             </ul>
         </div>
 
+        <!-- 복지 및 혜택 -->
         <div class="mb-4">
             <h2 class="fs-6 fw-semibold mb-2">복지 및 혜택</h2>
             <ul class="small ps-3">
@@ -110,6 +112,7 @@
             </ul>
         </div>
 
+        <!-- 기타 지원 사항 -->
         <div class="mb-4">
             <h2 class="fs-6 fw-semibold">기타</h2>
             {{#model.additionalInfo}}
@@ -120,6 +123,7 @@
             {{/model.additionalInfo}}
         </div>
 
+        <!-- 기업/서비스 소개 -->
         <div class="mb-4">
             <div class="small text-dark">
                 <div class="d-flex">
@@ -167,40 +171,39 @@
             </div>
         </div>
     </div>
-    <script>
-        // 삭제 버튼 눌렀을 때 alert창
-        function confirmDelete(id) {
-            if (confirm("삭제하시겠습니까?")) {
-                const form = document.getElementById("deleteForm" + id);
-                if (form) {
-                    form.submit();
-                } else {
-                    alert("삭제 폼을 찾을 수 없습니다.");
-                }
+</div>
+<!-- 본문 끝 -->
+<script>
+    // 삭제 버튼 눌렀을 때 alert창
+    function confirmDelete(id) {
+        if (confirm("삭제하시겠습니까?")) {
+            const form = document.getElementById("deleteForm" + id);
+            if (form) {
+                form.submit();
+            } else {
+                alert("삭제 폼을 찾을 수 없습니다.");
             }
         }
+    }
 
-        // 주소 복사
+    // 주소 복사
+    document.getElementById('copyAddressButton').addEventListener('click', function (event) {
+        event.preventDefault(); // a태그 기본 동작(페이지 튕김) 막기
+        const hiddenInput = document.getElementById('hiddenAddress');
+        hiddenInput.select();
+        hiddenInput.setSelectionRange(0, 99999); // 모바일 대응
 
-        document.getElementById('copyAddressButton').addEventListener('click', function (event) {
-            event.preventDefault(); // a태그 기본 동작(페이지 튕김) 막기
-            const hiddenInput = document.getElementById('hiddenAddress');
-            hiddenInput.select();
-            hiddenInput.setSelectionRange(0, 99999); // 모바일 대응
-
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    alert('주소가 복사되었습니다!');
-                } else {
-                    alert('복사에 실패했습니다.');
-                }
-            } catch (err) {
-                alert('복사 중 오류가 발생했습니다.');
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                alert('주소가 복사되었습니다!');
+            } else {
+                alert('복사에 실패했습니다.');
             }
-        });
-
-    </script>
-
+        } catch (err) {
+            alert('복사 중 오류가 발생했습니다.');
+        }
+    });
+</script>
 
 {{> layout/footer}}

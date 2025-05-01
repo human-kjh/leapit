@@ -69,16 +69,6 @@
                             {{#model.maxCareerLevel}}
                                 {{model.maxCareerLevel}}년
                             {{/model.maxCareerLevel}}
-                            {{^model.minCareerLevel}}
-                                {{#model.maxCareerLevel}}
-                                    ~ {{model.maxCareerLevel}}년
-                                {{/model.maxCareerLevel}}
-                            {{/model.minCareerLevel}}
-                            {{^model.maxCareerLevel}}
-                                {{#model.minCareerLevel}}
-                                    {{model.minCareerLevel}}년 이상
-                                {{/model.minCareerLevel}}
-                            {{/model.maxCareerLevel}}
                             {{^model.minCareerLevel}}{{^model.maxCareerLevel}}
                                 경력 무관
                             {{/model.maxCareerLevel}}{{/model.minCareerLevel}}
