@@ -1,6 +1,7 @@
 package com.example.leapit.resume;
 
 import com.example.leapit._core.error.ex.Exception400;
+import com.example.leapit._core.error.ex.Exception403;
 import com.example.leapit._core.error.ex.Exception404;
 import com.example.leapit._core.error.ex.ExceptionApi404;
 import com.example.leapit.application.Application;
@@ -42,9 +43,14 @@ import com.example.leapit.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -81,15 +87,15 @@ public class ResumeService {
         return listDTOs;
     }
 
-    public ResumeResponse.DetailDTO detail(int resumeId) { // TODO : Integer sessionUserId 매개변수 추가
+    public ResumeResponse.DetailDTO detail(Integer resumeId, Integer sessionUserId) { // TODO : Integer sessionUserId 매개변수 추가
         // 1. 이력서 존재 확인
         Resume resume =  resumeRepository.findByIdJoinUser(resumeId);
         if (resume == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
         // 2. 이력서 주인 (권한) 확인
-//        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
-//            throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
-//        }
+        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
+            throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
+        }
 
         // 3. 이력서 DTO 조립
         List<ResumeTechStack> techStacks  = resumeTechStackRepository.findAllByResumeId(resumeId);
@@ -106,7 +112,7 @@ public class ResumeService {
     }
 
     @Transactional
-    public void delete(int resumeId) { // TODO : Integer sessionUserId 매개변수 추가
+    public void delete(Integer resumeId, Integer sessionUserId) { // TODO : Integer sessionUserId 매개변수 추가
         // 1. 이력서 존재 확인
         Resume resume = resumeRepository.findByIdJoinUser(resumeId);
         if (resume == null) throw new Exception404("이력서가 존재하지 않습니다.");
@@ -119,16 +125,15 @@ public class ResumeService {
         }
 
         // 2. 이력서 주인 (권한) 확인
-//        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
-//            throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
-//        }
+        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
+            throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
+        }
 
         // 3. 이력서 삭제
         resumeRepository.deleteById(resumeId);
     }
 
     public ResumeResponse.SaveDTO getSaveForm(Integer sessionUserId) {
-        if (sessionUserId == null) throw new Exception404("회원정보가 존재하지 않습니다");
         User user = userRepository.findById(sessionUserId);
         List<PositionType> positionTypes = positionTypeRepository.findAll();
         List<TechStack> techStacks = techStackRepository.findAll();
@@ -136,24 +141,55 @@ public class ResumeService {
     }
 
     @Transactional
-    public void save(ResumeRequest.SaveDTO saveDTO, User sessionUser) {
-        if (sessionUser == null) throw new ExceptionApi404("회원정보가 존재하지 않습니다");
+    public void save(ResumeRequest.SaveDTO saveDTO, MultipartFile photoUrlFile, User sessionUser) {
+        // 이미지
+        String uploadDir = System.getProperty("user.dir") + "/upload/";
+        try {
+            // 디렉토리 없을 경우 생성
+            Files.createDirectories(Paths.get(uploadDir));
+            
+            // 대표 이미지 저장
+            if (photoUrlFile != null && !photoUrlFile.isEmpty()) {
+                String imageFilename = UUID.randomUUID() + "_" + photoUrlFile.getOriginalFilename();
+                Path imagePath = Paths.get(uploadDir + imageFilename);
+                Files.write(imagePath, photoUrlFile.getBytes());
+                saveDTO.setPhotoUrl(imageFilename);
+            }
+
+        } catch (Exception e) {
+            throw new Exception400("파일 업로드 실패");
+        }
 
         Resume resume = saveDTO.toEntity(sessionUser);
         resumeRepository.save(resume);
     }
 
     @Transactional
-    public void update(Integer resumeId, ResumeRequest.UpdateDTO reqDTO){
+    public void update(Integer resumeId, Integer sessionUserId, ResumeRequest.UpdateDTO reqDTO, MultipartFile photoUrlFile){
         // 1. 이력서 존재 확인
         Resume resumePS = resumeRepository.findById(resumeId);
         if (resumePS == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
-        // 2. (선택) 권한 확인
-        // if (!(resumePS.getUser().getId().equals(sessionUserId))) {
-        //     throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
-        // }
+        // 2. 권한 확인
+         if (!(resumePS.getUser().getId().equals(sessionUserId))) {
+             throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
+         }
 
+        // 이미지
+        if (photoUrlFile != null && !photoUrlFile.isEmpty()) {
+            String uploadDir = System.getProperty("user.dir") + "/upload/";
+            try {
+                Files.createDirectories(Paths.get(uploadDir));
+                String imageFilename = UUID.randomUUID() + "_" + photoUrlFile.getOriginalFilename();
+                Path imagePath = Paths.get(uploadDir + imageFilename);
+                Files.write(imagePath, photoUrlFile.getBytes());
+
+                reqDTO.setPhotoUrl(imageFilename);
+            } catch (Exception e) {
+                throw new Exception400("파일 업로드 실패");
+            }
+        }
+        
         // 3. 이력서 업데이트
         resumePS.update(reqDTO.getTitle(), reqDTO.getPhotoUrl(), reqDTO.getIsPublic(), reqDTO.getSummary(), reqDTO.getPositionType(), reqDTO.getSelfIntroduction());
 
@@ -169,15 +205,15 @@ public class ResumeService {
     }
 
 
-    public ResumeResponse.UpdateDTO getUpdateForm(Integer resumeId) {
+    public ResumeResponse.UpdateDTO getUpdateForm(Integer resumeId, Integer sessionUserId) {
         // 1. 해당 이력서 존재 확인
         Resume resume = resumeRepository.findByIdJoinUser(resumeId);
         if (resume == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
-        // 2. (선택) 권한 확인
-        // if (!(resume.getUser().getId().equals(sessionUserId))) {
-        //     throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
-        // }
+        // 2. 권한 확인
+         if (!(resume.getUser().getId().equals(sessionUserId))) {
+             throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
+         }
 
         // 3. 이력서 관련 데이터 조회
 

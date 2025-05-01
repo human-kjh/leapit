@@ -8,6 +8,7 @@ import com.example.leapit.resume.link.Link;
 import com.example.leapit.resume.project.Project;
 import com.example.leapit.resume.techstack.ResumeTechStack;
 import com.example.leapit.resume.training.Training;
+
 import com.example.leapit.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;

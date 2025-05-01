@@ -14,6 +14,28 @@
         }
     });
 
+    document.getElementById("uploadBtn").addEventListener("click", function () {
+        document.getElementById("photoUpload").click();
+    });
+
+    document.getElementById("photoUpload").addEventListener("change", function (event) {
+        let file = event.target.files[0];
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                let preview = document.getElementById("photoPreview");
+                preview.src = e.target.result;
+                preview.style.display = "block";
+
+                let helperText = document.getElementById("photoHelperText");
+                if (helperText) {
+                    helperText.style.display = "none";
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
     // saveResume 함수 - 등록하기 버튼 클릭시
     async function saveResume() {
         let requestBody = {
@@ -82,13 +104,21 @@
                 description: item.querySelector('textarea').value
             }))
         };
+
+        let formData = new FormData();
+        formData.append("dto", new Blob([JSON.stringify(requestBody)], { type: "application/json" }));
+
+        const photoFile = document.querySelector("#photoUpload").files[0];
+        if (photoFile) {
+            formData.append("photoFile", photoFile); // @RequestPart("photoFile")
+        }
+
         console.log("최종 전송 데이터:", requestBody);
         // 서버로 전송
         try {
-            let response = await fetch('/s/api/personal/resume/save', {
+            let response = await fetch('/s/api/personal/resume', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestBody)
+                body: formData
             });
 
             let responseBody = await response.json();

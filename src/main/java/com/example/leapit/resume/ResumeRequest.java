@@ -12,6 +12,7 @@ import com.example.leapit.resume.training.Training;
 import com.example.leapit.resume.training.techstack.TrainingTechStack;
 import com.example.leapit.user.User;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

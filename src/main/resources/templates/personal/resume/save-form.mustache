@@ -84,7 +84,7 @@
             </div>
 
             <!-- 이력서 폼 -->
-            <form class="col-md-9" id="resumeForm">
+            <form class="col-md-9" id="resumeForm" method="post" enctype="multipart/form-data">
                 <div class="resume-container">
 
                     <!-- 이력서 제목 -->
@@ -95,24 +95,33 @@
                     <!-- 기본정보 박스 -->
                     <div class="row g-4 align-items-stretch mb-4">
                         <!-- 사진 추가 박스 -->
+                        <!-- 사진 추가 박스 -->
                         <div class="col-md-3" id="section-photo">
                             <div
-                                    class="h-100 d-flex flex-column justify-content-center align-items-center bg-light rounded-3 shadow-sm"
+                                    class="photo-box position-relative h-100 d-flex flex-column justify-content-center align-items-center bg-light rounded-3 shadow-sm"
                                     style="width: 100%; aspect-ratio: 1 / 1; min-height: 100%; cursor: pointer;">
-                                <i class="bi bi-plus-circle-fill text-primary fs-2 mb-2"></i>
-                                <div class="text-center">
-                                    <div class="fw-semibold small">사진추가</div>
-                                    <div class="text-muted" style="font-size: 12px">1:1 비율 권장</div>
+
+                                <img id="photoPreview" src="#" alt="사진 미리보기" class="mt-2" style="max-width: 100%; display: none;" />
+
+                                <input type="file" id="photoUpload" class="d-none" accept="image/*" name="photoUrlFile">
+
+                                <button type="button" id="uploadBtn" class="btn border-0 bg-transparent position-absolute top-50 start-50 translate-middle">
+                                    <i class="bi bi-plus-circle-fill text-primary fs-2 mb-2"></i>
+                                </button>
+
+                                <div id="photoHelperText" class="position-absolute bottom-0 mb-3 text-center">
+                                    <div class="fw-semibold small text-secondary">사진추가</div>
                                 </div>
                             </div>
                         </div>
+
 
                         <!-- 개인 정보 박스 -->
                         <div class="col-md-9">
                             <div class="bg-white rounded-3 p-4 shadow-sm h-100">
                                 <div class="d-flex justify-content-between align-items-start mb-5">
                                     <h5 class="fw-bold mb-0">{{model.name}}</h5>
-                                    <a href="/personal/user/update-form" class="btn btn-outline-secondary btn-sm">계정 정보 설정</a>
+                                    <a href="/s/personal/user/update-form" class="btn btn-outline-secondary btn-sm">계정 정보 설정</a>
                                 </div>
                                 <div class="mb-2 d-flex flex-wrap align-items-center gap-3">
                                     <div class="d-flex align-items-center">
