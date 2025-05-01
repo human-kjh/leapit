@@ -112,6 +112,12 @@ public class CompanyInfoService {
 
         CompanyInfo companyInfo = companyInfoRepository.findById(id);
         if (companyInfo == null) throw new Exception404("기업정보가 존재하지 않습니다.");
+        System.out.println("============================");
+        System.out.println("LogoImage" + companyInfo.getLogoImage());
+        System.out.println("CompanyName" + companyInfo.getCompanyName());
+        System.out.println("Image" + companyInfo.getImage());
+        System.out.println("id" + companyInfo.getId());
+        System.out.println("============================");
 
         if (!companyInfo.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
 
