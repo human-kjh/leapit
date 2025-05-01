@@ -183,6 +183,7 @@ public class ResumeService {
         validateEtcsSave(saveDTO.getEtcs());
         validateLinksSave(saveDTO.getLinks());
         validateExperiencesSave(saveDTO.getExperiences());
+        validateResumeBasicsSave(saveDTO);
 
         Resume resume = saveDTO.toEntity(sessionUser);
         resumeRepository.save(resume);
@@ -219,6 +220,8 @@ public class ResumeService {
         validateEtcsUpdate(reqDTO.getEtcs());
         validateLinksUpdate(reqDTO.getLinks());
         validateExperiencesUpdate(reqDTO.getExperiences());
+        validateResumeBasicsUpdate(reqDTO);
+
 
         // 3. 이력서 업데이트
         resumePS.update(reqDTO.getTitle(), reqDTO.getPhotoUrl(), reqDTO.getIsPublic(), reqDTO.getSummary(), reqDTO.getPositionType(), reqDTO.getSelfIntroduction());
@@ -332,6 +335,15 @@ public class ResumeService {
     }
 
     // ---------- 이력서 등록 시 선택항목의 필수값 유효성검사
+    private void validateResumeBasicsSave(ResumeRequest.SaveDTO dto) {
+        if (dto.getPhotoUrl() != null && dto.getPhotoUrl().isBlank()) {
+            throw new ExceptionApi400("이미지를 선택했다면 파일명이 필요합니다.");
+        }
+        if (dto.getSummary() != null && dto.getSummary().isBlank()) {
+            throw new ExceptionApi400("요약을 작성했다면 내용을 입력해야 합니다.");
+        }
+    }
+
     private void validateEtcsSave(List<ResumeRequest.SaveDTO.EtcDTO> etcs) {
         for (ResumeRequest.SaveDTO.EtcDTO etc : etcs) {
             if ((etc.getTitle() != null && !etc.getTitle().isBlank()) ||
@@ -459,6 +471,16 @@ public class ResumeService {
     }
 
     // ---------- 이력서 수정시 선택항목의 필수값 유효성검사
+
+    private void validateResumeBasicsUpdate(ResumeRequest.UpdateDTO dto) {
+        if (dto.getPhotoUrl() != null && dto.getPhotoUrl().isBlank()) {
+            throw new ExceptionApi400("이미지를 선택했다면 파일명이 필요합니다.");
+        }
+        if (dto.getSummary() != null && dto.getSummary().isBlank()) {
+            throw new ExceptionApi400("요약을 작성했다면 내용을 입력해야 합니다.");
+        }
+    }
+
     private void validateEtcsUpdate(List<ResumeRequest.UpdateDTO.EtcDTO> etcs) {
         for (ResumeRequest.UpdateDTO.EtcDTO etc : etcs) {
             if ((etc.getTitle() != null && !etc.getTitle().isBlank()) ||
