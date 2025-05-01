@@ -80,51 +80,24 @@
                 <div class="row g-3 align-items-end mt-3" style="max-width: 720px">
                     <div class="col-md-3">
                         <div>시/도 <span class="text-danger">*</span></div>
-                        <select class="form-select" name="addressRegionId" required>
+                        <select class="form-select" name="addressRegionId">
                             <option selected disabled>선택하세요</option>
-                            <option value="1">서울특별시</option>
-                            <option value="2">부산광역시</option>
-                            <option value="3">대구광역시</option>
-                            <option value="4">인천광역시</option>
-                            <option value="5">광주광역시</option>
-                            <option value="6">대전광역시</option>
-                            <option value="7">울산광역시</option>
-                            <option value="8">세종특별자치시</option>
-                            <option value="31">경기도</option>
-                            <option value="42">강원특별자치도</option>
-                            <option value="43">충청북도</option>
-                            <option value="44">충청남도</option>
-                            <option value="45">전라북도</option>
-                            <option value="46">전라남도</option>
-                            <option value="47">경상북도</option>
-                            <option value="48">경상남도</option>
-                            <option value="50">제주특별자치도</option>
+                            {{#addressRegionList}}
+                                <option value="{{regionId}}">{{region}}</option>
+                            {{/addressRegionList}}
                         </select>
                     </div>
 
                     <div class="col-md-3">
                         <div>시/군/구 <span class="text-danger">*</span></div>
-                        <select class="form-select" name="addressSubRegionId" required>
-                            <option selected disabled>선택하세요</option>
-                            <option value="11010">종로구</option>
-                            <option value="26030">해운대구</option>
-                            <option value="27060">달서구</option>
-                            <option value="28177">부평구</option>
-                            <option value="29155">광산구</option>
-                            <option value="30170">유성구</option>
-                            <option value="31710">울주군</option>
-                            <option value="36110">세종시</option>
-                            <option value="41117">수정구</option>
-                            <option value="42150">춘천시</option>
-                            <option value="43111">청주시 상당구</option>
-                            <option value="44210">천안시 동남구</option>
-                            <option value="45140">전주시 완산구</option>
-                            <option value="46100">목포시</option>
-                            <option value="47170">안동시</option>
-                            <option value="48127">창원시 진해구</option>
-                            <option value="50110">제주시</option>
+                        <select class="form-select" id="addressSubRegion" name="addressSubRegionId">
+                            <option disabled selected>선택하세요</option>
+                            {{#addressSubRegionList}}
+                                <option value="{{subRegionId}}">{{subRegion}}</option>
+                            {{/addressSubRegionList}}
                         </select>
                     </div>
+
                     <div class="col-md-6">
                         <div>상세주소 <span class="text-danger">*</span></div>
                         <input class="form-control" placeholder="상세주소입력" name="addressDetail" required/>
@@ -182,4 +155,32 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const regionSelect = document.querySelector('select[name="addressRegionId"]');
+        const subRegionSelect = document.querySelector('select[name="addressSubRegionId"]');
+
+        regionSelect.addEventListener("change", function () {
+            const selectedRegionId = this.value;
+
+            // 하위 옵션 초기화
+            subRegionSelect.innerHTML = '<option disabled selected>선택하세요</option>';
+
+            // 서버로 서브 지역 요청
+            fetch(`/api/region/subregions?regionId=${selectedRegionId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(subRegion => {
+                            const option = document.createElement("option");
+                            option.value = subRegion.subRegionId;
+                            option.textContent = subRegion.subRegion;
+                            subRegionSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error("서브 지역 로딩 실패:", error));
+        });
+    });
+</script>
+
 {{> layout/footer}}
