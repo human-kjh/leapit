@@ -6,8 +6,10 @@ import com.example.leapit._core.util.Resp;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,7 +63,7 @@ public class ResumeController {
 
     @PostMapping("/s/api/personal/resume")
     @ResponseBody
-    public Resp<?> save(@RequestPart("dto") ResumeRequest.SaveDTO saveDTO,
+    public Resp<?> save(@Valid @RequestPart("dto") ResumeRequest.SaveDTO saveDTO, Errors errors,
                         @RequestPart(value = "photoFile", required = false) MultipartFile photoFile) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
@@ -82,7 +84,7 @@ public class ResumeController {
 
     @PutMapping("/s/personal/resume/{id}")
     @ResponseBody
-    public Resp<?> update(@PathVariable("id") int id, @RequestPart("dto") ResumeRequest.UpdateDTO updateDTO,
+    public Resp<?> update(@PathVariable("id") int id, @Valid @RequestPart("dto") ResumeRequest.UpdateDTO updateDTO, Errors errors,
                           @RequestPart(value = "photoFile", required = false) MultipartFile photoFile) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");

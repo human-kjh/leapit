@@ -7,8 +7,10 @@ import com.example.leapit.resume.ResumeService;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -109,7 +111,7 @@ public class ApplicationController {
 
     // 채용공고에 이력서 지원하기
     @PostMapping("/personal/jobposting/{id}/apply")
-    public String apply(@PathVariable("id") Integer jobPostingId, ApplicationRequest.ApplyReqDTO applyReqDTO) {
+    public String apply(@PathVariable("id") Integer jobPostingId, @Valid ApplicationRequest.ApplyReqDTO applyReqDTO, Errors errors) {
 
         // 세션에서 로그인한 사용자 정보 가져오기
         User sessionUser = (User) session.getAttribute("sessionUser");

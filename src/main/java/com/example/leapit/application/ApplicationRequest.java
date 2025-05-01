@@ -7,6 +7,7 @@ import com.example.leapit.resume.Resume;
 import com.example.leapit.resume.education.Education;
 import com.example.leapit.resume.techstack.ResumeTechStack;
 import com.example.leapit.user.User;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -29,6 +30,7 @@ public class ApplicationRequest {
     @Data
     public static class ApplyReqDTO {
         private Integer jobPostingId;
+        @NotNull(message = "이력서 선택은 필수입니다.")
         private Integer resumeId;
 
         public Application toEntity(Resume resume, JobPosting jobPosting) {
