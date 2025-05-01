@@ -1,6 +1,7 @@
 package com.example.leapit.companyinfo;
 
 import com.example.leapit.user.User;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,11 +13,15 @@ public class CompanyInfoRequest {
     public static class SaveDTO {
         private Integer id;
         private String logoImage;
+        @NotEmpty(message = "회사명은 필수입니다.")
         private String companyName;
         private LocalDate establishmentDate;
+
+        @NotEmpty(message = "주소는 필수입니다.")
         private String address;
         private String mainService;
         private String introduction;
+        @NotEmpty(message = "대표이미지는 필수입니다.")
         private String image;
         private String benefit;
 
@@ -42,11 +47,14 @@ public class CompanyInfoRequest {
     @Data
     public static class UpdateDTO {
         private String logoImage;
+        @NotEmpty(message = "회사명은 필수입니다.")
         private String companyName;
         private LocalDate establishmentDate;
+        @NotEmpty(message = "주소는 필수입니다.")
         private String address;
         private String mainService;
         private String introduction;
+        @NotEmpty(message = "대표이미지는 필수입니다.")
         private String image;
         private String benefit;
 

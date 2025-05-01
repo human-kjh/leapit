@@ -4,8 +4,10 @@ import com.example.leapit._core.error.ex.Exception401;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +39,7 @@ public class CompanyInfoController {
 
 
     @PostMapping("/s/company/info/save")
-    public String save(CompanyInfoRequest.SaveDTO reqDTO) {
+    public String save(@Valid CompanyInfoRequest.SaveDTO reqDTO, Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
@@ -54,14 +56,14 @@ public class CompanyInfoController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
-        CompanyInfo companyInfo = companyInfoService.updateCheck(id,sessionUser.getId());
+        CompanyInfo companyInfo = companyInfoService.updateCheck(id, sessionUser.getId());
         request.setAttribute("model", companyInfo);
 
         return "company/info/update-form";
     }
 
     @PostMapping("/s/company/info/{id}/update")
-    public String update(@PathVariable("id") Integer id, CompanyInfoRequest.UpdateDTO reqDTO) {
+    public String update(@PathVariable("id") Integer id, @Valid CompanyInfoRequest.UpdateDTO reqDTO, Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
@@ -76,7 +78,7 @@ public class CompanyInfoController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
-        companyInfoService.delete(id,sessionUser.getId());
+        companyInfoService.delete(id, sessionUser.getId());
 
         session.removeAttribute("companyInfoId");
 

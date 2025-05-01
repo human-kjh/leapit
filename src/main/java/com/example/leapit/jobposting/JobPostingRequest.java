@@ -1,6 +1,7 @@
 package com.example.leapit.jobposting;
 
 import com.example.leapit.user.User;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -68,7 +69,9 @@ public class JobPostingRequest {
     // 채용공고 등록 요청 DTO
     @Data
     public static class SaveDTO {
+        @NotEmpty(message = "제목은 필수입니다.")
         private String title;
+        @NotEmpty(message = "직무는 필수입니다.")
         private String positionType;
         private Integer minCareerLevel;
         private Integer maxCareerLevel;
@@ -77,8 +80,11 @@ public class JobPostingRequest {
         private Integer addressSubRegionId;
         private String addressDetail;
         private String serviceIntro;
+        @NotEmpty(message = "마감일은 필수입니다.")
         private LocalDate deadline;
+        @NotEmpty(message = "담당 업무는 필수입니다.")
         private String responsibility;
+        @NotEmpty(message = "자격요건은 필수입니다.")
         private String qualification;
         private String preference;
         private String benefit;
@@ -111,7 +117,9 @@ public class JobPostingRequest {
     @Builder
     @Data
     public static class UpdateDTO {
+        @NotEmpty(message = "제목은 필수입니다.")
         private String title;
+        @NotEmpty(message = "직무는 필수입니다.")
         private String positionType;
         private Integer minCareerLevel;
         private Integer maxCareerLevel;
@@ -120,8 +128,11 @@ public class JobPostingRequest {
         private Integer addressSubRegionId;
         private String addressDetail;
         private String serviceIntro;
+        @NotEmpty(message = "마감일은 필수입니다.")
         private LocalDate deadline;
+        @NotEmpty(message = "담당 업무는 필수입니다.")
         private String responsibility;
+        @NotEmpty(message = "자격요건은 필수입니다.")
         private String qualification;
         private String preference;
         private String benefit;
