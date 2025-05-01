@@ -80,6 +80,8 @@ public class CompanyInfoService {
         }
 
 
+
+
         // 3. 중복 제거 후 상위 2개 ID만 추출
         List<Integer> top2PostingIds = results.stream()
                 .map(row -> ((JobPosting) row[0]).getId())
@@ -87,10 +89,12 @@ public class CompanyInfoService {
                 .limit(2)
                 .collect(Collectors.toList());
 
+
         // 4. 해당 ID에 맞는 JobPosting 리스트만 추출
         List<JobPosting> jobPostings = top2PostingIds.stream()
                 .map(postingMap::get)
                 .collect(Collectors.toList());
+
 
         for (JobPosting jobPosting : jobPostings) {
             // 마감일이 지난 공고는 제외
@@ -112,13 +116,6 @@ public class CompanyInfoService {
 
         CompanyInfo companyInfo = companyInfoRepository.findById(id);
         if (companyInfo == null) throw new Exception404("기업정보가 존재하지 않습니다.");
-        System.out.println("============================");
-        System.out.println("LogoImage" + companyInfo.getLogoImage());
-        System.out.println("CompanyName" + companyInfo.getCompanyName());
-        System.out.println("Image" + companyInfo.getImage());
-        System.out.println("id" + companyInfo.getId());
-        System.out.println("============================");
-
         if (!companyInfo.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
 
         return companyInfo;
