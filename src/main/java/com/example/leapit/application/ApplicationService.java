@@ -101,9 +101,8 @@ public class ApplicationService {
         if (applicationPS == null) throw new ExceptionApi404("해당 지원서는 존재하지 않습니다.");
 
         // 권한 확인
-        User user = applicationPS.getResume().getUser();
+        User user = applicationPS.getJobPosting().getUser();
         if (!user.getId().equals(sessionUserId)) throw new ExceptionApi403("권한이 없습니다.");
-
 
         applicationPS.update(updateDTO.getIsPassed());
     }
