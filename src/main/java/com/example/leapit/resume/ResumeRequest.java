@@ -29,7 +29,6 @@ public class ResumeRequest {
         private String summary;
         private String positionType;
         private String selfIntroduction;
-        private MultipartFile photoUrlFile;
 
         private List<String> resumeTechStacks;
 
@@ -116,7 +115,6 @@ public class ResumeRequest {
     public static class SaveDTO{
         private String title;
         private String photoUrl;
-        private MultipartFile photoUrlFile;
 
         private Boolean isPublic;
         private String summary;

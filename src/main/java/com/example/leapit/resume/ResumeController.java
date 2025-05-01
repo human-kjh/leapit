@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -59,11 +60,12 @@ public class ResumeController {
 
     @PostMapping("/s/api/personal/resume/save")
     @ResponseBody
-    public Resp<?> save(@RequestBody ResumeRequest.SaveDTO saveDTO) {
+    public Resp<?> save(@RequestPart("dto") ResumeRequest.SaveDTO saveDTO,
+                        @RequestPart(value = "photoFile", required = false) MultipartFile photoFile) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
 
-        resumeService.save(saveDTO, sessionUser);
+        resumeService.save(saveDTO, photoFile, sessionUser);
         return Resp.ok(null);
     }
 

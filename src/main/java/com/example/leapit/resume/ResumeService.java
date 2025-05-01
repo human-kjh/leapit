@@ -42,6 +42,7 @@ import com.example.leapit.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -140,18 +141,20 @@ public class ResumeService {
     }
 
     @Transactional
-    public void save(ResumeRequest.SaveDTO saveDTO, User sessionUser) {
+    public void save(ResumeRequest.SaveDTO saveDTO, MultipartFile photoUrlFile, User sessionUser) {
         if (sessionUser == null) throw new ExceptionApi404("회원정보가 존재하지 않습니다");
-        
+
         // 이미지
         String uploadDir = System.getProperty("user.dir") + "/upload/";
-
         try {
+            // 디렉토리 없을 경우 생성
+            Files.createDirectories(Paths.get(uploadDir));
+            
             // 대표 이미지 저장
-            if (saveDTO.getPhotoUrlFile() != null && !saveDTO.getPhotoUrlFile().isEmpty()) {
-                String imageFilename = UUID.randomUUID() + "_" + saveDTO.getPhotoUrlFile().getOriginalFilename();
+            if (photoUrlFile != null && !photoUrlFile.isEmpty()) {
+                String imageFilename = UUID.randomUUID() + "_" + photoUrlFile.getOriginalFilename();
                 Path imagePath = Paths.get(uploadDir + imageFilename);
-                Files.write(imagePath, saveDTO.getPhotoUrlFile().getBytes());
+                Files.write(imagePath, photoUrlFile.getBytes());
                 saveDTO.setPhotoUrl(imageFilename);
             }
 
@@ -175,23 +178,23 @@ public class ResumeService {
         // }
 
         // 이미지
-        String uploadDir = System.getProperty("user.dir") + "/upload/";
-
-        try {
-            // 대표 이미지 저장
-            if (reqDTO.getPhotoUrlFile() != null && !reqDTO.getPhotoUrlFile().isEmpty()) {
-                String imageFilename = UUID.randomUUID() + "_" + reqDTO.getPhotoUrlFile().getOriginalFilename();
-                Path imagePath = Paths.get(uploadDir + imageFilename);
-                Files.write(imagePath, reqDTO.getPhotoUrlFile().getBytes());
-                reqDTO.setPhotoUrl(imageFilename);
-            } else {
-            // 기존 값 유지
-            reqDTO.setPhotoUrl(resumePS.getPhotoUrl());
-        }
-
-        } catch (Exception e) {
-            throw new Exception400("파일 업로드 실패");
-        }
+//        String uploadDir = System.getProperty("user.dir") + "/upload/";
+//
+//        try {
+//            // 대표 이미지 저장
+//            if (reqDTO.getPhotoUrlFile() != null && !reqDTO.getPhotoUrlFile().isEmpty()) {
+//                String imageFilename = UUID.randomUUID() + "_" + reqDTO.getPhotoUrlFile().getOriginalFilename();
+//                Path imagePath = Paths.get(uploadDir + imageFilename);
+//                Files.write(imagePath, reqDTO.getPhotoUrlFile().getBytes());
+//                reqDTO.setPhotoUrl(imageFilename);
+//            } else {
+//            // 기존 값 유지
+//            reqDTO.setPhotoUrl(resumePS.getPhotoUrl());
+//        }
+//
+//        } catch (Exception e) {
+//            throw new Exception400("파일 업로드 실패");
+//        }
         
         // 3. 이력서 업데이트
         resumePS.update(reqDTO.getTitle(), reqDTO.getPhotoUrl(), reqDTO.getIsPublic(), reqDTO.getSummary(), reqDTO.getPositionType(), reqDTO.getSelfIntroduction());

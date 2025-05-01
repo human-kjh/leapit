@@ -21,9 +21,16 @@
     document.getElementById("photoUpload").addEventListener("change", function (event) {
         let file = event.target.files[0];
         if (file) {
-            const reader = new FileReader();
+            let reader = new FileReader();
             reader.onload = function (e) {
-                document.getElementById("logoPreview").src = e.target.result;
+                let preview = document.getElementById("photoPreview");
+                preview.src = e.target.result;
+                preview.style.display = "block";
+
+                let helperText = document.getElementById("photoHelperText");
+                if (helperText) {
+                    helperText.style.display = "none";
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -99,14 +106,11 @@
         };
 
         let formData = new FormData();
+        formData.append("dto", new Blob([JSON.stringify(requestBody)], { type: "application/json" }));
 
-        // JSON 데이터를 문자열로 변환해 dto 필드로 넣기
-        formData.append("dto", new Blob([JSON.stringify(jsonData)], { type: "application/json" }));
-
-        // 파일 추가
         const photoFile = document.querySelector("#photoUpload").files[0];
         if (photoFile) {
-            formData.append("photoFile", photoFile); // 필드명은 서버의 @RequestPart("photoFile")과 일치해야 함
+            formData.append("photoFile", photoFile); // @RequestPart("photoFile")
         }
 
         console.log("최종 전송 데이터:", requestBody);
@@ -114,7 +118,6 @@
         try {
             let response = await fetch('/s/api/personal/resume/save', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: formData
             });
 

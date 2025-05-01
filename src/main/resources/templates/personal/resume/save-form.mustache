@@ -99,10 +99,12 @@
                             <div
                                     class="h-100 d-flex flex-column justify-content-center align-items-center bg-light rounded-3 shadow-sm"
                                     style="width: 100%; aspect-ratio: 1 / 1; min-height: 100%; cursor: pointer;">
+                                <!-- 사진 미리보기 추가 -->
+                                <img id="photoPreview" src="#" alt="사진 미리보기" class="mt-2" style="max-width: 100%; display: none;" />
                                 <input type="file" id="photoUpload" class="d-none" accept="image/*" name="photoUrlFile">
                                 <button type="button" id="uploadBtn" class="btn border-0 bg-transparent"><i class="bi bi-plus-circle-fill text-primary fs-2 mb-2"></i></button>
 
-                                <div class="text-center">
+                                <div id="photoHelperText" class="text-center">
                                     <div class="fw-semibold small">사진추가</div>
                                     <div class="text-muted" style="font-size: 12px">1:1 비율 권장</div>
                                 </div>
