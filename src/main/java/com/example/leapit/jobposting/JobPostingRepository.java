@@ -7,6 +7,7 @@ import com.example.leapit.jobposting.techstack.JobPostingTechStack;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
