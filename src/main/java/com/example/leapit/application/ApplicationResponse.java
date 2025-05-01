@@ -161,12 +161,18 @@ public class ApplicationResponse {
         private String jobPositionTitle;
         private ResumeResponse.DetailDTO detailDTO;
 
+        private String isPassedString;
+
         public DetailDTO(Application application, Boolean isBookmarked, ResumeResponse.DetailDTO detailDTO) {
             this.id = application.getId();
             this.isBookmarked = isBookmarked;
             this.isPassed = application.getIsPassed();
             this.jobPositionTitle = application.getJobPosting().getTitle();
             this.detailDTO = detailDTO;
+
+            this.isPassedString = (application.getIsPassed() == null)
+                    ? "null"
+                    : application.getIsPassed().toString();
         }
     }
 }
