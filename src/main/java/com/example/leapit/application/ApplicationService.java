@@ -90,7 +90,7 @@ public class ApplicationService {
         boolean isBookmarked = bookmark != null;
 
         // 이력서 상세 포함한 DTO 조립
-        ResumeResponse.DetailDTO resumeDetail = resumeService.detail(application.getResume().getId());
+        ResumeResponse.DetailDTO resumeDetail = resumeService.detail(application.getResume().getId(), sessionUserId);
         return new ApplicationResponse.DetailDTO(application, isBookmarked, resumeDetail);
     }
 

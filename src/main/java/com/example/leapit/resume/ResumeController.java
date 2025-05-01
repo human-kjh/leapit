@@ -23,8 +23,7 @@ public class ResumeController {
     public String list(HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
-        Integer sessionUserId = 1;
-        List<ResumeResponse.ListDTO> resumeList = resumeService.list(1); // TODO : sessionUser.getId() 인수 추가
+        List<ResumeResponse.ListDTO> resumeList = resumeService.list(sessionUser.getId()); // TODO : sessionUser.getId() 인수 추가
         request.setAttribute("models", resumeList);
         return "personal/resume/list";
     }
@@ -34,7 +33,7 @@ public class ResumeController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
-        ResumeResponse.DetailDTO detailDTO = resumeService.detail(id); // TODO : sessionUser.getId() 인수 추가
+        ResumeResponse.DetailDTO detailDTO = resumeService.detail(id, sessionUser.getId()); // TODO : sessionUser.getId() 인수 추가
         request.setAttribute("model", detailDTO);
         return "personal/resume/detail";
     }
@@ -44,7 +43,7 @@ public class ResumeController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
-        resumeService.delete(id); // TODO : sessionUser.getId() 인수 추가
+        resumeService.delete(id, sessionUser.getId());
         return "redirect:/s/personal/resume";
     }
 
@@ -58,7 +57,7 @@ public class ResumeController {
         return "personal/resume/save-form";
     }
 
-    @PostMapping("/s/api/personal/resume/save")
+    @PostMapping("/s/api/personal/resume")
     @ResponseBody
     public Resp<?> save(@RequestPart("dto") ResumeRequest.SaveDTO saveDTO,
                         @RequestPart(value = "photoFile", required = false) MultipartFile photoFile) {
@@ -71,15 +70,22 @@ public class ResumeController {
 
     @GetMapping("/s/personal/resume/{id}/update-form")
     public String updateForm(@PathVariable("id") int id, HttpServletRequest request) {
-        ResumeResponse.UpdateDTO updateDTO = resumeService.getUpdateForm(id);
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
+
+        ResumeResponse.UpdateDTO updateDTO = resumeService.getUpdateForm(id, sessionUser.getId());
         request.setAttribute("model", updateDTO);
         return "personal/resume/update-form";
     }
 
-    @PutMapping("/s/personal/resume/{id}/update")
+    @PutMapping("/s/personal/resume/{id}")
     @ResponseBody
-    public Resp<?> update(@PathVariable("id") int id, @RequestBody ResumeRequest.UpdateDTO updateDTO) {
-        resumeService.update(id, updateDTO);
+    public Resp<?> update(@PathVariable("id") int id, @RequestPart("dto") ResumeRequest.UpdateDTO updateDTO,
+                          @RequestPart(value = "photoFile", required = false) MultipartFile photoFile) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
+
+        resumeService.update(id, sessionUser.getId(), updateDTO, photoFile);
         return Resp.ok(null);
     }
 }

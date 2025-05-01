@@ -116,7 +116,7 @@
         console.log("최종 전송 데이터:", requestBody);
         // 서버로 전송
         try {
-            let response = await fetch('/s/api/personal/resume/save', {
+            let response = await fetch('/s/api/personal/resume', {
                 method: 'POST',
                 body: formData
             });
