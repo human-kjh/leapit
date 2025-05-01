@@ -394,17 +394,18 @@
                                                        value="{{models.selectedRegionId}}">{{/models.selectedRegionId}}
                     {{#models.selectedSubRegionId}}<input type="hidden" name="subRegionId"
                                                           value="{{models.selectedSubRegionId}}">{{/models.selectedSubRegionId}}
-                    {{#models.selectedCareer}}
-                        <input type="hidden" name="career" value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                    {{#models.selectedCareer}}<input type="hidden" name="career"
+                                                     value="{{models.selectedCareer}}">{{/models.selectedCareer}}
                     {{#models.selectedTechStackCode}}<input type="hidden" name="techStackCode"
                                                             value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
+                    {{#models.selectedLabel}}<input type="hidden" name="label"
+                                                    value="{{models.selectedLabel}}">{{/models.selectedLabel}}
 
-                    <input type="hidden" name="isPopular" value="false">
+                    <input type="hidden" name="isPopular" value="true">
                     <input type="hidden" name="isLatest" value="false">
                     <button class="btn btn-primary" type="submit">최신순</button>
                 </form>
             {{/models.isLatest}}
-
             {{^models.isLatest}}
                 <form method="get" action="/personal/jobposting/list">
                     {{#models.selectedRegionId}}<input type="hidden" name="regionId"
@@ -412,7 +413,8 @@
                     {{#models.selectedSubRegionId}}<input type="hidden" name="subRegionId"
                                                           value="{{models.selectedSubRegionId}}">{{/models.selectedSubRegionId}}
                     {{#models.selectedCareer}}
-                        <input type="hidden" name="career" value="{{models.selectedCareer}}">{{/models.selectedCareer}}
+                        <input type="hidden" name="career"
+                               value="{{models.selectedCareer}}">{{/models.selectedCareer}}
                     {{#models.selectedTechStackCode}}<input type="hidden" name="techStackCode"
                                                             value="{{models.selectedTechStackCode}}">{{/models.selectedTechStackCode}}
                     <input type="hidden" name="isPopular" value="false">
