@@ -451,7 +451,7 @@
             <script>
                 let isBookmarked = {{#model.isBookmarked}}true{{/model.isBookmarked}}{{^model.isBookmarked}}false{{/model.isBookmarked}};
 
-                // 버튼 텍스트 초기화
+                // 스크랩 버튼 초기 텍스트 설정
                 let scrapButton = document.querySelector('#scrapButton');
                 if (isBookmarked) {
                     scrapButton.innerHTML = `<i class="fa fa-bookmark-o me-2"></i> 스크랩 취소`;
@@ -506,14 +506,20 @@
                     }
                 }
 
-                let isPassed = {{#model.isPassed}}"{{model.isPassed}}"{{/model.isPassed}}{{^model.isPassed}}null{{/model.isPassed}};
+                // isPassed 처리 (문자열로 들어오므로 boolean으로 변환 필요)
+                let isPassedStr = {{#model.isPassed}}"{{model.isPassed}}"{{/model.isPassed}}{{^model.isPassed}}null{{/model.isPassed}};
+                let isPassed = null;
+                if (isPassedStr === "true") isPassed = true;
+                else if (isPassedStr === "false") isPassed = false;
 
-                let passButton = document.querySelector('#passButton');
-                let failButton = document.querySelector('#failButton');
-                let passStatusText = document.querySelector('#passStatusText');
+                let passButton, failButton, passStatusText;
 
-                // 버튼 텍스트 초기화
-                updateButtons();
+                document.addEventListener("DOMContentLoaded", function () {
+                    passButton = document.querySelector('#passButton');
+                    failButton = document.querySelector('#failButton');
+                    passStatusText = document.querySelector('#passStatusText');
+                    updateButtons(); // 초기 상태 반영
+                });
 
                 function passButtonClick() {
                     if (isPassed === true) {
@@ -576,4 +582,5 @@
                     }
                 }
             </script>
+
 {{> layout/footer}}
