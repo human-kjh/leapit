@@ -87,7 +87,7 @@ public class Resume {
         this.id = id;
         this.user = user;
         this.title = title;
-        this.photoUrl = photoUrl;
+        if (photoUrl != null) this.photoUrl = photoUrl;
         this.summary = summary;
         this.positionType = positionType;
         this.resumeTechStacks = resumeTechStacks != null ? resumeTechStacks : new ArrayList<>();
