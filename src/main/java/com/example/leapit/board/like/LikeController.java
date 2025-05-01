@@ -4,7 +4,9 @@ import com.example.leapit._core.error.ex.ExceptionApi401;
 import com.example.leapit._core.util.Resp;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -14,7 +16,7 @@ public class LikeController {
     private final HttpSession session;
 
     @PostMapping("/s/api/like")
-    public Resp<?> saveLike(@RequestBody LikeRequest.SaveDTO reqDTO) {
+    public Resp<?> saveLike(@Valid @RequestBody LikeRequest.SaveDTO reqDTO, Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
 
@@ -29,7 +31,7 @@ public class LikeController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
 
-        LikeResponse.DeleteDTO respDTO = likeService.delete(id,sessionUser.getId());   // likeId
+        LikeResponse.DeleteDTO respDTO = likeService.delete(id, sessionUser.getId());   // likeId
 
         return Resp.ok(respDTO);
     }

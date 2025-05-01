@@ -1,13 +1,15 @@
 package com.example.leapit.application.bookmark;
 
-import lombok.Data;
 import com.example.leapit.application.Application;
 import com.example.leapit.user.User;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
 
 public class ApplicationBookmarkRequest {
 
     @Data
     public static class SaveDTO {
+        @NotEmpty(message = "application의 id가 전달되어야 합니다")
         private Integer applicationId;
 
         public ApplicationBookmark toEntity(Integer companyUserId) {

@@ -1,15 +1,15 @@
 package com.example.leapit.jobposting.bookmark;
 
-import com.example.leapit.application.Application;
-import com.example.leapit.application.bookmark.ApplicationBookmark;
 import com.example.leapit.jobposting.JobPosting;
 import com.example.leapit.user.User;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 public class JobPostingBookmarkRequest {
 
     @Data
     public static class SaveDTO {
+        @NotEmpty(message = "jobPosting의 id가 전달되어야 합니다")
         private Integer jobPostingId;
 
         public JobPostingBookmark toEntity(Integer personalUserId) {
