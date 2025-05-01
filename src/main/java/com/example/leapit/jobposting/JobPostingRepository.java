@@ -7,7 +7,6 @@ import com.example.leapit.jobposting.techstack.JobPostingTechStack;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Cascade;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -236,22 +235,23 @@ public class JobPostingRepository {
     public List<Object[]> findTop8PopularJobPostingsWithTechStacks() {
         LocalDate today = LocalDate.now();
 
-        // 1. 마감일 이후 + viewCount 기준 상위 8개 채용공고 ID 조회
+        // 1. ID만 먼저 정확히 뽑기 (viewCount 기준)
         List<Integer> top8Ids = em.createQuery(
                         "SELECT jp.id FROM JobPosting jp " +
                                 "WHERE jp.deadline >= :today " +
-                                "ORDER BY jp.viewCount DESC", Integer.class)
-                .setParameter("today", today)
+                                "ORDER BY jp.viewCount DESC, jp.createdAt DESC", Integer.class)
+                .setParameter("today", LocalDate.now())
                 .setMaxResults(8)
                 .getResultList();
 
         if (top8Ids.isEmpty()) return new ArrayList<>();
 
-        // 2. 해당 ID들 기준으로 기술스택 조인 포함 재조회
+// 2. 기술스택까지 포함해서 다시 조회
         return em.createQuery(
                         "SELECT jp, jpts FROM JobPosting jp " +
                                 "LEFT JOIN JobPostingTechStack jpts ON jp.id = jpts.jobPosting.id " +
-                                "WHERE jp.id IN :ids", Object[].class)
+                                "WHERE jp.id IN :ids " +
+                                "ORDER BY jp.viewCount DESC", Object[].class)
                 .setParameter("ids", top8Ids)
                 .getResultList();
     }
@@ -271,6 +271,15 @@ public class JobPostingRepository {
         return query.getResultList();
     }
 
+    public List<Integer> top8() {
+        return em.createQuery(
+                        "SELECT jp.id FROM JobPosting jp " +
+                                "WHERE jp.deadline >= :today " +
+                                "ORDER BY jp.viewCount DESC, jp.createdAt DESC", Integer.class)
+                .setParameter("today", LocalDate.now())
+                .setMaxResults(8)
+                .getResultList();
+    }
 
     // Native Query로 주소 정보를 조회하여 AddressDTO로 반환
     public JobPostingResponse.AddressDTO findJobPostingAddressById(Integer id) {

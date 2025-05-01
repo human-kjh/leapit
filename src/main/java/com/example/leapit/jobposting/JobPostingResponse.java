@@ -9,6 +9,7 @@ import com.example.leapit.jobposting.techstack.JobPostingTechStack;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,9 +125,11 @@ public class JobPostingResponse {
                 this.dDay = calculateDDay(jp.getDeadline());
                 this.viewCount = jp.getViewCount();
                 this.isBookmarked = isBookmarked;
-                this.techStacks = techStacks.stream()
-                        .map(stack -> new CompanyInfoResponse.DetailDTO.TechStackDTO(stack.getTechStack().getCode()))
-                        .collect(Collectors.toList());
+                this.techStacks = new ArrayList<>();
+                for (JobPostingTechStack stack : techStacks) {
+                    String code = stack.getTechStack().getCode();
+                    this.techStacks.add(new CompanyInfoResponse.DetailDTO.TechStackDTO(code));
+                }
             }
 
             private String formatCareer(Integer min, Integer max) {
