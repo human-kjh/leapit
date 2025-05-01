@@ -1,92 +1,99 @@
 {{> layout/company-header}}
 
-            <!-- 본문 -->
-            <div class="main container mt-5">
-                <div class="container" style="max-width: 720px">
-                    <!-- 제목 -->
-                    <h1 class="text-center fw-bold mb-4 fs-3">기업 정보 수정</h1>
+<!-- 본문 -->
+<div class="main container mt-5">
+    <div class="container" style="max-width: 720px">
+        <!-- 제목 -->
+        <h1 class="text-center fw-bold mb-4 fs-3">기업 정보 수정</h1>
 
-                    <!-- 기업 정보 -->
-                    <form action="/s/company/info/{{model.id}}/update" method="post" enctype="multipart/form-data">
-                    <section class="mb-5">
-                        <h2 class="fs-6 fw-semibold mb-3">기업 정보</h2>
-                        <div class="border p-4 rounded d-flex gap-4">
-                            <!-- 회사 이미지 수정 -->
-                            <div class="text-center">
-                                <img id="logoPreview" src="{{model.logoImage}}"
-                                    alt="회사 로고" class="img-thumbnail mb-2"
-                                    style="width: 64px; height: 64px; object-fit: cover" />
-                                <input type="file" id="logoUpload" class="d-none" accept="image/*" name="logoImageFile">
-                                <button type="button" id="uploadBtn" class="btn btn-outline-primary btn-sm">
-                                    이미지 등록
-                                </button>
-                            </div>
-
-                            <!-- 정보 수정 -->
-                            <div class="flex-grow-1">
-                                <div class="mb-3">
-                                    <label class="form-label">회사명</label>
-                                    <input type="text" class="form-control" placeholder="회사명을 입력하세요"  name="companyName" value="{{model.companyName}}">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">설립일</label>
-                                    <input type="date" class="form-control" name="establishmentDate" value="{{model.establishmentDate}}">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">대표주소</label>
-                                    <input type="text" class="form-control" placeholder="주소 입력" name="address" value="{{model.address}}">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">주요 서비스</label>
-                                    <input type="text" class="form-control" placeholder="예: 마이클(Mycle)" name="mainService" value="{{model.mainService}}">
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- 회사 소개 -->
-                    <section class="mb-5">
-                        <h2 class="fs-6 fw-semibold mb-3">회사 소개</h2>
-                        <textarea class="form-control" rows="6" placeholder="회사 소개 내용을 입력하세요..." name="introduction" >{{model.introduction}}</textarea>
-                    </section>
-
-                    <!-- 이미지 업로드 -->
-                    <section class="mb-5">
-                        <div class="border p-4 rounded">
-                            <div id="companyImagePreview" class="d-flex flex-wrap gap-2 justify-content-center mb-3">
-                            </div>
-
-                            <!-- 기존 DB 이미지 (업로드 전 보여주기) -->
-                            <div id="companyImageOriginal" class="text-center">
-                                <img src="{{model.image}}"
-                                     alt="회사 대표 이미지"
-                                     class="img-fluid rounded mt-3"
-                                     style="max-width: 400px"/>
-                            </div>
-
-                            <input type="file" id="companyImageUpload" class="d-none" accept="image/*" multiple name="imageFile">
-                            <div class="text-center">
-                                <button type="button" id="companyImageBtn" class="btn btn-outline-primary btn-sm">
-                                    이미지 업로드
-                                </button>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- 복지 및 혜택 -->
-                    <section class="mb-5">
-                        <h2 class="fs-6 fw-semibold mb-3">복지 및 혜택</h2>
-                        <textarea class="form-control" rows="8" placeholder="복지 및 혜택 내용을 입력하세요..." name="benefit">{{model.benefit}}</textarea>
-                    </section>
-
-                    <!-- 수정 버튼 -->
-                    <div class="text-center mb-5">
-                        <button type="submit" class="btn btn-primary w-100">수정하기</button>
+        <!-- 기업 정보 -->
+        <form action="/s/company/info/{{model.id}}/update" method="post" enctype="multipart/form-data">
+            <section class="mb-5">
+                <h2 class="fs-6 fw-semibold mb-3">기업 정보</h2>
+                <div class="border p-4 rounded d-flex gap-4">
+                    <!-- 회사 이미지 수정 -->
+                    <div class="text-center">
+                        <img id="logoPreview" src="/upload/{{model.logoImage}}"
+                             alt="회사 로고" class="img-thumbnail mb-2"
+                             style="width: 64px; height: 64px; object-fit: cover"/>
+                        <input type="file" id="logoUpload" class="d-none" accept="image/*" name="logoImageFile">
+                        <button type="button" id="uploadBtn" class="btn btn-outline-primary btn-sm">
+                            이미지 등록
+                        </button>
                     </div>
-                    </form>
+
+                    <!-- 정보 수정 -->
+                    <div class="flex-grow-1">
+                        <div class="mb-3">
+                            <label class="form-label">회사명</label>
+                            <input type="text" class="form-control" placeholder="회사명을 입력하세요" name="companyName"
+                                   value="{{model.companyName}}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">설립일</label>
+                            <input type="date" class="form-control" name="establishmentDate"
+                                   value="{{model.establishmentDate}}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">대표주소</label>
+                            <input type="text" class="form-control" placeholder="주소 입력" name="address"
+                                   value="{{model.address}}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">주요 서비스</label>
+                            <input type="text" class="form-control" placeholder="예: 마이클(Mycle)" name="mainService"
+                                   value="{{model.mainService}}">
+                        </div>
+                    </div>
                 </div>
+            </section>
+
+            <!-- 회사 소개 -->
+            <section class="mb-5">
+                <h2 class="fs-6 fw-semibold mb-3">회사 소개</h2>
+                <textarea class="form-control" rows="6" placeholder="회사 소개 내용을 입력하세요..."
+                          name="introduction">{{model.introduction}}</textarea>
+            </section>
+
+            <!-- 이미지 업로드 -->
+            <section class="mb-5">
+                <div class="border p-4 rounded">
+                    <div id="companyImagePreview" class="d-flex flex-wrap gap-2 justify-content-center mb-3">
+                    </div>
+
+                    <!-- 기존 DB 이미지 (업로드 전 보여주기) -->
+                    <div id="companyImageOriginal" class="text-center">
+                        <img src="/upload/{{model.image}}"
+                             alt="회사 대표 이미지"
+                             class="img-fluid rounded mt-3"
+                             style="max-width: 400px"/>
+                    </div>
+
+                    <input type="file" id="companyImageUpload" class="d-none" accept="image/*" multiple
+                           name="imageFile">
+                    <div class="text-center">
+                        <button type="button" id="companyImageBtn" class="btn btn-outline-primary btn-sm">
+                            이미지 업로드
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 복지 및 혜택 -->
+            <section class="mb-5">
+                <h2 class="fs-6 fw-semibold mb-3">복지 및 혜택</h2>
+                <textarea class="form-control" rows="8" placeholder="복지 및 혜택 내용을 입력하세요..."
+                          name="benefit">{{model.benefit}}</textarea>
+            </section>
+
+            <!-- 수정 버튼 -->
+            <div class="text-center mb-5">
+                <button type="submit" class="btn btn-primary w-100">수정하기</button>
             </div>
-            <!-- 본문 끝 -->
+        </form>
+    </div>
+</div>
+<!-- 본문 끝 -->
 
 
 <script>
