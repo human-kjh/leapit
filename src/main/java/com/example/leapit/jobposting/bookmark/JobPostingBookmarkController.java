@@ -4,7 +4,9 @@ import com.example.leapit._core.error.ex.ExceptionApi401;
 import com.example.leapit._core.util.Resp;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -14,7 +16,7 @@ public class JobPostingBookmarkController {
     private final HttpSession session;
 
     @PostMapping("/s/api/personal/bookmark")
-    public Resp<?> saveBookmark(@RequestBody JobPostingBookmarkRequest.SaveDTO reqDTO) {
+    public Resp<?> saveBookmark(@Valid @RequestBody JobPostingBookmarkRequest.SaveDTO reqDTO, Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
 
         if (sessionUser == null) {

@@ -16,8 +16,10 @@ import com.example.leapit.jobposting.bookmark.JobPostingBookmarkRepository;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -87,15 +89,26 @@ public class JobPostingController {
             throw new Exception400("기업정보를 먼저 등록해야 채용공고를 작성할 수 있습니다.");
         }
 
+        JobPosting jobPosting = jobPostingRepository.findById(companyInfoId);
+
+
+        List<RegionResponse.SelectedRegionDTO> addressRegionList =
+                regionService.getRegionsWithSelection(jobPosting.getAddressRegionId());
+
+        List<RegionResponse.SelectedSubRegionDTO> addressSubRegionList =
+                regionService.getSubRegionsWithSelection(jobPosting.getAddressRegionId(), jobPosting.getAddressSubRegionId());
+
 
         List<TechStack> techStacks = techStackService.getAllTechStacks();
         request.setAttribute("model", techStacks);
+        request.setAttribute("addressRegionList", addressRegionList);
+        request.setAttribute("addressSubRegionList", addressSubRegionList);
         return "company/jobposting/save-form";
     }
 
     // 채용 공고 등록
     @PostMapping("/s/company/jobposting/save")
-    public String save(JobPostingRequest.SaveDTO saveDTO, String[] techStack) {
+    public String save(@Valid JobPostingRequest.SaveDTO saveDTO, Errors errors, String[] techStack) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 
@@ -141,7 +154,7 @@ public class JobPostingController {
 
     // 채용 공고 수정
     @PostMapping("/s/company/jobposting/{id}/update")
-    public String update(@PathVariable("id") Integer id, JobPostingRequest.UpdateDTO updateDTO,
+    public String update(@PathVariable("id") Integer id, @Valid JobPostingRequest.UpdateDTO updateDTO, Errors errors,
                          @RequestParam(value = "techStacks", required = false) String[] techStacks) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");

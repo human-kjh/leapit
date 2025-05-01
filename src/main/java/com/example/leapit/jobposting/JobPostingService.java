@@ -326,7 +326,11 @@ public class JobPostingService {
         }
 
         List<JobPostingResponse.MainDTO.MainPopularJobPostingDTO> popularList = new ArrayList<>();
-        for (JobPosting jp : postingMap.values()) {
+        List<Integer> top8Ids = jobPostingRepository.top8();
+        for (Integer id : top8Ids) {
+            JobPosting jp = postingMap.get(id);
+            if (jp == null) continue; // 혹시라도 누락될 경우 안전 처리
+
             String region = jobPostingRepository.findByRegion(jp.getId());
             String subRegion = jobPostingRepository.findBySubRegion(jp.getId());
             String address = (region != null ? region : "") + " " + (subRegion != null ? subRegion : "");

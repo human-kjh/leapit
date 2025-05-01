@@ -11,8 +11,10 @@ import com.example.leapit.resume.techstack.ResumeTechStack;
 import com.example.leapit.resume.training.Training;
 import com.example.leapit.resume.training.techstack.TrainingTechStack;
 import com.example.leapit.user.User;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -27,12 +29,20 @@ public class ResumeRequest {
         private String photoUrl;
         private Boolean isPublic;
         private String summary;
+        @NotEmpty(message = "직무를 선택해주세요.")
         private String positionType;
+        @NotEmpty(message = "자기소개서를 작성해주세요.")
         private String selfIntroduction;
 
+        @NotEmpty(message = "기술 스택은 최소 1개 이상 선택해야 합니다.")
+        @Valid
         private List<String> resumeTechStacks;
 
+        @NotEmpty(message = "학력 정보를 1개 이상 입력해주세요.")
+        @Valid
         private List<EducationDTO> educations;
+        @NotEmpty(message = "프로젝트는 최소 1개 이상 작성해주세요.")
+        @Valid
         private List<ProjectDTO> projects;
         private List<ExperienceDTO> experiences;
         private List<LinkDTO> links;
@@ -42,9 +52,12 @@ public class ResumeRequest {
         @Data
         public static class EducationDTO {
             private Integer id;
+            @NotNull(message = "졸업일은 필수입니다.")
             private LocalDate graduationDate;
             private Boolean isDropout;
+            @NotEmpty(message = "학력 수준은 필수입니다.")
             private String educationLevel;
+            @NotEmpty(message = "학교명은 필수입니다.")
             private String schoolName;
             private String major;
             private BigDecimal gpa;
@@ -54,13 +67,19 @@ public class ResumeRequest {
         @Data
         public static class ProjectDTO {
             private Integer id;
+            @NotNull(message = "프로젝트 시작일은 필수입니다.")
             private LocalDate startDate;
+            @NotNull(message = "프로젝트 종료일은 필수입니다.")
             private LocalDate endDate;
             private Boolean isOngoing;
+            @NotEmpty(message = "프로젝트 제목은 필수입니다.")
             private String title;
             private String summary;
+            @NotEmpty(message = "프로젝트 설명은 필수입니다.")
             private String description;
             private String repositoryUrl;
+            @NotEmpty(message = "기술 스택은 최소 1개 이상 선택해야 합니다.")
+            @Valid
             private List<String> techStacks;
         }
 
@@ -112,17 +131,28 @@ public class ResumeRequest {
 
     // SaveDTO ----------------------------------------------------------------------------------------------------
     @Data
-    public static class SaveDTO{
+    public static class SaveDTO {
         private String title;
         private String photoUrl;
 
         private Boolean isPublic;
         private String summary;
+        @NotEmpty(message = "직무를 선택해주세요.")
         private String positionType;
+
+        @NotEmpty(message = "자기소개서를 작성해주세요.")
         private String selfIntroduction;
 
+        @NotEmpty(message = "기술 스택은 최소 1개 이상 선택해야 합니다.")
+        @Valid
         private List<String> resumeTechStacks;
+
+        @NotEmpty(message = "학력 정보를 1개 이상 입력해주세요.")
+        @Valid
         private List<EducationDTO> educations;
+
+        @NotEmpty(message = "프로젝트는 최소 1개 이상 작성해주세요.")
+        @Valid
         private List<ProjectDTO> projects;
         private List<ExperienceDTO> experiences;
         private List<LinkDTO> links;
@@ -130,10 +160,17 @@ public class ResumeRequest {
         private List<EtcDTO> etcs;
 
         @Data
-        public static class EducationDTO{
+        public static class EducationDTO {
+            private Integer id;
+
+            @NotNull(message = "졸업일은 필수입니다.")
             private LocalDate graduationDate;
             private Boolean isDropout;
+
+            @NotEmpty(message = "학력 수준은 필수입니다.")
             private String educationLevel;
+
+            @NotEmpty(message = "학교명은 필수입니다.")
             private String schoolName;
             private String major;
             private BigDecimal gpa;
@@ -141,19 +178,31 @@ public class ResumeRequest {
         }
 
         @Data
-        public static class ProjectDTO{
+        public static class ProjectDTO {
+            @NotNull(message = "프로젝트 시작일은 필수입니다.")
             private LocalDate startDate;
+
+            @NotNull(message = "프로젝트 종료일은 필수입니다.")
             private LocalDate endDate;
+
             private Boolean isOngoing;
+
+            @NotEmpty(message = "프로젝트 제목은 필수입니다.")
             private String title;
             private String summary;
+
+            @NotEmpty(message = "프로젝트 설명은 필수입니다.")
             private String description;
+
             private String repositoryUrl;
+
+            @NotEmpty(message = "기술 스택은 최소 1개 이상 입력해야 합니다.")
+            @Valid
             private List<String> techStacks;
         }
 
         @Data
-        public static class ExperienceDTO{
+        public static class ExperienceDTO {
             private LocalDate startDate;
             private LocalDate endDate;
             private Boolean isEmployed;
@@ -165,13 +214,13 @@ public class ResumeRequest {
         }
 
         @Data
-        public static class LinkDTO{
+        public static class LinkDTO {
             private String title;
             private String url;
         }
 
         @Data
-        public static class TrainingDTO{
+        public static class TrainingDTO {
             private LocalDate startDate;
             private LocalDate endDate;
             private Boolean isOngoing;
@@ -183,7 +232,7 @@ public class ResumeRequest {
         }
 
         @Data
-        public static class EtcDTO{
+        public static class EtcDTO {
             private LocalDate startDate;
             private LocalDate endDate;
             private Boolean hasEndDate;
