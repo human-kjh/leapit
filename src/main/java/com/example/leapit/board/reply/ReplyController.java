@@ -3,8 +3,10 @@ package com.example.leapit.board.reply;
 import com.example.leapit._core.error.ex.Exception401;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -15,7 +17,7 @@ public class ReplyController {
     private final HttpSession session;
 
     @PostMapping("/s/reply/save")
-    public String save(ReplyRequest.SaveDTO reqDTO) {
+    public String save(@Valid ReplyRequest.SaveDTO reqDTO, Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
 

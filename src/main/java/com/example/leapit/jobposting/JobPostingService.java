@@ -292,6 +292,7 @@ public class JobPostingService {
         List<JobPosting> recentPostings = jobPostingRepository.findTop3RecentJobPostings();
         AtomicInteger index = new AtomicInteger(0);
 
+
         return recentPostings.stream()
                 .map(jp -> {
                     int i = index.getAndIncrement();
@@ -332,6 +333,7 @@ public class JobPostingService {
 
             List<JobPostingTechStack> techStacks = stackMap.getOrDefault(jp.getId(), new ArrayList<>());
             CompanyInfo companyInfo = companyInfoRepository.findByUserId(jp.getUser().getId());
+
             boolean isBookmarked = false;
             if (userId != null) {
                 isBookmarked = jobPostingBookmarkRepository.findByUserIdAndJobPostingId(userId, jp.getId()) != null;
@@ -350,4 +352,11 @@ public class JobPostingService {
     }
 
 
+    @Transactional
+    public void increaseViewCount(Integer jobPostingId) {
+        JobPosting jobPosting = jobPostingRepository.findById(jobPostingId);
+        if (jobPosting == null) throw new Exception404("채용공고를 찾을 수 없습니다.");
+        jobPostingRepository.findById(jobPostingId);
+        jobPosting.setViewCount(jobPosting.getViewCount() + 1);
+    }
 }

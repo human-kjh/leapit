@@ -90,8 +90,14 @@
                                  style="width: 100%; aspect-ratio: 1 / 1; min-height: 100%; cursor: pointer;" id="photoBox">
 
                                 <!-- 미리보기 이미지 -->
-                                <img id="photoPreview" src="/upload/{{model.photoUrl}}" alt="프로필 사진"
-                                     class="img-fluid rounded-3" style="object-fit: cover; width: 100%; height: 100%; display: block;">
+                                {{#model.photoUrl}}
+                                    <img id="photoPreview" src="/upload/{{model.photoUrl}}" alt="프로필 사진"
+                                         class="img-fluid rounded-3" style="object-fit: cover; width: 100%; height: 100%; display: block;">
+                                {{/model.photoUrl}}
+                                {{^model.photoUrl}}
+                                    <img id="photoPreview" src="/upload/이력서 수정 디폴트.png" alt="프로필 사진"
+                                         class="img-fluid rounded-3" style="object-fit: cover; width: 100%; height: 100%; display: block;">
+                                {{/model.photoUrl}}
 
                                 <!-- 업로드 아이콘 버튼 -->
                                 <button type="button" class="btn border-0 bg-transparent position-absolute top-50 start-50 translate-middle" id="uploadBtn">

@@ -1,11 +1,12 @@
 package com.example.leapit.application.bookmark;
 
-import com.example.leapit._core.error.ex.Exception401;
 import com.example.leapit._core.error.ex.ExceptionApi401;
 import com.example.leapit._core.util.Resp;
 import com.example.leapit.user.User;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +19,7 @@ public class ApplicationBookmarkController {
 
     // 기업 스크랩 등록 application_bookmark
     @PostMapping("/s/api/company/bookmark")
-    public Resp<?> saveApplicationBookmark(@RequestBody ApplicationBookmarkRequest.SaveDTO reqDTO) {
+    public Resp<?> saveApplicationBookmark(@Valid @RequestBody ApplicationBookmarkRequest.SaveDTO reqDTO, Errors errors) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new ExceptionApi401("로그인 후 이용");
 

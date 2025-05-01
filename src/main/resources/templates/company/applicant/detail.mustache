@@ -451,7 +451,6 @@
             <script>
                 let isBookmarked = {{#model.isBookmarked}}true{{/model.isBookmarked}}{{^model.isBookmarked}}false{{/model.isBookmarked}};
 
-                // 버튼 텍스트 초기화
                 let scrapButton = document.querySelector('#scrapButton');
                 if (isBookmarked) {
                     scrapButton.innerHTML = `<i class="fa fa-bookmark-o me-2"></i> 스크랩 취소`;
@@ -506,20 +505,25 @@
                     }
                 }
 
-                let isPassed = {{#model.isPassed}}"{{model.isPassed}}"{{/model.isPassed}}{{^model.isPassed}}null{{/model.isPassed}};
+                let isPassed = null;
+                let isPassedRaw = "{{model.isPassedString}}";
+                if (isPassedRaw === "true") isPassed = true;
+                else if (isPassedRaw === "false") isPassed = false;
 
-                let passButton = document.querySelector('#passButton');
-                let failButton = document.querySelector('#failButton');
-                let passStatusText = document.querySelector('#passStatusText');
+                let passButton, failButton, passStatusText;
 
-                // 버튼 텍스트 초기화
-                updateButtons();
+                document.addEventListener("DOMContentLoaded", function () {
+                    passButton = document.querySelector('#passButton');
+                    failButton = document.querySelector('#failButton');
+                    passStatusText = document.querySelector('#passStatusText');
+                    updateButtons();
+                });
 
                 function passButtonClick() {
                     if (isPassed === true) {
                         updateApplicationPassStatus(null); // 합격 취소
                     } else {
-                        updateApplicationPassStatus(true); // 합격
+                        updateApplicationPassStatus(true); // 합격 처리
                     }
                 }
 
@@ -527,7 +531,7 @@
                     if (isPassed === false) {
                         updateApplicationPassStatus(null); // 불합격 취소
                     } else {
-                        updateApplicationPassStatus(false); // 불합격
+                        updateApplicationPassStatus(false); // 불합격 처리
                     }
                 }
 
@@ -546,6 +550,7 @@
                         });
 
                         let responseBody = await response.json();
+                        console.log("응답 결과:", responseBody);
 
                         if (responseBody.status === 200) {
                             isPassed = newStatus;
@@ -576,4 +581,6 @@
                     }
                 }
             </script>
+
+
 {{> layout/footer}}

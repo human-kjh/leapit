@@ -3,12 +3,12 @@ package com.example.leapit.resume;
 import com.example.leapit._core.error.ex.Exception400;
 import com.example.leapit._core.error.ex.Exception403;
 import com.example.leapit._core.error.ex.Exception404;
-import com.example.leapit._core.error.ex.ExceptionApi404;
+import com.example.leapit._core.error.ex.ExceptionApi400;
 import com.example.leapit.application.Application;
 import com.example.leapit.application.ApplicationRepository;
+import com.example.leapit.common.enums.Role;
 import com.example.leapit.common.positiontype.PositionType;
 import com.example.leapit.common.positiontype.PositionTypeRepository;
-import com.example.leapit.common.positiontype.PositionTypeService;
 import com.example.leapit.common.techstack.TechStack;
 import com.example.leapit.common.techstack.TechStackRepository;
 import com.example.leapit.resume.education.Education;
@@ -40,6 +40,7 @@ import com.example.leapit.resume.training.TrainingResponse;
 import com.example.leapit.resume.training.TrainingService;
 import com.example.leapit.user.User;
 import com.example.leapit.user.UserRepository;
+import io.micrometer.common.lang.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,20 +88,36 @@ public class ResumeService {
         return listDTOs;
     }
 
-    public ResumeResponse.DetailDTO detail(Integer resumeId, Integer sessionUserId) { // TODO : Integer sessionUserId 매개변수 추가
+    public ResumeResponse.DetailDTO detail(Integer resumeId, User sessionUser, @Nullable Integer applicationId) {
         // 1. 이력서 존재 확인
-        Resume resume =  resumeRepository.findByIdJoinUser(resumeId);
+        Resume resume = resumeRepository.findByIdJoinUser(resumeId);
         if (resume == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
-        // 2. 이력서 주인 (권한) 확인
-        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
-            throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
+        // 2. 권한 체크
+        if (sessionUser.getRole() == Role.personal) {
+            // 개인 유저는 본인만 열람 가능
+            if (!(resume.getUser().getId().equals(sessionUser.getId()))) {
+                throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
+            }
+        } else if (sessionUser.getRole() == Role.company) {
+            // 기업 유저는 applicationId를 통해 접근한 경우만 허용
+            if (applicationId == null) {
+                throw new Exception403("applicationId가 필요합니다.");
+            }
+
+            Application application = applicationRepository.findByApplicationId(applicationId);
+            if (application == null ||
+                    !application.getResume().getId().equals(resumeId) ||
+                    !application.getJobPosting().getUser().getId().equals(sessionUser.getId())) {
+                throw new Exception403("해당 이력서를 열람할 권한이 없습니다.");
+            }
+
         }
 
         // 3. 이력서 DTO 조립
-        List<ResumeTechStack> techStacks  = resumeTechStackRepository.findAllByResumeId(resumeId);
+        List<ResumeTechStack> techStacks = resumeTechStackRepository.findAllByResumeId(resumeId);
         List<LinkResponse.DetailDTO> links = linkService.getDTOsByResumeId(resumeId);
-        List<EducationResponse.DetailDTO> educations = educationService.getDTOsByResumeId(resumeId) ;
+        List<EducationResponse.DetailDTO> educations = educationService.getDTOsByResumeId(resumeId);
         List<ExperienceResponse.DetailDTO> experiences = experienceService.getDTOsByResumeId(resumeId);
         List<ProjectResponse.DetailDTO> projects = projectService.getDTOsByResumeId(resumeId);
         List<TrainingResponse.DetailDTO> trainings = trainingService.getDTOsByResumeId(resumeId);
@@ -125,7 +142,7 @@ public class ResumeService {
         }
 
         // 2. 이력서 주인 (권한) 확인
-        if(!(resume.getUser().getId().equals(sessionUserId)) ) {
+        if (!(resume.getUser().getId().equals(sessionUserId))) {
             throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
         }
 
@@ -147,7 +164,7 @@ public class ResumeService {
         try {
             // 디렉토리 없을 경우 생성
             Files.createDirectories(Paths.get(uploadDir));
-            
+
             // 대표 이미지 저장
             if (photoUrlFile != null && !photoUrlFile.isEmpty()) {
                 String imageFilename = UUID.randomUUID() + "_" + photoUrlFile.getOriginalFilename();
@@ -160,20 +177,28 @@ public class ResumeService {
             throw new Exception400("파일 업로드 실패");
         }
 
+        // 유효성 검사 (조건부 포함)
+        validateEducationsSave(saveDTO.getEducations());
+        validateTrainingsSave(saveDTO.getTrainings());
+        validateEtcsSave(saveDTO.getEtcs());
+        validateLinksSave(saveDTO.getLinks());
+        validateExperiencesSave(saveDTO.getExperiences());
+        validateResumeBasicsSave(saveDTO);
+
         Resume resume = saveDTO.toEntity(sessionUser);
         resumeRepository.save(resume);
     }
 
     @Transactional
-    public void update(Integer resumeId, Integer sessionUserId, ResumeRequest.UpdateDTO reqDTO, MultipartFile photoUrlFile){
+    public void update(Integer resumeId, Integer sessionUserId, ResumeRequest.UpdateDTO reqDTO, MultipartFile photoUrlFile) {
         // 1. 이력서 존재 확인
         Resume resumePS = resumeRepository.findById(resumeId);
         if (resumePS == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
         // 2. 권한 확인
-         if (!(resumePS.getUser().getId().equals(sessionUserId))) {
-             throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
-         }
+        if (!(resumePS.getUser().getId().equals(sessionUserId))) {
+            throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
+        }
 
         // 이미지
         if (photoUrlFile != null && !photoUrlFile.isEmpty()) {
@@ -189,7 +214,15 @@ public class ResumeService {
                 throw new Exception400("파일 업로드 실패");
             }
         }
-        
+        // 유효성 검사
+        validateEducationsUpdate(reqDTO.getEducations());
+        validateTrainingsUpdate(reqDTO.getTrainings());
+        validateEtcsUpdate(reqDTO.getEtcs());
+        validateLinksUpdate(reqDTO.getLinks());
+        validateExperiencesUpdate(reqDTO.getExperiences());
+        validateResumeBasicsUpdate(reqDTO);
+
+
         // 3. 이력서 업데이트
         resumePS.update(reqDTO.getTitle(), reqDTO.getPhotoUrl(), reqDTO.getIsPublic(), reqDTO.getSummary(), reqDTO.getPositionType(), reqDTO.getSelfIntroduction());
 
@@ -211,9 +244,9 @@ public class ResumeService {
         if (resume == null) throw new Exception404("이력서가 존재하지 않습니다.");
 
         // 2. 권한 확인
-         if (!(resume.getUser().getId().equals(sessionUserId))) {
-             throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
-         }
+        if (!(resume.getUser().getId().equals(sessionUserId))) {
+            throw new Exception403("해당 이력서에 대한 권한이 없습니다.");
+        }
 
         // 3. 이력서 관련 데이터 조회
 
@@ -300,4 +333,280 @@ public class ResumeService {
         );
         return updateDTO;
     }
+
+    // ---------- 이력서 등록 시 선택항목의 필수값 유효성검사
+    private void validateResumeBasicsSave(ResumeRequest.SaveDTO dto) {
+        if (dto.getPhotoUrl() != null && dto.getPhotoUrl().isBlank()) {
+            throw new ExceptionApi400("이미지를 선택했다면 파일명이 필요합니다.");
+        }
+        if (dto.getSummary() != null && dto.getSummary().isBlank()) {
+            throw new ExceptionApi400("요약을 작성했다면 내용을 입력해야 합니다.");
+        }
+    }
+
+    private void validateEtcsSave(List<ResumeRequest.SaveDTO.EtcDTO> etcs) {
+        for (ResumeRequest.SaveDTO.EtcDTO etc : etcs) {
+            if ((etc.getTitle() != null && !etc.getTitle().isBlank()) ||
+                    (etc.getEtcType() != null && !etc.getEtcType().isBlank()) ||
+                    (etc.getInstitutionName() != null && !etc.getInstitutionName().isBlank()) ||
+                    (etc.getDescription() != null && !etc.getDescription().isBlank())) {
+
+                if (etc.getStartDate() == null) {
+                    throw new ExceptionApi400("기타 항목의 시작일은 필수입니다.");
+                }
+                if (etc.getEndDate() == null) {
+                    throw new ExceptionApi400("기타 항목의 종료일은 필수입니다.");
+                }
+                if (etc.getTitle() == null || etc.getTitle().isBlank()) {
+                    throw new ExceptionApi400("기타 항목의 제목은 필수입니다.");
+                }
+                if (etc.getEtcType() == null || etc.getEtcType().isBlank()) {
+                    throw new ExceptionApi400("기타 항목의 유형은 필수입니다.");
+                }
+                if (etc.getInstitutionName() == null || etc.getInstitutionName().isBlank()) {
+                    throw new ExceptionApi400("기타 항목의 기관명은 필수입니다.");
+                }
+                if (etc.getDescription() == null || etc.getDescription().isBlank()) {
+                    throw new ExceptionApi400("기타 항목의 설명은 필수입니다.");
+                }
+            }
+        }
+    }
+
+    private void validateEducationsSave(List<ResumeRequest.SaveDTO.EducationDTO> educations) {
+        for (ResumeRequest.SaveDTO.EducationDTO edu : educations) {
+            // 조건부 필수값
+            if (edu.getEducationLevel().equals("대졸") || edu.getEducationLevel().equals("대학교")) {
+                if (edu.getMajor() == null || edu.getMajor().isBlank()) {
+                    throw new ExceptionApi400("전공은 필수입니다.");
+                }
+                if (edu.getGpa() == null) {
+                    throw new ExceptionApi400("학점은 필수입니다.");
+                }
+                if (edu.getGpaScale() == null) {
+                    throw new ExceptionApi400("학점 만점 기준은 필수입니다.");
+                }
+            }
+        }
+    }
+
+
+    private void validateExperiencesSave(List<ResumeRequest.SaveDTO.ExperienceDTO> experiences) {
+        for (ResumeRequest.SaveDTO.ExperienceDTO exp : experiences) {
+            // 사용자가 경력을 작성했는지 판단할 기준
+            boolean isFilled =
+                    (exp.getCompanyName() != null && !exp.getCompanyName().isBlank()) ||
+                            (exp.getResponsibility() != null && !exp.getResponsibility().isBlank()) ||
+                            (exp.getTechStacks() != null && !exp.getTechStacks().isEmpty());
+
+            if (isFilled) {
+                if (exp.getStartDate() == null) {
+                    throw new ExceptionApi400("경력 시작일은 필수입니다.");
+                }
+                if (exp.getEndDate() == null) {
+                    throw new ExceptionApi400("경력 종료일은 필수입니다.");
+                }
+                if (exp.getCompanyName() == null || exp.getCompanyName().isBlank()) {
+                    throw new ExceptionApi400("회사명은 필수입니다.");
+                }
+                if (exp.getResponsibility() == null || exp.getResponsibility().isBlank()) {
+                    throw new ExceptionApi400("담당 업무는 필수입니다.");
+                }
+                if (exp.getTechStacks() == null || exp.getTechStacks().isEmpty()) {
+                    throw new ExceptionApi400("기술 스택은 최소 1개 이상 입력해야 합니다.");
+                }
+            }
+        }
+    }
+
+
+    private void validateLinksSave(List<ResumeRequest.SaveDTO.LinkDTO> links) {
+        for (ResumeRequest.SaveDTO.LinkDTO link : links) {
+            // 사용자가 작성했는지 여부 판단 (둘 중 하나라도 작성 시 유효성 검사 시작)
+            boolean isFilled =
+                    (link.getTitle() != null && !link.getTitle().isBlank()) ||
+                            (link.getUrl() != null && !link.getUrl().isBlank());
+
+            if (isFilled) {
+                if (link.getTitle() == null || link.getTitle().isBlank()) {
+                    throw new ExceptionApi400("링크 제목은 필수입니다.");
+                }
+                if (link.getUrl() == null || link.getUrl().isBlank()) {
+                    throw new ExceptionApi400("링크 URL은 필수입니다.");
+                }
+            }
+        }
+    }
+
+    private void validateTrainingsSave(List<ResumeRequest.SaveDTO.TrainingDTO> trainings) {
+        for (ResumeRequest.SaveDTO.TrainingDTO training : trainings) {
+            // 작성 여부 판단 (주요 필드 중 하나라도 입력되어 있으면 검사)
+            boolean isFilled =
+                    (training.getCourseName() != null && !training.getCourseName().isBlank()) ||
+                            (training.getInstitutionName() != null && !training.getInstitutionName().isBlank()) ||
+                            (training.getDescription() != null && !training.getDescription().isBlank()) ||
+                            (training.getTechStacks() != null && !training.getTechStacks().isEmpty());
+
+            if (isFilled) {
+                if (training.getStartDate() == null) {
+                    throw new ExceptionApi400("교육 시작일은 필수입니다.");
+                }
+                if (training.getEndDate() == null) {
+                    throw new ExceptionApi400("교육 종료일은 필수입니다.");
+                }
+                if (training.getCourseName() == null || training.getCourseName().isBlank()) {
+                    throw new ExceptionApi400("과정명은 필수입니다.");
+                }
+                if (training.getInstitutionName() == null || training.getInstitutionName().isBlank()) {
+                    throw new ExceptionApi400("교육 기관명은 필수입니다.");
+                }
+                if (training.getDescription() == null || training.getDescription().isBlank()) {
+                    throw new ExceptionApi400("교육 설명은 필수입니다.");
+                }
+                if (training.getTechStacks() == null || training.getTechStacks().isEmpty()) {
+                    throw new ExceptionApi400("기술 스택은 1개 이상 입력해야 합니다.");
+                }
+            }
+        }
+    }
+
+    // ---------- 이력서 수정시 선택항목의 필수값 유효성검사
+
+    private void validateResumeBasicsUpdate(ResumeRequest.UpdateDTO dto) {
+        if (dto.getPhotoUrl() != null && dto.getPhotoUrl().isBlank()) {
+            throw new ExceptionApi400("이미지를 선택했다면 파일명이 필요합니다.");
+        }
+        if (dto.getSummary() != null && dto.getSummary().isBlank()) {
+            throw new ExceptionApi400("요약을 작성했다면 내용을 입력해야 합니다.");
+        }
+    }
+
+    private void validateEtcsUpdate(List<ResumeRequest.UpdateDTO.EtcDTO> etcs) {
+        for (ResumeRequest.UpdateDTO.EtcDTO etc : etcs) {
+            if ((etc.getTitle() != null && !etc.getTitle().isBlank()) ||
+                    (etc.getEtcType() != null && !etc.getEtcType().isBlank()) ||
+                    (etc.getInstitutionName() != null && !etc.getInstitutionName().isBlank()) ||
+                    (etc.getDescription() != null && !etc.getDescription().isBlank())) {
+
+                if (etc.getStartDate() == null) {
+                    throw new ExceptionApi400("기타 항목의 시작일은 필수입니다.");
+                }
+                if (etc.getEndDate() == null) {
+                    throw new ExceptionApi400("기타 항목의 종료일은 필수입니다.");
+                }
+                if (etc.getTitle() == null || etc.getTitle().isBlank()) {
+                    throw new ExceptionApi400("기타 항목의 제목은 필수입니다.");
+                }
+                if (etc.getEtcType() == null || etc.getEtcType().isBlank()) {
+                    throw new ExceptionApi400("기타 항목의 유형은 필수입니다.");
+                }
+                if (etc.getInstitutionName() == null || etc.getInstitutionName().isBlank()) {
+                    throw new ExceptionApi400("기타 항목의 기관명은 필수입니다.");
+                }
+                if (etc.getDescription() == null || etc.getDescription().isBlank()) {
+                    throw new ExceptionApi400("기타 항목의 설명은 필수입니다.");
+                }
+            }
+        }
+    }
+
+    private void validateEducationsUpdate(List<ResumeRequest.UpdateDTO.EducationDTO> educations) {
+        for (ResumeRequest.UpdateDTO.EducationDTO edu : educations) {
+            // 조건부 필수값
+            if (edu.getEducationLevel().equals("대졸") || edu.getEducationLevel().equals("대학교")) {
+                if (edu.getMajor() == null || edu.getMajor().isBlank()) {
+                    throw new ExceptionApi400("전공은 필수입니다.");
+                }
+                if (edu.getGpa() == null) {
+                    throw new ExceptionApi400("학점은 필수입니다.");
+                }
+                if (edu.getGpaScale() == null) {
+                    throw new ExceptionApi400("학점 만점 기준은 필수입니다.");
+                }
+            }
+        }
+    }
+
+
+    private void validateExperiencesUpdate(List<ResumeRequest.UpdateDTO.ExperienceDTO> experiences) {
+        for (ResumeRequest.UpdateDTO.ExperienceDTO exp : experiences) {
+            // 사용자가 경력을 작성했는지 판단할 기준
+            boolean isFilled =
+                    (exp.getCompanyName() != null && !exp.getCompanyName().isBlank()) ||
+                            (exp.getResponsibility() != null && !exp.getResponsibility().isBlank()) ||
+                            (exp.getTechStacks() != null && !exp.getTechStacks().isEmpty());
+
+            if (isFilled) {
+                if (exp.getStartDate() == null) {
+                    throw new ExceptionApi400("경력 시작일은 필수입니다.");
+                }
+                if (exp.getEndDate() == null) {
+                    throw new ExceptionApi400("경력 종료일은 필수입니다.");
+                }
+                if (exp.getCompanyName() == null || exp.getCompanyName().isBlank()) {
+                    throw new ExceptionApi400("회사명은 필수입니다.");
+                }
+                if (exp.getResponsibility() == null || exp.getResponsibility().isBlank()) {
+                    throw new ExceptionApi400("담당 업무는 필수입니다.");
+                }
+                if (exp.getTechStacks() == null || exp.getTechStacks().isEmpty()) {
+                    throw new ExceptionApi400("기술 스택은 최소 1개 이상 입력해야 합니다.");
+                }
+            }
+        }
+    }
+
+
+    private void validateLinksUpdate(List<ResumeRequest.UpdateDTO.LinkDTO> links) {
+        for (ResumeRequest.UpdateDTO.LinkDTO link : links) {
+            // 사용자가 작성했는지 여부 판단 (둘 중 하나라도 작성 시 유효성 검사 시작)
+            boolean isFilled =
+                    (link.getTitle() != null && !link.getTitle().isBlank()) ||
+                            (link.getUrl() != null && !link.getUrl().isBlank());
+
+            if (isFilled) {
+                if (link.getTitle() == null || link.getTitle().isBlank()) {
+                    throw new ExceptionApi400("링크 제목은 필수입니다.");
+                }
+                if (link.getUrl() == null || link.getUrl().isBlank()) {
+                    throw new ExceptionApi400("링크 URL은 필수입니다.");
+                }
+            }
+        }
+    }
+
+    private void validateTrainingsUpdate(List<ResumeRequest.UpdateDTO.TrainingDTO> trainings) {
+        for (ResumeRequest.UpdateDTO.TrainingDTO training : trainings) {
+            // 작성 여부 판단 (주요 필드 중 하나라도 입력되어 있으면 검사)
+            boolean isFilled =
+                    (training.getCourseName() != null && !training.getCourseName().isBlank()) ||
+                            (training.getInstitutionName() != null && !training.getInstitutionName().isBlank()) ||
+                            (training.getDescription() != null && !training.getDescription().isBlank()) ||
+                            (training.getTechStacks() != null && !training.getTechStacks().isEmpty());
+
+            if (isFilled) {
+                if (training.getStartDate() == null) {
+                    throw new ExceptionApi400("교육 시작일은 필수입니다.");
+                }
+                if (training.getEndDate() == null) {
+                    throw new ExceptionApi400("교육 종료일은 필수입니다.");
+                }
+                if (training.getCourseName() == null || training.getCourseName().isBlank()) {
+                    throw new ExceptionApi400("과정명은 필수입니다.");
+                }
+                if (training.getInstitutionName() == null || training.getInstitutionName().isBlank()) {
+                    throw new ExceptionApi400("교육 기관명은 필수입니다.");
+                }
+                if (training.getDescription() == null || training.getDescription().isBlank()) {
+                    throw new ExceptionApi400("교육 설명은 필수입니다.");
+                }
+                if (training.getTechStacks() == null || training.getTechStacks().isEmpty()) {
+                    throw new ExceptionApi400("기술 스택은 1개 이상 입력해야 합니다.");
+                }
+            }
+        }
+    }
+
+
 }
+
