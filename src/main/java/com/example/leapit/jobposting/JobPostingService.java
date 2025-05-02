@@ -2,6 +2,7 @@ package com.example.leapit.jobposting;
 
 import com.example.leapit._core.error.ex.Exception403;
 import com.example.leapit._core.error.ex.Exception404;
+import com.example.leapit.common.positiontype.PositionType;
 import com.example.leapit.common.positiontype.PositionTypeRepository;
 import com.example.leapit.common.positiontype.PositionTypeResponse;
 import com.example.leapit.common.region.RegionRepository;
@@ -87,6 +88,17 @@ public class JobPostingService {
     public JobPosting findById(Integer id) {
         return jobPostingRepository.findById(id);
     }
+
+    // TODO 수정해야 함
+        public List<String> findByPositionType() {
+            List<PositionType> entities = positionTypeRepository.findAll();
+            return entities.stream()
+                    .map(PositionType::getCode)
+                    .collect(Collectors.toList());
+        }
+
+        // TODO 수정해야 함
+
 
     // 채용 공고 수정
     @Transactional
@@ -213,6 +225,8 @@ public class JobPostingService {
                 Boolean.TRUE.equals(isLatest),
                 sessionUserId
         );
+
+
 
 
         // 북마크 조회
@@ -363,4 +377,5 @@ public class JobPostingService {
         jobPostingRepository.findById(jobPostingId);
         jobPosting.setViewCount(jobPosting.getViewCount() + 1);
     }
+
 }
