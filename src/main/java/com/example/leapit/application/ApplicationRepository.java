@@ -238,4 +238,14 @@ public class ApplicationRepository {
                 .setParameter("jobPostingId", jobPostingId)
                 .getSingleResult();
     }
+
+    public Application findByResumeIdAndJobPostingId(Integer applicationId) {
+        String jpql = "SELECT a FROM Application a WHERE a.id = :applicationId";
+        return em.createQuery(jpql, Application.class)
+                .setParameter("applicationId", applicationId)
+                .getSingleResult();
+    }
+
+
+
 }
