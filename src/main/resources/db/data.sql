@@ -101,7 +101,7 @@ INSERT INTO education_tb (resume_id, graduation_date, is_dropout, education_leve
 VALUES (2, '2025-02-28', TRUE, '전문학사', '가나다대학교', '컴퓨터공학과', 2.2, 4.5, NOW());
 INSERT INTO education_tb (resume_id, graduation_date, is_dropout, education_level, school_name, major, gpa, gpa_scale,
                           created_at)
-VALUES (3, '2024-08-31', TRUE, '고등학교', '라마바대학교', '정보처리학과', 3.5, 4.5, NOW());
+VALUES (3, '2024-08-31', TRUE, '고등학교', '라마바고등학교', '정보처리학과', 3.5, 4.5, NOW());
 INSERT INTO education_tb (resume_id, graduation_date, is_dropout, education_level, school_name, major, gpa, gpa_scale,
                           created_at)
 VALUES (4, '2023-02-28', FALSE, '학사', '사아자차카대학교', '인공지능학과', 3.9, 4.3, NOW());
@@ -572,6 +572,7 @@ VALUES (8, '코드몽키로고이미지.png', '코드몽키', '2018-04-20', '경
         '우리는 개발자를 위한 온라인 실습 기반 교육 플랫폼입니다.', '코드몽키대표이미지.png', '식대 제공, 헬스비 지원, 사내 도서관');
 
 -- 7. board_tb
+
 INSERT INTO board_tb (user_id, title, content, created_at)
 VALUES (1, '취업 준비중인데 조언 부탁드립니다', '개발자로 취업 준비 중입니다. 혹시 면접에서 자주 나오는 질문이나, 포트폴리오에 꼭 들어가야 하는 내용 있을까요?', NOW());
 
