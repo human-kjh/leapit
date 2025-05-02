@@ -50,6 +50,11 @@ public class ApplicationService {
 
         // 지원 현황 통계
         ApplicationResponse.ApplicationStatusDto statusDto = applicationRepository.findSummaryByUserId(userId);
+
+        if (statusDto == null) {
+            statusDto = new ApplicationResponse.ApplicationStatusDto(0L, 0L, 0L);
+        }
+
         // 지원 현황 목록 조회
         List<ApplicationResponse.ApplicationDto> applicationDtos = applicationRepository.findApplicationsByUserId(userId);
         // respDTO에 담기

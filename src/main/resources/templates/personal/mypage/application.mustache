@@ -20,22 +20,30 @@
                 <div class="statusBoxes">
                     <div class="statusBox">
                         <h6>지원완료</h6>
-                        <span class="statusCount">{{models.status.total}}</span>
+                        <span class="statusCount"> {{#models.status}}{{total}}{{/models.status}}
+                                {{^models.status}}0{{/models.status}}
+                        </span>
                     </div>
                     <div class="statusBox">
                         <h6>최종합격</h6>
-                        <span class="statusCount">{{models.status.passed}}</span>
+                        <span class="statusCount">{{#models.status}}{{passed}}{{/models.status}}
+                            {{^models.status}}0{{/models.status}}
+                        </span>
                     </div>
                     <div class="statusBox">
                         <h6>불합격</h6>
-                        <span class="statusCount">{{models.status.failed}}</span>
+                        <span class="statusCount">
+                            {{#models.status}}{{failed}}{{/models.status}}
+                            {{^models.status}}0{{/models.status}}
+                        </span>
                     </div>
                 </div>
             </div>
             <!-- 지원 완료 건수 -->
-            <h5 class="applyTitle">지원완료 총 {{models.status.total}}건</h5>
+            <h5 class="applyTitle">지원완료 총 {{#models.status}}{{total}}{{/models.status}}
+                {{^models.status}}0{{/models.status}}건
+            </h5>
 
-            <!-- 지원 현황 목록 -->
             <!-- 지원 현황 목록 -->
             <div class="applyList">
                 {{#models.applications}}
