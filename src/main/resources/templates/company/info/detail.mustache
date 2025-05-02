@@ -27,9 +27,13 @@
                                 {{model.address}}
                             </div>
                             <div class="small mt-1 text-muted d-flex gap-2">
-                                <a href="https://map.naver.com" target="_blank" class="text-decoration-none">지도보기</a>
+                                <a href="https://map.naver.com/search?query={{model.address}}" target="_blank"
+                                class="text-decoration-none">지도보기</a>
                                 <span class="text-secondary">·</span>
-                                <a href="#" class="text-primary text-decoration-none">주소복사</a>
+                                <a href="#" id="copyAddressButton" class="text-primary text-decoration-none">주소복사</a>
+                                <input type="text" id="hiddenAddress"
+                                       value="{{model.address}}"
+                                       readonly style="position:absolute; left:-9999px;">
                             </div>
                         </div>
                     </div>
@@ -102,5 +106,27 @@
     </div>
 </div>
 <!-- 본문 끝 -->
+
+<script>
+    // 주소 복사
+    document.getElementById('copyAddressButton').addEventListener('click', function (event) {
+        event.preventDefault(); // a태그 기본 동작(페이지 튕김) 막기
+        const hiddenInput = document.getElementById('hiddenAddress');
+        hiddenInput.select();
+        hiddenInput.setSelectionRange(0, 99999); // 모바일 대응
+
+        try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+                alert('주소가 복사되었습니다!');
+            } else {
+                alert('복사에 실패했습니다.');
+            }
+        } catch (err) {
+            alert('복사 중 오류가 발생했습니다.');
+        }
+    });
+
+</script>
 
 {{> layout/footer}}
