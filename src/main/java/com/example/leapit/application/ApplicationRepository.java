@@ -117,8 +117,8 @@ public class ApplicationRepository {
     public ApplicationResponse.ApplicationStatusDto findSummaryByUserId(Integer userId) {
         String jpql = """
                     SELECT COUNT(a), 
-                           SUM(CASE WHEN a.isPassed = true THEN 1 ELSE 0 END), 
-                           SUM(CASE WHEN a.isPassed = false THEN 1 ELSE 0 END)
+                           COUNT(CASE WHEN a.isPassed = true THEN 1 ELSE 0 END), 
+                           COUNT(CASE WHEN a.isPassed = false THEN 1 ELSE 0 END)
                     FROM Application a
                     JOIN a.resume r
                     JOIN r.user u
