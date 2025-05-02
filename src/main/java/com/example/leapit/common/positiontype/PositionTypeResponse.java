@@ -15,4 +15,13 @@ public class PositionTypeResponse {
         }
     }
 
+    @Data
+    public static class PositionTypeListDTO {
+        private String code;
+
+        public PositionTypeListDTO(String code, boolean selected) {
+            this.code = code;
+        }
+    }
+
 }
