@@ -143,6 +143,7 @@ public class ApplicationResponse {
         }
     }
 
+
     // 지원 현황 통계
     @Data
     public static class ApplicationStatusDto {
