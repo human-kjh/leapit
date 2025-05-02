@@ -31,6 +31,13 @@ public class CompanyInfoService {
         if (sessionUser == null) throw new Exception404("회원정보가 존재하지 않습니다");
         String uploadDir = System.getProperty("user.dir") + "/upload/";
 
+        if (reqDTO.getLogoImageFile() == null || reqDTO.getLogoImageFile().isEmpty()) {
+            throw new Exception400("로고 이미지는 필수입니다.");
+        }
+
+        if (reqDTO.getImageFile() == null || reqDTO.getImageFile().isEmpty()) {
+            throw new Exception400("대표이미지는 필수입니다.");
+        }
 
         try {
             // 로고 이미지 저장
@@ -52,6 +59,7 @@ public class CompanyInfoService {
         } catch (Exception e) {
             throw new Exception400("파일 업로드 실패");
         }
+
 
         CompanyInfo companyInfo = reqDTO.toEntity(sessionUser);
         companyInfoRepository.save(companyInfo);
@@ -78,8 +86,6 @@ public class CompanyInfoService {
                 allTechStacks.add(techStack);
             }
         }
-
-
 
 
         // 3. 중복 제거 후 상위 2개 ID만 추출
@@ -130,6 +136,14 @@ public class CompanyInfoService {
 
         if (!companyInfo.getUser().getId().equals(sessionUserId)) throw new Exception403("권한이 없습니다.");
 
+        if (reqDTO.getLogoImageFile() == null || reqDTO.getLogoImageFile().isEmpty()) {
+            throw new Exception400("로고 이미지는 필수입니다.");
+        }
+
+        if (reqDTO.getImageFile() == null || reqDTO.getImageFile().isEmpty()) {
+            throw new Exception400("대표이미지는 필수입니다.");
+        }
+
         String uploadDir = System.getProperty("user.dir") + "/upload/";
 
         try {
@@ -156,6 +170,7 @@ public class CompanyInfoService {
         } catch (Exception e) {
             throw new Exception400("파일 업로드 실패");
         }
+
 
         companyInfo.update(reqDTO.getLogoImage(), reqDTO.getCompanyName(), reqDTO.getEstablishmentDate(), reqDTO.getAddress(), reqDTO.getMainService(), reqDTO.getIntroduction(), reqDTO.getImage(), reqDTO.getBenefit());
 

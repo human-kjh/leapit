@@ -8,7 +8,7 @@
             <h1 class="mb-3 text-center">{{applyForm.jobPostingName}}</h1>
             <h2 class="mb-4 text-center text-muted">{{applyForm.companyName}}</h2>
 
-            <form action="/personal/jobposting/{{applyForm.jobPostingId}}/apply" method="POST">
+            <form action="/s/personal/jobposting/{{applyForm.jobPostingId}}/apply" method="POST">
                 <input type="hidden" name="jobPostingId" value="{{applyForm.jobPostingId}}">
 
                 <!-- 개인 정보 -->
