@@ -139,7 +139,23 @@ public class ApplicationRepository {
     // 지원 현황 목록
     public List<ApplicationResponse.ApplicationDto> findApplicationsByUserId(Integer userId) {
         String jpql = """
-                    SELECT ci.companyName, jp.title, a.appliedDate, r.id, jp.id
+                    SELECT\s
+                        ci.companyName,\s
+                        jp.title,\s
+                        a.appliedDate,\s
+                        r.id AS resumeId,\s
+                        jp.id AS jobPostingId,
+                    CASE WHEN a.isPassed = true\s
+                    THEN '합격'
+                    WHEN a.isPassed = false THEN '불합격'
+                    ELSE '미정'
+                    END AS result,
+                    CASE WHEN a.isPassed = true
+                    THEN 'bg-primary'
+                    WHEN a.isPassed = false
+                    THEN 'bg-danger'
+                    ELSE 'bg-secondary'
+                    END AS badgeClass
                     FROM Application a
                     JOIN a.resume r
                     JOIN r.user u
@@ -148,6 +164,7 @@ public class ApplicationRepository {
                     JOIN CompanyInfo ci ON ci.user.id = company.id
                     WHERE u.id = :userId
                     ORDER BY a.appliedDate DESC
+                    
                 """;
 
         List<Object[]> resultList = em.createQuery(jpql, Object[].class)
@@ -160,7 +177,9 @@ public class ApplicationRepository {
                         (String) row[1],
                         (LocalDate) row[2],
                         (Integer) row[3],
-                        (Integer) row[4]
+                        (Integer) row[4],
+                        (String) row[5],
+                        (String) row[6]
                 ))
                 .toList();
     }
@@ -238,4 +257,14 @@ public class ApplicationRepository {
                 .setParameter("jobPostingId", jobPostingId)
                 .getSingleResult();
     }
+
+    public Application findByResumeIdAndJobPostingId(Integer applicationId) {
+        String jpql = "SELECT a FROM Application a WHERE a.id = :applicationId";
+        return em.createQuery(jpql, Application.class)
+                .setParameter("applicationId", applicationId)
+                .getSingleResult();
+    }
+
+
+
 }
