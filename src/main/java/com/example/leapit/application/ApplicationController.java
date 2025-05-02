@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -112,7 +111,7 @@ public class ApplicationController {
     }
 
     // 채용공고에 이력서 지원하기
-    @PostMapping("/personal/jobposting/{id}/apply")
+    @PostMapping("/s/personal/jobposting/{id}/apply")
     public String apply(@PathVariable("id") Integer jobPostingId, @Valid ApplicationRequest.ApplyReqDTO applyReqDTO, Errors errors) {
 
         // 세션에서 로그인한 사용자 정보 가져오기
