@@ -29,6 +29,7 @@ public class CompanyInfoResponse {
 
         private List<JobPostingDTO> jobPostings; // 공고들
 
+
         @Data
         public static class JobPostingDTO {
             private Integer id;

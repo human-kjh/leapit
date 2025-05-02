@@ -75,6 +75,7 @@ public class ApplicationController {
     public String applicationDetail(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         if (sessionUser == null) throw new Exception401("로그인 후 이용");
+        applicationService.viewCheck(id);
 
         ApplicationResponse.DetailDTO detailDTO = applicationService.detail(id, sessionUser);
         request.setAttribute("model", detailDTO);

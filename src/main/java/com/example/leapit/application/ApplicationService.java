@@ -160,4 +160,12 @@ public class ApplicationService {
         applicationRepository.save(application);
     }
 
+    @Transactional
+    public void viewCheck(Integer applicationId) {
+        Application application = applicationRepository.findByResumeIdAndJobPostingId(applicationId);
+        if (application == null) {
+            throw new RuntimeException("없는 지원입니다.");
+        }
+        application.setIsViewed(true);
+    }
 }
