@@ -3,6 +3,7 @@ package com.example.leapit.jobposting;
 
 import com.example.leapit._core.error.ex.Exception400;
 import com.example.leapit._core.error.ex.Exception401;
+import com.example.leapit.common.positiontype.PositionType;
 import com.example.leapit.common.region.RegionRepository;
 import com.example.leapit.common.region.RegionResponse;
 import com.example.leapit.common.region.RegionService;
@@ -98,11 +99,15 @@ public class JobPostingController {
         List<RegionResponse.SelectedSubRegionDTO> addressSubRegionList =
                 regionService.getSubRegionsWithSelection(jobPosting.getAddressRegionId(), jobPosting.getAddressSubRegionId());
 
-
+        List<String> positionType = jobPostingService.findByPositionType();
         List<TechStack> techStacks = techStackService.getAllTechStacks();
+
+
+
         request.setAttribute("model", techStacks);
         request.setAttribute("addressRegionList", addressRegionList);
         request.setAttribute("addressSubRegionList", addressSubRegionList);
+        request.setAttribute("positionType", positionType);
         return "company/jobposting/save-form";
     }
 
@@ -136,6 +141,7 @@ public class JobPostingController {
             stackModels.add(map);
         }
 
+        List<String> positionType = jobPostingService.findByPositionType();
         // 시/도, 시/군/구 전체 리스트 + 선택 여부 포함해서 서비스에서 가져오기
         List<RegionResponse.SelectedRegionDTO> addressRegionList =
                 regionService.getRegionsWithSelection(jobPosting.getAddressRegionId());
@@ -147,6 +153,7 @@ public class JobPostingController {
         request.setAttribute("allTechStacks", stackModels);
         request.setAttribute("addressRegionList", addressRegionList);
         request.setAttribute("addressSubRegionList", addressSubRegionList);
+        request.setAttribute("positionType", positionType);
 
         return "company/jobposting/update-form";
     }

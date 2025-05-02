@@ -573,13 +573,30 @@ VALUES (8, '코드몽키로고이미지.png', '코드몽키', '2018-04-20', '경
 
 -- 7. board_tb
 INSERT INTO board_tb (user_id, title, content, created_at)
-VALUES (1, '반갑습니다', '안녕하세요 김랩핏입니다.', NOW());
+VALUES (1, '취업 준비중인데 조언 부탁드립니다', '개발자로 취업 준비 중입니다. 혹시 면접에서 자주 나오는 질문이나, 포트폴리오에 꼭 들어가야 하는 내용 있을까요?', NOW());
+
 INSERT INTO board_tb (user_id, title, content, created_at)
-VALUES (2, '안녕하세요', '반갑습니다 김망고입니다.', NOW());
+VALUES (3, '랩핏 회사 어떤가요?', '코드몽키에서 랩핏이라는 회사 채용공고 봤는데 분위기 어떤가요? 실제로 다녀보신 분 있으시면 후기 좀 공유해주세요.', NOW());
+
 INSERT INTO board_tb (user_id, title, content, created_at)
-VALUES (1, '화이팅', '반갑습니다 오늘 날씨가 좋네요! 오늘 하루도 화이팅 입니다.', NOW());
+VALUES (4, '펌펌테크 지원하신 분 계신가요?', '이번에 펌펌테크 개발자 포지션에 지원했는데 기술 스택이 저랑 잘 맞는 것 같더라고요. 근데 복지나 연봉 괜찮은지 궁금합니다.', NOW());
+
 INSERT INTO board_tb (user_id, title, content, created_at)
-VALUES (3, '구직사이트 추천', '저는 랩핏이 제일 좋은 것 같아요!', NOW());
+VALUES (5, '면접 후기 공유합니다', '며칠 전에 점핏 주식회사 면접 보고 왔습니다. 분위기는 부드러웠는데 코딩 테스트가 꽤 어려웠어요. 준비하실 분들 참고하세요!', NOW());
+
+INSERT INTO board_tb (user_id, title, content, created_at)
+VALUES (2, '사내 분위기 어떤지 궁금해요', '최근에 코드몽키 채용을 봤는데 실무자 인터뷰가 없더라고요. 혹시 다녀본 분 계시면 조직 문화나 워라밸 어떤지 알려주실 수 있나요?', NOW());
+
+INSERT INTO board_tb (user_id, title, content, created_at)
+VALUES (4, '첫 구직 성공했어요!', '드디어 첫 회사에 합격했습니다. 아직 입사 전이지만 기분이 너무 좋네요. 랩핏 덕분에 많은 정보 얻었어요. 다들 화이팅입니다!', NOW());
+
+INSERT INTO board_tb (user_id, title, content, created_at)
+VALUES (3, '펌펌테크... 다시는 가고 싶지 않네요',
+        '예전에 펌펌테크에서 잠깐 일했었는데요, 야근은 기본이고 주말에도 연락 오는 경우 많았습니다.
+        윗사람 눈치 너무 많이 봐야 했고, 회식 강요도 심했어요.
+        기술적으로도 구체적인 방향 없이 일만 시키는 구조라 많이 지쳤습니다.
+        지원 고민 중이신 분들, 신중하게 결정하세요.',
+        NOW());
 
 -- 8. reply_tb
 INSERT INTO reply_tb (user_id, board_id, content, created_at)
