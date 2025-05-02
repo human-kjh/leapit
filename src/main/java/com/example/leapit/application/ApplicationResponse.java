@@ -128,16 +128,21 @@ public class ApplicationResponse {
         private LocalDate appliedDate;
         private Integer resumeId;
         private Integer jobPostingId;
+        private String result;
+        private String badgeClass;
 
         public ApplicationDto(String companyName, String jobTitle, LocalDate appliedDate,
-                              Integer resumeId, Integer jobPostingId) {
+                              Integer resumeId, Integer jobPostingId, String result, String badgeClass) {
             this.companyName = companyName;
             this.jobTitle = jobTitle;
             this.appliedDate = appliedDate;
             this.resumeId = resumeId;
             this.jobPostingId = jobPostingId;
+            this.result = result;
+            this.badgeClass = badgeClass;
         }
     }
+
 
     // 지원 현황 통계
     @Data

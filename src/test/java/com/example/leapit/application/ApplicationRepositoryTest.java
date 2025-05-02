@@ -18,6 +18,26 @@ public class ApplicationRepositoryTest {
     @Autowired
     private EntityManager em;
 
+
+    @Test
+    public void findApplicationsByUserId_test(){
+        //given
+        Integer userId = 2;
+
+        List<ApplicationResponse.ApplicationDto> result = applicationRepository.findApplicationsByUserId(userId);
+
+        System.out.println("============================");
+        for (ApplicationResponse.ApplicationDto applicationDto : result) {
+            System.out.println(applicationDto.getAppliedDate());
+            System.out.println(applicationDto.getBadgeClass());
+            System.out.println(applicationDto.getResult());
+            System.out.println(applicationDto.getJobPostingId());
+            System.out.println(applicationDto.getJobTitle());
+        }
+        System.out.println("============================");
+
+    }
+
     @Test
     public void applicationRepository_test() {
         // given

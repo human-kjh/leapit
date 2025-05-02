@@ -3,20 +3,19 @@
 <!-- 본문 -->
 <div class="main container mt-5">
     <div class="content-wrapper">
-        <div class="myJumpitWrapper">
-            <div class="myJumpit">
-                <h5>마이점핏</h5>
-                <div class="menuItems">
+        <div class="mypageSidebar">
+            <div class="mypageSidebarBox">
+                <h5 class="mypageSidebarTitle">마이점핏</h5>
+                <div class="mypageSidebarMenu">
                     <a href="/s/personal/mypage/application" class="mypageSidebarLink">입사지원 현황</a>
                     <a href="/s/personal/mypage/bookmark" class="mypageSidebarLink">스크랩 포지션</a>
-                    <hr class="menuDivider">
                     <a href="/s/personal/user/update-form" class="mypageSidebarLink">계정 정보 설정</a>
                 </div>
             </div>
         </div>
         <div class="myStatus">
             <div class="myStatusInner">
-                <div class="myStatusTitle">마이 점핏</div>
+                <div class="myStatusTitle">마이 랩핏</div>
                 <!-- 지원 통계 영역 -->
                 <div class="statusBoxes">
                     <div class="statusBox">
@@ -33,42 +32,45 @@
                     </div>
                 </div>
             </div>
-            <!-- 지원현황 목록 -->
-            <div class="applyContainer">
-                <h5 class="applyTitle">지원완료 총 {{models.status.total}}건</h5>
-                <div class="applyList">
-                    {{#models.applications}}
-                        <div class="applyItem">
-                            <div class="card mb-3">
-                                <div class="card-body text-start rounded border-0 bg-white d-flex justify-content-between align-items-start">
+            <!-- 지원 완료 건수 -->
+            <h5 class="applyTitle">지원완료 총 {{models.status.total}}건</h5>
+
+            <!-- 지원 현황 목록 -->
+            <!-- 지원 현황 목록 -->
+            <div class="applyList">
+                {{#models.applications}}
+                    <div class="applyItem">
+                        <div class="card mb-3">
+                            <div class="card-body text-start rounded border-0 bg-white d-flex justify-content-between align-items-start">
+                                <div>
+                                    <div class="position-relative mb-1" style="display: inline-block;">
+                                        <h6 class="card-title mb-0 d-inline">{{companyName}}</h6>
+                                        <span class="badge {{badgeClass}} position-absolute" style="top: -1px; left: 100%; margin-left: 10px;">
+                                            {{result}}
+                                        </span>
+                                    </div>
                                     <div>
-                                        <h6 class="card-title mb-2">{{companyName}}</h6>
-                                        <h5 class="card-title mb-2">{{jobTitle}}</h5>
+                                        <h5 class="card-title mb-1">{{jobTitle}}</h5>
+                                    </div>
+                                    <div>
                                         <small>{{appliedDate}} 지원</small>
                                     </div>
-
-                                    <div class="d-flex flex-column align-items-end">
-                                        <a href="/s/personal/resume/{{resumeId}}"
-                                           class="btn btn-outline-secondary btn-sm mb-2">
-                                            <i class="bi bi-person-vcard me-1"></i> 이력서 보기
-                                        </a>
-                                        <a href="/personal/jobposting/{{jobPostingId}}" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-briefcase me-1"></i> 공고 보기
-                                        </a>
-                                    </div>
-
+                                </div>
+                                <div class="d-flex flex-column align-items-end">
+                                    <a href="/s/personal/resume/{{resumeId}}" class="btn btn-outline-secondary btn-sm mb-2">
+                                        <i class="bi bi-person-vcard me-1"></i> 이력서 보기
+                                    </a>
+                                    <a href="/personal/jobposting/{{jobPostingId}}" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-briefcase me-1"></i> 공고 보기
+                                    </a>
                                 </div>
                             </div>
-
                         </div>
-                    {{/models.applications}}
-
-
-
-                </div>
+                    </div>
+                {{/models.applications}}
             </div>
         </div>
-    </div>
+</div>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
