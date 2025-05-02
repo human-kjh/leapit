@@ -56,9 +56,9 @@ VALUES ('Django');
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
 VALUES (1, '쌀의 이력서', NULL, '자바 개발자입니다', '백엔드', '적극적이고 성실합니다', false, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (1, '쌀님의 이력서2', 'file://localhost/c:/image1.png', '프론트엔드 자신 있습니다', '프론트엔드', '디자인 감각도 좋아요', true, now());
+VALUES (1, '쌀의 이력서2', '이력서 사진4.png', '프론트엔드 자신 있습니다', '프론트엔드', '디자인 감각도 좋아요', true, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
-VALUES (2, '파이썬 이력서', NULL, 'Django와 FastAPI 경험 있음', '백엔드', '데이터 파이프라인 경험', false, now());
+VALUES (2, '파이썬 이력서', '이력서 사진5.png', 'Django와 FastAPI 경험 있음', '백엔드', '데이터 파이프라인 경험', false, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
 VALUES (3, '풀스택 도전기', NULL, '다양한 프로젝트 수행 경험 있음', '풀스택', '매일 꾸준히 성장 중', true, now());
 INSERT INTO resume_tb (user_id, title, photo_url, summary, position_type, self_introduction, is_public, created_at)
@@ -364,7 +364,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
 VALUES (6, '프론트엔드 웹 개발자 채용', '프론트엔드', 2, 5,
-        '학사', 1, 2, '강남구 테헤란로 456',
+        '학사', 1, 2, '테헤란로 456',
         '대규모 플랫폼 웹 프론트엔드 개발',
         '2025-06-30', 'React 기반 SPA 아키텍처 설계 및 개발',
         'React, TypeScript 실무 경험자',
@@ -377,7 +377,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
 VALUES (6, '모바일 프론트엔드 앱 개발자', '모바일 앱 개발자', 2, 5,
-        '학사', 2, 1, '성남시 분당구 정자일로 123',
+        '학사', 1, 1, '정자일로 123',
         'React Native 기반 모바일 앱 개발',
         '2025-06-30', '모바일 최적화 및 퍼포먼스 개선 작업',
         'React Native 개발 경험 필수',
@@ -390,7 +390,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
 VALUES (7, 'iOS 앱 개발자 구인', '모바일 앱 개발자', 1, 4,
-        '학사', 1, 3, '잠실로 321',
+        '학사', 1, 2, '잠실로 321',
         'iOS 기반 모바일 앱 개발',
         '2025-07-31', 'Swift 기반 앱 아키텍처 설계 및 구현',
         'Swift, UIKit 경험자 필수',
@@ -403,7 +403,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
 VALUES (8, 'AI 연구원 채용', 'AI 엔지니어', 0, 2,
-        '석사', 2, 4, '가산디지털단지 777',
+        '석사', 2, 4, '777',
         '머신러닝/딥러닝 모델 연구 및 개발',
         '2025-07-01', '최신 AI 모델 논문 분석 및 모델 개선',
         'TensorFlow, PyTorch 활용 경험',
@@ -429,7 +429,7 @@ INSERT INTO job_posting_tb (user_id, title, position_type, min_career_level, max
                             service_intro, deadline, responsibility, qualification, preference,
                             benefit, additional_info, view_count, created_at)
 VALUES (7, 'QA 엔지니어 모집', '백엔드', 1, 5,
-        '학사', 2, 1, '영등포로 999',
+        '학사', 2, 1, '999',
         '품질 보증 및 테스트 자동화 구축',
         '2025-07-20', '테스트 케이스 작성 및 품질 관리',
         '테스트 자동화 경험 필수 (Selenium 등)',
